@@ -1,0 +1,56 @@
+\name{readBeadSummaryData}
+\alias{readBeadSummaryData}
+
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{Read bead summary data information into R}
+\description{
+Function to read pre-processed bead summary data into R. Data can be the output from BeadStudio with either a separate file for each array in the experiment, or each file containing all arrays on a SAM.
+
+}
+\usage{
+
+readBeadSummaryData(targets, header = T, sep = "", path = NULL, columns = list(probeID = "ProbeID", 
+    AvgSig = "AvgSig", Nobeads = "Nobeads", BeadStDev = "BeadStDev", 
+    Sample = "SAMPLE", Detection = "Detection", SAM = "SAM", 
+    Avebkg = "Avebkg"), other.columns = NULL) 
+
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{targets}{either a list of files to be read or left NULL to read all files in a directory.}
+  \item{sep}{character used to seperate each column in the file. Usually either "," or "".}
+  \item{columns}{list defining the names for each column to be read from the input files}
+  \item{other.columns}{list defining any additional columns to be read from the input.} 
+  \item{header}{if TRUE then function will read column headers from the input files.}
+  \item{path}{optional argument to specify the location of the data to be read. By default, files are read from the current working directory.}	
+
+}
+\details{
+Input files are assumed to describe the bead summary data for a SAM (or multiple SAMs) in an experiment. The format of the input files can either have all arrays for the same SAM in the same file or different files for different SAMs. Matrices in R are used to hold the data with each column in a matrix representing a different array. Each row in a matrix represents a different bead type in the experiment and we assume that each array has the same number of bead types. The bead types do not have to appear in the same order.
+
+
+}
+\value{
+An BeadSummaryList object containing the components
+
+R	matrix containing the averaged red channel foreground intensities for each bead type for each array.
+Rb	matrix containing the average red channel background intensity for each array.
+G	matrix containing the average green channel foreground intensities for each bead type for each array.
+Gb	matrix containing the average green channel background intensity for each array.
+beadstdev matrix containing the standard deviation for each bead type for each array
+nobeads matrix containing the number of beads used to calculate the average for each bead type. (ie after outlier removal)
+Detection matrix containing the average detection score for each bead type for each array.
+SAMPLE vector giving the sample name for each array
+SAM vector giving an ID to each array in the experiment
+other	list containing matrices corresponding to other.columns if given
+}
+
+\author{Mark Dunning and Mike Smith}
+
+\seealso{
+\code{\link[beadarray:BeadSummaryList]{BeadSummaryList}}
+}
+\examples{
+
+}
+\keyword{IO}

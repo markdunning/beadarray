@@ -1,0 +1,11 @@
+Package: beadarray
+Title: Quality control and low-level analysis of BeadArrays
+Version: 0.1.2
+Date: 2005-09-27
+Author: Mark Dunning, Isabelle Camilier, Mike Smith
+Maintainer: Mark Dunning <md392@cam.ac.uk>
+Description: Read BeadArray data from TIFF images and perform quality control checks and low-level analysis. 
+Depends: limma, pixmap
+License: None
+biocViews: Microarray, OneChannel, QualityControl, Preprocessing
+ 

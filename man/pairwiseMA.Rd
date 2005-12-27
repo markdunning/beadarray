@@ -1,0 +1,45 @@
+\name{pairwiseMA}
+\alias{pairwiseMA}
+\alias{panel.XY}
+\alias{panel.MA}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{Scatter plots and MA-plots for all specified arrays }
+\description{
+
+Produces scatter and MA-plots for all pairwise comparisons that can be made from a set of arrays.
+}
+\usage{
+pairwiseMA(BSData, vec, log = TRUE, labels=c(1:length(vec)))
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{BSData}{an averaged BeadSummaryList containing bead summary data}
+  \item{vec}{numeric vector giving the indices of the arrays in BSData we want to plot}
+  \item{log}{if TRUE then all values will be log-transformed before plotting}
+  \item{labels}{vector specifying names for each array to be plotted}
+}
+
+\details{
+These are graphical tools for showing the differences that exist between two arrays and they can be used to highlight problems such as bias between arrays as well as identifying genes which are differentially expressed. We constructed these plots as follows. For each bead type, we take the averaged intensity calculated from two different arrays. On an XY plot these values are simply plotted against each other and on an MA plot we plot the mean of the averaged intensities against the corresponding ratio of the average intensities.
+
+In the lower-left section of the plot we see XY plots for all pairwise comparisons between the arrays and in the upper right we have pairwise MA plots. Going down the first column we observe XY plots of array 1 against array 2 and array 1 against array 3 etc. Similarly, in the upper-right corner we can observe pairwise MA plots.
+
+}
+\author{Mark Dunning}
+
+\examples{
+
+data(BSData)
+
+vec = c (1,2,3)
+
+pairwiseMA(BSData, vec)
+
+#For normalised data we do not need to log transform before plotting
+
+BSData.med = medianNormalise(BSData)
+
+pairwiseMA(BSData.med, vec, log=FALSE)
+
+}
+\keyword{hplot}
