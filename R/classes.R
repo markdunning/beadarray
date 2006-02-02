@@ -145,7 +145,7 @@ cbind.BeadSummaryList <- function(..., deparse.level=1) {
 		out$nobeads <- cbind(out$nobeads,objects[[i]]$nobeads)
                 out$nooutliers <- cbind(out$nooutliers, objects[[i]]$nooutliers)
                 out$probeID <- cbind(out$probeID, objects[[i]]$probeID)
-                out$Detection <- cbind(out$Detection, objects[[i]]$probeID)
+                out$Detection <- cbind(out$Detection, objects[[i]]$Detection)
                 out$SAMPLE <- append(out$SAMPLE, objects[[i]]$SAMPLE)
                 out$SAM <- append(out$SAM, objects[[i]]$SAM)
                 if(!is.null(out$other)){

@@ -32,22 +32,27 @@
     }
  
     k = nrow(targets)
-    
+    r=read.table(csv_files[1], sep=",", header=T)
+     
     #Read a set of k arrays using images and csv files
     
-    R = Rb =  x = y = probeID = matrix(nrow = 49777, ncol=k)
+    R = Rb =  x = y = probeID = matrix(nrow = nrow(r), ncol=k)
 
+  
     if(!is.null(targets$Image2)){
 
-      G = Gb = matrix(nrow = 49777, ncol=k)
+      G = Gb = matrix(nrow = nrow(r), ncol=k)
 
     }
 
     if(storeRawData){
 
-      rawR = rawG = matrix(nrow=49777, ncol=k)
+      rawR = rawG = matrix(nrow=nrow(r), ncol=k)
 
     }
+
+	rm(r)
+gc()
 
     for(i in 1:k){
 
@@ -153,3 +158,4 @@ BLData$other$rawG = rawG
 
 
   }
+

@@ -7,13 +7,15 @@ Uses maximum x and y co-ordinates to plot the outline of a hexagonal array. The 
 }
 
 \usage{
-plotArray(xmax, ymax,...)
+plotArray(xmax, ymax,SAM=TRUE,...)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{xmax}{numeric value specifying the maximum x co-ordinate on the array}
-\item{ymax}{numeric value specifying the maximum y co-ordinate on the array}
+\item{ymax}{numeric value specifying the maximum y co-ordinate on the
+  array}
+\item{SAM}{if TRUE the array will be assumed to be from a SAM experiment (hexagonal)}
 \item{\dots}{further graphical parameters to \code{plot}}
 }
 

@@ -10,7 +10,7 @@ If two array indices are given then the MA plot will be between the two arrays, 
 }
 \usage{
 plotMA.beads(BSData, array1, array2 = 0, identify = FALSE, label =
-FALSE, highlight = NULL, log = TRUE, main = NULL)
+FALSE, highlight = NULL, log = TRUE, main = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ FALSE, highlight = NULL, log = TRUE, main = NULL)
   \item{highlight}{vector of numeric values specifying any probeIDs which the user wishes to be highlighted on the plot}
   \item{log}{if TRUE then a log2 transformation will be applied to the data before plotting}
   \item{main}{specifies a title to be written on the plot}
+  \item{\dots}{other graphical parameters to plot that can be specified}
 }
 \details{
 

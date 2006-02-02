@@ -1,11 +1,20 @@
 "plotArray" <-
-function(xmax, ymax,...){
+function(xmax, ymax, SAM=TRUE,...){
+
+  plot(0,type="n",xlab="",ylab="",ylim=range(0,ymax), xlim=range(0,xmax))
+
+if(!SAM){
+
+  polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
+
+}
+
+
+else{
 
 
 
 
-
-plot(0:xmax, 0:xmax, type="n",xlab="",ylab="",...)
 
 #Plots out the hexagonal arrangement of an array array 
 
@@ -29,6 +38,7 @@ theta<-seq(0, 2*pi, length=100)
 
 lines(r*cos(theta)+xmax/2, r*sin(theta)+ymax/2)
 
+}
 
 }
 

@@ -12,7 +12,8 @@ Function for looking at a particular part of an image scanned from a BeadArray
 }
 
 \usage{
-displayTIFFImage(BLData, array, a = 680:720, b = 680:720, flip=TRUE, showOutliers=TRUE, locateBeads=FALSE, showUnregistered=FALSE)
+displayTIFFImage(BLData, array, a = 680:720, b = 680:720, flip=TRUE,
+showOutliers=TRUE, locateBeads=FALSE, showUnregistered=FALSE, outliers=NULL)
 }
 
 \arguments{
@@ -24,7 +25,8 @@ displayTIFFImage(BLData, array, a = 680:720, b = 680:720, flip=TRUE, showOutlier
   \item{showOutliers}{if TRUE then the location of outliers within the region will be highlighted on the plot}
   \item{locateBeads}{if TRUE then the plot will be interactive}
   \item{showUnregistered}{if TRUE then any unregistered points inside the region will be highlighted} 
- 
+ \item{outliers}{List of BeadIDs which have been discovered to be
+   outliers previously}
 }
 \details{
 Loads up the original pgm image scanned from the array and displays the part of the image defined 

@@ -5,9 +5,12 @@ function(BLData, probe, array, log=FALSE, n=3){
 inten = getProbeIntensities(BLData, probe, array, log)
 probe_ids = getProbeIndices(BLData, probe, array)
 
+#nas will be a list of beads which have NA intensity
+nas=NULL
+
 if(length(is.na(inten))>0){
 
-nas = probe_ids[is.na(inten)]
+nas = probe_ids[is.na(inten) | inten < 0]
 probe_ids = probe_ids[!is.na(inten)]
 inten = inten[!is.na(inten)]
 
@@ -47,4 +50,3 @@ return$valid = probe_ids[inten < m + n*ma & inten > m - n*ma & raw_inten > 0]
 return
 
 }
-

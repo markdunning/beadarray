@@ -1,5 +1,5 @@
 "plotXY.beads" <-
-function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2, highlight=NULL){
+function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2, highlight=NULL, ...){
 
 #XY plot of either two samples against each other, or red and green channels of one channel
 
@@ -18,7 +18,7 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
       y = log2(BSData$R[,array2])
 
 
-      xmax = 20
+      xmax = 16
       xbox=18
       yspacing=0.3
     }
@@ -37,7 +37,7 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
       x = log2(BSData$R[,array1])
       y = log2(BSData$G[,array1])
 
-      xmax = 20
+      xmax = 16
       xbox=18
       yspacing=0.3
     }
@@ -51,40 +51,50 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
     }
   }
 
-  plot(x,y, col="black",xlim=range(min(x),xmax))
+  plot(x,y, col="black",xlim=range(min(x),xmax), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
 
   abline(0,1)
 
   if(label){
+
+    status = BSData$genes$Status
+
+
+    values <- attr(status, "values")
+
+    nvalues = length(values)
+
     
-    for(i in 1:nrow(spottypes)){
+    sel <- !(status %in% values)
 
-      x1 = x[BSData$probeID[,1]==spottypes[i,2]]
-      y1 = y[BSData$probeID[,1]==spottypes[i,2]]
+    col <- attr(status, "Colour")
 
-      points(x1,y1, col=as.character(spottypes[i,4]))
+    col <- rep(col, length=nvalues)
 
-      types = as.character(unique(spottypes[,1]))
+    for(i in 1:nvalues){
+      sel <- status==values[i]    
 
-      cols = as.character(unique(spottypes[,4]))
+       ids = BSData$genes$ProbeID[sel]
+      
+      points(x[which(BSData$probeID[,1] %in% ids)], y[which(BSData$probeID[,1] %in% ids)], col=col[i])
 
-      legend(min(x),max(y), types,cols,cex=0.8)
     }
+
+    
+    
   }
 
 
 if(log){
 
-
-
-abline(log2(fold),1)
-abline(-log2(fold),1)
+abline(log2(fold),1, lty=2)
+abline(-log2(fold),1, lty=2)
 
 }
 
 else{
-abline(0,fold)
-abline(0,1/fold)
+abline(0,fold, lty=2)
+abline(0,1/fold, lty=2)
 
 
 }

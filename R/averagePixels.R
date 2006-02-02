@@ -1,5 +1,5 @@
 "averagePixels" <-
-  function(xs, ys,raw,k=49777){
+  function(xs, ys,raw,k=length(xs)){
     P<-vector(length=k)
     R<-vector(length=k)
     L<-vector(length=k)

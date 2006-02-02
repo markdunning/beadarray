@@ -1,5 +1,5 @@
 "showTIFF" <-
-function(xt,xs,ys,a,b, array, zScale=TRUE, 
+function(xt,BLData,xs,ys,a,b, array, zScale=TRUE, 
                          reverseYaxis = TRUE,
                         width=9, height=9,
                        resc=FALSE,showSpots=TRUE, out=FALSE,outliers, unregs=NULL, contrast=FALSE,locate=FALSE,recenter=FALSE,flip=FALSE){

@@ -1,7 +1,7 @@
 "plotMA.beads" <-
-function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL){
+function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ...){
 
-  if(class(BSData) == "BeadSummaryList"){
+  if(!class(BSData) == "BeadSummaryList"){
     stop("BeadSummaryList object required!")
   }
 
@@ -11,8 +11,9 @@ if(array2!=0){
 
 if(log){
 
-x = log2(BSData$R[,array1])
-y = log2(BSData$R[,array2])
+x = 0.5*(log2(BSData$R[,array1]) + log2(BSData$R[,array2]))
+y = log2(BSData$R[,array1])- log2(BSData$R[,array2])
+  
 
 }
 
@@ -32,40 +33,38 @@ y = log2(BSData$G[,array1])
 
 }
 
+  plot(x,y, pch=16,cex=0.4, ylim=range(-2,2),xlim=range(5,16), main=main, xlab = "", ylab = "", ...) 
 
-
-
-plot(0.5*(x+y),y-x,pch=16,cex=0.4,col="black", ylim=range(-2,2),xlim=range(5,25), main=main) 
-
-
-abline(h=c(-1,0,1),lty=c(2,1,2)) 
+  abline(h=c(-1,0,1),lty=c(2,1,2)) 
   
+  if(label){
 
-if(label){
-
-if(is.null(spottypes)){
-
-stop("spottypes object not found")
-
-}
+    status = BSData$genes$Status
 
 
-for(i in 1:nrow(spottypes)){
+    values <- attr(status, "values")
 
-x1 = x[BSData$probeID[,1]==spottypes[i,2]]
-y1 = y[BSData$probeID[,1]==spottypes[i,2]]
+    nvalues = length(values)
 
-points(0.5*(x1+y1),y1-x1, col=as.character(spottypes[i,4]))
+    
+    sel <- !(status %in% values)
 
-types = as.character(unique(spottypes[,1]))
+    col <- attr(status, "Colour")
 
-cols = as.character(unique(spottypes[,4]))
+    col <- rep(col, length=nvalues)
 
-legend(5,2, types,cols,cex=0.8)
+    for(i in 1:nvalues){
+      sel <- status==values[i]
 
-}
+      ids = BSData$genes$ProbeID[sel]
+      
+      points(x[which(BSData$probeID[,1] %in% ids)], y[which(BSData$probeID[,1] %in% ids)], col=col[i])
 
-}
+    }
+
+    
+    
+  }
 
 if(length(highlight!=0)){
 
