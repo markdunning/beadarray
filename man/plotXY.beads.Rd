@@ -28,7 +28,7 @@ label = FALSE, fold = 2, highlight = NULL,...)
 
 A plot will be produced of the average values for each gene found in sample 1 against the averages found in sample 2. 
 
-If identify is set to TRUE then clicking on each point will display information about the probeID, gene name and values from both samples of the point 
+If identify is set to TRUE then clicking on each point will display information about the ProbeID, gene name and values from both samples of the point 
 clicked
 
 }

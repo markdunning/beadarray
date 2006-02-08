@@ -13,7 +13,7 @@ Uses image and csv files to load information about each array used in the experi
 
 }
 \usage{
-readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData=FALSE, columns=list(probeID="Code", x="x", y="y"))
+readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData=FALSE, columns=list(ProbeID="Code", x="x", y="y"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,7 @@ readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData
 \details{
 The targets objects can be read in previously by using a 'read.table' command. This defines the location of the csv and pgm files that are required. The column headings
 Image1 and xyInfo must be found in the targets object. csv files are used to specify the location and identity of each bead on the array and must contain columns for 
-the $x$ and $y$ postion of each bead as well as a probeID. The names of these columns can be specified by setting the 'columns' parameter
+the $x$ and $y$ postion of each bead as well as a ProbeID. The names of these columns can be specified by setting the 'columns' parameter
 
 The foreground and background intensities of each bead are then calculated and stored separately. For foreground calculations the sharpening mask used by Illumina 
 is used prior to an averaging over the 9 pixels in a 3 x 3 square closest to the bead centre (we can choose to calculate the values obtained without this mask). For 

@@ -17,14 +17,14 @@ findHighestSD(BLData, array, limit = 1)
 }
 \details{
 The standard deviation for bead intensities of each bead type is calculated in turn and if this value exceeds the defined limit then we add the 
-probeID of the bead type to a list which we return.
+ProbeID of the bead type to a list which we return.
 
 The standard deviation that we calculate is based on the log2 bead intensities.
 }
 
 \value{
 
-numeric vector giving the probeIDs which were calculated to have standard deviation greater than 'limit'.
+numeric vector giving the ProbeIDs which were calculated to have standard deviation greater than 'limit'.
 
 }
 

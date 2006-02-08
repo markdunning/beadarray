@@ -41,7 +41,7 @@ causes any unregistered beads in the region to be displayed as grey dots.
 The 'flip' parameter arises from the fact that when we plot in R, we have the line y=0 at the \textit{bottom} of the plot, whereas on BeadArrays the y values are counted from the \textit{top} of the array. 
 
 Setting the locateBeads parameter to TRUE will make the plots produced interactive. In this mode, clicking on outliers on the image will display information about the unsharpened intensity, 
-the local background level along with the probeID for the bead and mean of all beads on the array with that probeID.
+the local background level along with the ProbeID for the bead and mean of all beads on the array with that ProbeID.
 
 }
 \value{

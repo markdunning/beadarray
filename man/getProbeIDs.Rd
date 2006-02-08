@@ -1,7 +1,7 @@
 \name{getProbeIDs}
 \alias{getProbeIDs}
 
-\title{Get unique probeIDs}
+\title{Get unique ProbeIDs}
 \description{
 Return list of different ProbeIDs used on the array
 }
@@ -14,7 +14,7 @@ getProbeIDs(BLData)
 \item{BLData}{\code{BeadLevelList} object containing bead-level data}
 }
 \value{
-List of numeric values giving all probeIDs used on the array
+List of numeric values giving all ProbeIDs used on the array
 }
 
 

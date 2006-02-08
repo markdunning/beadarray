@@ -16,14 +16,14 @@ findMostOutliers(BLData, array, limit = 5)
   \item{limit}{numeric value giving the limit for the number of outliers (default is 5)}
 }
 \details{
-Takes each bead type found on the array in turn and calculates the number of outliers found for the bead type. If more than 'limit' outliers are found for a bead type we add the probeID
+Takes each bead type found on the array in turn and calculates the number of outliers found for the bead type. If more than 'limit' outliers are found for a bead type we add the ProbeID
 to a list. Preliminary investigation suggests that bead types rarely have more than 5 outliers.
 
 This function uses the default method of finding outliers using 3 median absolute deviations from the bead mean with raw (un-logged data).
 
 }
 \value{
-vector of numeric values giving the probeIDs of bead types which have more than 'limit' number of outliers.
+vector of numeric values giving the ProbeIDs of bead types which have more than 'limit' number of outliers.
 }
 
 \author{Mark Dunning}

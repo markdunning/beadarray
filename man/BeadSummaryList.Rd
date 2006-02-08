@@ -22,7 +22,7 @@ red channel. \cr
 green channel. \cr
 \code{beadstdev}: \tab Standard deviations for each bead type per array.\cr
 \code{nobeads}: \tab Number of beads of each type per array.\cr
-\code{probeID}: \tab ID for each probe on the arrays.\cr
+\code{ProbeID}: \tab ID for each probe on the arrays.\cr
 \code{nooutliers}: \tab The number of beads flagged as outliers for each
 bead type per array.
 }

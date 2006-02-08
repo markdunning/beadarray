@@ -27,13 +27,13 @@ where O and E are vectors of length 8 defining the observed and expected number 
 This provides a means of systematically testing the distribution of every bead type on a given array and we can record each bead type with a sufficiently high value of $\chi^2$.
 
 If the value for a particular bead type is found
-to be greater than 'limit' then we add the probeID for that bead type to a list which we later return.
+to be greater than 'limit' then we add the ProbeID for that bead type to a list which we later return.
 
 Default is to use 14 as the limit as this is the 95th quantile for the chi-square distribution in question 
 
 }
 \value{
-numeric vector giving probeIDs for all bead types on the array which give a chi-statistic > 'limit'
+numeric vector giving ProbeIDs for all bead types on the array which give a chi-statistic > 'limit'
 
 }
 
@@ -54,7 +54,7 @@ findHighestChis(BLData, 1, limit=16)
 
 ##ProbeIDs returned by the function can be examined in more detail
 
-plotBeadLocations(BLData, probeID=278, array=1)
+plotBeadLocations(BLData, ProbeID=278, array=1)
 
 probeDiagnostics(BLData, 278, 1)
 

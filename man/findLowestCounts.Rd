@@ -19,13 +19,13 @@ It is known that the
 numbers of each bead type on an array should be Poisson and on average around 30 of each bead type should be seen. This high amount of replication is 
 a major advantage of the BeadArray technology.
 
-The function simply loops through all the different probeIDs found on the array and counts how many of the bead type there are. If the number of beads found 
+The function simply loops through all the different ProbeIDs found on the array and counts how many of the bead type there are. If the number of beads found 
 is less than 'limit' then the bead type is added to a list which is returned by the function.
 
 The default value for 'limit' is 24 which is the 5th percentile of the appropriate Poisson distribution. 
 }
 \value{
-  numeric vector giving the probeIDs of the bead types which occur less than 'limit' times on the array.
+  numeric vector giving the ProbeIDs of the bead types which occur less than 'limit' times on the array.
 }
 
 \author{Mark Dunning}
@@ -44,7 +44,7 @@ findLowestCounts(BLData, 1, limit=20)
 
 ##ProbeIDs returned by function can be investigated in more detail
 
-plotBeadLocations(BLData, probeID=87, array=1)
+plotBeadLocations(BLData, ProbeID=87, array=1)
 
 }
 \keyword{methods}

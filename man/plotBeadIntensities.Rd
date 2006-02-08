@@ -14,7 +14,7 @@ plotBeadIntensities(BLData, probe, array, n=3, log=FALSE, label=FALSE, ylim
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object}
-  \item{probe}{numeric value giving the probeID for the bead type we are interested in}
+  \item{probe}{numeric value giving the ProbeID for the bead type we are interested in}
   \item{array}{numeric value giving the array we are interested in}
   \item{n}{outlier values for the bead type are beads with intensity more than 'n' times away from the mean}
   \item{log}{if TRUE log2 intensities of each bead are used to find outliers}
@@ -26,8 +26,8 @@ plotBeadIntensities(BLData, probe, array, n=3, log=FALSE, label=FALSE, ylim
   
 }
 \details{
-We find the intensities for each bead of the specified bead type by simply finding the value of BLData\$R for each bead in the array whose BLData\$probeID 
-matches the specified probeID. The distance from the centre of the hexagon can be found in a similar fashion by looking at BLData\$x and BLData\$y. 
+We find the intensities for each bead of the specified bead type by simply finding the value of BLData\$R for each bead in the array whose BLData\$ProbeID 
+matches the specified ProbeID. The distance from the centre of the hexagon can be found in a similar fashion by looking at BLData\$x and BLData\$y. 
 
 The outliers for the bead type are beads which have intensity more than 'n' times away from the standard deviation using logged or un-logged bead intensities 
 (specified using 'log' argument).

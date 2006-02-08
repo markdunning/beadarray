@@ -4,15 +4,15 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Show bead locations}
 \description{
-Shows location of a set of beads on an array. The beads can either be defined to be all beads with particular probeIDs or individual beadIDs
+Shows location of a set of beads on an array. The beads can either be defined to be all beads with particular ProbeIDs or individual beadIDs
 }
 \usage{
-plotBeadLocations(BLData, probeIDs=NULL, beadIDs=NULL, array, label=FALSE,...)
+plotBeadLocations(BLData, ProbeIDs=NULL, beadIDs=NULL, array, label=FALSE,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{a BeadLevelList object}
-  \item{probeIDs}{a vector of probeIDs to plot}
+  \item{ProbeIDs}{a vector of ProbeIDs to plot}
   \item{beadIDs}{a vector of beadIDs to plot}
   \item{array}{numeric value specifying the array}
   \item{label}{if TRUE every bead plotted with by given a numeric identifier on the plot}		
@@ -31,16 +31,16 @@ Plot is produced on the current graphical device.
 
 data(BLData)
 
-#plot all beads with probeID 2 on array 1
-plotBeadLocations(BLData, probeIDs=2, array=1)
+#plot all beads with ProbeID 2 on array 1
+plotBeadLocations(BLData, ProbeIDs=2, array=1)
 
-#plot all beads with either probeID 2 or 10
+#plot all beads with either ProbeID 2 or 10
 
-plotBeadLocations(BLData, probeIDs=c(2, 10), array=1)
+plotBeadLocations(BLData, ProbeIDs=c(2, 10), array=1)
 
 #can also change plotting characters
 
-plotBeadLocations(BLData, probeIDs=c(2, 10), array=1, col="red", pch="X", cex=2)
+plotBeadLocations(BLData, ProbeIDs=c(2, 10), array=1, col="red", pch="X", cex=2)
 
 #find all outliers on the first array and plot their locations
 o=findAllOutliers(BLData, 1)

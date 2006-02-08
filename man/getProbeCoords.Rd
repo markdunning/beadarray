@@ -11,14 +11,14 @@ getProbeCoords(BLData, probe, array)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BLDataLlist object}
-  \item{probe}{numeric value for the probeID we want to find the co-ordinates for}
+  \item{probe}{numeric value for the ProbeID we want to find the co-ordinates for}
   \item{array}{numeric value for the array we want}
 }
 \details{
-Function simply uses the probeID to look up the BLData\$x and BLData\$y values for beads whose BLData\$probeID match the given 'probeID' argument.
+Function simply uses the ProbeID to look up the BLData\$x and BLData\$y values for beads whose BLData\$ProbeID match the given 'ProbeID' argument.
 }
 \value{
-  matrix of numeric values with two columns ($x$ and $y$) and number of rows being the number of beads with this probeID present in the array. The $x$ and $y$
+  matrix of numeric values with two columns ($x$ and $y$) and number of rows being the number of beads with this ProbeID present in the array. The $x$ and $y$
 values returned are standardised by subtracting the minimum $x$ and $y$ values of any bead on the array.
 }
 

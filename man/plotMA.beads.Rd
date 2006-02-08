@@ -10,18 +10,19 @@ If two array indices are given then the MA plot will be between the two arrays, 
 }
 \usage{
 plotMA.beads(BSData, array1, array2 = 0, identify = FALSE, label =
-FALSE, highlight = NULL, log = TRUE, main = NULL,...)
+FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BSData}{BeadSummaryList object}
   \item{array1}{numeric value to specify the first sample to be plotted}
   \item{array2}{numeric value to specify the second sample to be plotted (optional)}
-  \item{identify}{if TRUE the user will be able to click on points on the plot and bring up useful information, such as probeID, gene information etc}
+  \item{identify}{if TRUE the user will be able to click on points on the plot and bring up useful information, such as ProbeID, gene information etc}
   \item{label}{if TRUE the control types for the experiment will be displayed on the plot}
-  \item{highlight}{vector of numeric values specifying any probeIDs which the user wishes to be highlighted on the plot}
+  \item{highlight}{vector of numeric values specifying any ProbeIDs which the user wishes to be highlighted on the plot}
   \item{log}{if TRUE then a log2 transformation will be applied to the data before plotting}
   \item{main}{specifies a title to be written on the plot}
+  \item{ma.ylim}{specifies the limits for the y axis (M) of the MA plot. Default is 2 }
   \item{\dots}{other graphical parameters to plot that can be specified}
 }
 \details{

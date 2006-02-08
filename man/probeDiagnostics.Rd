@@ -12,7 +12,7 @@ log = FALSE, n = 3, showOutliers = TRUE, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object}
-  \item{probe}{numeric value giving the probeID of the bead type we want to plot}
+  \item{probe}{numeric value giving the ProbeID of the bead type we want to plot}
   \item{array}{numeric value of the array we want}
   \item{label}{if TRUE all beads will be assigned a numeric label}
   \item{log}{if TRUE outliers for this bead type will be calculated using log2 bead intensities}

@@ -13,7 +13,7 @@ plotProbeDistances(BLData, probe, array)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{BLData}{BeadLevelList object containing bead-level data}
-\item{probe}{numeric value specifying the probeID}
+\item{probe}{numeric value specifying the ProbeID}
 \item{array}{numeric value specifying the array}
 
 }
