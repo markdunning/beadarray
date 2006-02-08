@@ -1,7 +1,7 @@
 "getProbeIDs" <-
 function(BLData){
 
-sort(unique(BLData$probeID[BLData$probeID[,1] > 0,1]))
+sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
 
 }
 

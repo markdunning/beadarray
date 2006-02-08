@@ -1,6 +1,6 @@
 "getProbeIndices" <-
 function(BLData, probe,array){
-which(BLData$probeID[,array] %in% probe)
+which(BLData$ProbeID[,array] %in% probe)
 
 
 }

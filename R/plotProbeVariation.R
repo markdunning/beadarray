@@ -1,8 +1,8 @@
 
-plotProbeVariation = function(BSData, probeID, log=TRUE, ylim=range(0,16), main=probeID,...){
+plotProbeVariation = function(BSData, ProbeID, log=TRUE, ylim=range(0,16), main=ProbeID,...){
 
 
-  values = BSData$R[BSData$probeID[,1]==probeID,]
+  values = BSData$R[BSData$ProbeID[,1]==ProbeID,]
 
   if(log) values=log2(values)
   

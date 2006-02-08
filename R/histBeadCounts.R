@@ -9,13 +9,13 @@ function(BLData,array, main=NULL){
     stop("BeadLevelList object required!")
   }
 
-  probes = sort(unique(BLData$probeID[BLData$probeID[,1] > 0,1]))
+  probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
 
 counts=vector(length = length(probes))
 
 for(i in 1:length(probes)){
 
-counts[i] = length(BLData$R[BLData$probeID[,array]==probes[i],array])
+counts[i] = length(BLData$R[BLData$ProbeID[,array]==probes[i],array])
 
 }
 
@@ -32,7 +32,7 @@ noprobes = length(probes)
 
 #Here lambda is theoretical mean of poisson trials. Approximation to binomial with mean~=50,000 and prob. of success ~= 1/1500
 
-lambda = sum( (BLData$probeID[,array]!=5244) & (BLData$probeID[,array]>0) ) / noprobes
+lambda = sum( (BLData$ProbeID[,array]!=5244) & (BLData$ProbeID[,array]>0) ) / noprobes
 
 
 

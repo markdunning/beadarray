@@ -34,7 +34,7 @@
     par(mfrow=c(2,2))
 
 #    probePlot(BLData, probe, array, log=log, n=n, label=label, showOutliers=showOutliers,...)
-	plotBeadLocations(BLData, probeID=probe, array=array, label=label)
+	plotBeadLocations(BLData, ProbeID=probe, array=array, label=label)
     #plots position of each co-ordinate
 
     plotCluster(coords)

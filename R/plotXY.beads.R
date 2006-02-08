@@ -8,7 +8,7 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
     stop("BeadSummaryList object required!")
   }  
 
-  probes = sort(unique(BSData$probeID[BSData$probeID[,1] > 0,1]))
+  probes = sort(unique(BSData$ProbeID[BSData$ProbeID[,1] > 0,1]))
 
   if (array2!=0){
 
@@ -51,7 +51,7 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
     }
   }
 
-  plot(x,y, col="black",xlim=range(min(x),xmax), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
+  plot(x,y, col="black",xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
 
   abline(0,1)
 
@@ -76,7 +76,7 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
 
        ids = BSData$genes$ProbeID[sel]
       
-      points(x[which(BSData$probeID[,1] %in% ids)], y[which(BSData$probeID[,1] %in% ids)], col=col[i])
+      points(x[which(BSData$ProbeID[,1] %in% ids)], y[which(BSData$ProbeID[,1] %in% ids)], col=col[i])
 
     }
 
@@ -93,8 +93,8 @@ abline(-log2(fold),1, lty=2)
 }
 
 else{
-abline(0,fold, lty=2)
-abline(0,1/fold, lty=2)
+abline(log2(fold),1, lty=2)
+abline(-log2(fold),1, lty=2)
 
 
 }
@@ -103,8 +103,8 @@ if(length(highlight!=0)){
 
 for(i in 1:length(highlight)){
 
-x1 = x[BSData$probeID[,1]==highlight[i]]
-y1 = y[BSData$probeID[,1]==highlight[i]]
+x1 = x[BSData$ProbeID[,1]==highlight[i]]
+y1 = y[BSData$ProbeID[,1]==highlight[i]]
 
 
 points(x1,y1, cex=1.6, col="red", pch=3)

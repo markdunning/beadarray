@@ -1,11 +1,11 @@
 "plotMA.beads" <-
-function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ...){
+function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ma.ylim=2,...){
 
   if(!class(BSData) == "BeadSummaryList"){
     stop("BeadSummaryList object required!")
   }
 
-probes = sort(unique(BSData$probeID[BSData$probeID[,1] > 0,1]))
+probes = sort(unique(BSData$ProbeID[BSData$ProbeID[,1] > 0,1]))
 
 if(array2!=0){
 
@@ -19,9 +19,8 @@ y = log2(BSData$R[,array1])- log2(BSData$R[,array2])
 
 else{
 
-x = BSData$R[,array1]
-y = BSData$R[,array2]
-
+x = 0.5*(BSData$R[,array1] + BSData$R[,array2])
+y = BSData$R[,array1]- BSData$R[,array2]
 }
 
 
@@ -33,7 +32,7 @@ y = log2(BSData$G[,array1])
 
 }
 
-  plot(x,y, pch=16,cex=0.4, ylim=range(-2,2),xlim=range(5,16), main=main, xlab = "", ylab = "", ...) 
+  plot(x,y, pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim),xlim=range(5,16), main=main, xlab = "", ylab = "", ...) 
 
   abline(h=c(-1,0,1),lty=c(2,1,2)) 
   
@@ -58,7 +57,7 @@ y = log2(BSData$G[,array1])
 
       ids = BSData$genes$ProbeID[sel]
       
-      points(x[which(BSData$probeID[,1] %in% ids)], y[which(BSData$probeID[,1] %in% ids)], col=col[i])
+      points(x[which(BSData$ProbeID[,1] %in% ids)], y[which(BSData$ProbeID[,1] %in% ids)], col=col[i])
 
     }
 
@@ -70,8 +69,8 @@ if(length(highlight!=0)){
 
 for(i in 1:length(highlight)){
 
-x1 = x[BSData$probeID[,1]==highlight[i]]
-y1 = y[BSData$probeID[,1]==highlight[i]]
+x1 = x[BSData$ProbeID[,1]==highlight[i]]
+y1 = y[BSData$ProbeID[,1]==highlight[i]]
 
 
 points(0.5*(x1+y1),y1-x1, cex=1.6, col="red", pch=3)
@@ -124,4 +123,6 @@ text(20,1.2,paste("Value from SAM 2: ", round(y[id],2), sep=""))
 }
 
 }
+
+
 

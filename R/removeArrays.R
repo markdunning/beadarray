@@ -5,7 +5,7 @@ removeArrays <- function(BSData, array){
   BSData$Gb <- BSData$Gb[,-array]
   BSData$beadstdev <- BSData$beadstdev[,-array]
   BSData$nobeads <- BSData$nobeads[,-array]
-  BSData$probeID <- BSData$probeID[,-array]
+  BSData$ProbeID <- BSData$ProbeID[,-array]
   BSData$nooutliers <- BSData$nooutliers[,-array]
   if(!is.null(BSData$other)){
     for(i in names(BSData$other)){

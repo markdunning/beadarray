@@ -7,10 +7,10 @@ function(BLData, probe, array,log=TRUE){
   }
   
 if(log){
-log2(BLData$R[BLData$probeID[,array]==probe,array])
+log2(BLData$R[BLData$ProbeID[,array]==probe,array])
 }
 else{
-BLData$R[BLData$probeID[,array]==probe,array]
+BLData$R[BLData$ProbeID[,array]==probe,array]
 }
 
 }

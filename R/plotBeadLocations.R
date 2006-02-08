@@ -1,18 +1,18 @@
-"plotBeadLocations" <- function(BLData, probeIDs=NULL, beadIDs=NULL, array, label=FALSE,...){
+"plotBeadLocations" <- function(BLData, ProbeIDs=NULL, beadIDs=NULL, array, label=FALSE,...){
 
 dims = getDimensions(BLData, array)
 xmax = dims$xmax
 ymax = dims$ymax
 
 
-if(!is.null(probeIDs)){
+if(!is.null(ProbeIDs)){
 
 xs = ys = NULL
 
-for(i in 1:length(probeIDs)){
+for(i in 1:length(ProbeIDs)){
 
-xs = c(xs, getProbeCoords(BLData, probeIDs[i], array)[,1])
-ys = c(ys, getProbeCoords(BLData, probeIDs[i], array)[,2])
+xs = c(xs, getProbeCoords(BLData, ProbeIDs[i], array)[,1])
+ys = c(ys, getProbeCoords(BLData, ProbeIDs[i], array)[,2])
 
 
 }

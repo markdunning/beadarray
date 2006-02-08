@@ -6,7 +6,7 @@ function(BLData, array,  limit=24){
     stop("BeadLevelList object required!")
   }
   
-probes = sort(unique(BLData$probeID[BLData$probeID[,1] > 0,1]))
+probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
 
 l = NULL
 

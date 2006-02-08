@@ -1,4 +1,4 @@
-plotMAXY <- function(BSData, vec, log = TRUE, labels=vec,label=FALSE){
+plotMAXY <- function(BSData, vec, log = TRUE, labels=vec,label=FALSE,ma.ylim=2,...){
 
   if(!class(BSData) == "BeadSummaryList"){
     quit("BeadSummaryList object required!")
@@ -33,7 +33,7 @@ close.screen(all=TRUE)
         }
       }
       else{
-        plotMA.beads(BSData, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label)
+        plotMA.beads(BSData, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label,ma.ylim=ma.ylim)
         if(i == 1){
           axis(3)
         }

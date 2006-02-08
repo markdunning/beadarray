@@ -1,5 +1,5 @@
 readBeadSummaryData <- function(targets=NULL, header=T, sep=",",path=NULL,
-                                   columns = list(probeID = "ProbeID",
+                                   columns = list(ProbeID = "ProbeID",
                                      AvgSig = "AvgSig", Nobeads = "Nobeads",
                                      BeadStDev = "BeadStDev", Detection="Detection"),
                                    other.columns = NULL)
@@ -36,7 +36,7 @@ targets=dir()
   print(r[1,])
 
   #calculate how many probes are on each array
-  nrows = length(unique(r[,columns$probeID]))
+  nrows = length(unique(r[,columns$ProbeID]))
   
    #calculate how many arrays are in these files
   
@@ -64,7 +64,7 @@ readAcross = TRUE
 
   else{
     readAcross=FALSE
-    ArraysPerFile = ((length(r[,columns$probeID]))/nrows)
+    ArraysPerFile = ((length(r[,columns$ProbeID]))/nrows)
   
     avg.cols = rep(avg.cols, ArraysPerFile)
     nobeads.cols = rep(nobeads.cols, ArraysPerFile)
@@ -86,7 +86,7 @@ readAcross = TRUE
         cat("Reading file ", targets[i], "\n")
   	cat("First line", "\n")
   	print(r[1,])
-        R =  beadstdev = nobeads = probeID = nooutliers = Detection =
+        R =  beadstdev = nobeads = ProbeID = nooutliers = Detection =
         matrix(nrow = nrows, ncol=ArraysPerFile)
 
 
@@ -112,7 +112,7 @@ readAcross = TRUE
         else{
           rowsToRead = (((j-1)*nrows)+1):(j*nrows)
         }
-        probeID[,j+filecounter] = as.character(r[rowsToRead,columns$probeID])
+        ProbeID[,j+filecounter] = as.character(r[rowsToRead,columns$ProbeID])
         R[,j+filecounter] = r[rowsToRead,avg.cols[j]]
         beadstdev[,j+filecounter] = r[rowsToRead,beadstdev.cols[j]]
         nobeads[,j+filecounter] = r[rowsToRead,nobeads.cols[j]]
@@ -138,7 +138,7 @@ readAcross = TRUE
 
        if(!readAcross){
       
-        ArraysPerFile = ((length(r[,columns$probeID]))/nrows)
+        ArraysPerFile = ((length(r[,columns$ProbeID]))/nrows)
         avg.cols = rep(which(match(strtrim(colnames(r), nchar(columns$AvgSig)), columns$AvgSig)==1),ArraysPerFile)
          nobeads.cols = rep(which(match(strtrim(colnames(r), nchar(columns$Nobeads)), columns$Nobeads)==1),ArraysPerFile)
          beadstdev.cols = rep(which(match(strtrim(colnames(r), nchar(columns$BeadStDev)), columns$BeadStDev)==1),ArraysPerFile)
@@ -157,7 +157,7 @@ readAcross = TRUE
        }
          
       
-         R.temp  = beadstdev.temp = nobeads.temp = probeID.temp =  Detection.temp =
+         R.temp  = beadstdev.temp = nobeads.temp = ProbeID.temp =  Detection.temp =
           matrix(nrow = nrows, ncol=ArraysPerFile)
 
 #reading in any values for "other.columns"
@@ -184,7 +184,7 @@ readAcross = TRUE
         
         
         
-        probeID.temp[,j] =as.character(r[rowsToRead,columns$probeID])
+        ProbeID.temp[,j] =as.character(r[rowsToRead,columns$ProbeID])
         R.temp[,j] = r[rowsToRead,avg.cols[j]]
         beadstdev.temp[,j] = r[rowsToRead,beadstdev.cols[j]]
         nobeads.temp[,j] =r[rowsToRead,nobeads.cols[j]]
@@ -202,7 +202,7 @@ readAcross = TRUE
 
 
     
-      probeID <- cbind(probeID, probeID.temp)
+      ProbeID <- cbind(ProbeID, ProbeID.temp)
         R <- cbind(R,R.temp)
       
         beadstdev <- cbind(beadstdev, beadstdev.temp)
@@ -223,7 +223,7 @@ readAcross = TRUE
     BSData = list()
     BSData$R = R
    
-    BSData$probeID = probeID
+    BSData$ProbeID = ProbeID
     BSData$beadstdev = beadstdev
     BSData$nobeads = nobeads
     BSData$Detection = Detection

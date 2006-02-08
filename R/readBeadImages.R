@@ -1,5 +1,5 @@
 "readBeadImages" <-
-  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData=FALSE, columns=list(probeID="Code", x="x", y="y")){
+  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData=FALSE, columns=list(ProbeID="Code", x="x", y="y")){
 	
    if(is.null(targets$Image1)) stop("Error: beadTargets object must contain Image1 column")
    if(is.null(targets$xyInfo)) stop("Error: beadTargets object must contain xyInfo column")
@@ -36,7 +36,7 @@
      
     #Read a set of k arrays using images and csv files
     
-    R = Rb =  x = y = probeID = matrix(nrow = nrow(r), ncol=k)
+    R = Rb =  x = y = ProbeID = matrix(nrow = nrow(r), ncol=k)
 
   
     if(!is.null(targets$Image2)){
@@ -68,7 +68,7 @@ gc()
       ys = dat[,columns$y] + 1
 
 
-      probeID[,i] = dat[,columns$probeID]
+      ProbeID[,i] = dat[,columns$ProbeID]
 
       x[,i] = xs
 
@@ -131,7 +131,7 @@ BLData$x = x
 
 BLData$y = y
 
-BLData$probeID = probeID
+BLData$ProbeID = ProbeID
 
 if(storeRawData){
 

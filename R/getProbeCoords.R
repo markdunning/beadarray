@@ -23,8 +23,8 @@ arry<-as.integer(arry)
 #standardise the coordinates to start at 0 
 
 
-xcoords = (BLData$x[BLData$probeID[,array]==probe,array]) - min (arrx) + 1
-ycoords = (BLData$y[BLData$probeID[,array]==probe,array]) - min (arry) + 1
+xcoords = (BLData$x[BLData$ProbeID[,array]==probe,array]) - min (arrx) + 1
+ycoords = (BLData$y[BLData$ProbeID[,array]==probe,array]) - min (arry) + 1
 
 coords = matrix(nrow=length(xcoords),ncol=2)
 

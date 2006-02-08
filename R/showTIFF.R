@@ -129,7 +129,7 @@ unregspots = unregspots + 1
 out_blue_red=outliers_to_plot[dpos]
 test=vector(length=length(out_blue_red))
 for(j in 1:(length(out_blue_red))){
-test[j]=BLData$R[out_blue_red[j],array]-mean(getProbeIntensities(BLData, BLData$probeID[out_blue_red[j],array], array, log=FALSE), na.rm=TRUE)
+test[j]=BLData$R[out_blue_red[j],array]-mean(getProbeIntensities(BLData, BLData$ProbeID[out_blue_red[j],array], array, log=FALSE), na.rm=TRUE)
 }
 
 dblue=(test>0)
@@ -191,7 +191,7 @@ Recenter(xt,xs,ys,info,outliers, recenter)
 }
 
 if(locate=="beads"){
-id<-identify(xs,max(b)-ys+min(b),BLData$probeID[,array],plot=FALSE,pos=FALSE,n=1)
+id<-identify(xs,max(b)-ys+min(b),BLData$ProbeID[,array],plot=FALSE,pos=FALSE,n=1)
 IdentifyBeads(a+0.5,ap+0.5,b,lambda,mu,id, outliers=outliers, xt=xt, array=array,xs=xs,ys=ys)
 
 }

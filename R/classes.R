@@ -36,7 +36,7 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[,j, drop=FALSE]
                   object$beadstdev <- object$beadstdev[,j, drop=FALSE]
                   object$nobeads <- object$nobeads[,j, drop=FALSE]
-                  object$probeID <- object$probeID[,j, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[,j, drop=FALSE]
                   object$nooutliers <- object$nooutliers[,j, drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][,j,drop=FALSE]
                 }
@@ -48,7 +48,7 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[i,, drop=FALSE]
                   object$beadstdev <- object$beadstdev[i,, drop=FALSE]
                   object$nobeads <- object$nobeads[i,, drop=FALSE]
-                  object$probeID <- object$probeID[i,, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[i,, drop=FALSE]
                   object$nooutliers <- object$nooutliers[i,, drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,,drop=FALSE]
 		} else {
@@ -58,7 +58,7 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[i,j, drop=FALSE]
                   object$beadstdev <- object$beadstdev[i,j, drop=FALSE]
                   object$nobeads <- object$nobeads[i,j, drop=FALSE]
-                  object$probeID <- object$probeID[i,j, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[i,j, drop=FALSE]
                   object$nooutliers <- object$nooutliers[i,j, drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,j,drop=FALSE]
 		}
@@ -80,8 +80,9 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[,j, drop=FALSE]
                   object$x <- object$x[,j, drop=FALSE]
                   object$y <- object$y[,j, drop=FALSE]
-                  object$probeID <- object$probeID[,j, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[,j, drop=FALSE]
                   object$targets <- object$targets[j,,drop=FALSE]
+                  object$SAMPLE <- object$SAMPLE[j,,drop=FALSE]       
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][,j,drop=FALSE]
 		}
 	else
@@ -92,7 +93,8 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[i,, drop=FALSE]
                   object$x <- object$x[i,, drop=FALSE]
                   object$y <- object$y[i,, drop=FALSE]
-                  object$probeID <- object$probeID[i,, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[i,, drop=FALSE]
+                  object$SAMPLE <- object$SAMPLE[i,,drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,,drop=FALSE]
    		} else {
                   object$R <- object$R[i,j, drop=FALSE]
@@ -101,8 +103,9 @@ function(object, i, j, ...) {
                   object$Gb <- object$Gb[i,j, drop=FALSE]
                   object$x <- object$x[i,j, drop=FALSE]
                   object$y <- object$y[i,j, drop=FALSE]
-                  object$probeID <- object$probeID[i,j, drop=FALSE]
+                  object$ProbeID <- object$ProbeID[i,j, drop=FALSE]
                   object$targets <- object$targets[j,,drop=FALSE]
+                  object$SAMPLE <- object$SAMPLE[j,,drop=FALSE]  
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,j,drop=FALSE]
                 }
 	object
@@ -125,7 +128,8 @@ cbind.BeadLevelList <- function(..., deparse.level=1) {
 		out$targets <- cbind(out$targets,objects[[i]]$targets)
                 out$x <- cbind(out$x, objects[[i]]$x)
                 out$y <- cbind(out$y, objects[[i]]$y)
-                out$probeID <- cbind(out$probeID, objects[[i]]$probeID)
+                out$ProbeID <- cbind(out$ProbeID, objects[[i]]$ProbeID)
+                out$SAMPLE <-cbind(out$SAMPLE, objects[[i]]$SAMPLE)
 	}
 	out
 }
@@ -144,7 +148,7 @@ cbind.BeadSummaryList <- function(..., deparse.level=1) {
 		out$beadstdev <- cbind(out$beadstdev,objects[[i]]$beadstdev)
 		out$nobeads <- cbind(out$nobeads,objects[[i]]$nobeads)
                 out$nooutliers <- cbind(out$nooutliers, objects[[i]]$nooutliers)
-                out$probeID <- cbind(out$probeID, objects[[i]]$probeID)
+                out$ProbeID <- cbind(out$ProbeID, objects[[i]]$ProbeID)
                 out$Detection <- cbind(out$Detection, objects[[i]]$Detection)
                 out$SAMPLE <- append(out$SAMPLE, objects[[i]]$SAMPLE)
                 out$SAM <- append(out$SAM, objects[[i]]$SAM)
