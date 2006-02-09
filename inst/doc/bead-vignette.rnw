@@ -91,23 +91,23 @@ A common cause of error when reading files is for the column names found in the 
 This shows the column names present in the file and will help to
 identify problems. The columns parameter is used to change will column
 headings to look for in the input file. For example, if the column
-headings are TargetID, AVG_Signal, BEAD_STDEV, Avg_NBEADS, Detection
+headings are TargetID, AVG\_Signal, BEAD\_STDEV, Avg\_NBEADS, Detection
 
-<<<27, eval=FALSE>>=
+<<27, eval=FALSE>>=
 BSData = readBeadSummaryData(columns=list(ProbeID = "TargetID", AvgSig="AVG_Signal", BeadStDev="BEAD_STDEV", Nobeads = "Avg_NBEADS", Detection="Detection"))
 @ 
 
 In the example bead summary file, each file gives data for a seperate
 array in a experiment. It is also possible to read files containing
-data for more than one array using \Rfun{readBeadSummaryData}. Files
+data for more than one array using \Rfunction{readBeadSummaryData}. Files
 of this type are assumed to have a number of rows equal to the number
 of bead types in the experiment (eg 1500 for SAM or 24,000 for
 BeadChip) and the same columns for each array. The column headings are
-assumed to be of the form AVG_Signal-1, AVG_Signal-2,...AVG_Signal-n
+assumed to be of the form AVG\_Signal-1, AVG\_Signal-2,...AVG\_Signal-n
 for n arrays. This is the standard output produced by BeadStudio. See
-below for a screenshot of an exampe file containing two arrays
+below for a screenshot of an exampe file containing two arrays.
 
-\includegraphics{FileFormat.jpg}
+\includegraphics{fileformat.jpg}
 
 
 All functions described from now on use a \Rclass{BeadSummaryList} object as a parameter. This object can either be created using the steps described above, or can be created from bead-level data by using 
@@ -116,7 +116,7 @@ the \Rfunction{createBeadSummaryData} function (see Dunning et al).
 We can use the detection score as a preliminary indicator of the quality of each array.  Using the following commands we can construct a boxplot of the detection scores for each probe.  If the scores look low then it would advisable to take a closer look at the array in order to identify a reason, e.g. a bad hybridization. Boxplots of the\Robject{ R} and \Robject{Rb} columns can also be informative.
 
 \begin{center}
-<<31, fig=true, width=5, height=5>>=
+<<31, eval = FALSE, fig=true, width=5, height=5>>=
 boxplot((BSData$Detection)~col(BSData$Detection), main="Detection Scores")
 @
 \end{center}
@@ -132,7 +132,7 @@ experiment. The input to the function is simply an
 \Rclass{BeadSummaryList} object, and a ProbeID. The result is not very
 interesting for this data set as we only have 4 arrays.
 
-<<<32, eval=FALSE>>=
+<<60, eval=FALSE>>=
 plotProbeVariation(BSData, ProbeID=2)
 @ 
 
@@ -178,14 +178,13 @@ We might want to know about the variation between replicates of the same sample 
 In our experiment arrays 1,2,3 \& 4 were replicates of the same sample.
 
 \begin{center}
-<<33,  fig=true, width=5, height=5>>=
+<<33, eval=FALSE, fig=true, width=5, height=5>>=
 
 vec=c(1,2,3,4)
 plotMAXY(BSData, vec)
 
 @
-
-
+\includegraphics{plotMAXY.jpg}
 
 \end{center}
 
@@ -260,6 +259,6 @@ A new non-linear normalization method for reducing variability in DNA microarray
 \textit{Genome Biology}
 \textbf{3}
 
-
+\end{thebibliography}
 
 \end{document}
