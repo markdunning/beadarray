@@ -1,4 +1,8 @@
 getProbeIndicesC <- function(BLData, probe, intProbe){
+
+if(is.null(BLData$ProbeID)) stop("ProbeID column was not found in BLData object")
+
+
   ind <- .C("findIndices", as.integer(probe), intProbe, as.integer(nrow(BLData)), result = integer(length = 15000))
   ind2 <- vector()
   i = 1;

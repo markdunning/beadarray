@@ -6,8 +6,12 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
   for(i in 1:length(probes)){
 
     probe_ids = getProbeIndicesC(BLData, probe = probes[i], intProbe = intProbeID)
-    inten <- BLData$R[probe_ids,array]
-  
+
+    raw_inten <- BLData$R[probe_ids, array]
+
+    if(log) inten <- log2(BLData$R[probe_ids,array])
+    else inten <- raw_inten
+
    #nas will be a list of beads which have NA intensity
     nas=NULL
 
@@ -18,13 +22,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
       inten = inten[!is.na(inten)]
     }
 
-    if(log){
-      raw_inten = getProbeIntensities(BLData, probe,array, log=FALSE)
-      raw_inten = raw_inten[!is.na(raw_inten)]
-    }
-    else{
-      raw_inten = inten
-    }
+    
   
     m = mean(inten, na.rm=TRUE, trim=0.5)
     ma = mad(inten, na.rm=TRUE)
