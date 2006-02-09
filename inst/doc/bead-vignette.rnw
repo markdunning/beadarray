@@ -102,7 +102,12 @@ array in a experiment. It is also possible to read files containing
 data for more than one array using \Rfun{readBeadSummaryData}. Files
 of this type are assumed to have a number of rows equal to the number
 of bead types in the experiment (eg 1500 for SAM or 24,000 for
-BeadChip) and the same columns for each array. The column headings are required
+BeadChip) and the same columns for each array. The column headings are
+assumed to be of the form AVG_Signal-1, AVG_Signal-2,...AVG_Signal-n
+for n arrays. This is the standard output produced by BeadStudio. See
+below for a screenshot of an exampe file containing two arrays
+
+\includegraphics{FileFormat.jpg}
 
 
 All functions described from now on use a \Rclass{BeadSummaryList} object as a parameter. This object can either be created using the steps described above, or can be created from bead-level data by using 
@@ -123,8 +128,13 @@ boxplot((BSData$Detection)~col(BSData$Detection), main="Detection Scores")
 
 The \Rfunction{plotProbeVariation} function can be used to plot the
 variation in a particular probe / bead type on all arrays in an
-experiment. The input to
+experiment. The input to the function is simply an
+\Rclass{BeadSummaryList} object, and a ProbeID. The result is not very
+interesting for this data set as we only have 4 arrays.
 
+<<<32, eval=FALSE>>=
+plotProbeVariation(BSData, ProbeID=2)
+@ 
 
 
 We have provided a SAM summary plot for when we want to compare the intensity of a particular bead type across all arrays on one SAM. In its most simple form we use \Rfunction{plotOnSAM(v)} where \Robject{v}
@@ -190,7 +200,7 @@ The normalisation methods used for bead-level data (median and quantile), can al
 BSData.qsp = qsplineNormalise(BSData)
 @
 
-The \Rfunction{pairwiseMA} function can be used to assess the
+The \Rfunction{plotMAXY} function can be used to assess the
 performance of normalisation methods on the data.
 
 \bibliography{}
