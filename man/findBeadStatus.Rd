@@ -1,5 +1,5 @@
-\name{findOutliers}
-\alias{findOutliers}
+\name{findBeadStatus}
+\alias{findBeadStatus}
 \alias{getProbeIndices}
 \alias{getProbeIndicesC}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -8,15 +8,16 @@
  Function finds all beads which are outliers for a given bead type
 }
 \usage{
-findOutliers(BLData, probe, array, log=FALSE, n=3)
+findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object containing bead level data}
-  \item{probe}{numeric value for the ProbeID of the bead type we want to find outliers for}
+  \item{probes}{numeric vector for the ProbeIDs of the bead type we want to find outliers for}
   \item{array}{numeric value for the array we want to find outliers on}
   \item{log}{if TRUE the log2 intensities of each bead will be used to find outliers. Otherwise un-logged data is used}
   \item{n}{numeric value defining a cut-off of 'n' median absolute deviations from the mean to determine outliers. The default value is 3}
+  \item{outputValid}{if TRUE the IDs of beads which are not outliers will be output}
 }
 \details{
 
