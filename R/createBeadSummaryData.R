@@ -22,7 +22,7 @@ print(i)
 for(j in 1:length(probes)){
 
 
-o = findOutliers(BLData, probes[j], arrays[i], log=log, n=n)
+o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE)
 
 R[j,i] = round(mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE),3)
 
