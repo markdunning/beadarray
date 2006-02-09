@@ -8,7 +8,7 @@
  Function finds all beads which are outliers for a given bead type
 }
 \usage{
-findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE)
+findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,6 +18,7 @@ findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE)
   \item{log}{if TRUE the log2 intensities of each bead will be used to find outliers. Otherwise un-logged data is used}
   \item{n}{numeric value defining a cut-off of 'n' median absolute deviations from the mean to determine outliers. The default value is 3}
   \item{outputValid}{if TRUE the IDs of beads which are not outliers will be output}
+  \item{intProbeID}{BLData\$ProbeID coerced to vector of integers.  Never change this, for internal use only}
 }
 \details{
 

@@ -8,27 +8,26 @@ function(BLData, log=FALSE, n=3, arrays=seq(1:length(BLData$R[1,]))){
 
 #library(limma)
 
-probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
+  probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
 
-len = length(arrays)
+  len = length(arrays)
 
-R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(nrow = length(probes), ncol=len)
+  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(nrow = length(probes), ncol=len)
+ 
+  for(i in 1:length(arrays)){
 
+    intProbeID <- as.integer(BLData$ProbeID[,arrays[i]])
 
-for(i in 1:length(arrays)){
+    print(i)
 
-print(i)
+    for(j in 1:length(probes)){
+      o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID)
 
-for(j in 1:length(probes)){
+      R[j,i] = round(mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE),3)
 
-
-o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE)
-
-R[j,i] = round(mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE),3)
-
-if(!is.null(BLData$G)){
-  G[j,i] = round(mean(BLData$G[o$valid,arrays[i]],na.rm=TRUE),3)
-}
+      if(!is.null(BLData$G)){
+        G[j,i] = round(mean(BLData$G[o$valid,arrays[i]],na.rm=TRUE),3)
+      }
    
 Rb[j,i] = round(mean(BLData$Rb[o$valid,arrays[i]],na.rm=TRUE),3)
 

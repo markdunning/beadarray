@@ -1,17 +1,16 @@
-findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE){
+findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL){
 
-  intProbeID <- as.integer(BLData$ProbeID[,array])
+  if(is.null(intProbeID)){
+    intProbeID <- as.integer(BLData$ProbeID[,array])
+  }
+ 
   outliers = valid = vector()
   
   for(i in 1:length(probes)){
 
     probe_ids = getProbeIndicesC(BLData, probe = probes[i], intProbe = intProbeID)
-
-    raw_inten <- BLData$R[probe_ids, array]
-
-    if(log) inten <- log2(BLData$R[probe_ids,array])
-    else inten <- raw_inten
-
+    inten <- BLData$R[probe_ids,array]
+  
    #nas will be a list of beads which have NA intensity
     nas=NULL
 
@@ -22,7 +21,13 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
       inten = inten[!is.na(inten)]
     }
 
-    
+    if(log){
+      raw_inten = log2(BLData$R[probe_ids,array])
+      raw_inten = raw_inten[!is.na(raw_inten)]
+    }
+    else{
+      raw_inten = inten
+    }
   
     m = mean(inten, na.rm=TRUE, trim=0.5)
     ma = mad(inten, na.rm=TRUE)
@@ -30,6 +35,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
   index = (inten > m + n *ma | inten < m - n*ma | raw_inten < 0)
   
     outliers.temp=probe_ids[index]
+
     outliers =c(outliers, outliers.temp, nas)
     if(outputValid)
       valid = c(valid, probe_ids[!index])
