@@ -1,5 +1,5 @@
 "readBeadImages" <-
-  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, storeRawData=FALSE, columns=list(ProbeID="Code", x="x", y="y")){
+  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list(ProbeID="Code", x="x", y="y")){
 	
    if(is.null(targets$Image1)) stop("Error: beadTargets object must contain Image1 column")
    if(is.null(targets$xyInfo)) stop("Error: beadTargets object must contain xyInfo column")
@@ -45,11 +45,6 @@
 
     }
 
-    if(storeRawData){
-
-      rawR = rawG = matrix(nrow=nrow(r), ncol=k)
-
-    }
 
 	rm(r)
 gc()
@@ -87,11 +82,7 @@ gc()
       cat("Calculating background intensities.\n")
       Rb[,i] = calculateBackground(I, xs, ys, n=backgroundSize)
 
-      if(storeRawData){
-
-        rawR[,i] = calculateForegroundIntensities(I, xs, ys, sharpen=FALSE)
-
-      }
+      
 
       if(!is.null(targets$Image2)){
 	  file=pgm_files2[i]
@@ -106,13 +97,13 @@ gc()
 
         Gb[,i] = calculateBackground(I, xs, ys, n=backgroundSize)
         
-        if(storeRawData){
-  
-          rawG[,i] = calculateForegroundIntensities(I, xs, ys, sharpen=FALSE)
-          
-        }
-        rm(I)
+        
+       
       }
+      rm(I)
+      rm(xs)
+      rm(ys)
+      gc()
     }
     BLData = list()
     BLData$R = R
@@ -133,17 +124,6 @@ BLData$y = y
 
 BLData$ProbeID = ProbeID
 
-if(storeRawData){
-
-BLData$other$rawR = rawR
-
-if(!is.null(targets$Image2)){
-
-BLData$other$rawG = rawG
-
-}
-
-}
     BLData$targets = targets
 
     BLData$sharpened = as.numeric(sharpen)
