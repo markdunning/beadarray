@@ -8,19 +8,20 @@ function(BLData, log=FALSE, n=3, arrays=seq(1:length(BLData$R[1,]))){
 
 #library(limma)
 
-  probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
+  noprobes = length(unique(RG$ProbeID[,1]))
+
 
   len = length(arrays)
 
-  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(nrow = length(probes), ncol=len)
+  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(nrow = noprobes, ncol=len)
  
   for(i in 1:length(arrays)){
-
+    probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,arrays[i]] > 0,1]))	
     intProbeID <- as.integer(BLData$ProbeID[,arrays[i]])
 
     print(i)
 
-    for(j in 1:length(probes)){
+    for(j in 1:noprobes){
       o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID)
 
       R[j,i] = round(mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE),3)

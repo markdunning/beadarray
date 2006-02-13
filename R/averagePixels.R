@@ -20,10 +20,10 @@
 
         av=vector(length=4)
     
-        av[3]=round(matrix.mean(raw[(x2[i]):(x2[i]+2),(y2[i]):(y2[i]+2)]),3)
-        av[2]=round(matrix.mean(raw[(x2[i]-1):(x2[i]+1),(y2[i]):(y2[i]+2)]),3)
-        av[1]=round(matrix.mean(raw[(x2[i]-1):(x2[i]+1),(y2[i]-1):(y2[i]+1)]),3)
-        av[4]=round(matrix.mean(raw[(x2[i]):(x2[i]+2),(y2[i]-1):(y2[i]+1)]),3)
+        av[3]=matrix.mean(raw[(x2[i]):(x2[i]+2),(y2[i]):(y2[i]+2)])
+        av[2]=matrix.mean(raw[(x2[i]-1):(x2[i]+1),(y2[i]):(y2[i]+2)])
+        av[1]=matrix.mean(raw[(x2[i]-1):(x2[i]+1),(y2[i]-1):(y2[i]+1)])
+        av[4]=matrix.mean(raw[(x2[i]):(x2[i]+2),(y2[i]-1):(y2[i]+1)])
 
         xc<-xs[i]-floor(xs[i])
         yc<-ys[i]-floor(ys[i])
