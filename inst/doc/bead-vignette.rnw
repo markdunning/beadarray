@@ -184,6 +184,7 @@ vec=c(1,2,3,4)
 plotMAXY(BSData, vec)
 
 @
+
 \includegraphics{plotMAXY.jpg}
 
 \end{center}
@@ -260,5 +261,6 @@ A new non-linear normalization method for reducing variability in DNA microarray
 \textbf{3}
 
 \end{thebibliography}
+
 
 \end{document}
