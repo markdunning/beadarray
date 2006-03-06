@@ -9,7 +9,7 @@ Function to read pre-processed bead summary data into R. Data can be the output 
 }
 \usage{
 
-readBeadSummaryData((targets=NULL, header=T, sep=",",path=NULL,
+readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
                                    columns = list(ProbeID = "ProbeID",
                                      AvgSig = "AvgSig", Nobeads = "Nobeads",
                                      BeadStDev = "BeadStDev", Detection="Detection"),

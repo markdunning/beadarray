@@ -27,7 +27,7 @@ vector of numeric values giving the ProbeIDs of bead types which have more than 
 }
 
 \author{Mark Dunning}
-\seealso{ \code{\link{findOutliers}} }
+\seealso{ \code{\link{findBeadStatus}} }
 
 \examples{
 

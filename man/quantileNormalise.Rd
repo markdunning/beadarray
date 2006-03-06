@@ -10,11 +10,12 @@ Normalizes expression intensities so that the intensities or
 Function is based on the 'normalizeBetweenArrays' function in 'limma'
 }
 \usage{
-quantileNormalise(BLData)
+quantileNormalise(BLData, arrays=1:length(BLData$R[1,]))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{can be either an BeadLevelList or BeadSummaryList object}
+  \item{arrays}{choose a subset of arrays to normalise} 
 }
 \details{
 Quantile normalization was proposed by Bolstad et al (2003) for
@@ -38,13 +39,13 @@ log2 scale
 
 \examples{
 
-data(BLData)
+data(BSData)
 
-BLData.q = quantileNormalise(BLData)
+BSData.q = quantileNormalise(BSData)
 
 #All distributions are fixed to be the same
 
-boxplot(BLData.q$R~col(BLData.q$R))
+boxplot(BSData.q$R~col(BSData.q$R))
 
 }
 \keyword{methods}

@@ -6,13 +6,14 @@
 Produce bead averages for each bead type used in an experiment on a specified set of arrays.
 }
 \usage{
-createBeadSummaryData(BLData, log=FALSE, n=3, arrays=seq(1:length(BLData$R[1,])))
+createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,])))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{an BeadLevelList object containing bead level data}
   \item{log}{if TRUE then use the log2 intensities of each bead when removing outliers}
-  \item{n}{use n median absolute deviations from the mean as a cut-off for outliers} 	
+  \item{n}{use n median absolute deviations from the mean as a cut-off for outliers}
+  \item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays} 	
   \item{arrays}{numeric vector giving the indices of the arrays we want to average. Default is all arrays in the BeadLevelList}
 }
 \details{
@@ -42,7 +43,7 @@ As the function runs it prints out the index of the array that is currently bein
 
 
 \seealso{
-\code{\link{findOutliers}}	
+\code{\link{findBeadStatus}}	
 
 }
 

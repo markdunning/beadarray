@@ -13,7 +13,7 @@ Uses image and csv files to load information about each array used in the experi
 
 }
 \usage{
-readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list(ProbeID="Code", x="x", y="y"))
+readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list(ProbeID="Code", x="x", y="y"),numrow=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,7 +21,9 @@ readBeadImages(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list
   \item{path}{character string specifying the location of files to be read by the function}
   \item{sharpen}{if TRUE then the Illumina sharpening mask will be used prior to foreground averages being calculated}
   \item{backgroundSize}{numeric value which defines the size of the n x n box we will use to calculate local background values}
-  \item{columns}{vector specifying the column headings to be read from the csv files}	
+  \item{columns}{vector specifying the column headings to be read from the csv files}
+  \item{numrow}{used to specify the number of rows (ie beads) each input file will contain. If specified in advance this can speed the 
+reading of the data.}	
 
 }
 \details{
