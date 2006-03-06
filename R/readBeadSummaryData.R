@@ -193,7 +193,7 @@ readAcross = TRUE
 
         if(!is.null(other.columns))
           for (m in other.columns) {
-            other.temp[[m]][,j] <- d[,m] 
+            other.temp[[m]][rowsToRead,j] <- r[,m] 
           }
         
         

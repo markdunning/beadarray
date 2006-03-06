@@ -41,7 +41,7 @@ xlab="Bead Index"
 }
 
 
-o = findOutliers(BLData, probe, array, n=n,log=log)$outliers
+o = findBeadStatus(BLData, probe, array, n=n,log=log)
 
 dist = dist[!is.na(inten)]
 inten = inten[!is.na(inten)]

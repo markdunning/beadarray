@@ -1,4 +1,4 @@
-findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL){
+findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL){
 
   if(is.null(intProbeID)){
     intProbeID <- as.integer(BLData$ProbeID[,array])
@@ -8,6 +8,8 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
   
   for(i in 1:length(probes)){
 
+    if(! (probes[i] %in% ignoreList)){
+  
     probe_ids = getProbeIndicesC(BLData, probe = probes[i], intProbe = intProbeID)
     inten <- BLData$R[probe_ids,array]
   
@@ -39,6 +41,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
     outliers =c(outliers, outliers.temp, nas)
     if(outputValid)
       valid = c(valid, probe_ids[!index])
+  }
   }
   if(outputValid){
     result <- list(outliers = outliers, valid = valid)

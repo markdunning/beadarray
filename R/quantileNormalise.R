@@ -1,17 +1,16 @@
 "quantileNormalise" <-
-function(BLData){
+function(BLData, arrays=1:length(BLData$R[1,])){
 
-Rvalues = log2(BLData$R)
+Rvalues = log2(BLData$R[,arrays])
 
 Rvalues.q = normalizeBetweenArrays(Rvalues, method="quantile")
 
-BLData.q = BLData
 
-BLData.q$R = Rvalues.q
+BLData$R[,arrays] = Rvalues.q
 
-BLData.q$normalised = "quantile"
+BLData$normalised = "quantile"
 
-BLData.q
+BLData
 
 }
 

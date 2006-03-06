@@ -1,5 +1,5 @@
 "createBeadSummaryData" <-
-function(BLData, log=FALSE, n=3, arrays=seq(1:length(BLData$R[1,]))){
+function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,]))){
 
 #Check the object is of class BeadLevelList
   if(class(BLData) != "BeadLevelList"){
@@ -8,21 +8,27 @@ function(BLData, log=FALSE, n=3, arrays=seq(1:length(BLData$R[1,]))){
 
 #library(limma)
 
-  noprobes = length(unique(RG$ProbeID[,1]))
+  noprobes = length(unique(BLData$ProbeID[,1]))
 
 
   len = length(arrays)
 
-  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(nrow = noprobes, ncol=len)
+  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(0,nrow = noprobes, ncol=len)
  
   for(i in 1:length(arrays)){
-    probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,arrays[i]] > 0,1]))	
+
+    probes=sort(unique(BLData$ProbeID[,arrays[i]]))
+
+    probes=probes[probes>0 & !is.na(probes)]
+    
+   
     intProbeID <- as.integer(BLData$ProbeID[,arrays[i]])
 
     print(i)
 
-    for(j in 1:noprobes){
-      o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID)
+    for(j in 1:length(probes)){
+      print(j)
+      o = findBeadStatus(BLData, probes[j], arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID, ignoreList=ignoreList)
 
       R[j,i] = round(mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE),3)
 

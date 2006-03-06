@@ -12,7 +12,7 @@ l = NULL
 
 for(i in 1:length(probes)){
 
-o = length(findOutliers(BLData, probes[i], array)$outliers)
+o = length(findBeadStatus(BLData, probes[i], array))
 
 if(o > limit){
 

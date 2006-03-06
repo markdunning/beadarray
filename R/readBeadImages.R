@@ -1,5 +1,5 @@
 "readBeadImages" <-
-  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list(ProbeID="Code", x="x", y="y")){
+  function(targets, path=NULL, sharpen=TRUE, backgroundSize=17, columns=list(ProbeID="Code", x="x", y="y"), numrow = NULL){
 	
    if(is.null(targets$Image1)) stop("Error: beadTargets object must contain Image1 column")
    if(is.null(targets$xyInfo)) stop("Error: beadTargets object must contain xyInfo column")
@@ -32,44 +32,47 @@
     }
  
     k = nrow(targets)
-    r=read.table(csv_files[1], sep=",", header=T)
+
+   if(is.null(numrow)){
+#     r=read.table(csv_files[1], sep=",", header=T)
+     r = scan(csv_files[[1]], what = list(integer(0), NULL, NULL, NULL, NULL, NULL), sep = ",", skip = 1, quiet = TRUE)
+     numrow = length(r[[1]])
+   }
      
     #Read a set of k arrays using images and csv files
     
-    R = Rb =  x = y = ProbeID = matrix(nrow = nrow(r), ncol=k)
+ #   R = Rb =  x = y = ProbeID = matrix(nrow = numrow, ncol=k)
+
+   BLData <- list(R = matrix(nrow = numrow, ncol=k), Rb = matrix(nrow = numrow, ncol=k),
+                  x = matrix(nrow = numrow, ncol=k), y = matrix(nrow = numrow, ncol=k),
+                  ProbeID = matrix(nrow = numrow, ncol=k))
 
   
     if(!is.null(targets$Image2)){
 
-      G = Gb = matrix(nrow = nrow(r), ncol=k)
+      G = Gb = matrix(nrow = numrow, ncol=k)
 
     }
 
-
-	rm(r)
-gc()
-
     for(i in 1:k){
-
 
       file=csv_files[i]
 
 	if(!is.null(path)) file=file.path(path, file) 
 
+      dat1 <- scan(file, what = list(NULL, ProbeID = integer(0),NULL, NULL, x = numeric(0), y = numeric(0)), sep = ",", skip = 1, quiet = TRUE)
+      
+      BLData$x[,i] <- dat1$x
+      BLData$y[,i] <- dat1$y
+      BLData$ProbeID[,i] <- dat1$ProbeID
+#      dat = read.table(file, sep=",", header=T)  
+#      xs = dat[,columns$x] + 1
+#      ys = dat[,columns$y] + 1
+#      BLData$ProbeID[,i] = dat[,columns$ProbeID]
+#      BLData$x[,i] = xs
+#      BLData$y[,i] = ys
 
-      dat = read.table(file, sep=",", header=T)
-    
-      xs = dat[,columns$x] + 1
-      ys = dat[,columns$y] + 1
-
-
-      ProbeID[,i] = dat[,columns$ProbeID]
-
-      x[,i] = xs
-
-      y[,i] = ys
-
-      rm(dat)
+      rm(dat1)
       cat("Calculating foreground intensities for", pgm_files1[i], "\n")
 
        file=pgm_files1[i]
@@ -78,9 +81,9 @@ gc()
 
  	I = read.pgmfile(file, sep=",", header=T)
 
-      R[,i] = calculateForegroundIntensities(I, xs, ys, sharpen=sharpen)
+      BLData$R[,i] = calculateForegroundIntensities(I, BLData$x[,i], BLData$y[,i], sharpen=sharpen)
       cat("Calculating background intensities.\n")
-      Rb[,i] = calculateBackground(I, xs, ys, n=backgroundSize)
+      BLData$Rb[,i] = calculateBackground(I, BLData$x[,i], BLData$y[,i], n=backgroundSize)
 
       
 
@@ -93,36 +96,35 @@ gc()
 
 
         
-        G[,i] = calculateForegroundIntensities(I, xs, ys, sharpen=sharpen)
+        G[,i] = calculateForegroundIntensities(I, BLData$xs[,i], BLData$ys[,i], sharpen=sharpen)
 
-        Gb[,i] = calculateBackground(I, xs, ys, n=backgroundSize)
+        Gb[,i] = calculateBackground(I, BLData$xs[,i], BLData$ys[,i], n=backgroundSize)
         
         
        
       }
       rm(I)
-      rm(xs)
-      rm(ys)
-      gc()
+#      rm(xs)
+#      rm(ys)
+#      gc()
     }
-    BLData = list()
-    BLData$R = R
+#    BLData = list()
+#    BLData$R = R
 
-BLData$Rb = Rb
+#BLData$Rb = Rb
 
 if(!is.null(targets$Image2)){
 
 BLData$G = G
-
 BLData$Gb = Gb
 
 }
 
-BLData$x = x
+#   BLData$x = x
 
-BLData$y = y
+#   BLData$y = y
 
-BLData$ProbeID = ProbeID
+#   BLData$ProbeID = ProbeID
 
     BLData$targets = targets
 
@@ -134,8 +136,8 @@ BLData$ProbeID = ProbeID
 
     BLData$backgroundCorrected = 0
 
-    BLData = new("BeadLevelList", BLData)
-
-
+#    BLData = new("BeadLevelList", BLData)
+   class(BLData) = "BeadLevelList"
+   BLData
   }
 

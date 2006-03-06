@@ -82,7 +82,7 @@ function(object, i, j, ...) {
                   object$y <- object$y[,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID[,j, drop=FALSE]
                   object$targets <- object$targets[j,,drop=FALSE]
-                  object$SAMPLE <- object$SAMPLE[j,,drop=FALSE]       
+                  object$SAMPLE <- object$SAMPLE[j,drop=FALSE]       
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][,j,drop=FALSE]
 		}
 	else
@@ -94,7 +94,7 @@ function(object, i, j, ...) {
                   object$x <- object$x[i,, drop=FALSE]
                   object$y <- object$y[i,, drop=FALSE]
                   object$ProbeID <- object$ProbeID[i,, drop=FALSE]
-                  object$SAMPLE <- object$SAMPLE[i,,drop=FALSE]
+                  object$SAMPLE <- object$SAMPLE[i,drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,,drop=FALSE]
    		} else {
                   object$R <- object$R[i,j, drop=FALSE]

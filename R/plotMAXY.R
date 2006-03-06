@@ -21,7 +21,7 @@ close.screen(all=TRUE)
       if(i == j){
 #        plot(0, col.axis = "white", cex = 0, col.lab = "white", tcl = -0, xlab = "", ylab = "")
         plot(0, axes = TRUE, type = "n", tcl = -0, col.axis = "white")
-        text(1.0,0, labels = labels[i], cex=2)
+        text(1.0,0, labels = labels[i], cex=1)
       }
       else if(j < i){
         plotXY.beads(BSData, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label)
