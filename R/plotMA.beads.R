@@ -5,7 +5,7 @@ function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, 
     stop("BeadSummaryList object required!")
   }
 
-probes = sort(unique(BSData$ProbeID[BSData$ProbeID[,1] > 0,1]))
+probes = sort(unique(BSData$ProbeID[BSData$ProbeID > 0]))
 
 if(array2!=0){
 
@@ -57,7 +57,7 @@ y = log2(BSData$G[,array1])
 
       ids = BSData$genes$ProbeID[sel]
       
-      points(x[which(BSData$ProbeID[,1] %in% ids)], y[which(BSData$ProbeID[,1] %in% ids)], col=col[i])
+      points(x[which(BSData$ProbeID %in% ids)], y[which(BSData$ProbeID %in% ids)], col=col[i])
 
     }
 

@@ -1,5 +1,6 @@
 \name{readBeadSummaryData}
 \alias{readBeadSummaryData}
+\alias{readCols}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Read bead summary data information into R}
@@ -10,10 +11,10 @@ Function to read pre-processed bead summary data into R. Data can be the output 
 \usage{
 
 readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
-                                   columns = list(ProbeID = "ProbeID",
-                                     AvgSig = "AvgSig", Nobeads = "Nobeads",
-                                     BeadStDev = "BeadStDev", Detection="Detection"),
-                                   other.columns = NULL)
+                                   columns = list(ProbeID = "TargetID",
+                                     AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
+                                     BeadStDev = "BEAD_STDEV", Detection="Detection"),
+                                   other.columns = NULL, skip=7)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -23,7 +24,8 @@ readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
   \item{columns}{list defining the names for each column to be read from the input files}
   \item{other.columns}{list defining any additional columns to be read from the input.} 
   \item{header}{if TRUE then function will read column headers from the input files.}
-  \item{path}{optional argument to specify the location of the data to be read. By default, files are read from the current working directory.}	
+  \item{path}{optional argument to specify the location of the data to be read. By default, files are read from the current working directory.}
+  \item{skip}{number of lines to ignore when reading the input files.}
 
 }
 \details{

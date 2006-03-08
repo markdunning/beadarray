@@ -8,13 +8,12 @@ for the bead type will be highlighted.
 
 }
 \usage{
-plotBeadIntensities(BLData, probe, array, n=3, log=FALSE, label=FALSE, ylim
-= NULL, main = NULL, ...)
+plotBeadIntensities(BLData, ProbeIDs, array, n=3,log=FALSE,label=FALSE,main=NULL,ylim=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object}
-  \item{probe}{numeric value giving the ProbeID for the bead type we are interested in}
+  \item{ProbeIDs}{numeric value giving the ProbeID for the bead type we are interested in}
   \item{array}{numeric value giving the array we are interested in}
   \item{n}{outlier values for the bead type are beads with intensity more than 'n' times away from the mean}
   \item{log}{if TRUE log2 intensities of each bead are used to find outliers}

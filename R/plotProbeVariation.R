@@ -1,12 +1,12 @@
 
-plotProbeVariation = function(BSData, ProbeID, log=TRUE, ylim=range(0,16), main=ProbeID,...){
+plotProbeVariation = function(BSData, id, log=TRUE, ylim=range(0,16),...){
+ 
 
-
-  values = BSData$R[BSData$ProbeID[,1]==ProbeID,]
+  values = as.matrix(BSData$R[BSData$ProbeID==id,])
 
   if(log) values=log2(values)
   
-  plot(values, type="l", ylim=ylim, main=main,...)
+  plot(values)
 
 
 }

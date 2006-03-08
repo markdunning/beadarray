@@ -13,7 +13,7 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
 
   len = length(arrays)
 
-  R = G = Rb = Gb = beadstdev = nobeads = ProbeID = nooutliers = matrix(0,nrow = noprobes, ncol=len)
+  R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len)
  
   for(i in 1:length(arrays)){
 
@@ -46,8 +46,6 @@ beadstdev[j,i]  = round(sd(BLData$R[o$valid,arrays[i]], na.rm=TRUE),3)
 
 nobeads[j,i] = length(o$valid)
 
-ProbeID[j,i] = probes[j]
-
 nooutliers[j,i] = length(o$outliers)
 
 }
@@ -62,7 +60,7 @@ BSData$Rb = Rb
 BSData$Gb = Gb
 BSData$beadstdev = beadstdev
 BSData$nobeads = nobeads
-BSData$ProbeID = ProbeID
+BSData$ProbeID = BLData$ProbeID[,1]
 BSData$nooutliers = nooutliers
 BSData$SAMPLE = BLData$SAMPLE
 

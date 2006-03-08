@@ -10,7 +10,7 @@ len = length(BSData$R[1,])
 
 values = vector(length = len)
 
-BSData$R[BSData$ProbeID[,1] == ProbeID,1:len]
+BSData$R[BSData$ProbeID == ProbeID,1:len]
 
 
 }

@@ -6,12 +6,12 @@
  Function to return the intensity of beads on an array with a certain ProbeID.
 }
 \usage{
-getProbeIntensities(BLData, probe, array, log = TRUE)
+getProbeIntensities(BLData, ProbeIDs, array, log = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object containing bead level data}
-  \item{probe}{numeric value for the ProbeID we want values for}
+  \item{ProbeIDs}{numeric value for the ProbeID we want values for}
   \item{array}{numeric value giving the array we want to find values on}
   \item{log}{if TRUE then log2-transformed data will be returned}
 }

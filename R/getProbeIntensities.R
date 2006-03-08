@@ -1,5 +1,5 @@
 "getProbeIntensities" <-
-function(BLData, probe, array,log=TRUE){
+function(BLData, ProbeIDs, array,log=TRUE){
 
 #Check the object is of class BeadLevelList
   if(class(BLData) != "BeadLevelList"){
@@ -7,10 +7,10 @@ function(BLData, probe, array,log=TRUE){
   }
   
 if(log){
-log2(BLData$R[BLData$ProbeID[,array]==probe,array])
+log2(BLData$R[BLData$ProbeID[,array] %in% ProbeIDs,array])
 }
 else{
-BLData$R[BLData$ProbeID[,array]==probe,array]
+BLData$R[BLData$ProbeID[,array] %in% ProbeIDs,array]
 }
 
 }
