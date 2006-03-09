@@ -58,12 +58,29 @@ BSData$R = R
 BSData$G = G
 BSData$Rb = Rb
 BSData$Gb = Gb
-BSData$beadstdev = beadstdev
-BSData$nobeads = nobeads
-BSData$ProbeID = BLData$ProbeID[,1]
+BSData$BeadStDev = beadstdev
+BSData$Nobeads = nobeads
+BSData$ProbeID = unique(BLData$ProbeID[,1])
 BSData$nooutliers = nooutliers
 BSData$SAMPLE = BLData$SAMPLE
 
-BSData = new("BeadSummaryList", BSData)
+class(BSData) = "BeadSummaryList"
+
+test = list()
+  
+if(!is.null(design)){
+
+  ids = unique(design)
+
+  for(i in 1:length(ids)){
+
+    reps= which(design == ids[i])
+
+    test[[i]] = rbind(BSData[,reps[1]], BSData[,reps[2]])
+ }
+
 }
 
+
+  
+}

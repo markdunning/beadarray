@@ -1,7 +1,7 @@
 readBeadSummaryData<- function(targets=NULL, header=T, sep=",",path=NULL,
                                    columns = list(ProbeID = "TargetID",
                                      AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
-                                     BeadStDev = "BEAD_STDEV", Detection="Detection"),
+                                     Detection="Detection", BeadStDev="BEAD_STDEV"),
                                    other.columns = NULL, skip = 7)
 {
 
@@ -70,7 +70,7 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
   }
 
 
-    BSData = list()
+
 
     for(i in 1:length(targets)){
       r = read.table(targets[i], header = header, sep = sep, skip = skip)
@@ -161,16 +161,27 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
     }
 
     }
+
+if(!readAcross & ArraysPerFile==1){
+ for(i in 1:length(names(BSData))){
+   colnames(BSData[[i]]) = targets
+  }
+
+}
+
+for(i in 1:length(names(BSData))){
+  rownames(BSData[[i]]) = as.character(unique(r[,columns$ProbeID]))
+}
+    
     BSData$ProbeID = as.character(unique(r[,columns$ProbeID]))
-    BSData = new("BeadSummaryList", BSData)
     BSData$targets = targets
     BSData
 }
 
 
 readCols <- function(table, columns = list(AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
-                              BeadStDev = "BEAD_STDEV", Detection="Detection"),
-                     colnames = c("R", "Nobeads", "BeadStDev", "Detection")){
+                              Detection="Detection", BeadStDev="BEAD_STDEV"),
+                     colnames = c("R", "Nobeads", "Detection", "BeadStDev")){
   
   cols.to.read=list(length=length(columns))
 
@@ -193,7 +204,7 @@ if(length(cols.to.read[[i]])==0) stop(paste("Could not find any columns called",
   
   for(i in 1:length(columns)){
 
-    output[[i]] = table[, cols.to.read[[i]]]
+    output[[i]] = as.data.frame(table[, cols.to.read[[i]]])
 
   }
 
