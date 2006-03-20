@@ -81,9 +81,11 @@
 
  	I = read.pgmfile(file, sep=",", header=T)
 
-      BLData$R[,i] = calculateForegroundIntensities(I, BLData$x[,i], BLData$y[,i], sharpen=sharpen)
+#Must add 1 to the x and y coordinates
+
+      BLData$R[,i] = calculateForegroundIntensities(I, BLData$x[,i]+1, BLData$y[,i]+1, sharpen=sharpen)
       cat("Calculating background intensities.\n")
-      BLData$Rb[,i] = calculateBackground(I, BLData$x[,i], BLData$y[,i], n=backgroundSize)
+      BLData$Rb[,i] = calculateBackground(I, BLData$x[,i]+1, BLData$y[,i]+1, n=backgroundSize)
 
       
 
