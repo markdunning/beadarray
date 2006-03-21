@@ -1,17 +1,24 @@
-findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL){
+findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3,
+                           outputValid = FALSE, intProbeID = NULL, ignoreList=NULL,
+                           probeIndex = NULL, startSearch = 1){
 
   if(is.null(intProbeID)){
-    intProbeID <- as.integer(BLData$ProbeID[,array])
+    intProbeID <- as.integer(sort(BLData$ProbeID[,array]))
+    probeIndex <- c(1:length(intProbeID))
+    probeIndex <- probeIndex[sort.list(BLData$ProbeID[,array])]
   }
  
   outliers = valid = vector()
   
   for(i in 1:length(probes)){
-
     if(! (probes[i] %in% ignoreList)){
   
-    probe_ids = getProbeIndicesC(BLData, probe = probes[i], intProbe = intProbeID)
-    inten <- BLData$R[probe_ids,array]
+      temp = getProbeIndicesC(BLData, probe = probes[i], intProbe = intProbeID,
+        index = probeIndex, startSearch = startSearch)
+      probe_ids = temp[[1]]
+      startSearch = temp[[2]]
+
+      inten <- BLData$R[probe_ids,array]
   
    #nas will be a list of beads which have NA intensity
     nas=NULL
@@ -44,7 +51,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3, outputValid = 
   }
   }
   if(outputValid){
-    result <- list(outliers = outliers, valid = valid)
+    result <- list(outliers = outliers, valid = valid, nextStart = startSearch)
     result
   }
   else
