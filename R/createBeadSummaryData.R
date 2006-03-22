@@ -179,13 +179,13 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
   len = length(arrays)
 
   R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len)
- 
+  
   for(i in 1:length(arrays)){
 
     probes=sort(unique(BLData$ProbeID[,arrays[i]]))
 
     probes=probes[probes>0 & !is.na(probes)]
-    
+     
    
     intProbeID <- as.integer(sort(BLData$ProbeID[,arrays[i]]))
     probeIndex <- c(1:length(intProbeID))
@@ -261,6 +261,10 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
         BSData2 <- cbind(BSData2, test[[k]])
       }
     }
+    p1 = sort(unique(BLData$ProbeID[,1]))
+    p2 = sort(unique(BLData$ProbeID[,2]))
+    
+    BSData2$ProbeID = union(p1,p2)
     BSData2
   }
 }
