@@ -17,13 +17,4 @@ void findIndices(int *probeID, int *probeList, int *nrow, int *indices, int *sta
   }
 
   *start = i;
-
-  //  Rprintf("%d\n", i);
-
-  //  for(i=0; i<*nrow; i++){
-  //  if(probeList[i] == *probeID){
-  //    indices[j] = i+1;
-  //  j++;
-  //  }
-  //}
 }
