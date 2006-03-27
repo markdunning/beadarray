@@ -267,4 +267,11 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
     BSData2$ProbeID = union(p1,p2)
     BSData2
   }
+
+  else{
+
+    BSData
+
+  }
+  
 }
