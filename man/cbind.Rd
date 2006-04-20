@@ -9,8 +9,7 @@ objects.
 }
 \usage{
 \method{cbind}{BeadSummaryList}(\dots, deparse.level=1)
-\method{rbind}{BeadSummaryList}{\dots, deparse.level=1}
-%\method{rbind}{BeadLevelList}(\dots, deparse.level=1)
+\method{rbind}{BeadSummaryList}(\dots, deparse.level=1)
 }
 \arguments{
   \item{\dots}{\code{BeadLevelList} objects or \code{BeadSummaryList} objects}

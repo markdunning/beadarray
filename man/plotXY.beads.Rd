@@ -9,7 +9,7 @@ If two array indices are given as parameters then two arrays will be compared, o
 }
 \usage{
 plotXY.beads(BSData, array1, array2 = 0, log = FALSE, identify = FALSE,
-label = FALSE, fold = 2, highlight = NULL,...)
+label = FALSE, fold = 2, highlight = NULL, sampleSize = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ label = FALSE, fold = 2, highlight = NULL,...)
   \item{fold}{numeric value specifying what fold change lines to display on the plot}
   \item{highlight}{vector of numeric values that the user wishes to be
     highlighted}
+  \item{sampleSize}{Defines the number of genes to plot. Default is NULL, which plots everything}
   \item{\dots}{other graphical parameters that can be sent to plot}
 }
 \details{

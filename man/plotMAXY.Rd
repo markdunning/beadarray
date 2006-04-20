@@ -9,7 +9,7 @@
 Produces scatter and MA-plots for all pairwise comparisons that can be made from a set of arrays.
 }
 \usage{
-plotMAXY(BSData, vec, log = TRUE, labels=vec, label=FALSE,ma.ylim,...)
+plotMAXY(BSData, vec, log = TRUE, labels=vec, label=FALSE,ma.ylim = 2, sampleSize = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,7 @@ plotMAXY(BSData, vec, log = TRUE, labels=vec, label=FALSE,ma.ylim,...)
   \item{label}{if TRUE any controls which have been defined in a genes
     object will be plotted}
   \item{ma.ylim}{specifies a height for the y axis (M values) of the MA-plots. Default is 2}
+  \item{sampleSize}{Defines the number of genes to plot.  Default is NULL, which plots everything}
   \item{\dots}{other graphical parameters to be passed}
 }
 

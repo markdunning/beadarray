@@ -10,7 +10,7 @@ If two array indices are given then the MA plot will be between the two arrays, 
 }
 \usage{
 plotMA.beads(BSData, array1, array2 = 0, identify = FALSE, label =
-FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2,...)
+FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2, sampleSize = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +23,7 @@ FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2,...)
   \item{log}{if TRUE then a log2 transformation will be applied to the data before plotting}
   \item{main}{specifies a title to be written on the plot}
   \item{ma.ylim}{specifies the limits for the y axis (M) of the MA plot. Default is 2 }
+  \item{sampleSize}{number of genes to plot. Default is NULL, which plots everything}
   \item{\dots}{other graphical parameters to plot that can be specified}
 }
 \details{

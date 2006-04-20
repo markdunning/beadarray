@@ -1,14 +1,12 @@
 \name{createBeadSummaryData}
 \alias{createBeadSummaryData}
-\alias{createBeadSummaryData2}
-\alias{createBeadSummaryData3}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Produce bead averages}
 \description{
 Produce bead averages for each bead type used in an experiment on a specified set of arrays.
 }
 \usage{
-createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,])))
+createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,])), design = rep(1,ncol(BLData)))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +15,7 @@ createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:leng
   \item{n}{use n median absolute deviations from the mean as a cut-off for outliers}
   \item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays} 	
   \item{arrays}{numeric vector giving the indices of the arrays we want to average. Default is all arrays in the BeadLevelList}
+  \item{design}{Used to combine arrays of the same sample, but with different probes on each array.  Each value in design represents an array and arrays with the same value are row binded together}
 }
 \details{
 

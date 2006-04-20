@@ -3,7 +3,7 @@ getProbeIndicesC <- function(BLData, probe, intProbe, index, startSearch = 1){
   if(is.null(BLData$ProbeID)) stop("ProbeID column was not found in BLData object")
 
   ind <- .C("findIndices", as.integer(probe), intProbe, as.integer(nrow(BLData)), result = integer(length = 25000),
-            pos = as.integer(startSearch), startPACKAGE="beadarray")
+            pos = as.integer(startSearch), PACKAGE="beadarray")
 
   
   ind2 <- vector()
