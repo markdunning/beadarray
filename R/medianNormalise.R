@@ -3,7 +3,7 @@ function(BLData){
 
 narrays = ncol(BLData$R)
 
-BLData$R = log2(BLData$R)
+BLData$R = log2(as.matrix(BLData$R))
 
 med = median(BLData$R,na.rm=TRUE)
 

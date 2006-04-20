@@ -1,5 +1,5 @@
 "plotMA.beads" <-
-function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ma.ylim=2,...){
+function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ma.ylim=2,sampleSize=NULL,...){
 
   if(!class(BSData) == "BeadSummaryList"){
     stop("BeadSummaryList object required!")
@@ -32,6 +32,12 @@ y = log2(BSData$G[,array1])
 
 }
 
+if(!is.null(sampleSize)){
+ s = sample(1:length(x), sampleSize)
+ x=x[s]
+ y=y[s]
+ }	
+	
   plot(x,y, pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim),xlim=range(5,16), main=main, xlab = "", ylab = "", ...) 
 
   abline(h=c(-1,0,1),lty=c(2,1,2)) 

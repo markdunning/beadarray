@@ -14,7 +14,7 @@
       #Checks to make sure the bead isn't extremely close to the edge of the image
       if((x2[i] < 3) || (x2[i] > (dim(raw)[1] - 3)) || (y2[i] < 3) || (y2[i] > (dim(raw)[2] - 3))) {
         L[i] <- NA
-        cat("Bead",i,"is too close to the edge of the image to be evaluated and has been ignored.\n")
+        #cat("Bead",i,"is too close to the edge of the image to be evaluated and has been ignored.\n")
       }
       else {
 

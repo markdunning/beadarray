@@ -1,5 +1,5 @@
 "plotXY.beads" <-
-function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2, highlight=NULL, ...){
+function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2, highlight=NULL, sampleSize=NULL,...){
 
 #XY plot of either two samples against each other, or red and green channels of one channel
 
@@ -50,6 +50,12 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
       yspacing=3000
     }
   }
+ if(!is.null(sampleSize)){
+ s = sample(1:length(x), sampleSize)
+ x=x[s]
+ y=y[s]
+ }
+	
 
   plot(x,y, col="black",xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
 

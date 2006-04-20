@@ -20,9 +20,9 @@
 #Checks to make sure the background never goes out of bounds
       
       if(((newcoord[1]-n) < 0) || ((newcoord[1]+n) > dim(raw)[1]) || ((newcoord[2]-n) < 0) || ((newcoord[2]+n) > dim(raw)[2])){
-        P[i] <- mean(P[1]:P[i-1])
-        cat("Background value for bead",i,"cannot be calculated, an approximation has been used.\n")
-        cat("See manual page for details\n")
+        P[i] <- 700
+        #cat("Background value for bead",i,"cannot be calculated, an approximation has been used.\n")
+        #cat("See manual page for details\n")
       }
       else{
         M<-raw[(newcoord[1]-n):(newcoord[1]+n),(newcoord[2]-n):(newcoord[2]+n)]

@@ -15,7 +15,7 @@ function (BLData)
 	verbose = TRUE 
     	na.rm = FALSE
 
-    x = BLData$R
+    x = as.matrix(BLData$R)
 
     if (is.null(target)) 
         target <- exp(apply(log(x), 1, mean))
