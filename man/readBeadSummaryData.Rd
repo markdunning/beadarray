@@ -13,7 +13,7 @@ Function to read pre-processed bead summary data into R. Data can be the output 
 readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
                                    columns = list(ProbeID = "TargetID",
                                      AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
-                                     BeadStDev = "BEAD_STDEV", Detection="Detection"),
+                                     Detection="Detection", BeadStDev="BEAD_STDEV"),
                                    other.columns = NULL, skip=7)
 
 }

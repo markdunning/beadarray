@@ -8,7 +8,7 @@
  Function finds all beads which are outliers for a given bead type
 }
 \usage{
-findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL)
+findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL, probeIndex=NULL, startSearch=1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,9 @@ findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intPr
   \item{outputValid}{if TRUE the IDs of beads which are not outliers will be output}
   \item{intProbeID}{BLData\$ProbeID coerced to vector of integers.  Never change this, for internal use only}
 \item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays}
+\item{probeIndex}{parameter for internal use only}
+\item{startSearch}{integer specify where to start searching for a particular ProbeID}
+
 }
 \details{
 

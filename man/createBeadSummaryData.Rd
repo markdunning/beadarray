@@ -1,5 +1,7 @@
 \name{createBeadSummaryData}
 \alias{createBeadSummaryData}
+\alias{createBeadSummaryData2}
+\alias{createBeadSummaryData3}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Produce bead averages}
 \description{

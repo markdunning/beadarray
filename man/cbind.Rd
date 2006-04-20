@@ -1,6 +1,7 @@
 \name{cbind}
 \alias{cbind.BeadLevelList}
 \alias{cbind.BeadSummaryList}
+\alias{rbind.BeadSummaryList}
 \title{Combine BeadLevelList or BeadSummaryList Objects}
 \description{
 Combine a series of \code{BeadLevelList} or combine a series of \code{BeadSummaryList}
@@ -8,6 +9,7 @@ objects.
 }
 \usage{
 \method{cbind}{BeadSummaryList}(\dots, deparse.level=1)
+\method{rbind}{BeadSummaryList}{\dots, deparse.level=1}
 %\method{rbind}{BeadLevelList}(\dots, deparse.level=1)
 }
 \arguments{
