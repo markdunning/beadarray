@@ -1,6 +1,7 @@
 \name{BeadSummaryList-class}
 \docType{class}
 \alias{BeadSummaryList-class}
+\alias{print.BeadSummaryList}
 \title{Stores bead summary data - class}
 
 \description{

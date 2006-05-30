@@ -2,6 +2,7 @@
 \alias{cbind.BeadLevelList}
 \alias{cbind.BeadSummaryList}
 \alias{rbind.BeadSummaryList}
+\alias{rbind.BeadLevelList}
 \title{Combine BeadLevelList or BeadSummaryList Objects}
 \description{
 Combine a series of \code{BeadLevelList} or combine a series of \code{BeadSummaryList}

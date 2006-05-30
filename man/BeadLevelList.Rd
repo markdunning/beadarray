@@ -2,6 +2,7 @@
 \docType{class}
 \alias{BeadLevelList-class}
 \alias{coerce,BeadLevelList,exprSet2-method}
+\alias{print.BeadLevelList}
 \title{Red, Green Intensity List - class}
 
 \description{

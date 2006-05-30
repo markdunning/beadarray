@@ -5,6 +5,7 @@
 \alias{sharpen}
 \alias{averagePixels}
 \alias{read.pgmfile}
+\alias{readBeadImagesSlow}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Read BeadArray information into R}

@@ -19,6 +19,41 @@ dimnames.BeadSummaryList <- function(x) dimnames(x[[1]])
 dim.BeadLevelList <- function(x) if(is.null(x$R)) c(0,0) else dim(as.matrix(x$R))
 dimnames.BeadLevelList <- function(x) dimnames(x$R)
 
+print.BeadSummaryList <- function(x, ...) {
+	cat("An object of class \"",class(x),"\"\n",sep="")
+	for (what in names(x)) {
+		y <- x[[what]]
+		cat("$",what,"\n",sep="")
+		printHead(y)
+		cat("\n")
+	}
+	for (what in setdiff(slotNames(x),".Data")) {
+		y <- slot(x,what)
+		if(length(y) > 0) {
+			cat("@",what,"\n",sep="")
+			printHead(y)
+			cat("\n")
+		}
+	}
+}
+
+print.BeadLevelList <- function(x, ...) {
+	cat("An object of class \"",class(x),"\"\n",sep="")
+	for (what in names(x)) {
+		y <- x[[what]]
+		cat("$",what,"\n",sep="")
+		printHead(y)
+		cat("\n")
+	}
+	for (what in setdiff(slotNames(x),".Data")) {
+		y <- slot(x,what)
+		if(length(y) > 0) {
+			cat("@",what,"\n",sep="")
+			printHead(y)
+			cat("\n")
+		}
+	}
+}
 
 #allows the subsetting of the BeadSummaryList object.  
 assign("[.BeadSummaryList",
@@ -135,6 +170,34 @@ cbind.BeadLevelList <- function(..., deparse.level=1) {
 	out
 }
 
+rbind.BeadLevelList <- function(..., deparse.level=1) {
+  #function for combining BeadSummaryLists.
+	objects <- list(...)
+	nobjects <- length(objects)
+	out <- objects[[1]]
+	if(nobjects > 1)
+	for (i in 2:nobjects) {
+		out$R <- rbind(out$R,objects[[i]]$R)
+		out$G <- rbind(out$G,objects[[i]]$G)
+		out$Rb <- rbind(out$Rb,objects[[i]]$Rb)
+		out$Gb <- rbind(out$Gb,objects[[i]]$Gb)
+		out$x <- rbind(out$x,objects[[i]]$x)
+		out$y <- rbind(out$y,objects[[i]]$y)
+                out$ProbeID <- append(out$ProbeID, objects[[i]]$ProbeID)
+                out$Detection <- rbind(out$Detection, objects[[i]]$Detection)
+                
+                
+                if(!is.null(out$other)){
+                  for(j in length(out$other))
+                    out$other[[j]] <- rbind(out$other[[j]], objects[[i]]$other[[j]])
+                }
+	}
+        class(out) <- "BeadLevelList"
+        out
+}
+
+
+
 cbind.BeadSummaryList <- function(..., deparse.level=1) {
   #function for combining BeadSummaryLists.
 	objects <- list(...)
@@ -158,6 +221,7 @@ cbind.BeadSummaryList <- function(..., deparse.level=1) {
                     out$other[[j]] <- cbind(out$other[[j]], objects[[i]]$other[[j]])
                 }
 	}
+        class(out) <- "BeadSummaryList"
 	out
 }
 
@@ -184,6 +248,7 @@ rbind.BeadSummaryList <- function(..., deparse.level=1) {
                     out$other[[j]] <- rbind(out$other[[j]], objects[[i]]$other[[j]])
                 }
 	}
-	out
+        class(out) <- "BeadSummaryList"
+        out
 }
 

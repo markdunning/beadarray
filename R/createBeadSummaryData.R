@@ -1,112 +1,77 @@
-"createBeadSummaryData" <-
-function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,])), design = rep(1, ncol(BLData))){
+createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:length(BLData$R[1,])), imagesPerArray = 2, probes = NULL){
 
-#Check the object is of class BeadLevelList
+  #Check the object is of class BeadLevelList
   if(class(BLData) != "BeadLevelList"){
     stop("BeadLevelList object required!")
   }
 
-#library(limma)
+  len = ncol(BLData)
 
-  noprobes = length(unique(BLData$ProbeID[,1]))
-
-
-  len = length(arrays)
-
-  R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len)
-  
-  for(i in 1:length(arrays)){
-
-    probes=sort(unique(BLData$ProbeID[,arrays[i]]))
-
-    probes=probes[probes>0 & !is.na(probes)]
-     
-   
-    intProbeID <- as.integer(sort(BLData$ProbeID[,arrays[i]]))
-    probeIndex <- c(1:length(intProbeID))
-    probeIndex <- probeIndex[sort.list(BLData$ProbeID[,arrays[i]])]
-    
-    print(i)
-    nextStart = 1
-#    o = sapply(probes, findBeadStatus, BLData = BLData, array = arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID, ignoreList=ignoreList, probeIndex = probeIndex)
-    
-    for(j in 1:length(probes)){
-
-#      o = findBeadStatus(BLData, probes[j], array = arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID[c(nextStart:length(intProbeID))], ignoreList=ignoreList, probeIndex = probeIndex[c(nextStart:length(intProbeID))])
-
-      o = findBeadStatus(BLData, probes[j], array = arrays[i], log=log, n=n, outputValid = TRUE, intProbeID=intProbeID, ignoreList=ignoreList, probeIndex = probeIndex, startSearch = nextStart)
-      
-      R[j,i] = mean(BLData$R[o$valid,arrays[i]],na.rm=TRUE)
-
-      if(!is.null(BLData$G)){
-        G[j,i] = mean(BLData$G[o$valid,arrays[i]],na.rm=TRUE)
-      }
-   
-      Rb[j,i] = mean(BLData$Rb[o$valid,arrays[i]],na.rm=TRUE)
-
-      if(!is.null(BLData$Gb)){
-        Gb[j,i] = mean(BLData$Gb[o$valid,arrays[i]],na.rm=TRUE)
-      }
-      
-      beadstdev[j,i]  = sd(BLData$R[o$valid,arrays[i]], na.rm=TRUE)
-
-      nobeads[j,i] = length(o$valid)
-
-      nooutliers[j,i] = length(o$outliers)
-      nextStart = o$nextStart
- #     print(nextStart)
-    }
+  if(imagesPerArray == 1){
+    temp <- BLData[BLData$ProbeID[,1] != 0,1]
   }
+  else if(imagesPerArray == 2){
+    temp <- rbind(BLData[BLData$ProbeID[,1] != 0,1], BLData[BLData$ProbeID[,2] != 0,2])
+  }
+  else{
+    stop("You can only specify 1 or 2 images per array")
+  }
+  
+  if(is.null(probes)){
+    probes = sort(unique(as.vector(temp$ProbeID)))
+  }
+    probes = probes[probes>0 & !is.na(probes)]
+    noprobes = length(probes)
+
+  if(imagesPerArray == 1){
+    R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len) }
+  else{
+     R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=(len/2)) }
+
+  i = j = 1
+   while(j <= len){
+    print(i)
+    if(log){
+     finten <- log2(temp$R)
+     binten <- log2(temp$Rb)
+    }
+    else {
+      finten <- temp$R
+      binten <- temp$Rb
+    }
+     probeIDs <- as.integer(temp$ProbeID)
+#    start = (length(which($ProbeID[,i] == 0)))x
+     start = 0
+     blah <- .C("createBeadSummary",  as.double(finten),  as.double(binten), probeIDs, as.integer(probes), as.integer(noprobes), as.integer(length(temp$R)),
+                 fore = double(length = noprobes), back = double(length = noprobes), sd = double(length = noprobes), noBeads = integer(length = noprobes),
+                 noOutliers = integer(length = noprobes), nextStart = as.integer(start), PACKAGE = "beadarray")
+
+     R[,i] = blah$fore
+     Rb[,i] = blah$back
+     beadstdev[,i] = blah$sd
+     nobeads[,i] = blah$noBeads
+     nooutliers[,i] = blah$noOutliers
+     j = j+imagesPerArray
+     i = i + 1
+     rm(probeIDs, blah)
+     gc()
+     if((imagesPerArray == 1) && (i <= ncol(BLData))){
+       temp = BLData[BLData$ProbeID[,i] != 0, i]
+     }
+     else if((imagesPerArray == 2) && (j < ncol(BLData))){
+       temp = rbind(BLData[BLData$ProbeID[,j] != 0,j], BLData[BLData$ProbeID[,j+1] != 0,j+1])
+     }
+   }
+  
 
   BSData = list()
-
   BSData$R = R
-  BSData$G = G
   BSData$Rb = Rb
-  BSData$Gb = Gb
-  BSData$BeadStDev = beadstdev
+  BSData$beadstdev = beadstdev
+  BSData$Nooutliers = nooutliers
   BSData$Nobeads = nobeads
-  BSData$ProbeID = unique(BLData$ProbeID[,1])
-  BSData$nooutliers = nooutliers
-#  BSData$SAMPLE = BLData$SAMPLE
+  BSData$ProbeID = probes
 
   class(BSData) = "BeadSummaryList"
-
-  test = list()
-  
-  if(!is.null(design)){
-
-    ids = unique(design)
-
-    for(i in 1:length(ids)){
-      cat("i: ",i,"\n")
-      reps = which(design == ids[i])
-      test[[i]] <- BSData[,reps[1]]
-
-      if(length(reps) > 1){
-      
-        for(j in 2:length(reps)){
-          test[[i]] = rbind(test[[i]], BSData[,reps[j]])
-        }
-      }
-    }
-    BSData2 <- test[[1]]
-    if(length(test) > 1){
-    for(k in 2:length(test)){
-        BSData2 <- cbind(BSData2, test[[k]])
-      }
-    }
-    p1 = sort(unique(BLData$ProbeID[,1]))
-    p2 = sort(unique(BLData$ProbeID[,2]))
-    
-    BSData2$ProbeID = union(p1,p2)
-    BSData2
-  }
-
-  else{
-
-    BSData
-
-  }
-  
+  BSData
 }

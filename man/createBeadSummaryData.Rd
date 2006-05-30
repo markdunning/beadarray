@@ -1,21 +1,28 @@
 \name{createBeadSummaryData}
 \alias{createBeadSummaryData}
+\alias{createBeadSummaryDataSlow}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Produce bead averages}
 \description{
 Produce bead averages for each bead type used in an experiment on a specified set of arrays.
 }
 \usage{
-createBeadSummaryData(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1,])), design = rep(1,ncol(BLData)))
+createBeadSummaryData(BLData, log=FALSE, n=3,
+arrays=seq(1:length(BLData$R[1,])), imagesPerArray = 2, probes = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{an BeadLevelList object containing bead level data}
   \item{log}{if TRUE then use the log2 intensities of each bead when removing outliers}
   \item{n}{use n median absolute deviations from the mean as a cut-off for outliers}
-  \item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays} 	
   \item{arrays}{numeric vector giving the indices of the arrays we want to average. Default is all arrays in the BeadLevelList}
-  \item{design}{Used to combine arrays of the same sample, but with different probes on each array.  Each value in design represents an array and arrays with the same value are row binded together}
+  \item{imagesPerArray}{Specifies how many images there are per array.
+    Normally 1 for a SAM and 2 for a BeadChip.  The images from the same
+    array will be combined so each column in the output represents a
+    sample.
+  }
+  \item{probes}{Specify particular probes to summarise.  If left NULL
+    then all the probes on the first array are used.}
 }
 \details{
 

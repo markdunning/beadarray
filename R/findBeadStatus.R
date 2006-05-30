@@ -40,7 +40,6 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3,
   
     m = mean(inten, na.rm=TRUE, trim=0.5)
     ma = mad(inten, na.rm=TRUE)
-  
   index = (inten > m + n *ma | inten < m - n*ma | raw_inten < 0)
   
     outliers.temp=probe_ids[index]
