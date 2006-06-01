@@ -1,3 +1,11 @@
+//Structure definition
+typedef struct
+{
+ 		int *validInds;
+		int *outlierInds;
+}
+beadStatusStruct;
+
 //Function prototypes
 void quicksort(int*, int, int); 
 int number(int, char*);
