@@ -1,5 +1,6 @@
 \name{findAllOutliers}
 \alias{findAllOutliers}
+\alias{findAllOutliersSlow}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Find outliers on array}
 \description{
@@ -7,7 +8,7 @@ Function to find all beads which are outliers for their particular bead type on 
 
 }
 \usage{
-findAllOutliers(BLData, array, log=FALSE, n=3, ignoreList=NULL)
+findAllOutliers(BLData, array, log=FALSE, n=3)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,7 +16,6 @@ findAllOutliers(BLData, array, log=FALSE, n=3, ignoreList=NULL)
   \item{array}{numeric value specifying which array we want to find outliers on}
   \item{log}{if TRUE the log2 intensities will be used to calculate outliers}
   \item{n}{Specify a cut-off for outliers as n median absolute deviations from the mean. The default value is 3}
-\item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays}
 }
 \details{
 
