@@ -280,7 +280,7 @@ void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int
             if (((newcoord[0] - n2) < 0) || ((newcoord[0] + n2) > ImageWidth) || 
             ((newcoord[1] - n2) < 0) || ((newcoord[1] + n2) > ImageHeight)) {
             /* crap average to fill in a blank if a bead is too close to the edge of the image */
-            Rprintf("crap background\n");
+  //          Rprintf("crap background\n");
                          background[i] = 700;
             }
             else {
