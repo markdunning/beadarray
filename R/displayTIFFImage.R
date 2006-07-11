@@ -1,11 +1,11 @@
 "displayTIFFImage" <-
 function(BLData, array, a=680:720, b=680:720,flip=TRUE,showOutliers=TRUE,locateBeads=FALSE, showUnregistered=FALSE, outliers=NULL){
 
-pgm = as.character(BLData$targets$Image1[array])
+tif = as.character(BLData$targets$Image1[array])
 
-print(pgm)
+print(tif)
 
-xt = read.pgmfile(pgm)
+xt = .Call("readTIFF", tif, PACKAGE = "beadarray")
 
 if(showOutliers & is.null(outliers)){
 outliers = findAllOutliers(BLData, array)

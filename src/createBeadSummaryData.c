@@ -126,7 +126,7 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 	int *outlierInds, *validInds, *indices;
 	double *inten;
 	double m, ma;
-	int i,j,k, nsize;
+	int i,j,k, nsize1, nsize2;
 
 	//get the start and end indices for this probeID
 	indices = getProbeIndices(probeList, probeID, start, numBeads);
@@ -144,7 +144,6 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 		i++;
 		k++;
 	}
-
 	m = median(inten, (*count));
 	ma = mad(inten, (*count));
 
@@ -152,21 +151,24 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 	validInds = (int *)malloc(sizeof(int));
 	outlierInds = (int *)malloc(sizeof(int));
 
-	i = j = k = 0;	
+	i = j = k = nsize1 = nsize2 = 0;	
 
 	/* find the indices of valid probes */
 	while(k < (*count)){
 		if((inten[k] < (m + 3*ma)) && (inten[k] > (m - 3*ma))){
+//					 Rprintf("%d - valid\n",k);
+//					 Rprintf("i: %d, Index: %d\n", i, (indices[0]+k));
 			validInds[i] = (indices[0]+k);
 			i++;
-			nsize = (sizeof(int) * (i+1));
-			validInds = realloc(validInds, nsize);	
+			nsize1 = (sizeof(int) * (i+1));
+			validInds = (int *)realloc(validInds, nsize1);	
 		}
 		else{
+//			 Rprintf("%d - outlier\n", k);
 			outlierInds[j] = (indices[0]+k);
 			j++;
-			nsize = (sizeof(int) * (j+1));
-			outlierInds = realloc(outlierInds, nsize);
+			nsize2 = (sizeof(int) * (j+1));
+			outlierInds = (int *)realloc(outlierInds, nsize2);
 		}
 		k++;
 	}
@@ -179,7 +181,6 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 
 	free(inten);
 	free(indices);
-
 	return(status);
 }
 
@@ -206,6 +207,10 @@ void findAllOutliers(double *finten, int *binaryStatus, int *probeList, int *pro
 				i++;
 				}
 		}
+	free(count);
+	free(status->validInds);
+	free(status->outlierInds);
+	free(status);
 }
 
 void createBeadSummary(double *finten, double *binten, int *probeList, int *probeIDs, int *numProbes, int *numBeads, double *foreground, 
@@ -252,10 +257,11 @@ void createBeadSummary(double *finten, double *binten, int *probeList, int *prob
 	numOutlier[k] = ((*count)-i);
 
 	free(validInten);
-	free(valids);
+//	free(valids);
 	free(status->validInds);
 	free(status->outlierInds);
 	free(status);
+
 	}
 	
 	free(count);
