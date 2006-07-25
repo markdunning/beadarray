@@ -21,8 +21,8 @@ green channel.\cr
 red channel. \cr
 \code{Gb}: \tab Numeric matrix containing background intensites for the
 green channel. \cr
-\code{beadstdev}: \tab Standard deviations for each bead type per array.\cr
-\code{nobeads}: \tab Number of beads of each type per array.\cr
+\code{BeadStDev}: \tab Standard deviations for each bead type per array.\cr
+\code{NoBeads}: \tab Number of beads of each type per array.\cr
 \code{ProbeID}: \tab ID for each probe on the arrays.\cr
 \code{nooutliers}: \tab The number of beads flagged as outliers for each
 bead type per array.

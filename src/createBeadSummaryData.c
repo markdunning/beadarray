@@ -3,6 +3,26 @@
 #include <math.h>
 #include <R.h>
 
+
+int binarySearch(int key, int *arr, int left, int right){
+	int mid;
+	
+	if (right <= left) {
+		return -1;
+	}
+	
+	mid = floor((right-left)/2)+left;
+	if(key > arr[mid]){
+		return binarySearch(key, arr, mid + 1, right);
+	}
+	else if (key < arr[mid]){
+		return binarySearch(key, arr, left, mid - 1);
+	}
+	else {
+	 	return mid;
+	}
+}
+
 double sd(double *arr, int length, double mean){
 
     int i;
@@ -121,6 +141,40 @@ int* getProbeIndices(int *probeList, int probeID, int *start, int numBeads){
 	return(indices);
 }
 
+int* getProbeIndices2(int *probeList, int probeID, int *start, int numBeads){
+	int i, j, ind;
+	int *indices;
+
+	indices = (int *)malloc(sizeof(int) * 2);
+
+	/* find the location of the one probe of the correct ID */
+	ind = binarySearch(probeID, probeList, 0, numBeads);
+	
+	/*check if that probe ID was found */
+	if(ind != -1){
+	
+		i = j = ind;
+		/* go left until you stop finding that probeID and record the index of the last one */
+		while(probeList[i] == probeID){
+	 		i--;
+		}
+		indices[0] = i+1;
+
+		/* go right and do the same */
+		while(probeList[j] == probeID){
+	 		j++;
+		}
+		indices[1] = j-1;
+	}
+	else {
+		Rprintf("ProbeID %d not found\n", probeID);
+		indices[0] = 1;
+		indices[1] = 0;
+	}
+
+	return(indices);
+}
+
 beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeID, int numBeads, int *count, int *start){
 	beadStatusStruct *status;
 	int *outlierInds, *validInds, *indices;
@@ -129,7 +183,7 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 	int i,j,k, nsize1, nsize2;
 
 	//get the start and end indices for this probeID
-	indices = getProbeIndices(probeList, probeID, start, numBeads);
+	indices = getProbeIndices2(probeList, probeID, start, numBeads);
 
 	*start = (indices[1]+1);  //set the next start position
 	*count = (indices[1] - indices[0] + 1);  //calculate how many beads there are of this type

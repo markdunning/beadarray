@@ -13,7 +13,7 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
 
   len = length(arrays)
 
-  R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len)
+  R = G = Rb = Gb = BeadStDev = NoBeads = nooutliers = matrix(0,nrow = noprobes, ncol=len)
   
   for(i in 1:length(arrays)){
 
@@ -48,9 +48,9 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
         Gb[j,i] = mean(BLData$Gb[o$valid,arrays[i]],na.rm=TRUE)
       }
       
-      beadstdev[j,i]  = sd(BLData$R[o$valid,arrays[i]], na.rm=TRUE)
+      BeadStDev[j,i]  = sd(BLData$R[o$valid,arrays[i]], na.rm=TRUE)
 
-      nobeads[j,i] = length(o$valid)
+      NoBeads[j,i] = length(o$valid)
 
       nooutliers[j,i] = length(o$outliers)
       nextStart = o$nextStart
@@ -64,8 +64,8 @@ function(BLData, log=FALSE, n=3, ignoreList=NULL, arrays=seq(1:length(BLData$R[1
   BSData$G = G
   BSData$Rb = Rb
   BSData$Gb = Gb
-  BSData$BeadStDev = beadstdev
-  BSData$Nobeads = nobeads
+  BSData$BeadStDev = BeadStDev
+  BSData$Nobeads = NoBeads
   BSData$ProbeID = unique(BLData$ProbeID[,1])
   BSData$nooutliers = nooutliers
 #  BSData$SAMPLE = BLData$SAMPLE

@@ -24,9 +24,9 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
     noprobes = length(probes)
 
   if(imagesPerArray == 1){
-    R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=len) }
+    R = G = Rb = Gb = BeadStDev = NoBeads = nooutliers = matrix(0,nrow = noprobes, ncol=len) }
   else{
-     R = G = Rb = Gb = beadstdev = nobeads = nooutliers = matrix(0,nrow = noprobes, ncol=(len/2)) }
+     R = G = Rb = Gb = BeadStDev = NoBeads = nooutliers = matrix(0,nrow = noprobes, ncol=(len/2)) }
 
   i = j = 1
    while(j <= len){
@@ -48,8 +48,8 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
 
      R[,i] = blah$fore
      Rb[,i] = blah$back
-     beadstdev[,i] = blah$sd
-     nobeads[,i] = blah$noBeads
+     BeadStDev[,i] = blah$sd
+     NoBeads[,i] = blah$noBeads
      nooutliers[,i] = blah$noOutliers
      j = j+imagesPerArray
      i = i + 1
@@ -67,9 +67,9 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
   BSData = list()
   BSData$R = R
   BSData$Rb = Rb
-  BSData$beadstdev = beadstdev
-  BSData$Nooutliers = nooutliers
-  BSData$Nobeads = nobeads
+  BSData$BeadStDev = BeadStDev
+  BSData$NoOutliers = nooutliers
+  BSData$Nobeads = NoBeads
   BSData$ProbeID = probes
 
   class(BSData) = "BeadSummaryList"
