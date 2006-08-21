@@ -1,26 +1,4 @@
-BLImagePlot <- function(BLData, array = 1, rows = 18, columns = 2){
-  xs <- floor(BLData$GrnX[,array] - min(BLData$GrnX[,array]))
-  ys <- floor(BLData$GrnY[,array] - min(BLData$GrnY[,array]))
-
-  xgrid <- floor(seq(0, max(xs), by = max(xs)/columns))
-  ygrid <- floor(seq(0, max(ys), by = max(ys)/rows))
-
-  intensities <- matrix(NA, ncol = columns, nrow = rows)
-
-  for(i in 1:columns){
-    for(j in 1:rows){
-
-      indices = which(xs %in% c(xgrid[i]:xgrid[i+1]) & ys %in% c(ygrid[j]:ygrid[j+1]))
-      intensities[j,i] = mean(log2(BLData$G[indices,array]),na.rm=TRUE) 
-    }
-  }
-  intensities=t(intensities)
-#  print(dim(intensities))
-  image(intensities)
-}
-
-
-BLImagePlotC <- function(BLData, array = 1, rows = 18, columns = 2){
+BLImagePlot <- function(BLData, array = 1, nrow = 18, ncol = 2){
   xs <- floor(BLData$GrnX[,array] - min(BLData$GrnX[,array]))
   ys <- floor(BLData$GrnY[,array] - min(BLData$GrnY[,array]))
 
@@ -42,6 +20,5 @@ BLImagePlotC <- function(BLData, array = 1, rows = 18, columns = 2){
   }
 
   imageMatrix = t((imageMatrix))
-#  print(dim(imageMatrix))
   image(x = imageMatrix)
 }

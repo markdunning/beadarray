@@ -2,7 +2,6 @@
 \alias{displayTIFFImage}
 \alias{showTIFF}
 \alias{FindIlluminaSpotl}
-\alias{Recenter}
 \alias{IdentifyIntensity}
 \alias{IdentifyBeads}
 
