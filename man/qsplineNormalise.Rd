@@ -38,7 +38,7 @@ data(BLData)
 
 #All distributions are fixed to be the same
 
-#boxplot(log2(BLData.q$R)~col(BLData.q$R))
+#boxplot(log2(BLData.q$G)~col(BLData.q$G))
 
 }
 

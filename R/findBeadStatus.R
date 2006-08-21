@@ -18,7 +18,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3,
       probe_ids = temp[[1]]
       startSearch = temp[[2]]
 
-      inten <- BLData$R[probe_ids,array]
+      inten <- BLData$G[probe_ids,array]
   
    #nas will be a list of beads which have NA intensity
     nas=NULL
@@ -31,7 +31,7 @@ findBeadStatus <- function(BLData, probes, array, log=FALSE, n=3,
     }
 
     if(log){
-      raw_inten = log2(BLData$R[probe_ids,array])
+      raw_inten = log2(BLData$G[probe_ids,array])
       raw_inten = raw_inten[!is.na(raw_inten)]
     }
     else{

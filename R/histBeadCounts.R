@@ -15,7 +15,7 @@ counts=vector(length = length(probes))
 
 for(i in 1:length(probes)){
 
-counts[i] = length(BLData$R[BLData$ProbeID[,array]==probes[i],array])
+counts[i] = length(BLData$G[BLData$ProbeID[,array]==probes[i],array])
 
 }
 
@@ -24,15 +24,13 @@ x = seq(1:50)
 
 
 #noprobes is number of distinct probes found on the array. We discount
-#probes with ID 0, those with negative ID and probes with ID 5244 [which
-#appears over a 1000 times on each array].
-
+#probes with ID 0, those with negative ID and 
 
 noprobes = length(probes)
 
 #Here lambda is theoretical mean of poisson trials. Approximation to binomial with mean~=50,000 and prob. of success ~= 1/1500
 
-lambda = sum( (BLData$ProbeID[,array]!=5244) & (BLData$ProbeID[,array]>0) ) / noprobes
+lambda = sum(BLData$ProbeID[,array]>0)  / noprobes
 
 
 

@@ -15,16 +15,16 @@ function(BLData, array,coords){
 
 #Check that x,y co-ords are available
 
-  if(is.null(BLData$x)){
+  if(is.null(BLData$GrnX)){
     stop("X and Y co-ordinates are not present in this data")
   }
 
 
 #arrx and ary take all x and y values for beads in the array
 
-arrx <- BLData$x[,array]
+arrx <- BLData$GrnX[,array]
 arrx<-as.integer(arrx)
-arry <- BLData$y[,array]
+arry <- BLData$GrnY[,array]
 arry<-as.integer(arry)
 
 

@@ -25,8 +25,8 @@ plotBeadIntensities(BLData, ProbeIDs, array, n=3,log=FALSE,label=FALSE,main=NULL
   
 }
 \details{
-We find the intensities for each bead of the specified bead type by simply finding the value of BLData\$R for each bead in the array whose BLData\$ProbeID 
-matches the specified ProbeID. The distance from the centre of the hexagon can be found in a similar fashion by looking at BLData\$x and BLData\$y. 
+We find the intensities for each bead of the specified bead type by simply finding the value of BLData\$G for each bead in the array whose BLData\$ProbeID 
+matches the specified ProbeID. The distance from the centre of the hexagon can be found in a similar fashion by looking at BLData\$GrnX and BLData\$GrnY. 
 
 The outliers for the bead type are beads which have intensity more than 'n' times away from the standard deviation using logged or un-logged bead intensities 
 (specified using 'log' argument).

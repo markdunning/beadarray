@@ -8,7 +8,7 @@ Produce bead averages for each bead type used in an experiment on a specified se
 }
 \usage{
 createBeadSummaryData(BLData, log=FALSE, n=3,
-arrays=seq(1:length(BLData$R[1,])), imagesPerArray = 2, probes = NULL)
+arrays=seq(1:length(BLData$G[1,])), imagesPerArray = 2, probes = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,7 +36,7 @@ of un-logged and by setting the 'n' parameter we choose beads with intensity 'n'
 
 
 With outliers removed, we simply take an average of the red and green intensities of 
-the remaining beads and create \$R and \$G matrices. We also store the number of outliers that were detected for each bead type and the standard deviation of the 
+the remaining beads and create \$G and \$R matrices. We also store the number of outliers that were detected for each bead type and the standard deviation of the 
 remaining beads in the \code{$nooutliers} and \code{$BeadStDev} columns respectively.
 
 As the function runs it prints out the index of the array that is currently being processed.

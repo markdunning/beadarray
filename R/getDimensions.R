@@ -8,13 +8,13 @@ function(BLData, array){
   
 #Check that x,y co-ords are available
 
-  if(is.null(BLData$x)){
+  if(is.null(BLData$GrnX)){
     stop("X and Y co-ordinates are not present in this data")
   }
   
-arrx <- BLData$x[,array]
+arrx <- BLData$GrnX[,array]
 arrx<-as.integer(arrx)
-arry <- BLData$y[,array]
+arry <- BLData$GrnY[,array]
 arry<-as.integer(arry)
 
 #xmax and ymax are maximum co-ordinates

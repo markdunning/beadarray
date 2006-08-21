@@ -11,24 +11,24 @@ if(array2!=0){
 
 if(log){
 
-x = 0.5*(log2(BSData$R[,array1]) + log2(BSData$R[,array2]))
-y = log2(BSData$R[,array1])- log2(BSData$R[,array2])
+x = 0.5*(log2(BSData$G[,array1]) + log2(BSData$G[,array2]))
+y = log2(BSData$G[,array1])- log2(BSData$G[,array2])
   
 
 }
 
 else{
 
-x = 0.5*(BSData$R[,array1] + BSData$R[,array2])
-y = BSData$R[,array1]- BSData$R[,array2]
+x = 0.5*(BSData$G[,array1] + BSData$G[,array2])
+y = BSData$G[,array1]- BSData$G[,array2]
 }
 
 
 }
 
 else{
-x = log2(BSData$R[,array1])
-y = log2(BSData$G[,array1])
+x = log2(BSData$G[,array1])
+y = log2(BSData$R[,array1])
 
 }
 

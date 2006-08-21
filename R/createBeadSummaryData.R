@@ -1,4 +1,4 @@
-createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:length(BLData$R[1,])), imagesPerArray = 2, probes = NULL){
+createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:length(BLData$G[1,])), imagesPerArray = 2, probes = NULL){
 
   #Check the object is of class BeadLevelList
   if(class(BLData) != "BeadLevelList"){
@@ -32,22 +32,22 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
    while(j <= len){
     print(i)
     if(log){
-     finten <- log2(temp$R)
-     binten <- log2(temp$Rb)
+     finten <- log2(temp$G)
+     binten <- log2(temp$Gb)
     }
     else {
-      finten <- temp$R
-      binten <- temp$Rb
+      finten <- temp$G
+      binten <- temp$Gb
     }
      probeIDs <- as.integer(temp$ProbeID)
 #    start = (length(which($ProbeID[,i] == 0)))x
      start = 0
-     blah <- .C("createBeadSummary",  as.double(finten),  as.double(binten), probeIDs, as.integer(probes), as.integer(noprobes), as.integer(length(temp$R)),
+     blah <- .C("createBeadSummary",  as.double(finten),  as.double(binten), probeIDs, as.integer(probes), as.integer(noprobes), as.integer(length(temp$G)),
                  fore = double(length = noprobes), back = double(length = noprobes), sd = double(length = noprobes), noBeads = integer(length = noprobes),
                  noOutliers = integer(length = noprobes), nextStart = as.integer(start), PACKAGE = "beadarray")
 
-     R[,i] = blah$fore
-     Rb[,i] = blah$back
+     G[,i] = blah$fore
+     Gb[,i] = blah$back
      BeadStDev[,i] = blah$sd
      NoBeads[,i] = blah$noBeads
      nooutliers[,i] = blah$noOutliers
@@ -65,8 +65,8 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
   
 
   BSData = list()
-  BSData$R = R
-  BSData$Rb = Rb
+  BSData$G = G
+  BSData$Gb = Gb
   BSData$BeadStDev = BeadStDev
   BSData$NoOutliers = nooutliers
   BSData$Nobeads = NoBeads

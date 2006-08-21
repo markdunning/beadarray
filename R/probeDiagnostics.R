@@ -11,14 +11,14 @@
     
   #Check that x,y co-ords are available
 
-    if(is.null(BLData$x)){
+    if(is.null(BLData$GrnX)){
       stop("X and Y co-ordinates are not present in this data")
     }
 
     #arrx and arry take all the x and y co-ordinates for every bead in the array
-    arrx <- BLData$x[,array]
+    arrx <- BLData$GrnX[,array]
     arrx<-as.integer(arrx)
-    arry <- BLData$y[,array]
+    arry <- BLData$GrnY[,array]
     arry<-as.integer(arry)
 
     par(cex.axis=0.5)

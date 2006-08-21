@@ -14,9 +14,9 @@ findAllOutliers <- function(BLData, array, log = FALSE, n = 3){
 
   probes <- sort(unique(BLData$ProbeID[BLData$ProbeID[,array] > 0,array]))
 
-  finten <- BLData$R[,array]
+  finten <- BLData$G[,array]
   probeList <- BLData$ProbeID[,array]
-  nbeads <- length(BLData$R[,array])
+  nbeads <- length(BLData$G[,array])
 
   start = 0
 

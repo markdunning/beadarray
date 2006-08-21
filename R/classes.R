@@ -16,8 +16,8 @@ dim.BeadSummaryList <- function(x)  if(is.null(x[[1]])) c(0,0) else dim(as.matri
 length.BeadSummaryList <- length.BeadLevelList <- function(x) prod(dim(x))
 dimnames.BeadSummaryList <- function(x) dimnames(x[[1]])
 
-dim.BeadLevelList <- function(x) if(is.null(x$R)) c(0,0) else dim(as.matrix(x$R))
-dimnames.BeadLevelList <- function(x) dimnames(x$R)
+dim.BeadLevelList <- function(x) if(is.null(x$G)) c(0,0) else dim(as.matrix(x$G))
+dimnames.BeadLevelList <- function(x) dimnames(x$G)
 
 print.BeadSummaryList <- function(x, ...) {
 	cat("An object of class \"",class(x),"\"\n",sep="")
@@ -65,34 +65,33 @@ function(object, i, j, ...) {
 		if (missing(j))
 			return(object)
 		else {
-                  object$R <- object$R[,j, drop=FALSE]
                   object$G <- object$G[,j, drop=FALSE]
-                  object$Rb <- object$Rb[,j, drop=FALSE]
+                  object$R <- object$R[,j, drop=FALSE]
                   object$Gb <- object$Gb[,j, drop=FALSE]
+                  object$Rb <- object$Rb[,j, drop=FALSE]
                   object$BeadStDev <- object$BeadStDev[,j, drop=FALSE]
                   object$Nobeads <- object$Nobeads[,j, drop=FALSE]
-			object$Detection <- object$Detection[,j, drop=FALSE]
+                  object$Detection <- object$Detection[,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID
                   object$nooutliers <- object$nooutliers[,j, drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][,j,drop=FALSE]
                 }
 	else
 		if (missing(j)) {
-                  object$R <- object$R[i,, drop=FALSE]
                   object$G <- object$G[i,, drop=FALSE]
-                  object$Rb <- object$Rb[i,, drop=FALSE]
+                  object$R <- object$R[i,, drop=FALSE]
                   object$Gb <- object$Gb[i,, drop=FALSE]
+                  object$Rb <- object$Rb[i,, drop=FALSE]
                   object$BeadStDev <- object$BeadStDev[i,, drop=FALSE]
                   object$Nobeads <- object$Nobeads[i,, drop=FALSE]
                   object$ProbeID <- object$ProbeID[i]
                   object$nooutliers <- object$nooutliers[i,, drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,,drop=FALSE]
 		} else {
-                  object$R <- object$R[i,j, drop=FALSE]
                   object$G <- object$G[i,j, drop=FALSE]
-                  object$Rb <- object$Rb[i,j, drop=FALSE]
+                  object$R <- object$R[i,j, drop=FALSE]
                   object$Gb <- object$Gb[i,j, drop=FALSE]
-                  object$BeadStDev <- object$BeadStDev[i,j, drop=FALSE]
+                   object$BeadStDev <- object$BeadStDev[i,j, drop=FALSE]
                   object$Nobeads <- object$Nobeads[i,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID[i]
                   object$nooutliers <- object$nooutliers[i,j, drop=FALSE]
@@ -110,12 +109,14 @@ function(object, i, j, ...) {
 	if (missing(i))		if (missing(j))
 			return(object)
 		else {
-                  object$R <- object$R[,j, drop=FALSE]
                   object$G <- object$G[,j, drop=FALSE]
-                  object$Rb <- object$Rb[,j, drop=FALSE]
+                  object$R <- object$R[,j, drop=FALSE]
                   object$Gb <- object$Gb[,j, drop=FALSE]
-                  object$x <- object$x[,j, drop=FALSE]
-                  object$y <- object$y[,j, drop=FALSE]
+                  object$Rb <- object$Rb[,j, drop=FALSE]
+                  object$GrnX <- object$GrnX[,j, drop=FALSE]
+                  object$GrnY <- object$GrnY[,j, drop=FALSE]
+                  object$RedX <- object$RedX[,j, drop=FALSE]
+                  object$RedY <- object$RedY[,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID[,j, drop=FALSE]
                   object$targets <- object$targets[j,,drop=FALSE]
                   object$SAMPLE <- object$SAMPLE[j,,drop=FALSE]       
@@ -123,22 +124,26 @@ function(object, i, j, ...) {
 		}
 	else
 		if (missing(j)) {
-                  object$R <- object$R[i,, drop=FALSE]
                   object$G <- object$G[i,, drop=FALSE]
-                  object$Rb <- object$Rb[i,, drop=FALSE]
+                  object$R <- object$R[i,, drop=FALSE]
                   object$Gb <- object$Gb[i,, drop=FALSE]
-                  object$x <- object$x[i,, drop=FALSE]
-                  object$y <- object$y[i,, drop=FALSE]
+                  object$Rb <- object$Rb[i,, drop=FALSE]
+                  object$GrnX <- object$GrnX[i,, drop=FALSE]
+                  object$GrnY <- object$GrnY[i,, drop=FALSE]
+                  object$RedX <- object$RedX[,j, drop=FALSE]
+                  object$RedY <- object$RedY[,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID[i,, drop=FALSE]
                   object$SAMPLE <- object$SAMPLE[i,,drop=FALSE]
                   if(!is.null(oc)) for(k in oc) object$other[[k]] <- object$other[[k]][i,,drop=FALSE]
    		} else {
-                  object$R <- object$R[i,j, drop=FALSE]
                   object$G <- object$G[i,j, drop=FALSE]
-                  object$Rb <- object$Rb[i,j, drop=FALSE]
+                  object$R <- object$R[i,j, drop=FALSE]
                   object$Gb <- object$Gb[i,j, drop=FALSE]
-                  object$x <- object$x[i,j, drop=FALSE]
-                  object$y <- object$y[i,j, drop=FALSE]
+                  object$Rb <- object$Rb[i,j, drop=FALSE]
+                  object$GrnX <- object$GrnX[i,j, drop=FALSE]
+                  object$GrnY <- object$GrnY[i,j, drop=FALSE]
+                  object$RedX <- object$RedX[,j, drop=FALSE]
+                  object$RedY <- object$RedY[,j, drop=FALSE]
                   object$ProbeID <- object$ProbeID[i,j, drop=FALSE]
                   object$targets <- object$targets[j,,drop=FALSE]
                   object$SAMPLE <- object$SAMPLE[j,,drop=FALSE]  
@@ -156,14 +161,16 @@ cbind.BeadLevelList <- function(..., deparse.level=1) {
 	out <- objects[[1]]
 	if(nobjects > 1)
 	for (i in 2:nobjects) {
-		out$R <- cbind(out$R,objects[[i]]$R)
 		out$G <- cbind(out$G,objects[[i]]$G)
-		out$Rb <- cbind(out$Rb,objects[[i]]$Rb)
+		out$R <- cbind(out$R,objects[[i]]$R)
 		out$Gb <- cbind(out$Gb,objects[[i]]$Gb)
+		out$Rb <- cbind(out$Rb,objects[[i]]$Rb)
 		out$weights <- cbind(out$weights,objects[[i]]$weights)
 		out$targets <- cbind(out$targets,objects[[i]]$targets)
-                out$x <- cbind(out$x, objects[[i]]$x)
-                out$y <- cbind(out$y, objects[[i]]$y)
+                out$GrnX <- cbind(out$GrnX, objects[[i]]$GrnX)
+                out$GrnY <- cbind(out$GrnY, objects[[i]]$GrnY)
+                out$RedX <- cbind(out$RedX, objects[[i]]$RedX)
+                out$RedY <- cbind(out$RedY, objects[[i]]$RedY)                
                 out$ProbeID <- cbind(out$ProbeID, objects[[i]]$ProbeID)
                 out$SAMPLE <-cbind(out$SAMPLE, objects[[i]]$SAMPLE)
 	}
@@ -177,12 +184,14 @@ rbind.BeadLevelList <- function(..., deparse.level=1) {
 	out <- objects[[1]]
 	if(nobjects > 1)
 	for (i in 2:nobjects) {
-		out$R <- rbind(out$R,objects[[i]]$R)
 		out$G <- rbind(out$G,objects[[i]]$G)
-		out$Rb <- rbind(out$Rb,objects[[i]]$Rb)
+		out$R <- rbind(out$R,objects[[i]]$R)
 		out$Gb <- rbind(out$Gb,objects[[i]]$Gb)
-		out$x <- rbind(out$x,objects[[i]]$x)
-		out$y <- rbind(out$y,objects[[i]]$y)
+		out$Rb <- rbind(out$Rb,objects[[i]]$Rb)
+		out$GrnX <- rbind(out$GrnX,objects[[i]]$GrnX)
+		out$GrnY <- rbind(out$GrnY,objects[[i]]$GrnY)
+                out$RedX <- rbind(out$RedX,objects[[i]]$RedX)
+		out$RedY <- rbind(out$RedY,objects[[i]]$RedY)
                 out$ProbeID <- append(out$ProbeID, objects[[i]]$ProbeID)
                 out$Detection <- rbind(out$Detection, objects[[i]]$Detection)
                 
@@ -205,10 +214,10 @@ cbind.BeadSummaryList <- function(..., deparse.level=1) {
 	out <- objects[[1]]
 	if(nobjects > 1)
 	for (i in 2:nobjects) {
-		out$R <- cbind(out$R,objects[[i]]$R)
 		out$G <- cbind(out$G,objects[[i]]$G)
-		out$Rb <- cbind(out$Rb,objects[[i]]$Rb)
+		out$R <- cbind(out$R,objects[[i]]$R)
 		out$Gb <- cbind(out$Gb,objects[[i]]$Gb)
+		out$Rb <- cbind(out$Rb,objects[[i]]$Rb)
 		out$BeadStDev <- cbind(out$BeadStDev,objects[[i]]$BeadStDev)
 		out$Nobeads <- cbind(out$Nobeads,objects[[i]]$Nobeads)
                 out$nooutliers <- cbind(out$nooutliers, objects[[i]]$nooutliers)
@@ -232,10 +241,10 @@ rbind.BeadSummaryList <- function(..., deparse.level=1) {
 	out <- objects[[1]]
 	if(nobjects > 1)
 	for (i in 2:nobjects) {
-		out$R <- rbind(out$R,objects[[i]]$R)
 		out$G <- rbind(out$G,objects[[i]]$G)
-		out$Rb <- rbind(out$Rb,objects[[i]]$Rb)
+		out$R <- rbind(out$R,objects[[i]]$R)
 		out$Gb <- rbind(out$Gb,objects[[i]]$Gb)
+		out$Rb <- rbind(out$Rb,objects[[i]]$Rb)
 		out$BeadStDev <- rbind(out$BeadStDev,objects[[i]]$BeadStDev)
 		out$Nobeads <- rbind(out$Nobeads,objects[[i]]$Nobeads)
                 out$nooutliers <- rbind(out$nooutliers, objects[[i]]$nooutliers)

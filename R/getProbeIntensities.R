@@ -7,10 +7,10 @@ function(BLData, ProbeIDs, array,log=TRUE){
   }
   
 if(log){
-log2(BLData$R[BLData$ProbeID[,array] %in% ProbeIDs,array])
+log2(BLData$G[BLData$ProbeID[,array] %in% ProbeIDs,array])
 }
 else{
-BLData$R[BLData$ProbeID[,array] %in% ProbeIDs,array]
+BLData$G[BLData$ProbeID[,array] %in% ProbeIDs,array]
 }
 
 }

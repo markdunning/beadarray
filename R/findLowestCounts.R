@@ -6,23 +6,23 @@ function(BLData, array,  limit=24){
     stop("BeadLevelList object required!")
   }
   
-probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
+  probes = sort(unique(BLData$ProbeID[BLData$ProbeID[,1] > 0,1]))
 
-l = NULL
+  l = NULL
 
-for(i in 1:length(probes)){
+  for(i in 1:length(probes)){
 
-c = getProbeCoords(BLData, probes[i], array)
+    c = getProbeCoords(BLData, probes[i], array)
 
-if (length(c[,1]) < limit){
+    if (length(c[,1]) < limit){
 
-l = c(l, probes[i] )
+      l = c(l, probes[i] )
 
-}
+    }
 
-}
+  }
 
-l
+  l
 
 }
 

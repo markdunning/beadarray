@@ -97,8 +97,8 @@ d<-(xs[outliers]< max(ap) & xs[outliers] >min(ap) & ys[outliers]< max(b) & ys[ou
 
 
 outliers_to_plot=outliers[d]
-dyellow=(BLData$R[outliers[d],array]<0)
-dpos=(BLData$R[outliers[d],array]>0)
+dyellow=(BLData$G[outliers[d],array]<0)
+dpos=(BLData$G[outliers[d],array]>0)
 
 
 for(j in outliers_to_plot[dyellow]){
@@ -129,7 +129,7 @@ unregspots = unregspots + 1
 out_blue_red=outliers_to_plot[dpos]
 test=vector(length=length(out_blue_red))
 for(j in 1:(length(out_blue_red))){
-test[j]=BLData$R[out_blue_red[j],array]-mean(getProbeIntensities(BLData, BLData$ProbeID[out_blue_red[j],array], array, log=FALSE), na.rm=TRUE)
+test[j]=BLData$G[out_blue_red[j],array]-mean(getProbeIntensities(BLData, BLData$ProbeID[out_blue_red[j],array], array, log=FALSE), na.rm=TRUE)
 }
 
 dblue=(test>0)

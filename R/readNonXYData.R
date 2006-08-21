@@ -15,7 +15,7 @@ readNonXYData <- function(files, max_length){
     ProbeID[1:nrow(r),i] = r[,1]
   }
   BLData = list()
-  BLData$R = R
+  BLData$G = R
   BLData$ProbeID = ProbeID
   BLData = new("BeadLevelList", BLData)
 }

@@ -26,8 +26,8 @@ Arrays can removed from an BeadSummaryList (bead summary data) object if they ar
 
 \examples{
 data(BSData)
-BSData$R[1,]
+BSData$G[1,]
 BSData.new=removeArrays(BSData, array=1:2)
-BSData.new$R[1,]
+BSData.new$G[1,]
 } 
 \keyword{methods}

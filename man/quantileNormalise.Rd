@@ -10,7 +10,7 @@ Normalizes expression intensities so that the intensities or
 Function is based on the 'normalizeBetweenArrays' function in 'limma'
 }
 \usage{
-quantileNormalise(BLData, arrays=1:length(BLData$R[1,]))
+quantileNormalise(BLData, arrays=1:length(BLData$G[1,]))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,7 +45,7 @@ BSData.q = quantileNormalise(BSData)
 
 #All distributions are fixed to be the same
 
-boxplot(BSData.q$R~col(BSData.q$R))
+boxplot(BSData.q$G~col(BSData.q$G))
 
 }
 \keyword{methods}

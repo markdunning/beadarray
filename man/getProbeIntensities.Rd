@@ -16,7 +16,7 @@ getProbeIntensities(BLData, ProbeIDs, array, log = TRUE)
   \item{log}{if TRUE then log2-transformed data will be returned}
 }
 \details{
-  The function simply looks up the BLData\$R values for beads whose BLData\$ProbeID matches the given 'ProbeID'. A log2 transform is then applied if 
+  The function simply looks up the BLData\$G values for beads whose BLData\$ProbeID matches the given 'ProbeID'. A log2 transform is then applied if 
 specified.
 }
 

@@ -10,6 +10,6 @@ bnew=(floor(y)-floor(mu/2)*Z):(floor(y)+floor(mu/2)*Z)
 showTIFF(xt,xs,ys,anew,bnew, zScale=info$scale, 
                          reverseYaxis = info$Yaxis,
                         width=info$width, height=info$height,
-                       resc=info$resc,showSpots=info$showSpots, out=info$out,outliers=outliers, contrast=info$contrast,locate=info$locate,recenter=FALSE)
+                       resc=info$Gesc,showSpots=info$showSpots, out=info$out,outliers=outliers, contrast=info$contrast,locate=info$locate,recenter=FALSE)
 }
 

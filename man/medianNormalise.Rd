@@ -36,7 +36,7 @@ BLData.med = medianNormalise(BLData)
 
 #All distributions are fixed to have same median
 
-boxplot(BLData.med$R~col(BLData.med$R))
+boxplot(BLData.med$G~col(BLData.med$G))
 
 }
 

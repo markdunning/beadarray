@@ -83,6 +83,8 @@ void sharpen(int **pixels, int ImageWidth, int ImageHeight){
      
 }
 
+
+
 void asf(int **pixels, int ImageWidth, int ImageHeight)
 #define SE 4 /* max half-size of the square structuring element */
 {
@@ -196,6 +198,166 @@ void asf(int **pixels, int ImageWidth, int ImageHeight)
          free(w[i]);
    }
    free(x);
+   free(w);
+}
+
+void asfFaster(int **pixels, int ImageWidth, int ImageHeight)
+#define SE 4 /* max half-size of the square structuring element */
+{
+    int i, j, l, m, n, ii, jj, s;
+    int **w;
+	int *xstrip, *ystrip;	
+     
+//    x = malloc(sizeof(int *) * ImageWidth);
+    w = malloc(sizeof(int *) * ImageWidth);
+
+	if ((xstrip = (int *)malloc(sizeof(int)*ImageWidth) ) == NULL ){
+        printf("\nError, memory not allocated.\n");
+        exit(1);
+    }
+	if ((ystrip = (int *)malloc(sizeof(int)*ImageHeight) ) == NULL ){
+        printf("\nError, memory not allocated.\n");
+        exit(1);
+    }     
+    
+	for(i = 0;i < ImageWidth; i++){
+//          x[i] = malloc(sizeof(int) * ImageHeight);
+          w[i] = malloc(sizeof(int) * ImageHeight);
+          }
+    
+       /* now filter pepper noise */
+   Rprintf("Filtering pepper noise...\n");
+   for (j = 1; j < ImageHeight-1; j++)
+      for (i = 1; i < ImageWidth-1; i++) {
+         m = pixels[i][j];
+         n = pixels[i][j-1];
+         pixels[i][j] = n;
+         for (ii = i-1; ii <= i+1; ii++)
+            for (jj = j-1; jj <= j+1; jj++)
+               if (pixels[ii][jj] < n) n = pixels[ii][jj]; 
+         pixels[i][j] = (m > n) ? m : n; /* max(m, n) */
+      }
+
+   for (j = 0; j < ImageHeight; j++)
+      for (i = 0; i < ImageWidth; i++) {
+         w[i][j] = pixels[i][j];
+//         x[i][j] = w[i][j];
+      }
+
+   /* now do the first step with a 2x2 structuring element */
+   Rprintf("Opening and closing with a 2x2 element...\n");
+
+   for (j = 0; j < ImageHeight; j++)
+      for (i = 0; i < ImageWidth-1; i++) 
+         w[i][j] = (w[i][j] > w[i+1][j]) ? w[i][j] : w[i+1][j];
+   for (j = 0; j < ImageHeight; j++)
+      for (i = 0; i < ImageWidth-1; i++) 
+         w[i][j] = (w[i][j] < w[i+1][j]) ? w[i][j] : w[i+1][j];
+   for (i = 0; i < ImageWidth; i++) 
+      for (j = 0; j < ImageHeight-1; j++)
+         w[i][j] = (w[i][j] > w[i][j+1]) ? w[i][j] : w[i][j+1];
+   for (i = 0; i < ImageWidth; i++) 
+      for (j = 0; j < ImageHeight-1; j++)
+         w[i][j] = (w[i][j] < w[i][j+1]) ? w[i][j] : w[i][j+1];
+
+   for (j = 0; j < ImageHeight; j++)
+      for (i = 0; i < ImageWidth-1; i++) 
+         w[i][j] = (w[i][j] < w[i+1][j]) ? w[i][j] : w[i+1][j];
+   for (j = 0; j < ImageHeight; j++)
+      for (i = 0; i < ImageWidth-1; i++) 
+         w[i][j] = (w[i][j] > w[i+1][j]) ? w[i][j] : w[i+1][j];
+   for (i = 0; i < ImageWidth; i++) 
+      for (j = 0; j < ImageHeight-1; j++)
+         w[i][j] = (w[i][j] < w[i][j+1]) ? w[i][j] : w[i][j+1];
+   for (i = 0; i < ImageWidth; i++) 
+      for (j = 0; j < ImageHeight-1; j++)
+         w[i][j] = (w[i][j] > w[i][j+1]) ? w[i][j] : w[i][j+1];
+
+   /* now do the alternating sequential filtering */
+//   for (s = 1; s <= SE; s++) {
+	 s = SE;
+      Rprintf("Calculating ASF with s = %i...\n", s);
+
+      for (j = 0; j < ImageHeight; j++){
+         for (i = s; i < ImageWidth-s; i++) 
+            for (l = -s+1; l <= s; l++)
+				 xstrip[i] = (w[i-s][j] > w[i+l][j]) ? w[i-s][j] : w[i+l][j];
+			for (i = s; i < ImageWidth-s; i++)
+         		w[i][j] = xstrip[i];
+		}
+
+      for (j = 0; j < ImageHeight; j++){
+         for (i = s; i < ImageWidth-s; i++)
+            for (l = -s+1; l <= s; l++)
+				xstrip[i] = (w[i-s][j] < w[i+l][j]) ? w[i-s][j] : w[i+l][j];
+			for (i = s; i < ImageWidth-s; i++)
+         		w[i][j] = xstrip[i];
+		}
+
+      for (i = 0; i < ImageWidth; i++){
+         for (j = s; j < ImageHeight-s; j++)
+            for (l = -s+1; l <= s; l++)
+				ystrip[j] = (w[i][j-s] > w[i][j+l]) ? w[i][j-s] : w[i][j+l];
+			for (j = s; j < ImageHeight-s; j++)
+			    w[i][j] = ystrip[j];
+		}
+
+
+      for (i = 0; i < ImageWidth; i++) {
+         for (j = s; j < ImageHeight-s; j++)
+            for (l = -s+1; l <= s; l++)
+               ystrip[j] = (w[i][j-s] < w[i][j+l]) ? w[i][j-s] : w[i][j+l];
+			for (j = s; j < ImageHeight-s; j++)
+			   w[i][j] = ystrip[j];
+		}
+
+      for (j = 0; j < ImageHeight; j++){
+         for (i = s; i < ImageWidth-s; i++) 
+            for (l = -s+1; l <= s; l++)
+               xstrip[i] = (w[i-s][j] < w[i+l][j]) ? w[i-s][j] : w[i+l][j];
+      		for (i = s; i < ImageWidth-s; i++)
+         		w[i][j] = xstrip[i];
+   		}
+
+      for (j = 0; j < ImageHeight; j++){
+         for (i = s; i < ImageWidth-s; i++)
+            for (l = -s+1; l <= s; l++)
+               xstrip[i] = (w[i-s][j] > w[i+l][j]) ? w[i-s][j] : w[i+l][j];
+      		for (i = s; i < ImageWidth-s; i++)
+         		w[i][j] = xstrip[i];
+   		}
+
+      for (i = 0; i < ImageWidth; i++) {
+         for (j = s; j < ImageHeight-s; j++)
+            for (l = -s+1; l <= s; l++)
+				ystrip[j] = (w[i][j-s] < w[i][j+l]) ? w[i][j-s] : w[i][j+l];
+			for (j = s; j < ImageHeight-s; j++)
+         		w[i][j] = ystrip[j];
+		}
+
+      for (i = 0; i < ImageWidth; i++) {
+         for (j = s; j < ImageHeight-s; j++)
+            for (l = -s+1; l <= s; l++)
+				ystrip[j] = (w[i][j-s] > w[i][j+l]) ? w[i][j-s] : w[i][j+l];
+      		for (j = s; j < ImageHeight-s; j++)
+         		w[i][j] = ystrip[j];
+   		}
+   //}
+
+   for (i = 0; i < ImageWidth; i++){
+      for (j = 0; j < ImageHeight; j++) {
+         pixels[i][j] -= w[i][j]; /* w now contains the background */
+         if (pixels[i][j] < 0) pixels[i][j] = 0; /* pixels now contains the background-subtracted image */
+      }
+   }
+   
+   for(i = 0; i < ImageWidth; i++){
+//         free(x[i]);
+         free(w[i]);
+   }
+//   free(x);
+	 free(xstrip);
+	 free(ystrip);
    free(w);
 }
 
@@ -485,6 +647,10 @@ void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *fo
                        Rprintf("Morphological Background\n");
                        asf(pixels, ImageWidth, ImageHeight);
                        break;
+				  case 3:
+				  	   Rprintf("ASF Faster\n");
+					   asfFaster(pixels, ImageWidth, ImageHeight);
+					   break;	   				
                   default:
 				  	   Rprintf("Calculating background\n");
                		   calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n);	  

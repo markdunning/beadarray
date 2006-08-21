@@ -56,13 +56,13 @@ data(BLData)
 
 BLData.bc = backgroundCorrectBeads(BLData)
 
-min(BLData.bc$R)
+min(BLData.bc$G)
 
 #Use 'minimum' method to stop negative values
 
 BLData.min = backgroundCorrectBeads(BLData, method="minimum")
 
-min(BLData.min$R)
+min(BLData.min$G)
 
 }
 

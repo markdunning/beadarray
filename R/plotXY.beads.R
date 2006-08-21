@@ -14,8 +14,8 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
 
     if(log){
 
-      x = log2(BSData$R[,array1])
-      y = log2(BSData$R[,array2])
+      x = log2(BSData$G[,array1])
+      y = log2(BSData$G[,array2])
 
 
       xmax = 16
@@ -24,8 +24,8 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
     }
 
     else{
-      x = BSData$R[,array1]
-      y = BSData$R[,array2]
+      x = BSData$G[,array1]
+      y = BSData$G[,array2]
 
       xmax=2^17
       xbox=100000
@@ -34,16 +34,16 @@ function(BSData,array1, array2=0, log=FALSE, identify=FALSE,label=FALSE, fold=2,
   }
   else{
     if(log){
-      x = log2(BSData$R[,array1])
-      y = log2(BSData$G[,array1])
+      x = log2(BSData$G[,array1])
+      y = log2(BSData$R[,array1])
 
       xmax = 16
       xbox=18
       yspacing=0.3
     }
     else{
-      x = BSData$R[,array1]
-      y = BSData$G[,array1]
+      x = BSData$G[,array1]
+      y = BSData$R[,array1]
 
       xmax=2^17
       xbox=100000

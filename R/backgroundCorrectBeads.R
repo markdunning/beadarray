@@ -6,7 +6,7 @@ if(class(BLData) != "BeadLevelList"){
     stop("BeadLevelList object is required!")
   }
 
-  if(is.null(BLData$Rb)){
+  if(is.null(BLData$Gb)){
     stop("There is no background data for this object")
   }
      
@@ -14,26 +14,26 @@ if(class(BLData) != "BeadLevelList"){
         "minimum"))
     
     switch(method, subtract = {
-        BLData$R <- BLData$R - BLData$Rb
+        BLData$G <- BLData$G - BLData$Gb
         
     }, half = {
-        BLData$R <- pmax(BLData$R - BLData$Rb, 0.5)
+        BLData$G <- pmax(BLData$G - BLData$Gb, 0.5)
         
     }, minimum = {
-        BLData$R <- as.matrix(BLData$R - BLData$Rb)
+        BLData$G <- as.matrix(BLData$G - BLData$Gb)
         
-for (slide in 1:ncol(BLData$R)) {
-            i <- BLData$R[, slide] < 1e-18
+for (slide in 1:ncol(BLData$G)) {
+            i <- BLData$G[, slide] < 1e-18
             if (any(i, na.rm = TRUE)) {
-                m <- min(BLData$R[!i, slide], na.rm = TRUE)
-                BLData$R[i, slide] <- m/2
+                m <- min(BLData$G[!i, slide], na.rm = TRUE)
+                BLData$G[i, slide] <- m/2
             }
             
         }
     })
 
     if (offset) {
-        BLData$R <- BLData$R + offset
+        BLData$G <- BLData$G + offset
         
     }
     BLData$backgroundCorrected = method

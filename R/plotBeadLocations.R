@@ -34,8 +34,8 @@ else{
 
 coords=matrix(nrow=length(beadIDs), ncol=2)
 
-coords[,1] = BLData$x[beadIDs, array] - min(BLData$x[,array])
-coords[,2] = BLData$y[beadIDs, array] - min(BLData$y[,array])
+coords[,1] = BLData$GrnX[beadIDs, array] - min(BLData$GrnX[,array])
+coords[,2] = BLData$GrnY[beadIDs, array] - min(BLData$GrnY[,array])
 
 
 plotCoords(xmax, ymax, coords,label=label,...)
