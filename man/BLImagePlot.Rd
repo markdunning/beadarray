@@ -6,7 +6,8 @@
 Plots an image plot of a bead level data.  
 }
 \usage{
-BLImagePlot(BLData, array = 1, nrow = 18, ncol = 2)
+BLImagePlot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
+high = NULL, ncolors = 123)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -14,6 +15,9 @@ BLImagePlot(BLData, array = 1, nrow = 18, ncol = 2)
   \item{array}{array to plot}
   \item{nrow}{How many rows should the array be divided into}
   \item{ncol}{How many columns should the array be divided into}
+  \item{low}{Color for area of lowest intensity}
+  \item{high}{color for area of highest intensity}
+  \item{ncolors}{The number of color graduations between high and low}
 }
 \details{
 Because of the high volume
