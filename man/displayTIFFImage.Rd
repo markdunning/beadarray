@@ -49,10 +49,6 @@ Plot is produced on the current graphical device.
 
 \author{Mark Dunning and Isabelle Camilier}
 
-\seealso{
-\code{\link{getUnregisteredBeads}}
-}
-
 \examples{
 
 data(BLData)

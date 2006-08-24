@@ -38,7 +38,6 @@ means that the \code{BeadSummaryList} will print in a relatively compact way.
 Other functions which operate on \code{BeadSummaryList} objects include:
 \code{\link{plotXY.beads}}
 \code{\link{plotMA.beads}}
-\code{\link{pairwiseMA}}
 }
 
 \author{Mark Dunning}
