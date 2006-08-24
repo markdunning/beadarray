@@ -1,8 +1,5 @@
-plotMAXY <- function(BSData, vec, log = TRUE, labels=vec,label=FALSE,ma.ylim=2,sampleSize=NULL,...){
+plotMAXY <- function(exprs, vec, log = TRUE, labels=vec,label=FALSE,ma.ylim=2,sampleSize=NULL,...){
 
-  if(!class(BSData) == "BeadSummaryList"){
-    quit("BeadSummaryList object required!")
-  }
 
   mat <- matrix(c(0,1,0,0.04, 0,1,0.96,1, 0,0.04,0.04,0.96,
                 0.96,1,0.04,0.96, 0.04,0.96,0.04,0.96), byrow = T, ncol= 4)
@@ -24,7 +21,7 @@ close.screen(all=TRUE)
         text(1.0,0, labels = labels[i], cex=1)
       }
       else if(j < i){
-        plotXY.beads(BSData, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label,sampleSize=sampleSize)
+        plotXY.beads(exprs, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label,sampleSize=sampleSize)
         if(i == length(vec)){
           axis(1)
           }
@@ -33,7 +30,7 @@ close.screen(all=TRUE)
         }
       }
       else{
-        plotMA.beads(BSData, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label,ma.ylim=ma.ylim, sampleSize=sampleSize)
+        plotMA.beads(exprs, array1 = vec[i], array2 = vec[j], log = log, xaxt = "n", yaxt = "n", label=label,ma.ylim=ma.ylim, sampleSize=sampleSize)
         if(i == 1){
           axis(3)
         }

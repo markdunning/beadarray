@@ -62,16 +62,11 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
        temp = rbind(BLData[BLData$ProbeID[,j] != 0,j], BLData[BLData$ProbeID[,j+1] != 0,j+1])
      }
    }
-  
 
-  BSData = list()
-  BSData$G = G
-  BSData$Gb = Gb
-  BSData$BeadStDev = BeadStDev
-  BSData$NoOutliers = nooutliers
-  BSData$Nobeads = NoBeads
-  BSData$ProbeID = probes
+BSData<-new("ExpressionSetIllumina")
 
-  class(BSData) = "BeadSummaryList"
-  BSData
+assayData(BSData)=assayDataNew(exprs = G, BeadStDev=BeadStDev, NoBeads = NoBeads)
+rownames(exprs(BSData)) = probes
+ 
+BSData
 }

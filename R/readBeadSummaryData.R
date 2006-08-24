@@ -7,7 +7,6 @@ readBeadSummaryData<- function(targets=NULL, header=T, sep=",",path=NULL,
 
 
 if(!is.null(targets)) {
-targets = as.character(targets[,1])
 
 if(!is.null(path)) targets = file.path(path, targets)
 
@@ -28,11 +27,15 @@ targets=dir()
 
   filecounter = arraycounter = 0
 
-  r = try(read.table(targets[1], header = header, sep = sep, skip = skip, nrows = 1))
-  cat("Reading file ", targets[1], "\n")
+  r = try(read.table(as.character(targets[1,1]), header = header, sep = sep, skip = skip, nrows = 1))
+  cat("Reading file ", as.character(targets[1,1]), "\n")
 
-  temp <- scan(file = targets[1], skip = skip+1, quiet=TRUE,sep = sep, what = as.list(rep("character",  ncol(r))))
+  temp <- scan(file = as.character(targets[1,1]), skip = skip+1, quiet=TRUE,sep = sep, what = as.list(rep("character",  ncol(r))))
 
+
+  samples = read.table(as.character(targets[1,2]), sep=",", header=T, skip=7)
+
+  QC = read.table(as.character(targets[1,3]), sep=",", header=T, skip=7)
 
   #cat("First line", "\n")
   #print(r[1,])
@@ -72,9 +75,9 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
 
 
 
-    for(i in 1:length(targets)){
-      r = read.table(targets[i], header = header, sep = sep, skip = skip)
-       cat("Reading file ", targets[i], "\n")   
+    for(i in 1:nrow(targets)){
+      r = read.table(as.character(targets[i,1]), header = header, sep = sep, skip = skip)
+       cat("Reading file ", as.character(targets[i,1]), "\n")   
 
       if(i==1){
         if(readAcross){
@@ -176,6 +179,16 @@ for(i in 1:length(names(BSData))){
     BSData$ProbeID = as.character(unique(r[,columns$ProbeID]))
     BSData$targets = targets
     BSData
+
+names(BSData$R) <- gsub("AVG_Signal.(\.+)","\\1",names(BSData$R))
+
+rownames(samples) = names(BSData$R)
+BSData<-new("ExpressionSetIllumina",phenoData=new("AnnotatedDataFrame",samples,data.frame(labelDescription=colnames(samples),row.names=colnames(samples))), annotation="Illumina", exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection, 
+            QC=QC, storage.mode="list")
+BSData
+
+    
+
 }
 
 

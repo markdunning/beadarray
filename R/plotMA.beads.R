@@ -1,34 +1,29 @@
 "plotMA.beads" <-
-function(BSData, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ma.ylim=2,sampleSize=NULL,...){
-
-  if(!class(BSData) == "BeadSummaryList"){
-    stop("BeadSummaryList object required!")
-  }
-
-probes = sort(unique(BSData$ProbeID[BSData$ProbeID > 0]))
+function(exprs, array1, array2=0, identify=FALSE, label=FALSE, highlight=NULL, log=TRUE, main=NULL, ma.ylim=2,sampleSize=NULL,...){
+exprs=as.matrix(exprs)
 
 if(array2!=0){
 
 if(log){
 
-x = 0.5*(log2(BSData$G[,array1]) + log2(BSData$G[,array2]))
-y = log2(BSData$G[,array1])- log2(BSData$G[,array2])
+x = 0.5*(log2(exprs[,array1]) + log2(exprs[,array2]))
+y = log2(exprs[,array1])- log2(exprs[,array2])
   
 
 }
 
 else{
 
-x = 0.5*(BSData$G[,array1] + BSData$G[,array2])
-y = BSData$G[,array1]- BSData$G[,array2]
+x = 0.5*exprs[,array1] + exprs[,array2]
+y = exprs[,array1]- exprs[,array2]
 }
 
 
 }
 
 else{
-x = log2(BSData$G[,array1])
-y = log2(BSData$R[,array1])
+x = log2(exprs[,array1])
+y = log2(exprs[,array1])
 
 }
 
