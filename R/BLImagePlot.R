@@ -1,11 +1,15 @@
 BLImagePlot <- function(BLData, array = 1, nrow = 18, ncol = 2,
-                        low = NULL, high = NULL, ncolors = 123){
+                        low = NULL, high = NULL, ncolors = 123, whatToPlot ="G"){
 
   par(mar = c(2,1,1,1), xaxs = "i")
   
 #Not needed since the co-ords are automatically scaled to zero now  
 #  xs <- floor(BLData$GrnX[,array] - min(BLData$GrnX[,array]))
 #  ys <- floor(BLData$GrnY[,array] - min(BLData$GrnY[,array]))
+
+  idx = which(names(BLData) == whatToPlot)
+
+  data = BLData[[idx]]		
 
   if (is.character(low)) 
     low <- col2rgb(low)/255
@@ -34,7 +38,7 @@ BLImagePlot <- function(BLData, array = 1, nrow = 18, ncol = 2,
 
   for(i in 1:ncol){
     idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
-    fground = BLData$G[idx,array]
+    fground = data[idx,array]
     yvalues = ys[idx]
 #    yvalues = BLData$GrnY[idx,array]
 
