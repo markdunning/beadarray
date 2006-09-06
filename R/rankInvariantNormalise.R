@@ -1,6 +1,13 @@
 ##Use normalize.invariant set to find a list of genes which do not change rank across arrays and then normalise to the 
 ##previously defined target distrbution
-rankInvariantNormalise = function(exprs, T){
+rankInvariantNormalise = function(exprs, T=NULL){
+
+if(is.null(T)){
+
+T = apply(exprs, 1, mean)
+
+}
+
 
 for (i in 1:ncol(exprs)){
 

@@ -5,47 +5,47 @@
 ##Function is work in progress!
 
 
-IlluminaDE = function(E, E.negs, s, s.negs,cond, ref){
+##E is the expression matrix from the BeadStudio output file
+##E.negs is the Signal columns from the qc file
+##s contains the BeadStDev values
+##s.negs is the Var columns from the qc value
+##cond is the indices of the condition arrays
+##ref is the indices of the reference arrays
 
 
-  if(length(cond) >1){
+
+IlluminaDE = function(E, E.negs, s, s.negs,cond,ref){
+
+  ##Find the columns relating to the condition array
+  ##I.cond is the expression values
+  ##s.cond is the standard deviation values
+  ##sigma_neg.ref is the standard deviations of the negative controls
+
   
-  I.cond = apply(E[,cond], 1, mean)
-
-  s.cond = apply(E[,cond], 1, sd)
-  s2.cond = var(E.negs[ref])
-  }
-
-  else{
-
     I.cond =E[,cond]
     s.cond =s[,cond]
-    s2.cond =s.negs[cond]
+    sigma_neg.cond=s.negs[cond]                                                                                                                                                                                                                                                                                                                                                                                                              =s.negs[cond]
+
+    ##Find the columns relating to the reference array
+    ##I.cond is the expression values
+    ##s.cond is the standard deviation values
+    ##sigma_neg.ref is the standard deviations of the negative controls
+
 
     
-    
-  }
-
-  if(length(ref) >1){
-    
-  I.ref = apply(E[,ref], 1, mean)
-
-  s.ref = apply(E[,ref], 1, sd)
-  s2.ref = var(E.negs[ref])
-}
-
-  else{
-
     I.ref=E[,ref]
     s.ref=s[,ref]
-    s2.ref=s.negs[ref]
+    sigma_neg.ref=s.negs[ref]
     
-  }
-  
+
+    ##Fit robust linear model
+    
    lm.cond = rlm(s.cond~I.cond)
 
   lm.ref = rlm(s.ref~I.ref)
 
+    ##Get coefficients a and b
+    
   a.ref = lm.ref$coefficients[1]
 
   b.ref = lm.ref$coefficients[2]
@@ -54,13 +54,14 @@ IlluminaDE = function(E, E.negs, s, s.negs,cond, ref){
 
   b.cond = lm.cond$coefficients[2]
 
+    
+    
+    
   tech.ref = a.ref + (2.5*b.ref*I.ref)
 
   tech.cond = a.cond + (2.5*b.cond*I.cond)
 
-
-
-  denom = sqrt(tech.ref^2 + tech.cond^2 + s2.ref + s2.cond)
+  denom = sqrt(tech.ref^2 + tech.cond^2 + sigma_neg.ref^2 + sigma_neg.cond^2)
 
 
   I = abs(I.cond - I.ref)
@@ -68,10 +69,8 @@ IlluminaDE = function(E, E.negs, s, s.negs,cond, ref){
   p = 2*pnorm(I /denom, lower.tail=FALSE)
 
 
-  mu.cond = mean(I.cond)
-  mu.ref = mean(I.ref)
-
-  Diffscore = 10 * sign(I.ref-I.cond)*log10(p)
+  
+  Diffscore = 10 * sign(I.cond-I.ref)*log10(p)
   
   Diffscore
 

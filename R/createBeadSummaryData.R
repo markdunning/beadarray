@@ -61,7 +61,13 @@ createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=seq(1:lengt
      else if((imagesPerArray == 2) && (j < ncol(BLData))){
        temp = rbind(BLData[BLData$ProbeID[,j] != 0,j], BLData[BLData$ProbeID[,j+1] != 0,j+1])
      }
+
+
    }
+
+##Change the standard deviation to the standard error
+
+BeadStDev = BeadStDev / sqrt(NoBeads)
 
 BSData<-new("ExpressionSetIllumina")
 

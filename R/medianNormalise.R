@@ -1,24 +1,23 @@
 "medianNormalise" <-
-function(BLData){
+function(exprs, log=TRUE){
 
-narrays = ncol(BLData$G)
+narrays = ncol(exprs)
 
-BLData$G = log2(as.matrix(BLData$G))
+exprs = log2(as.matrix(exprs))
 
-med = median(BLData$G,na.rm=TRUE)
+med = median(exprs,na.rm=TRUE)
 
 for(i in 1:narrays){
 
-BLData$G[,i]  = BLData$G[,i] - median(BLData$G[,i], na.rm=TRUE)
+exprs[,i]  = exprs[,i] - median(exprs[,i], na.rm=TRUE)
 
 }
 
 
-BLData$G = BLData$G + med
+exprs = exprs + med
 
-BLData$normalised = "median"
 
-return(BLData)
+exprs
 
 }
 
