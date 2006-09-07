@@ -56,8 +56,6 @@ findHighestChis(BLData, 1, limit=16)
 
 plotBeadLocations(BLData, ProbeID=278, array=1)
 
-probeDiagnostics(BLData, 278, 1)
-
 
 }
 

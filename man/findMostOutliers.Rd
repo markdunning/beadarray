@@ -21,6 +21,8 @@ to a list. Preliminary investigation suggests that bead types rarely have more t
 
 This function uses the default method of finding outliers using 3 median absolute deviations from the bead mean with raw (un-logged data).
 
+WARNING: THIS FUNCTION WILL NOT BE EFFICIENT FOR WHOLE GENOME DATA
+
 }
 \value{
 vector of numeric values giving the ProbeIDs of bead types which have more than 'limit' number of outliers.

@@ -6,7 +6,7 @@
 \title{Red, Green Intensity List - class}
 
 \description{
-A simple list-based class for storing red and green channel foreground and background intensities for a batch of spotted microarrays.
+A simple list-based class for storing red and green channel foreground and background intensities for an Illumina experiment.
 
 }
 
@@ -14,15 +14,15 @@ A simple list-based class for storing red and green channel foreground and backg
 \code{BeadLevelList} objects can be created by \code{new("BeadLevelList",BLData)} where \code{BLData} is a list.
 Objects of this class contains no slots (other than \code{.Data}), but objects should contain the following list components:
 \tabular{ll}{
-  \code{R}:\tab numeric matrix containing the red (cy5) foreground intensities.  Rows correspond to spots and columns to arrays.\cr
-  \code{G}:\tab numeric matrix containing the green (cy3) foreground intensities\cr
-  \code{Rb}:\tab numeric matrix containing the red (cy5) background intensities\cr
-  \code{Gb}:\tab numeric matrix containing the green (cy3) background intensities
+  \code{R}:\tab numeric matrix containing the red (foreground intensities.  Rows correspond to spots and columns to arrays.\cr
+  \code{G}:\tab numeric matrix containing the green foreground intensities\cr
+  \code{Rb}:\tab numeric matrix containing the red  background intensities\cr
+  \code{Gb}:\tab numeric matrix containing the green background intensities
 }
 
 
 All of the matrices should have the same dimensions.
-The row dimension of \code{targets} should match the column dimension of the matrices.
+The row dimension of \code{targets} should match the column dimension of the matrices. Only the \code{G} matrix is created when single channel data is read.
 }
 
 \section{Methods}{
@@ -33,7 +33,7 @@ In addition, \code{BeadLevelList} objects can be \link[limma:subsetting]{subsett
 
 }
 
-\author{Gordon Smyth}
+\author{Mark Dunning and Mike Smith}
 
 \keyword{classes}
 \keyword{data}

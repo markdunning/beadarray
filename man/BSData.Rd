@@ -1,10 +1,10 @@
 \name{BSData}
 \alias{BSData}
 \docType{data}
-\title{BeadSummaryList for the example experiment}
+\title{ExpressionSetIllumina object for the example experiment}
 \description{
-The BeadSummaryList object for the 4 example arrays included in this library. }
+The ExpressionSetIllumina object for the 18 example whole genome arrays included in this library. }
 \usage{data(BSData)}
-\seealso{\code{\link[beadarray:BeadSummarylList]{BeadSummaryList}}}
+\seealso{\code{\link[beadarray:ExpressionSetIllumina]{ExpressionSetIllumina}}}
 
 \keyword{datasets}

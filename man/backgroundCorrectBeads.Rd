@@ -46,7 +46,7 @@ An 'BeadLevelList' object in which components 'R' and 'G' are background
 }
 
 
-\author{Mark Dunning}
+\author{Mark Dunning based on the limma function}
 
 \examples{
 
@@ -58,7 +58,7 @@ BLData.bc = backgroundCorrectBeads(BLData)
 
 min(BLData.bc$G)
 
-#Use 'minimum' method to stop negative values
+#Use 'minimum' method to stop negative values appearing
 
 BLData.min = backgroundCorrectBeads(BLData, method="minimum")
 

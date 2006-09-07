@@ -33,7 +33,7 @@ Expression matrix with the same dimensions as the input
 
 data(BSData)
 
-BSData.ri  = assayDataElementReplace(BSData, "exprs", rankInvariantNormalise(BSData))
+BSData.ri  = assayDataElementReplace(BSData, "exprs", rankInvariantNormalise(exprs(BSData)))
 
 
 

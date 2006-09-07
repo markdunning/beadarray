@@ -23,6 +23,7 @@ robustness of the experiment.
 We show a Poisson distribution with mean ~50,000 / 1500 on top of the histogram so it can be seen how different the numbers of beads we observe is to
 how many we expect to see.
 
+WARNING: THIS FUNCTION WILL NOT BE EFFICIENT FOR WHOLE GENOME DATA
 
 }
 \value{

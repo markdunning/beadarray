@@ -1,82 +1,37 @@
-#example usage to calculate DiffScore of array 1 (ref) vs array 2 (cond)
-#df = IlluminaDE(BSData$R, QC$AVG.Signal[,11], BSData$BeadStDev, QC$Var[,11], 2,1)
+DiffScore = function(BSData, QC, cond, ref){
 
+  Avg_Intensity_Ref = exprs(BSData)[,ref]
+  Avg_Intensity_Cond = exprs(BSData)[,cond]
 
-##Function is work in progress!
+  BeadStDev_Ref = se.exprs(BSData)[,ref]
+  BeadStDev_Cond = se.exprs(BSData)[,cond]
 
+  SigmaRef = 2.5*QC$Var[ref,11]
+  SigmaCond = 2.5*QC$Var[cond,11]
 
-##E is the expression matrix from the BeadStudio output file
-##E.negs is the Signal columns from the qc file
-##s contains the BeadStDev values
-##s.negs is the Var columns from the qc value
-##cond is the indices of the condition arrays
-##ref is the indices of the reference arrays
+  lm.ref = rlm(BeadStDev_Ref~Avg_Intensity_Ref)
+  lm.cond = rlm(BeadStDev_Cond~Avg_Intensity_Cond)
 
+  Aref = lm.ref$coefficients[1]
+  Bref = lm.ref$coefficients[2]
 
-
-IlluminaDE = function(E, E.negs, s, s.negs,cond,ref){
-
-  ##Find the columns relating to the condition array
-  ##I.cond is the expression values
-  ##s.cond is the standard deviation values
-  ##sigma_neg.ref is the standard deviations of the negative controls
-
+  Acond = lm.cond$coefficients[1]
+  Bcond = lm.cond$coefficients[2]
   
-    I.cond =E[,cond]
-    s.cond =s[,cond]
-    sigma_neg.cond=s.negs[cond]                                                                                                                                                                                                                                                                                                                                                                                                              =s.negs[cond]
-
-    ##Find the columns relating to the reference array
-    ##I.cond is the expression values
-    ##s.cond is the standard deviation values
-    ##sigma_neg.ref is the standard deviations of the negative controls
-
-
-    
-    I.ref=E[,ref]
-    s.ref=s[,ref]
-    sigma_neg.ref=s.negs[ref]
-    
-
-    ##Fit robust linear model
-    
-   lm.cond = rlm(s.cond~I.cond)
-
-  lm.ref = rlm(s.ref~I.ref)
-
-    ##Get coefficients a and b
-    
-  a.ref = lm.ref$coefficients[1]
-
-  b.ref = lm.ref$coefficients[2]
-
-  a.cond = lm.cond$coefficients[1]
-
-  b.cond = lm.cond$coefficients[2]
-
-    
-    
-    
-  tech.ref = a.ref + (2.5*b.ref*I.ref)
-
-  tech.cond = a.cond + (2.5*b.cond*I.cond)
-
-  denom = sqrt(tech.ref^2 + tech.cond^2 + sigma_neg.ref^2 + sigma_neg.cond^2)
-
-
-  I = abs(I.cond - I.ref)
   
-  p = 2*pnorm(I /denom, lower.tail=FALSE)
 
+Denom1 = (Aref +  (2.5*Bref*Avg_Intensity_Ref))^2 + SigmaRef^2
 
-  
-  Diffscore = 10 * sign(I.cond-I.ref)*log10(p)
-  
-  Diffscore
+Denom2 = (Acond +  (2.5*Bcond*Avg_Intensity_Cond))^2 + SigmaCond^2
+
+FullDenom = sqrt(Denom1 + Denom2)
+
+Numerator = abs(Avg_Intensity_Cond - Avg_Intensity_Ref)
+
+Diff_Pvalue = 2*pnorm(Numerator/FullDenom, lower.tail=FALSE)
+
+DiffScore = -10*sign(Avg_Intensity_Cond - Avg_Intensity_Ref)*log10(Diff_Pvalue)
+
+DiffScore
 
 }
-
-
-
-
-

@@ -1,5 +1,5 @@
 
-BeadLevelNormalise = function(targets, nbeads=1433, imageManipulation="sharpen", backgroundCorrect="none", probes=NULL,imagesPerArray=2){
+BeadLevelNormalise = function(targets, imageManipulation="sharpen", backgroundCorrect="none", probes=NULL,imagesPerArray=2){
 
   
 print("Calculating Target distribution...")

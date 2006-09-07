@@ -38,13 +38,16 @@ setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
 
 
 setMethod("exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
-
-setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "BeadStDev"))
+setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "se.exprs"))
 
 
 
 setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
   assayDataElementReplace(object, "exprs", value)
+})
+
+setReplaceMethod("se.exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
+  assayDataElementReplace(object, "se.exprs", value)
 })
 
 

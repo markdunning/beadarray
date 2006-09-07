@@ -15,6 +15,8 @@ backgroundNormalise(exprs, QC)
 }
 \details{
 
+This function implements the background normalisation method recommened by Illumina. All normalisation options in BeadStudio (with the exception of no normalisation) include background normalisation as a first step.
+
 The QC object contains averaged values for the Illumina negative controls placed on each array in an experiment. For background normalisation, we simply 
 subtract the value of the negative control on a particular array from all bead summary values on that array.
 
@@ -25,7 +27,7 @@ It is therefore not advisable if you wish to analyse data on a log2 scale.
 
 
 \value{
-Expression matrix with the same dimensions as the input
+Expression matrix containing normalise values with the same dimensions as the input
 
 }
 \author{Mark Dunning}
@@ -36,10 +38,12 @@ Expression matrix with the same dimensions as the input
 data(BSData)
 data(QC)
 
-BSData.bgnorm = backgroundNormalise(BSData, QC)
+BSData.bgnorm = assayDataElementReplace(BSData, "exprs", backgroundNormalise(exprs(BSData), QC))
 
 
 
 }
+
+\seealso{\code{\link{readQC}}}
 
 \keyword{methods}

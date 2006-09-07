@@ -7,11 +7,12 @@ Normalizes expression intensities so that the intensities or
      log-ratios have equal median values across a series of arrays.
 }
 \usage{
-medianNormalise(BLData)
+medianNormalise(exprs, log=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{can be either an BeadLevelList object or an BeadSummaryList object.} 
+  \item{exprs}{can be either the G matrix from a BeadLevelList object or matrix of expression values} 
+  \item{log}{if TRUE then do a log2 transformation prior to normalising}
 }
 \details{
 Normalization is intended to remove from the expression measures any systematic trends which arise from the microarray technology rather than from differences between the probes or between the target RNA samples hybridized to the arrays.
@@ -30,13 +31,12 @@ log2 scale
 
 \examples{
 
-data(BLData)
+data(BSData)
 
-BLData.med = medianNormalise(BLData)
+BSData.med = assayDataElementReplace(BSData, "exprs", medianNormalise(exprs(BSData)))
 
-#All distributions are fixed to have same median
 
-boxplot(BLData.med$G~col(BLData.med$G))
+
 
 }
 

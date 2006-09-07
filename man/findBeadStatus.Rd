@@ -50,7 +50,7 @@ outputValid parameter is specified.
   \item{outliers}{beads which are calculated as outliers}
 }
 
-\author{Mark Dunning}
+\author{Mike Smith and Mark Dunning}
 
 \seealso{ \code{\link{findAllOutliers}} }
 

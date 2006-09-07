@@ -8,12 +8,12 @@ Function to display an XY plot of the average values of genes from two different
 If two array indices are given as parameters then two arrays will be compared, otherwise the red and green channels from one array will be plotted
 }
 \usage{
-plotXY.beads(BSData, array1, array2 = 0, log = FALSE, identify = FALSE,
+plotXY.beads(exprs, array1, array2 = 0, log = FALSE, identify = FALSE,
 label = FALSE, fold = 2, highlight = NULL, sampleSize = NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BSData}{BeadSummaryList object} 
+  \item{exprs}{expression matrix from an ExpressionSet or eSet object} 
   \item{array1}{numeric value for the first sample to be plotted}
   \item{array2}{numeric value for the second sample to be plotted}
   \item{log}{if TRUE all data will be log2-transformed}

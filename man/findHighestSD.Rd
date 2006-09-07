@@ -20,6 +20,8 @@ The standard deviation for bead intensities of each bead type is calculated in t
 ProbeID of the bead type to a list which we return.
 
 The standard deviation that we calculate is based on the log2 bead intensities.
+
+WARNING: THIS FUNCTION WILL NOT BE EFFICIENT FOR WHOLE GENOME DATA
 }
 
 \value{
@@ -46,7 +48,7 @@ findHighestSD(BLData, 1, limit=0.7)
 
 plotBeadIntensities(BLData, 678,1)
 
-probeDiagnostics(BLData, 678, 1)
+
 
 }
 

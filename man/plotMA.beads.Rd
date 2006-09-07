@@ -9,12 +9,12 @@ If two array indices are given then the MA plot will be between the two arrays, 
 
 }
 \usage{
-plotMA.beads(BSData, array1, array2 = 0, identify = FALSE, label =
+plotMA.beads(exprs, array1, array2 = 0, identify = FALSE, label =
 FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2, sampleSize = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BSData}{BeadSummaryList object}
+  \item{exprs}{expression matrix from an ExpressionSet or eSet}
   \item{array1}{numeric value to specify the first sample to be plotted}
   \item{array2}{numeric value to specify the second sample to be plotted (optional)}
   \item{identify}{if TRUE the user will be able to click on points on the plot and bring up useful information, such as ProbeID, gene information etc}

@@ -24,7 +24,7 @@ We find the outliers for each bead type on the array in turn using the \code{\li
 }
 
 \value{
- numeric vector giving the beadIDs (in the range 1 to total number of beads on the array) of all the beads that are outliers for their bead type.
+ numeric vector giving the row indices of BLData (in the range 1 to total number of beads on the array) of all the beads that are outliers for their bead type.
 }
 
 \author{Mark Dunning}

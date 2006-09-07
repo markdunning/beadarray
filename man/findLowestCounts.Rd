@@ -23,6 +23,8 @@ The function simply loops through all the different ProbeIDs found on the array 
 is less than 'limit' then the bead type is added to a list which is returned by the function.
 
 The default value for 'limit' is 24 which is the 5th percentile of the appropriate Poisson distribution. 
+
+WARNING: THIS FUNCTION WILL NOT BE EFFICIENT FOR WHOLE GENOME DATA
 }
 \value{
   numeric vector giving the ProbeIDs of the bead types which occur less than 'limit' times on the array.
