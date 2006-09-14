@@ -22,7 +22,7 @@ setMethod("initialize", "ExpressionSetIllumina",
                            annotation = annotation,
                            QC = QC
                                     )
-            validObject(.Object)
+            #validObject(.Object)
             .Object
 
           })

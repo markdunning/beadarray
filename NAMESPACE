@@ -1,0 +1,5 @@
+useDynLib(beadarray)
+
+exportClasses(ExpressionSetIllumina)
+
+export(plotMAXY, readQC)

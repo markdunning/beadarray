@@ -5,7 +5,7 @@ Date: 2006-08-21
 Author: Mark Dunning, Mike Smith, Isabelle Camilier
 Maintainer: Mark Dunning <md392@cam.ac.uk>
 Description: The package is able to read pre-processed Bead Summary data as well as re-constructing bead-level data using raw TIFF images. Methods for quality control and low-level analysis are provided.
-Depends: limma, Biobase, affy
+Depends: limma, Biobase, affy, methods
 License: GPL
 biocViews: Microarray, OneChannel, QualityControl, Preprocessing
  
