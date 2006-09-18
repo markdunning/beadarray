@@ -1,5 +1,12 @@
 useDynLib(beadarray)
+import(tools, Biobase)
 
 exportClasses(ExpressionSetIllumina)
+exportMethods(initialize, se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize)
 
-export(plotMAXY, readQC)
+export(backgroundCorrect, BeadLevelNormalise, imageplot, createBeadSummaryData, DiffScore,
+       findAllOutliers, getDimensions, getProbeCoords, screenSetup, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, backgroundNormalise, plotBeadIntensities,
+       plotBeadLocations, plotMAXY, plotOnSAM, readQC, singleQCPlot, plotQC, readBeadLevelData, readBeadSummaryData, readBeadSummaryTargets, readBeadTargets, checkRandomness, findBeadStatus, findHighestChis, findMostOutliers, findLowestCounts)
+
+
+
