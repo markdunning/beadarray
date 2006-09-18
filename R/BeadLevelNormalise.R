@@ -9,7 +9,7 @@ if(imagesPerArray==2){
   
 BLData = readBeadImages(targets[1:2,], imageManipulation=imageManipulation)
 
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 G = rbind(BLData$G[,1], BLData$G[,2])
 
@@ -27,7 +27,7 @@ else if (imagesPerArray==1){
 
 BLData = readBeadImages(targets[1,], imageManipulation=imageManipulation)
   
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 o = order(BLData$G[,1], decreasing=TRUE)
 
@@ -46,7 +46,7 @@ if(imagesPerArray==1){
 
 BLData = readBeadImages(targets[i,], imageManipulation=imageManipulation)
 
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 o = order(BLData$G[,1], decreasing=TRUE)
 
@@ -62,7 +62,7 @@ arraysToRead = arraysToRead+2
 
 BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)  
   
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 G = rbind(BLData$G[,1], BLData$G[,2])
 
@@ -102,7 +102,7 @@ else{
 
 BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)
 
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 BLData$G = normalize.qspline(as.matrix(BLData$G), target=T)
 
@@ -130,7 +130,7 @@ for(i in 2:(narrays)){
 
 BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulation)
 
-BLData = backgroundCorrectBeads(BLData, method=backgroundCorrect)
+BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
 BLData$G = normalize.qspline(as.matrix(BLData$G), target=T)
 
