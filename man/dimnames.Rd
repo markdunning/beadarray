@@ -1,15 +1,15 @@
 \name{dimnames}
 \alias{dimnames.BeadLevelList}
-\alias{dimnames.BeadSummaryList}
+
 \title{Retrieve the Dimension Names of an BeadLevelList or BeadSummaryList Object}
 \description{
 Retrieve the dimension names of a microarray data object.
 }
 \usage{
-\method{dimnames}{BeadSummaryList}(x)
+\method{dimnames}{BeadLevelList}(x)
 }
 \arguments{
-  \item{x}{an object of class \code{BeadLevelList}, \code{MAList} or \code{SegList}}
+  \item{x}{an object of class \code{BeadLevelList}}
 }
 \details{
 The dimensionnames of an microarray object are the same as those of the most important matrix component of that object.

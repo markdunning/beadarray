@@ -1,12 +1,12 @@
-\name{BLImagePlot}
-\alias{BLImagePlot}
+\name{imageplot}
+\alias{imageplot}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Image plot of BLData object}
+\title{imageplot for BeadArrays object}
 \description{
-Plots an image plot of a bead level data.  
+Plots an image plot of a bead level data object.  
 }
 \usage{
-BLImagePlot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
+imageplot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
 high = NULL, ncolors = 123, whatToPlot="G")
 }
 %- maybe also 'usage' for other objects documented here.

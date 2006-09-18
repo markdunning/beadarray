@@ -1,5 +1,5 @@
-\name{backgroundCorrectBeads}
-\alias{backgroundCorrectBeads}
+\name{backgroundCorrect}
+\alias{backgroundCorrect}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Background Correct a BeadLevelList object }
 \description{
@@ -8,7 +8,7 @@ Adapted from 'limma' backgroundCorrect function to correct R intensities of a BL
 }
 
 \usage{
-backgroundCorrectBeads(BLData, method = "subtract", offset = 0)
+backgroundCorrect(BLData, method = "subtract", offset = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -54,13 +54,13 @@ data(BLData)
 
 #default is to simply subtract Rb from R
 
-BLData.bc = backgroundCorrectBeads(BLData)
+BLData.bc = backgroundCorrect(BLData)
 
 min(BLData.bc$G)
 
 #Use 'minimum' method to stop negative values appearing
 
-BLData.min = backgroundCorrectBeads(BLData, method="minimum")
+BLData.min = backgroundCorrect(BLData, method="minimum")
 
 min(BLData.min$G)
 
