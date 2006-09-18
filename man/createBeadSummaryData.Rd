@@ -8,7 +8,7 @@ Produce bead averages for each bead type used in an experiment on a specified se
 }
 \usage{
 createBeadSummaryData(BLData, log=FALSE, n=3,
-arrays=seq(1:length(BLData$G[1,])), imagesPerArray = 2, probes = NULL)
+arrays=nrow(BLData@G), imagesPerArray = 2, probes = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -2,6 +2,8 @@
 \docType{class}
 \alias{BeadLevelList-class}
 \alias{initialize,BeadLevelList-method}
+\alias{[.BeadLevelList}
+\alias{print.BeadLevelList}
 
 \title{Class "BeadLevelList" }
 

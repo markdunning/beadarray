@@ -45,20 +45,13 @@ data(BLData)
 
 #By default, outliers found by Illumina method are highlighted
 
-plotBeadIntensities(BLData, 2, 1)
+ids = intersect(BLData@ProbeID[,1], BLData@ProbeID[,3])[1:10]
 
-plotBeadIntensities(BLData, 2, 1, log=TRUE)
+plotBeadIntensities(BLData, ProbeIDs=ids[1], arrays=1, ylim=range(9,11))
 
-plotBeadIntensities(BLData, 2, 1, log=TRUE, n=5)
+plotBeadIntensities(BLData, ProbeIDs=ids[1], arrays=c(1,3), ylim=range(9,11))
 
-#Increasing n selects only the most extreme outliers
-
-plotBeadIntensities(BLData, 4279, 1, log=TRUE, n=3)
-
-plotBeadIntensities(BLData, 4279, 1, log=TRUE, n=4.5)
-
-plotBeadIntensities(BLData, 4279, 1, log=TRUE, n=6)
-
+plotBeadIntensities(BLData, ProbeIDs=ids, arrays=c(1,3), ylim=range(9,11))
 
 
 }

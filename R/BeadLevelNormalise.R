@@ -11,11 +11,11 @@ BLData = readBeadImages(targets[1:2,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-G = rbind(BLData$G[,1], BLData$G[,2])
+G = rbind(BLData@G[,1], BLData@G[,2])
 
 plot(density(log2(G),na.rm=TRUE))
 
-o = order(BLData$G[,1], decreasing=TRUE)
+o = order(BLData@G[,1], decreasing=TRUE)
 
 T = G[o]
 
@@ -29,11 +29,11 @@ BLData = readBeadImages(targets[1,], imageManipulation=imageManipulation)
   
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-o = order(BLData$G[,1], decreasing=TRUE)
+o = order(BLData@G[,1], decreasing=TRUE)
 
-T = BLData$G[o,1]
+T = BLData@G[o,1]
 
-plot(density(log2(BLData$G[,1]),na.rm=TRUE))
+plot(density(log2(BLData@G[,1]),na.rm=TRUE))
 }
 
 
@@ -48,11 +48,11 @@ BLData = readBeadImages(targets[i,], imageManipulation=imageManipulation)
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-o = order(BLData$G[,1], decreasing=TRUE)
+o = order(BLData@G[,1], decreasing=TRUE)
 
-lines(density(log2(BLData$G[,1]),na.rm=TRUE))
+lines(density(log2(BLData@G[,1]),na.rm=TRUE))
 
-T = T + BLData$G[o,1]
+T = T + BLData@G[o,1]
 
 }
 
@@ -64,7 +64,7 @@ BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulat
   
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-G = rbind(BLData$G[,1], BLData$G[,2])
+G = rbind(BLData@G[,1], BLData@G[,2])
 
 o = order(G, decreasing=TRUE)
 
@@ -104,7 +104,7 @@ BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulat
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-BLData$G = normalize.qspline(as.matrix(BLData$G), target=T)
+BLData@G = normalize.qspline(as.matrix(BLData@G), target=T)
 
 BSData = createBeadSummaryData(BLData, imagesPerArray=imagesPerArray, probes=probes)
 
@@ -132,7 +132,7 @@ BLData = readBeadImages(targets[arraysToRead,], imageManipulation=imageManipulat
 
 BLData = backgroundCorrect(BLData, method=backgroundCorrect)
 
-BLData$G = normalize.qspline(as.matrix(BLData$G), target=T)
+BLData@G = normalize.qspline(as.matrix(BLData@G), target=T)
 
 
 BSData2 = createBeadSummaryData(BLData, imagesPerArray=imagesPerArray, probes=probes)

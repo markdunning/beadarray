@@ -10,7 +10,8 @@
 \alias{initialize,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ANY-method}
-
+\alias{NoBeads}
+\alias{Detection}
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
   Expression BeadArrays.
@@ -83,6 +84,15 @@
        slot.}
 
      
+
+     \item{\code{NoBeads(ExpressionSetIllumina)}, \code{NoBeads(ExpressionSetIllumina,matrix)<-}}{Access and
+       set elements named \code{NoBeads} in the \code{AssayData}
+       slot.}
+
+
+     \item{\code{Detection(ExpressionSetIllumina)}, \code{Detection(ExpressionSetIllumina,matrix)<-}}{Access and
+       set elements named \code{Detection} in the \code{AssayData}
+       slot.}
      
      \item{\code{object[(index)}:}{Conducts subsetting of matrices and
        phenoData and reporterInfo components }

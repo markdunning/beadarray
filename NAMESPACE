@@ -1,12 +1,12 @@
 useDynLib(beadarray)
 import(tools, Biobase)
 
-exportClasses(ExpressionSetIllumina)
-exportMethods(initialize, se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize)
+exportClasses(ExpressionSetIllumina, BeadLevelList)
+exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize)
 
-export(backgroundCorrect, BeadLevelNormalise, imageplot, createBeadSummaryData, DiffScore,
-       findAllOutliers, getDimensions, getProbeCoords, screenSetup, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, backgroundNormalise, plotBeadIntensities,
-       plotBeadLocations, plotMAXY, plotOnSAM, readQC, singleQCPlot, plotQC, readBeadLevelData, readBeadSummaryData, readBeadSummaryTargets, readBeadTargets, checkRandomness, findBeadStatus, findHighestChis, findMostOutliers, findLowestCounts)
+export(NoBeads, Detection, backgroundCorrect, BeadLevelNormalise, imageplot, createBeadSummaryData, DiffScore,
+       findAllOutliers, screenSetup, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, backgroundNormalise, plotBeadIntensities,
+       plotBeadLocations, plotMAXY, plotOnSAM, readQC, singleQCPlot, plotQC, readBeadLevelData, readBeadSummaryData, readBeadSummaryTargets, readBeadTargets,findBeadStatus, getProbeIntensities, cbind.BeadLevelList, rbind.BeadLevelList, "[.BeadLevelList", print.BeadLevelList)
 
 
 

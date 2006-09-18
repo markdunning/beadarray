@@ -1,21 +1,20 @@
 \name{plotBeadLocations}
 \alias{plotBeadLocations}
-\alias{plotCoords}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Show bead locations}
 \description{
 Shows location of a set of beads on an array. The beads can either be defined to be all beads with particular ProbeIDs or individual beadIDs
 }
 \usage{
-plotBeadLocations(BLData, ProbeIDs=NULL, beadIDs=NULL, array, label=FALSE,...)
+plotBeadLocations(BLData, ProbeIDs=NULL, BeadIDs=NULL, array, SAM=FALSE,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{a BeadLevelList object}
   \item{ProbeIDs}{a vector of ProbeIDs to plot}
-  \item{beadIDs}{a vector of beadIDs to plot}
+  \item{BeadIDs}{a vector of beadIDs to plot}
   \item{array}{numeric value specifying the array}
-  \item{label}{if TRUE every bead plotted with by given a numeric identifier on the plot}		
+  \item{SAM}{if TRUE then the data is assumed to be taken from a SAM array and therefore hexagonal}
   \item{\dots}{further graphical parameters to \code{plot}}
 }
 \details{

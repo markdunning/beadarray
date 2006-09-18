@@ -1,48 +1,44 @@
-"plotBeadLocations" <- function(BLData, ProbeIDs=NULL, beadIDs=NULL, array, label=FALSE,...){
+"plotBeadLocations" <- function(BLData, ProbeIDs=NULL, BeadIDs=NULL, array, SAM=FALSE,...){
 
-dims = getDimensions(BLData, array)
-xmax = dims$xmax
-ymax = dims$ymax
+xmax = max(BLData@GrnX)
+ymax = max(BLData@GrnY)
 
+plot(1, xlim=range(0:xmax), ylim=range(0:ymax) ,type="n")
 
-if(!is.null(ProbeIDs)){
+if(!(is.null(ProbeIDs))){
 
-xs = ys = NULL
-
-for(i in 1:length(ProbeIDs)){
-
-xs = c(xs, getProbeCoords(BLData, ProbeIDs[i], array)[,1])
-ys = c(ys, getProbeCoords(BLData, ProbeIDs[i], array)[,2])
-
+xs = BLData@GrnX[which(BLData@ProbeID[,array] %in% ProbeIDs),array]
+ys = BLData@GrnY[which(BLData@ProbeID[,array] %in% ProbeIDs),array]
 
 }
-
-coords = matrix(nrow=length(xs), ncol=2)
-
-#standardise the coordinates to start from 0
-
-coords[,1] = xs 
-coords[,2] = ys 
-
-
-plotCoords(xmax, ymax, coords, label=label,...)
-
-
-}
-
 else{
 
-coords=matrix(nrow=length(beadIDs), ncol=2)
+xs = BLData@GrnX[BeadIDs,array]
+ys = BLData@GrnY[BeadIDs,array]
+ 
 
-coords[,1] = BLData$GrnX[beadIDs, array] - min(BLData$GrnX[,array])
-coords[,2] = BLData$GrnY[beadIDs, array] - min(BLData$GrnY[,array])
-
-
-plotCoords(xmax, ymax, coords,label=label,...)
 
 }
 
+if(SAM) {
+
+yy = c(ymax/2, 0, 0, ymax/2, ymax, ymax)
+
+xx = c(0,xmax/4, 0.75*xmax, xmax, 0.75*xmax, xmax/4)
+
+polygon(xx, yy)
+
 }
+
+else polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
+
+
+points(xs, ys)
+
+
+}
+
+
 
 plotBeadIntensities=function(BLData, ProbeIDs, arrays, log=FALSE, n=3, ProbeCols=NULL,ylim=NULL,...){
 
@@ -58,19 +54,19 @@ ProbeCols = rainbow(n=length(ProbeIDs), start=0, end=5/6)
 
 if(is.null(ylim)) ylim=range(5,12)
 
-plot(4, xlim=range(0,nplots), ylim=ylim, type="n")
+plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE)
 count=1
 
 
 for(i in 1:length(arrays)){
-
+j=1
 for(j in 1:length(ProbeIDs)){
 
 I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=TRUE)
 
 o = findBeadStatus(BLData, probes = ProbeIDs[j], array=arrays[i], log=TRUE, n=n)
 
-o = log2(BLData$G[o,arrays[i]])
+o = log2(BLData@G[o,arrays[i]])
 
 boxplot(I, at=count-0.5, add=TRUE, axes=FALSE, col=ProbeCols[j])
 
@@ -87,79 +83,6 @@ abline(v=count-1)
 
 }
 
-"plotCoords" <-
-function(xmax, ymax, coords, label,...){
-
-plotArray(xmax, ymax,...)
-
-#plotArray draws out the hexagonal shape of the array and divides into 8 sections
-
-
-if(label){
-
-
-
-#On actual arrays, the y co-ordinates are arranged with y=0 at the top of the array, 
-#whereas in R we plot with y=0 at the bottom of the plot. Therefore we transform the 
-#y co-ordinates before plotting
-
-text(coords[,1], (ymax - coords[,2]),labels = seq(1:length(coords[,1])),...)
-
-}
-
-else{
-
-points(coords[,1], (ymax - coords[,2]),...)
-
-}
-
-
-}
-
-"plotArray" <-
-function(xmax, ymax, SAM=TRUE,...){
-
-  plot(0,type="n",xlab="",ylab="",ylim=range(0,ymax), xlim=range(0,xmax))
-
-if(!SAM){
-
-  polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
-
-}
-
-
-else{
-
-
-
-
-
-#Plots out the hexagonal arrangement of an array array 
-
-ys = c(ymax/2, 0, 0, ymax/2, ymax, ymax)
-
-xs = c(0,xmax/4, 0.75*xmax, xmax, 0.75*xmax, xmax/4)
-
-polygon(xs, ys)
-
-#Plot lines through centre of hexagon
-
-abline(v=xmax/2)
-
-abline(h=ymax/2)
-
-
-#Plot circle of radius xmax/4 at the centre
-r= xmax/4
-
-theta<-seq(0, 2*pi, length=100)
-
-lines(r*cos(theta)+xmax/2, r*sin(theta)+ymax/2)
-
-}
-
-}
-
 
 "imageplot"<-function(BLData, array = 1, nrow = 18, ncol = 2,
                         low = NULL, high = NULL, ncolors = 123, whatToPlot ="G"){
@@ -167,12 +90,11 @@ lines(r*cos(theta)+xmax/2, r*sin(theta)+ymax/2)
   par(mar = c(2,1,1,1), xaxs = "i")
   
 #Not needed since the co-ords are automatically scaled to zero now  
-#  xs <- floor(BLData$GrnX[,array] - min(BLData$GrnX[,array]))
-#  ys <- floor(BLData$GrnY[,array] - min(BLData$GrnY[,array]))
+#  xs <- floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
+#  ys <- floor(BLData@GrnY[,array] - min(BLData@GrnY[,array]))
 
-  idx = which(names(BLData) == whatToPlot)
 
-  data = BLData[[idx]]		
+  data = slot(BLData, whatToPlot)
 
   if (is.character(low)) 
     low <- col2rgb(low)/255
@@ -191,8 +113,8 @@ lines(r*cos(theta)+xmax/2, r*sin(theta)+ymax/2)
   col <- rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
         high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
 
-  xs <- floor(BLData$GrnX[,array])
-  ys <- floor(BLData$GrnY[,array])
+  xs <- floor(BLData@GrnX[,array])
+  ys <- floor(BLData@GrnY[,array])
 
   xgrid <- floor(seq(0, max(xs), by = max(xs)/ncol))
   ygrid <- floor(seq(0, max(ys), by = max(ys)/nrow))
@@ -203,7 +125,7 @@ lines(r*cos(theta)+xmax/2, r*sin(theta)+ymax/2)
     idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
     fground = data[idx,array]
     yvalues = ys[idx]
-#    yvalues = BLData$GrnY[idx,array]
+#    yvalues = BLData@GrnY[idx,array]
 
     out <- .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
               result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
@@ -233,7 +155,7 @@ screenSetup=function(BLData){
 
   l=grid.locator(unit="npc")
 
-  y = as.double(strtrim(as.character(l$y),5))
+  y = as.double(strtrim(as.character(l@y),5))
 
   
   if(y > 0.9 & y<1){
@@ -314,7 +236,7 @@ if(mode == "fg"){
 
  for(i in 1:96){
 
-   values[i] = median(log2(BLData$R[,i]),na.rm=TRUE)
+   values[i] = median(log2(BLData@R[,i]),na.rm=TRUE)
  }
  
 
@@ -323,7 +245,7 @@ if(mode == "fg"){
 if(mode == "bg"){
 
   for(i in 1:96){
-    values[i] = median(log2(BLData$Rb[,i]),na.rm=TRUE)
+    values[i] = median(log2(BLData@Rb[,i]),na.rm=TRUE)
   }
   
 
@@ -377,7 +299,7 @@ if(label){
 text(xs[3], ys[4], array_index)
 }
 
-#text(xs[3], ys[4], BLData$other$SAMPLE[1,array_index])
+#text(xs[3], ys[4], BLData@other@SAMPLE[1,array_index])
 
 xs = xs + 1/12
 
@@ -394,10 +316,10 @@ while(doLoop){
 
 l=grid.locator(unit="npc")
 
-x.clicked = strtrim(as.character(l$x),5)
+x.clicked = strtrim(as.character(l@x),5)
 print(l)
 
-y.clicked = strtrim(as.character(l$y),5)
+y.clicked = strtrim(as.character(l@y),5)
 
 y.clicked = 8-(as.double(y.clicked)*8)
 
@@ -423,9 +345,9 @@ os= o[[ArrayClickedOn]]
 
 #Transform x and y coordinates to range 0,1
 
-xs.npc = (BLData$x[os, ArrayClickedOn] - min(BLData$x[,ArrayClickedOn])) / max(BLData$x[os, ArrayClickedOn])*0.9+0.01
+xs.npc = (BLData@x[os, ArrayClickedOn] - min(BLData@x[,ArrayClickedOn])) / max(BLData@x[os, ArrayClickedOn])*0.9+0.01
 
-ys.npc = (BLData$y[os, ArrayClickedOn] - min(BLData$y[,ArrayClickedOn])) / max(BLData$y[os, ArrayClickedOn])
+ys.npc = (BLData@y[os, ArrayClickedOn] - min(BLData@y[,ArrayClickedOn])) / max(BLData@y[os, ArrayClickedOn])
 
 grid.points(x=xs.npc, y=ys.npc, pch=16, size=unit(1,"mm"),gp=gpar(col="red"))
 
@@ -479,7 +401,7 @@ if(mode == "outliers"){
   
 if(mode == "fg"){
 
-  values = apply(log2(BLData$R), 2, median)
+  values = apply(log2(BLData@R), 2, median)
 
 }
 
@@ -518,7 +440,7 @@ else{ grid.polygon(xs,ys, gp=gpar(col=gray(control_intensity/scale)))}
 
 
 
-#text(xs[3], ys[4], BLData$other$SAMPLE[1,array_index])
+#text(xs[3], ys[4], BLData@other@SAMPLE[1,array_index])
 
 ys = ys - 1/12
 
@@ -533,7 +455,7 @@ while(doLoop){
 l=grid.locator()
 
 
-y.clicked = strtrim(as.character(l$y),5)
+y.clicked = strtrim(as.character(l@y),5)
 
 y.clicked = as.double(y.clicked)*12
 
@@ -555,9 +477,9 @@ os= o[[ArrayClickedOn]]
 
 #Transform x and y coordinates to range 0,1
 
-xs.npc = (BLData$x[os, ArrayClickedOn] - min(BLData$x[,ArrayClickedOn])) / max(BLData$x[os, ArrayClickedOn]+0.1)*0.7 + 0.01
+xs.npc = (BLData@x[os, ArrayClickedOn] - min(BLData@x[,ArrayClickedOn])) / max(BLData@x[os, ArrayClickedOn]+0.1)*0.7 + 0.01
 
-ys.npc = (BLData$y[os, ArrayClickedOn] - min(BLData$y[,ArrayClickedOn])) / max(BLData$y[os, ArrayClickedOn])
+ys.npc = (BLData@y[os, ArrayClickedOn] - min(BLData@y[,ArrayClickedOn])) / max(BLData@y[os, ArrayClickedOn])
 
 grid.points(x=xs.npc, y=ys.npc, pch=16, size=unit(0.5,"mm"),gp=gpar(col="red"))
 

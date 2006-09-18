@@ -2,6 +2,7 @@
 \alias{findBeadStatus}
 \alias{getProbeIndices}
 \alias{getProbeIndicesC}
+\alias{getProbeIntensities}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Find Outliers }
 \description{
@@ -9,6 +10,7 @@
 }
 \usage{
 findBeadStatus(BLData, probes, array, log=FALSE, n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL, probeIndex=NULL, startSearch=1)
+getProbeIntensities(BLData, ProbeIDs, array,log=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -58,22 +60,13 @@ outputValid parameter is specified.
 
 data(BLData)
 
-findBeadStatus(BLData, 2, 1)
+findBeadStatus(BLData, 70450, 1, outputValid=TRUE)
 
-findBeadStatus(BLData, 2, 1, log=TRUE)
+findBeadStatus(BLData, 70450, 1, log=TRUE, outputValid=TRUE)
+
+getProbeIntensities(BLData, 70450, 1)
 
 
-##Methods may not always agree
-
-findBeadStatus(BLData, 6140, 1)
-
-findBeadStatus(BLData, 6140, 1, log=TRUE)
-
-##Increasing value of n selects less outliers
-
-findBeadStatus(BLData, 6140, 1, n=4)
-
-findBeadStatus(BLData, 6140, 1, log=TRUE, n=4)
 
 }
 
