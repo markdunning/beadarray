@@ -33,7 +33,7 @@ polygon(xx, yy)
 else polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
 
 
-points(xs, ys)
+points(xs, ys,...)
 
 
 }
@@ -54,7 +54,7 @@ ProbeCols = rainbow(n=length(ProbeIDs), start=0, end=5/6)
 
 if(is.null(ylim)) ylim=range(5,12)
 
-plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE)
+plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE, xlab="", ylab="log2 intensities")
 count=1
 
 
@@ -76,10 +76,11 @@ count = count+1
 
 }
 
-abline(v=count-1)
+if(i!=length(arrays)) abline(v=count-1)
 
 }
-
+axis(2)
+box()
 
 }
 

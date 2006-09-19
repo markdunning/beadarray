@@ -9,6 +9,7 @@ setMethod("initialize", "ExpressionSetIllumina",
                    NoBeads = new("matrix"),
                    Detection = new("matrix"),
                    QC = new("matrix"),
+                   featureData = new("AnnotatedDataFrame"),
                    ... ) {
             .Object<-callNextMethod(.Object,
                            assayData = assayDataNew(
@@ -20,9 +21,10 @@ setMethod("initialize", "ExpressionSetIllumina",
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
+                           featureData = featureData,         
                            QC = QC
                                     )
-            #validObject(.Object)
+            validObject(.Object)
             .Object
 
           })
@@ -35,6 +37,9 @@ setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
 })
 
 
+setValidity("ExpressionSetIllumina", function(object) {
+  assayDataValidMembers(assayData(object), c("exprs", "BeadStDev", "NoBeads"))
+})
 
 
 setMethod("exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
@@ -124,4 +129,5 @@ setMethod("combine", c("ExpressionSetIllumina", "ExpressionSetIllumina"), functi
   }
   x
 })
+
 

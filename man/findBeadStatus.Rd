@@ -24,6 +24,7 @@ getProbeIntensities(BLData, ProbeIDs, array,log=TRUE)
 \item{ignoreList}{list of ProbeIDs to be omitted from the averaging procedure. These could be Illumina internal controls which are replicated many thousands of times on arrays}
 \item{probeIndex}{parameter for internal use only}
 \item{startSearch}{integer specify where to start searching for a particular ProbeID}
+\item{ProbeIDs}{numeric vector for the ProbeIDs of the bead type we want to find outliers for}
 
 }
 \details{

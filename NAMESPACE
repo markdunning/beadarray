@@ -6,7 +6,7 @@ exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,s
 
 export(NoBeads, Detection, backgroundCorrect, BeadLevelNormalise, imageplot, createBeadSummaryData, DiffScore,
        findAllOutliers, screenSetup, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, backgroundNormalise, plotBeadIntensities,
-       plotBeadLocations, plotMAXY, plotOnSAM, readQC, singleQCPlot, plotQC, readBeadLevelData, readBeadSummaryData, readBeadSummaryTargets, readBeadTargets,findBeadStatus, getProbeIntensities, cbind.BeadLevelList, rbind.BeadLevelList, "[.BeadLevelList", print.BeadLevelList)
+       plotBeadLocations, plotMAXY, plotMA, plotXY,plotOnSAM, readQC, singleQCPlot, plotQC, readBeadLevelData, readBeadSummaryData, readBeadSummaryTargets, readBeadTargets,findBeadStatus, getProbeIntensities, cbind.BeadLevelList, rbind.BeadLevelList, "[.BeadLevelList", print.BeadLevelList)
 
 
 

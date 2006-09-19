@@ -9,17 +9,19 @@
 Produces scatter and MA-plots for all pairwise comparisons that can be made from a set of arrays.
 }
 \usage{
-plotMAXY(exprs, vec, log = TRUE, labels=vec, label=FALSE,ma.ylim = 2, sampleSize = NULL,...)
+plotMAXY(exprs, arrays, log = TRUE, genesToLabel=NULL,labels=NULL,labelCol="red", labelpch=16,foldLine=2,sampleSize=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{exprs}{an expression matrix from an ExpressionSet or eSet}
-  \item{vec}{numeric vector giving the indices of the arrays in BSData we want to plot}
+  \item{arrays}{numeric vector giving the indices of the arrays in BSData we want to plot}
   \item{log}{if TRUE then all values will be log-transformed before plotting}
-  \item{labels}{vector specifying names for each array to be plotted}
-  \item{label}{if TRUE any controls which have been defined in a genes
+  \item{genesToLabel}{vector specifying names for each array to be plotted}
+  \item{labels}{if TRUE any controls which have been defined in a genes
     object will be plotted}
-  \item{ma.ylim}{specifies a height for the y axis (M values) of the MA-plots. Default is 2}
+  \item{labelCol}{specifies a height for the y axis (M values) of the MA-plots. Default is 2}
+\item{labelpch}{specifies a height for the y axis (M values) of the MA-plots. Default is 2}
+\item{foldLine}{specifies a height for the y axis (M values) of the MA-plots. Default is 2}
   \item{sampleSize}{Defines the number of genes to plot.  Default is NULL, which plots everything}
   \item{\dots}{other graphical parameters to be passed}
 }

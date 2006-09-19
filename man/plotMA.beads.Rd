@@ -1,5 +1,5 @@
-\name{plotMA.beads}
-\alias{plotMA.beads}
+\name{plotMA}
+\alias{plotMA}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Show MA plots}
 \description{
@@ -9,25 +9,23 @@ If two array indices are given then the MA plot will be between the two arrays, 
 
 }
 \usage{
-plotMA.beads(exprs, array1, array2 = 0, identify = FALSE, label =
-FALSE, highlight = NULL, log = TRUE, main = NULL,ma.ylim=2, sampleSize = NULL, ...)
+plotMA(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{exprs}{expression matrix from an ExpressionSet or eSet}
   \item{array1}{numeric value to specify the first sample to be plotted}
   \item{array2}{numeric value to specify the second sample to be plotted (optional)}
-  \item{identify}{if TRUE the user will be able to click on points on the plot and bring up useful information, such as ProbeID, gene information etc}
-  \item{label}{if TRUE the control types for the experiment will be displayed on the plot}
-  \item{highlight}{vector of numeric values specifying any ProbeIDs which the user wishes to be highlighted on the plot}
-  \item{log}{if TRUE then a log2 transformation will be applied to the data before plotting}
-  \item{main}{specifies a title to be written on the plot}
-  \item{ma.ylim}{specifies the limits for the y axis (M) of the MA plot. Default is 2 }
-  \item{sampleSize}{number of genes to plot. Default is NULL, which plots everything}
+  \item{genesToLabel}{vector of gene names to highlight on the plot. These must match the rownames of exprs}
+  \item{labelCol}{vector of characters to plot for the selected genes}
+  \item{labelpch}{if TRUE then a log2 transformation will be applied to the data before plotting}
+  \item{foldLine}{a numeric value defining where to draw horizontal fold change lines on the plot}
+  \item{identify}{if TRUE, clicking on points on the plot will bring up extra information}
+  \item{sampleSize}{numeric specifiying the size of a random sample to be taken rather than plotting every gene}
+  \item{ma.ylim}{numeric value specifying the range of the plot (from -ma.ylim to ma.ylim)}
   \item{\dots}{other graphical parameters to plot that can be specified}
 }
 \details{
-
 
 
 In the usual way, M is labelled on the y axis and represents the difference between two genes in different samples where as A is the average of the two samples.

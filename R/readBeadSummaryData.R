@@ -182,14 +182,16 @@ for(i in 1:length(names(BSData))){
 
 names(BSData$R) <- gsub("AVG_Signal.(\.+)","\\1",names(BSData$R))
 
-rownames(samples) = names(BSData$R)
-BSData<-new("ExpressionSetIllumina",phenoData=new("AnnotatedDataFrame",samples,data.frame(labelDescription=colnames(samples),row.names=colnames(samples))), annotation="Illumina", exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection, 
-            QC=QC, storage.mode="list")
-BSData
+a = assayDataNew(exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection)
+f = annotatedDataFrameFrom(a, byrow=TRUE)
 
+rownames(samples) = names(BSData$R)
+BSData<-new("ExpressionSetIllumina",phenoData=new("AnnotatedDataFrame",samples,data.frame(labelDescription=colnames(samples),row.names=colnames(samples))), annotation="Illumina", exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection,QC=QC, featureData=f,storage.mode="list")
+BSData
     
 
 }
+
 
 
 readCols <- function(table, columns = list(AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
@@ -223,8 +225,6 @@ if(length(cols.to.read[[i]])==0) stop(paste("Could not find any columns called",
 
   names(output) <- colnames
   output
-
-  output = new("BeadSummaryList", output)
 
 }
 
