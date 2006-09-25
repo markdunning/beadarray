@@ -1,6 +1,7 @@
 \name{createBeadSummaryData}
-\alias{createBeadSummaryData}
+\alias{createBeadSummaryData,BeadLevelList-method}
 \alias{createBeadSummaryDataSlow}
+\alias{createBeadSummaryData}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Produce bead averages}
 \description{

@@ -5,11 +5,15 @@ setMethod("initialize", "BeadLevelList",
 									 Gb = new("matrix"),
 									 GrnX = new("matrix"),
 									 GrnY= new("matrix"),
+									R = new("matrixOrNull"),
+									Rb = new("matrixOrNull"),	
 									 ProbeID = new("matrix"),
 									 targets = new("data.frame")
 									) {
 									.Object@G<-G
 									.Object@Gb<-Gb
+									.Object@R<-R
+									.Object@Rb<-Rb
 									.Object@GrnX<-GrnX
 									.Object@GrnY<-GrnY
 									.Object@ProbeID<-ProbeID
@@ -217,10 +221,9 @@ getProbeIndicesC <- function(BLData, probe, intProbe, index, startSearch = 1){
   list(ind2, ind$pos)
 }
 
+setGeneric("findAllOutliers", function(BLData, array, log = FALSE, n = 3) standardGeneric("findAllOutliers"))
 
-
-
-findAllOutliers <- function(BLData, array, log = FALSE, n = 3){
+setMethod("findAllOutliers", "BeadLevelList", function(BLData, array, log = FALSE, n = 3){
 
   probes <- sort(unique(BLData@ProbeID[BLData@ProbeID[,array] > 0,array]))
 
@@ -240,10 +243,13 @@ findAllOutliers <- function(BLData, array, log = FALSE, n = 3){
 
   which((probeList > 0) & (foo$binStatus == 0))
 
-}
+})
 
-"getProbeIntensities" <-
-function(BLData, ProbeIDs, array,log=TRUE){
+setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array, log=TRUE) standardGeneric("getProbeIntensities"))
+
+
+
+setMethod("getProbeIntensities", "BeadLevelList",function(BLData, ProbeIDs, array,log=TRUE){
 
 #Check the object is of class BeadLevelList
   if(class(BLData) != "BeadLevelList"){
@@ -257,17 +263,13 @@ else{
 BLData@G[BLData@ProbeID[,array] %in% ProbeIDs,array]
 }
 
-}
+})
 
 
+setGeneric("createBeadSummaryData", function(BLData, log = FALSE, n = 3, arrays=nrow(BLData@G),imagesPerArray = 2, probes = NULL) standardGeneric("createBeadSummaryData"))
 
+setMethod("createBeadSummaryData", "BeadLevelList", function(BLData, log = FALSE, n = 3, arrays=nrow(BLData@G),imagesPerArray = 2, probes = NULL){
 
-createBeadSummaryData <- function(BLData, log = FALSE, n = 3, arrays=nrow(BLData@G),imagesPerArray = 2, probes = NULL){
-
-  #Check the object is of class BeadLevelList
-  if(class(BLData) != "BeadLevelList"){
-    stop("BeadLevelList object required!")
-  }
 
   len = ncol(BLData@G)
 
@@ -339,7 +341,7 @@ assayData(BSData)=assayDataNew(exprs = G, BeadStDev=BeadStDev, NoBeads = NoBeads
 rownames(exprs(BSData)) = probes
  
 BSData
-}
+})
 
 
 

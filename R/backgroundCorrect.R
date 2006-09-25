@@ -1,14 +1,8 @@
-backgroundCorrect <- 
-function (BLData, method = "subtract", offset = 0) 
+setGeneric("backgroundCorrect", function(object, method="subtract", offset=0) standardGeneric("backgroundCorrect"))
+
+setMethod("backgroundCorrect" ,"BeadLevelList", function(object, method = "subtract", offset = 0)
 {
 
-if(class(BLData) != "BeadLevelList"){
-    stop("BeadLevelList object is required!")
-  }
-
-  if(is.null(BLData@Gb)){
-    stop("There is no background data for this object")
-  }
      
     method <- match.arg(method, c("none", "subtract", "half", 
         "minimum"))
@@ -38,4 +32,4 @@ for (slide in 1:ncol(BLData@G)) {
     }
     BLData
 
-}
+})

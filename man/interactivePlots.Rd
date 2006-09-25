@@ -10,8 +10,8 @@ Plots using bead level data to discover spatial effects and artifacts on arrays
 }
 \usage{
 
-SAMSummary(BLData, mode="outliers", missing_arrays=NULL, colour=TRUE, scale = NULL)
-BeadChipSummary(BLData,  mode="outliers",colour=TRUE, scale = NULL)
+SAMSummary(BLData, mode="outliers", missing_arrays=NULL, colour=TRUE, scale = NULL,...)
+BeadChipSummary(BLData,  mode="outliers",colour=TRUE, scale = NULL,...)
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,6 +22,7 @@ BeadChipSummary(BLData,  mode="outliers",colour=TRUE, scale = NULL)
   \item{missing_arrays}{vector of numeric values specifying the index of any arrays that have been removed
     from the SAM.}
   \item{colour}{if TRUE the hexagons will be plotted in colour}
+  \item{\dots}{other graphical parameters to plot that can be specified}
 
 }
 \details{

@@ -1,6 +1,6 @@
 readBeadSummaryData<- function(targets=NULL, header=T, sep=",",path=NULL,
                                    columns = list(ProbeID = "TargetID",
-                                     AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
+                                     AvgSig = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", BeadStDev="BEAD_STDEV"),
                                    other.columns = NULL, skip = 7)
 {
@@ -35,7 +35,10 @@ targets=dir()
 
   samples = read.table(as.character(targets[1,2]), sep=",", header=T, skip=7)
 
-  QC = read.table(as.character(targets[1,3]), sep=",", header=T, skip=7)
+  QC = readQC(as.character(targets[1,3]))
+  QCSignal = QC$Signal
+  QCVar = QC$Var
+  QCDetection = QC$Detection
 
   #cat("First line", "\n")
   #print(r[1,])
@@ -174,6 +177,7 @@ if(!readAcross & ArraysPerFile==1){
 
 for(i in 1:length(names(BSData))){
   rownames(BSData[[i]]) = as.character(unique(r[,columns$ProbeID]))
+  colnames(BSData[[i]]) = colnames(BSData$R)
 }
     
     BSData$ProbeID = as.character(unique(r[,columns$ProbeID]))
@@ -182,21 +186,24 @@ for(i in 1:length(names(BSData))){
 
 names(BSData$R) <- gsub("AVG_Signal.(\.+)","\\1",names(BSData$R))
 
-a = assayDataNew(exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection)
+a = assayDataNew(exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$NoBeads, Detection=BSData$Detection)
 f = annotatedDataFrameFrom(a, byrow=TRUE)
+rownames(samples) = colnames(BSData$R)
+p=new("AnnotatedDataFrame", samples,data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
+e=new("MIAME")
 
-rownames(samples) = names(BSData$R)
-BSData<-new("ExpressionSetIllumina",phenoData=new("AnnotatedDataFrame",samples,data.frame(labelDescription=colnames(samples),row.names=colnames(samples))), annotation="Illumina", exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$Nobeads, Detection=BSData$Detection,QC=QC, featureData=f,storage.mode="list")
-BSData
-    
+
+BSData<-new("ExpressionSetIllumina",phenoData=p, annotation="Illumina", exprs=BSData$R, BeadStDev=BSData$BeadStDev, NoBeads= BSData$NoBeads, Detection = BSData$Detection, featureData=f, experimentData=e, QCSignal = QCSignal, QCVar=QCVar, QCDetection=QCDetection)
+BSData@QC =assayDataNew(Signal = QCSignal, StDev=QCVar, Detection=QCDetection, storage.mode="list")
+BSData    
 
 }
 
 
 
-readCols <- function(table, columns = list(AvgSig = "AVG_Signal", Nobeads = "Avg_NBEADS",
+readCols <- function(table, columns = list(AvgSig = "AVG_Signal", NoBeads = "Avg_NBEADS",
                               Detection="Detection", BeadStDev="BEAD_STDEV"),
-                     colnames = c("R", "Nobeads", "Detection", "BeadStDev")){
+                     colnames = c("R", "NoBeads", "Detection", "BeadStDev")){
   
   cols.to.read=list(length=length(columns))
 

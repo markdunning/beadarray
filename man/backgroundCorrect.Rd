@@ -1,4 +1,5 @@
 \name{backgroundCorrect}
+\alias{backgroundCorrect,BeadLevelList-method}
 \alias{backgroundCorrect}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Background Correct a BeadLevelList object }
@@ -8,11 +9,11 @@ Adapted from 'limma' backgroundCorrect function to correct R intensities of a BL
 }
 
 \usage{
-backgroundCorrect(BLData, method = "subtract", offset = 0)
+backgroundCorrect(object, method = "subtract", offset = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{BeadLevelList object containing bead level data}
+  \item{object}{BeadLevelList object containing bead level data}
   \item{method}{character string specifying correction method.  Possible
           values are '"none"', '"subtract"', '"half"', '"minimum"')}
           

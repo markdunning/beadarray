@@ -7,7 +7,7 @@ Plots an image plot of a bead level data object.
 }
 \usage{
 imageplot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
-high = NULL, ncolors = 123, whatToPlot="G",...)
+high = NULL, ncolors = 123, whatToPlot="G",zlim=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,6 +19,8 @@ high = NULL, ncolors = 123, whatToPlot="G",...)
   \item{high}{color for area of highest intensity}
   \item{ncolors}{The number of color graduations between high and low}
   \item{whatToPlot}{string identifying which matrix in BLData to use in the imageplot}
+  \item{zlim}{numerical vector of length 2 giving the extreme values of 'z'
+          to associate with  colors 'low' and 'high'.}	
   \item{\dots}{other graphical parameters to plot that can be specified}
 }
 \details{

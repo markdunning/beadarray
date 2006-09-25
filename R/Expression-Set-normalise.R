@@ -23,7 +23,13 @@ exprs
 }
 
 
-backgroundNormalise = function(exprs, QC){
+
+
+"backgroundNormalise"<-function(object){
+
+exprs = exprs(object)
+QC = QCInfo(object)
+
 
 if(length(which(colnames(QC$Signal) == "negative"))==0){
 
@@ -36,7 +42,7 @@ col = which(colnames(QC$Signal) == "negative")
 e = exprs - QC$Signal[,col]
 
 e
-
+ 
 }
 
 "medianNormalise" <-

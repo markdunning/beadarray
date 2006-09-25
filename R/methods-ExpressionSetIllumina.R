@@ -1,30 +1,26 @@
-
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
                    phenoData = new("AnnotatedDataFrame"),
-                   experimentData = new("MIAME"),
+                   exprs=new("matrix"),
+                   BeadStDev=new("matrix"),
+                   NoBeads=new("matrix"),
+                   Detection=new("matrix"),
                    annotation = character(),
-		   exprs = new("matrix"),
-                   BeadStDev = new("matrix"),
-                   NoBeads = new("matrix"),
-                   Detection = new("matrix"),
-                   QC = new("matrix"),
-                   featureData = new("AnnotatedDataFrame"),
-                   ... ) {
+		   featureData = new("AnnotatedDataFrame"),
+                   experimentData = new("MIAME"),
+                   QCSignal = new("matrix"),
+                   QCVar = new("matrix"),
+                   QCDetection = new("matrix")
+                   ) {
+
             .Object<-callNextMethod(.Object,
-                           assayData = assayDataNew(
-			     exprs = exprs,
-                             BeadStDev = BeadStDev,
-                             NoBeads = NoBeads,
-                             Detection = Detection,
-                             ...),
+                           assayData = assayDataNew(exprs=exprs,BeadStDev=BeadStDev, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData,         
-                           QC = QC
-                                    )
-            validObject(.Object)
+                           featureData = featureData
+                     )
+            .Object@QC=assayDataNew(Signal = QCSignal, StDev=QCVar, Detection=QCDetection,storage.mode="list")
             .Object
 
           })
@@ -46,8 +42,40 @@ setMethod("exprs", c("ExpressionSetIllumina"), function(object) assayDataElement
 
 setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "BeadStDev"))
 
-NoBeads <-  function(object) assayDataElement(object, "NoBeads")
-Detection <- function(object) assayDataElement(object, "Detection")
+setMethod("show", "ExpressionSetIllumina", function(object) {
+
+  callNextMethod(object)
+  
+  cat("QC Information\n")
+  cat(" Available Slots:  ")
+  cat(names(BSData@QC))
+  nms=selectSome(featureNames(BSData@QC))
+  cat("\n  featureNames:", paste(nms, collapse=", "))
+  nms=selectSome(sampleNames(BSData@QC))
+  cat("\n  sampleNames:", paste(nms, collapse=", "))
+  cat("\n")
+
+}
+
+          )
+
+setGeneric("QCInfo", function(object) standardGeneric("QCInfo"))
+
+setMethod("QCInfo", "ExpressionSetIllumina", function(object) object@QC)
+
+
+setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
+
+setMethod("NoBeads", "ExpressionSetIllumina", function(object) assayDataElement(object, "NoBeads"))
+
+
+setGeneric("Detection", function(object) standardGeneric("Detection"))
+
+setMethod("Detection", "ExpressionSetIllumina", function(object) assayDataElement(object, "Detection"))
+
+
+
+
 
 
 setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {

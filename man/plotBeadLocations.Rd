@@ -52,5 +52,5 @@ plotBeadLocations(BLData, beadIDs=o, array=1)
 
 \author{Mark Dunning}
 
-\seealso{\code{\link{findAllOutliers}}}
+
 \keyword{hplot}

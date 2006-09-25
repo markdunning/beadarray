@@ -86,7 +86,7 @@ box()
 
 
 "imageplot"<-function(BLData, array = 1, nrow = 18, ncol = 2,
-                        low = NULL, high = NULL, ncolors = 123, whatToPlot ="G",...){
+                        low = NULL, high = NULL, ncolors = 123, whatToPlot ="G",zlim=NULL,...){
 
   par(mar = c(2,1,1,1), xaxs = "i")
   
@@ -141,7 +141,7 @@ box()
 
 
 "SAMSummary" <-
-function(BLData, mode="outliers", missing_arrays=NULL, colour=TRUE, scale = NULL){
+function(BLData, mode="outliers", missing_arrays=NULL, colour=TRUE, scale = NULL,...){
 
 
 #mode=screenSetup(BLData)
@@ -290,14 +290,14 @@ screen(1)
 
 if(mode == "fg"){
 
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="G", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]))
+  imageplot(BLData, array=ArrayClickedOn, whatToPlot="G", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]),...)
 
   screen(1)
 }
 
 if(mode == "bg"){
 
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="Gb", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]))
+  imageplot(BLData, array=ArrayClickedOn, whatToPlot="Gb", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]),...)
   screen(1)
   
 }
@@ -307,7 +307,7 @@ if(mode == "bg"){
 }
 
 "BeadChipSummary" <-
-function(BLData, mode="outliers",colour=TRUE, scale = NULL){
+function(BLData, mode="outliers",colour=TRUE, scale = NULL,...){
 
 
   

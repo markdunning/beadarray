@@ -2,6 +2,7 @@
 \alias{findBeadStatus}
 \alias{getProbeIndices}
 \alias{getProbeIndicesC}
+\alias{getProbeIntensities,BeadLevelList-method}
 \alias{getProbeIntensities}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Find Outliers }
@@ -55,7 +56,7 @@ outputValid parameter is specified.
 
 \author{Mike Smith and Mark Dunning}
 
-\seealso{ \code{\link{findAllOutliers}} }
+\seealso{ \code{findAllOutliers} }
 
 \examples{
 

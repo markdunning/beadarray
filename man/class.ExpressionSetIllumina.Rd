@@ -10,6 +10,9 @@
 \alias{initialize,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ANY-method}
+\alias{show,ExpressionSetIllumina-method}
+\alias{NoBeads,ExpressionSetIllumina-method}
+\alias{Detection,ExpressionSetIllumina-method}
 \alias{NoBeads}
 \alias{Detection}
 \title{
@@ -82,22 +85,16 @@
      \item{\code{se.exprs(ExpressionSetIllumina)}, \code{se.exprs(ExpressionSetIllumina,matrix)<-}}{Access and
        set elements named \code{BeadStDev} in the \code{AssayData}
        slot.}
-
-     
-
-     \item{\code{NoBeads(ExpressionSetIllumina)}, \code{NoBeads(ExpressionSetIllumina,matrix)<-}}{Access and
-       set elements named \code{NoBeads} in the \code{AssayData}
+	\item{\code{NoBeads(ExpressionSetIllumina)}}{Access elements named \code{NoBeads} in the \code{AssayData}
        slot.}
-
-
-     \item{\code{Detection(ExpressionSetIllumina)}, \code{Detection(ExpressionSetIllumina,matrix)<-}}{Access and
-       set elements named \code{Detection} in the \code{AssayData}
+	\item{\code{Detection(ExpressionSetIllumina)}}{Access elements named \code{Detection} in the \code{AssayData}
        slot.}
      
      \item{\code{object[(index)}:}{Conducts subsetting of matrices and
        phenoData and reporterInfo components }
      \item{\code{combine(ExpressionSetIllumina,ExpressionSetIllumina)}:}{performs \code{union}-like 
 		   combination in both dimensions of ExpressionSetIllumina objects}
+    \item{\code{show(ExpressionSetSetIllumina)}}{See \code{\link[Biobase:eSet]{eSet}}}
   }
   
    Derived from \code{\link[Biobase:eSet]{eSet}}:
