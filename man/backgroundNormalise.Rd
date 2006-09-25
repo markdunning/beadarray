@@ -1,17 +1,19 @@
-\name{backgrondNormalise}
+\name{backgroundNormalise}
 \alias{backgroundNormalise}
+\alias{backgroundNormalise, ExpressionSetIllumina-method}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Background Normalisation for Bead Summary Data objects }
 \description{
 Normalise expression matrix using values of negative controls
 }
 \usage{
-backgroundNormalise(exprs, QC)
+backgroundNormalise(object)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{exprs}{An expression matrix from a ExpressionSet object} 
-  \item{QC}{A quality control assayData object created by readQC}
+  \item{object}{An ExpressionSetIllumina object} 
+
 }
 \details{
 
@@ -36,14 +38,12 @@ Expression matrix containing normalise values with the same dimensions as the in
 \examples{
 
 data(BSData)
-data(QC)
 
-BSData.bgnorm = assayDataElementReplace(BSData, "exprs", backgroundNormalise(exprs(BSData), QC))
+BSData.bgnorm = backgroundNormalise(BSData)
 
 
 
 }
 
-\seealso{\code{\link{readQC}}}
 
 \keyword{methods}

@@ -22,8 +22,11 @@ exprs
 
 }
 
+setGeneric("backgroundNormalise", function(object) standardGeneric("backgroundNormalise"))
 
-backgroundNormalise = function(exprs, QC){
+setMethod("backgroundNormalise" ,"ExpressionSetIllumina", function(object){
+
+QC = QCInfo(object)
 
 if(length(which(colnames(QC$Signal) == "negative"))==0){
 
@@ -33,11 +36,14 @@ stop("Could not find the the column headings negative in the QC object")
 
 col = which(colnames(QC$Signal) == "negative")
 
-e = exprs - QC$Signal[,col]
+object <- assayDataElementReplace(object, "exprs", exprs(object) - QC$Signal[,col])
 
-e
+object
 
 }
+
+)
+
 
 "medianNormalise" <-
 function(exprs, log=TRUE){

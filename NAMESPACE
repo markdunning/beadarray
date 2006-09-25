@@ -2,10 +2,10 @@ useDynLib(beadarray)
 import(tools, Biobase)
 
 exportClasses(ExpressionSetIllumina, BeadLevelList)
-exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize, NoBeads, Detection, backgroundCorrect, createBeadSummaryData, findAllOutliers)
+exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize, NoBeads, Detection, backgroundCorrect, createBeadSummaryData, findAllOutliers, QCInfo, backgroundNormalise)
 
 export(BeadLevelNormalise, imageplot, createBeadSummaryData, DiffScore,
-       findAllOutliers, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, backgroundNormalise, plotBeadIntensities,
+       findAllOutliers, SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, plotBeadIntensities,
        plotBeadLocations, plotMAXY, plotMA, plotXY,plotOnSAM, readQC,  plotQC, singleQCPlot,readBeadLevelData, readBeadSummaryData, readCols, readBeadSummaryTargets, readBeadTargets,findBeadStatus, getProbeIntensities, cbind.BeadLevelList, rbind.BeadLevelList, "[.BeadLevelList", print.BeadLevelList)
 
 

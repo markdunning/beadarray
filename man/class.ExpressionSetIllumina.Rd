@@ -6,6 +6,8 @@
 \alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{se.exprs,ExpressionSetIllumina-method}
+\alias{QCInfo}
+\alias{QCInfo, ExpressionSetIllumina-method}
 \alias{[,ExpressionSetIllumina-method}
 \alias{initialize,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
@@ -15,6 +17,7 @@
 \alias{Detection,ExpressionSetIllumina-method}
 \alias{NoBeads}
 \alias{Detection}
+
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
   Expression BeadArrays.
@@ -89,7 +92,8 @@
        slot.}
 	\item{\code{Detection(ExpressionSetIllumina)}}{Access elements named \code{Detection} in the \code{AssayData}
        slot.}
-     
+     	\item{\code{QCInfo(ExpressionSetIllumina)}}{Access elements named \code{QC} in the \code{AssayData}
+       slot.}
      \item{\code{object[(index)}:}{Conducts subsetting of matrices and
        phenoData and reporterInfo components }
      \item{\code{combine(ExpressionSetIllumina,ExpressionSetIllumina)}:}{performs \code{union}-like 

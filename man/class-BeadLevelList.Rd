@@ -2,6 +2,7 @@
 \docType{class}
 \alias{BeadLevelList-class}
 \alias{initialize,BeadLevelList-method}
+\alias{backgroundCorrect,BeadLevelList-method}
 \alias{[.BeadLevelList}
 \alias{print.BeadLevelList}
 

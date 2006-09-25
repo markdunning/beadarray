@@ -2,6 +2,7 @@
 \alias{findAllOutliers}
 \alias{findAllOutliersSlow}
 \alias{findAllOutliers, BeadLevelList-method}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Find outliers on array}
 \description{
