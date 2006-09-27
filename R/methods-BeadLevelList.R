@@ -5,15 +5,13 @@ setMethod("initialize", "BeadLevelList",
 									 Gb = new("matrix"),
 									 GrnX = new("matrix"),
 									 GrnY= new("matrix"),
-									R = new("matrixOrNull"),
-									Rb = new("matrixOrNull"),	
+									R = "matrixOrNull",
+									Rb = "matrixOrNull",	
 									 ProbeID = new("matrix"),
 									 targets = new("data.frame")
 									) {
 									.Object@G<-G
 									.Object@Gb<-Gb
-									.Object@R<-R
-									.Object@Rb<-Rb
 									.Object@GrnX<-GrnX
 									.Object@GrnY<-GrnY
 									.Object@ProbeID<-ProbeID
@@ -221,9 +219,8 @@ getProbeIndicesC <- function(BLData, probe, intProbe, index, startSearch = 1){
   list(ind2, ind$pos)
 }
 
-setGeneric("findAllOutliers", function(BLData, array, log = FALSE, n = 3) standardGeneric("findAllOutliers"))
 
-setMethod("findAllOutliers", "BeadLevelList", function(BLData, array, log = FALSE, n = 3){
+"findAllOutliers"<-function(BLData, array, log = FALSE, n = 3){
 
   probes <- sort(unique(BLData@ProbeID[BLData@ProbeID[,array] > 0,array]))
 
@@ -243,7 +240,7 @@ setMethod("findAllOutliers", "BeadLevelList", function(BLData, array, log = FALS
 
   which((probeList > 0) & (foo$binStatus == 0))
 
-})
+}
 
 setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array, log=TRUE) standardGeneric("getProbeIntensities"))
 
@@ -337,7 +334,7 @@ BeadStDev = BeadStDev / sqrt(NoBeads)
 
 BSData<-new("ExpressionSetIllumina")
 
-assayData(BSData)=assayDataNew(exprs = G, BeadStDev=BeadStDev, NoBeads = NoBeads)
+assayData(BSData)=assayDataNew(exprs = G, BeadStDev=BeadStDev, NoBeads = NoBeads,storage.mode="list")
 rownames(exprs(BSData)) = probes
  
 BSData

@@ -9,7 +9,7 @@ If two array indices are given then the MA plot will be between the two arrays, 
 
 }
 \usage{
-plotMA(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...)
+plotMA(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2,log=TRUE, labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,6 +18,7 @@ plotMA(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, l
   \item{array2}{numeric value to specify the second sample to be plotted (optional)}
   \item{genesToLabel}{vector of gene names to highlight on the plot. These must match the rownames of exprs}
   \item{labelCol}{vector of characters to plot for the selected genes}
+  \item{log}{if TRUE the data will be log-transformed before plotting}
   \item{labelpch}{if TRUE then a log2 transformation will be applied to the data before plotting}
   \item{foldLine}{a numeric value defining where to draw horizontal fold change lines on the plot}
   \item{identify}{if TRUE, clicking on points on the plot will bring up extra information}

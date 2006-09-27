@@ -1,5 +1,7 @@
 \name{backgroundCorrect}
 \alias{backgroundCorrect}
+\alias{backgroundCorrect,BeadLevelList-methods}
+\alias{backgroundCorrect,BeadLevelList-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Background Correct a BeadLevelList object }
 \description{

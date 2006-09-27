@@ -2,7 +2,7 @@
 \docType{class}
 \alias{BeadLevelList-class}
 \alias{initialize,BeadLevelList-method}
-\alias{backgroundCorrect,BeadLevelList-method}
+\alias{imageplot, BeadLevelList-methods}
 \alias{[.BeadLevelList}
 \alias{print.BeadLevelList}
 
@@ -33,7 +33,14 @@ Objects of this class contains no slots (other than \code{.Data}), but objects s
   \describe{
 
     \item{initialize}{\code{signature(.Object = "BeadLevelList")}  }
-    
+    \item{createBeadSummaryData}{Summarise each probe on the array to
+      create an \code{ExpressionSetIlluminaObject}}
+      \item{\code{imageplot(BeadLevelList)}}{An imageplot function for
+	\code{BeadLevelList}}
+      	\item{\code{findAllOutliers(BeadLevelList)}}{Find all beads on
+	  an array that are outliers for their particular bead type}
+       		
+       		
   }
 }
 

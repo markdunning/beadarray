@@ -4,6 +4,8 @@
 \alias{getProbeIndicesC}
 \alias{getProbeIntensities,BeadLevelList-method}
 \alias{getProbeIntensities}
+\alias{findAllOutliers, BeadLevelList-method}
+\alias{createBeadSummaryData, BeadLevelList-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Find Outliers }
 \description{

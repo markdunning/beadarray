@@ -63,6 +63,15 @@ setGeneric("QCInfo", function(object) standardGeneric("QCInfo"))
 
 setMethod("QCInfo", "ExpressionSetIllumina", function(object) object@QC)
 
+setGeneric("QC<-",     function(object, value) standardGeneric("QC<-"))
+
+setReplaceMethod("QC", "ExpressionSetIllumina", function(object, value){
+	object@QC <- value
+	object
+})
+
+
+
 
 setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
 

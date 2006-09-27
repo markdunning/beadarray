@@ -22,9 +22,7 @@ exprs
 
 }
 
-setGeneric("backgroundNormalise", function(object) standardGeneric("backgroundNormalise"))
-
-setMethod("backgroundNormalise" ,"ExpressionSetIllumina", function(object){
+"backgroundNormalise"<-function(object){
 
 QC = QCInfo(object)
 
@@ -42,7 +40,8 @@ object
 
 }
 
-)
+
+
 
 
 "medianNormalise" <-

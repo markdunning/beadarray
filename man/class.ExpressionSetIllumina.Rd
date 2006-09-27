@@ -1,5 +1,7 @@
 \name{ExpressionSetIllumina}
 \docType{class}
+\alias{backgroundNormalise, ExpressionSetIllumina-methods}
+\alias{backgroundNormalise, ExpressionSetIllumina, ExpressionSetIllumina-method}
 \alias{class:ExpressionSetIllumina}
 \alias{ExpressionSetIllumina-class}
 \alias{exprs<-,ExpressionSetIllumina,matrix-method}
@@ -7,7 +9,7 @@
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{se.exprs,ExpressionSetIllumina-method}
 \alias{QCInfo}
-\alias{QCInfo, ExpressionSetIllumina-method}
+\alias{QCInfo,ExpressionSetIllumina-method}
 \alias{[,ExpressionSetIllumina-method}
 \alias{initialize,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
@@ -15,6 +17,7 @@
 \alias{show,ExpressionSetIllumina-method}
 \alias{NoBeads,ExpressionSetIllumina-method}
 \alias{Detection,ExpressionSetIllumina-method}
+
 \alias{NoBeads}
 \alias{Detection}
 
@@ -98,7 +101,10 @@
        phenoData and reporterInfo components }
      \item{\code{combine(ExpressionSetIllumina,ExpressionSetIllumina)}:}{performs \code{union}-like 
 		   combination in both dimensions of ExpressionSetIllumina objects}
-    \item{\code{show(ExpressionSetSetIllumina)}}{See \code{\link[Biobase:eSet]{eSet}}}
+		 \item{\code{show(ExpressionSetSetIllumina)}}{See
+		   \code{\link[Biobase:eSet]{eSet}}}
+	\item{\code{backgroundNormalise(ExpressionSetIllumina)}}{Normalisation of Illumina data using data from the negative controls on each array stored in the \code{QC} slot.}
+       		 
   }
   
    Derived from \code{\link[Biobase:eSet]{eSet}}:

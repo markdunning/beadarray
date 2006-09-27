@@ -8,7 +8,7 @@ Function to display an XY plot of the average values of genes from two different
 If two array indices are given as parameters then two arrays will be compared, otherwise the red and green channels from one array will be plotted
 }
 \usage{
-plotXY(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", labelpch=16,identify=FALSE, foldLine=2,sampleSize=NULL,...)
+plotXY(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", log=TRUE,labelpch=16,identify=FALSE, foldLine=2,sampleSize=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,7 @@ plotXY(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", labelpch=16,id
   \item{array2}{numeric value for the second sample to be plotted}
   \item{genesToLabel}{vector of gene names to highlight on the plot. These must match the rownames of exprs}
   \item{labelCol}{vector of characters to plot for the selected genes}
+  \item{log}{if TRUE the data will be log-transformed before plotting}
   \item{labelpch}{if TRUE then a log2 transformation will be applied to the data before plotting}
   \item{foldLine}{a numeric value defining where to draw horizontal fold change lines on the plot}
   \item{identify}{numeric value specifying what fold change lines to display on the plot}

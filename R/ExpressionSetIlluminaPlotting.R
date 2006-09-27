@@ -21,7 +21,7 @@ close.screen(all=TRUE)
         text(1.0,0, labels = labels[i], cex=1)
       }
       else if(j < i){
-        plotXY(exprs, array1 = arrays[i], array2 = arrays[j], xaxt = "n", yaxt = "n", genesToLabel=genesToLabel,foldLine=foldLine, labelCol=labelCol,labelpch=labelpch,sampleSize=sampleSize)
+        plotXY(exprs, array1 = arrays[i], array2 = arrays[j], xaxt = "n", yaxt = "n", log=log,genesToLabel=genesToLabel,foldLine=foldLine, labelCol=labelCol,labelpch=labelpch,sampleSize=sampleSize)
         if(i == length(arrays)){
           axis(1)
           }
@@ -30,7 +30,7 @@ close.screen(all=TRUE)
         }
       }
       else{
-        plotMA(exprs, array1 = arrays[i], array2 = arrays[j], xaxt = "n", yaxt = "n", genesToLabel=genesToLabel,foldLine=foldLine, labelCol=labelCol,labelpch=labelpch,sampleSize=sampleSize)
+        plotMA(exprs, array1 = arrays[i], array2 = arrays[j], xaxt = "n", yaxt = "n", log=log,genesToLabel=genesToLabel,foldLine=foldLine, labelCol=labelCol,labelpch=labelpch,sampleSize=sampleSize)
         if(i == 1){
           axis(3)
         }
@@ -44,16 +44,16 @@ close.screen(all=TRUE)
 
 
 "plotMA" <-
-function(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...){
+function(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...){
 exprs=as.matrix(exprs)
 
-
+if(log) exprs=log2(exprs)
 
 if(array2!=0){
 
 
-x = 0.5*(log2(exprs[,array1]) + log2(exprs[,array2]))
-y = log2(exprs[,array1])- log2(exprs[,array2])
+x = 0.5*(exprs[,array1] + exprs[,array2])
+y = exprs[,array1]- exprs[,array2]
 }
 
 
@@ -105,17 +105,19 @@ text(15,1.2,paste("Value from Array 2: ", round(exprs[id,array2],2), sep=""))
 
 
 "plotXY" <-
-function(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", labelpch=16,identify=FALSE, foldLine=2,sampleSize=NULL,...){
+function(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", log=TRUE,labelpch=16,identify=FALSE, foldLine=2,sampleSize=NULL,...){
 
 #XY plot of either two samples against each other, or red and green channels of one channel
 
+if(log) exprs=log2(exprs)
+  
 exprs=as.matrix(exprs)
 
   if (array2!=0){
 
  
-      x = log2(exprs[,array1])
-      y = log2(exprs[,array2])
+      x = exprs[,array1]
+      y = exprs[,array2]
 
 
       xmax = 16
