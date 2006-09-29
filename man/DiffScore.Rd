@@ -11,12 +11,12 @@ NB At present this function does not compute the same values as output by BeadSt
 
 }
 \usage{
-DiffScore(BSData, QC, cond, ref)
+DiffScore(BSData, QC=NULL, cond, ref)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BSData}{ExpressionSetIllumina object representing bead summary data}
-  \item{QC}{quality control information created by readQC}
+  \item{QC}{quality control information, usually created automatically by the readBeadSummaryData function}
   \item{cond}{index for the condition array}
   \item{ref}{index for the reference array}	
 

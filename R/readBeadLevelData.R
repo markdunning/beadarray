@@ -77,12 +77,12 @@
    }
 
    if(csvNcol == 4){
-     BLData <- list(G = matrix(nrow = numrow, ncol=k), Gb = matrix(nrow = numrow, ncol=k),
+     BLData <- new("BeadLevelList",R=matrix(nrow=0, ncol=0), Rb=matrix(nrow=0, ncol=0),G = matrix(nrow = numrow, ncol=k), Gb = matrix(nrow = numrow, ncol=k),
                     GrnX = matrix(nrow = numrow, ncol=k), GrnY = matrix(nrow = numrow, ncol=k),
                     ProbeID = matrix(nrow = numrow, ncol=k))
    }
    else if(csvNcol == 7){
-     BLData <- list(G = matrix(nrow = numrow, ncol=k), Gb = matrix(nrow = numrow, ncol=k),
+     BLData <- new("BeadLevelList",G = matrix(nrow = numrow, ncol=k), Gb = matrix(nrow = numrow, ncol=k),
                     R = matrix(nrow = numrow, ncol=k), Rb = matrix(nrow = numrow, ncol=k),
                     GrnX = matrix(nrow = numrow, ncol=k), GrnY = matrix(nrow = numrow, ncol=k),
                     RedX = matrix(nrow = numrow, ncol=k), RedY = matrix(nrow = numrow, ncol=k),
@@ -112,7 +112,7 @@
      
 #     BLData$GrnX[,i] <- dat1$GrnX[ord]
 #     BLData$GrnY[,i] <- dat1$GrnY[ord]
-     BLData$ProbeID[,i] <- dat1$ProbeID[ord]
+     BLData@ProbeID[,i] <- dat1$ProbeID[ord]
 
 #     if(csvNcol == 7){
 #       BLData$RedX[,i] <- dat1$RedX[ord]
@@ -130,10 +130,10 @@
                        backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                        as.integer(fground), PACKAGE = "beadarray")
 
-     BLData$G[,i] <- greenIntensities[[5]]
-     BLData$Gb[,i] <- greenIntensities[[6]]
-     BLData$GrnX[,i] <- (dat1$GrnX[ord] - min(dat1$GrnX))
-     BLData$GrnY[,i] <- (dat1$GrnY[ord] - min(dat1$GrnY))
+     BLData@G[,i] <- greenIntensities[[5]]
+     BLData@Gb[,i] <- greenIntensities[[6]]
+     BLData@GrnX[,i] <- (dat1$GrnX[ord] - min(dat1$GrnX))
+     BLData@GrnY[,i] <- (dat1$GrnY[ord] - min(dat1$GrnY))
 
      rm(greenIntensities)
      gc()
@@ -144,10 +144,10 @@
                             backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                             as.integer(fground), PACKAGE = "beadarray")
 
-       BLData$R[,i] <- redIntensities[[5]]
-       BLData$Rb[,i] <- redIntensities[[6]]
-       BLData$RedX[,i] <- (dat1$RedX[ord] - min(dat1$RedX))
-       BLData$RedY[,i] <- (dat1$RedY[ord] - min(dat1$RedY))
+       BLData@R[,i] <- redIntensities[[5]]
+       BLData@Rb[,i] <- redIntensities[[6]]
+       BLData@RedX[,i] <- (dat1$RedX[ord] - min(dat1$RedX))
+       BLData@RedY[,i] <- (dat1$RedY[ord] - min(dat1$RedY))
        rm(redIntensities)
      }
      rm(dat1)
@@ -155,15 +155,8 @@
      
    }
 
-   BLData$targets = targets
-   
-   BLData$backgroundSize = backgroundSize
+   BLData@targets = targets
 
-   BLData$normalised = 0
-   
-   BLData$backgroundCorrected = 0
-   
-   class(BLData) = "BeadLevelList"
    BLData
    
  }                                                              

@@ -1,6 +1,7 @@
 \name{BeadLevelList-class}
 \docType{class}
 \alias{BeadLevelList-class}
+\alias{show, BeadLevelList-method}
 \alias{initialize,BeadLevelList-method}
 \alias{imageplot, BeadLevelList-methods}
 \alias{[.BeadLevelList}
@@ -31,7 +32,7 @@ Objects of this class contains no slots (other than \code{.Data}), but objects s
 }
 \section{Methods}{
   \describe{
-
+    \item{show(BeadLevelList)}{printing method for BeadLevelList}
     \item{initialize}{\code{signature(.Object = "BeadLevelList")}  }
     \item{createBeadSummaryData}{Summarise each probe on the array to
       create an \code{ExpressionSetIlluminaObject}}

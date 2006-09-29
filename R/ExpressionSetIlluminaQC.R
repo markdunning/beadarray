@@ -56,11 +56,11 @@ readQC=function(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Sig
   QC
 }
 
-"plotQC"<-function(object){
+"plotQC"<-function(object,...){
 
 
-  if(class(BSData)== "ExpressionSetIllumina") QC = QCInfo(BSData)
-  else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
+  if(class(object)== "ExpressionSetIllumina") QC = QCInfo(BSData)
+  else QC=object
 
   
   par(mfrow=c(3,2))
@@ -156,7 +156,7 @@ plotQC.figure6 = function(QC, log=FALSE,...){
 
            
            
-"singleQCPlot"<-function(object, type="Biotin", log=FALSE, whatToPlot="Signal"){
+"singleQCPlot"<-function(object, type="Biotin", log=FALSE, whatToPlot="Signal",...){
 
   if(class(object)== "ExpressionSetIllumina") QC = QCInfo(BSData)
   else if(class(BSData) != "AssayData") stop("Input object must of type AssayData or ExpressionSetIllumina")
@@ -166,9 +166,9 @@ plotQC.figure6 = function(QC, log=FALSE,...){
   data = QC$Signal
   col = which(colnames(QC$Signal)== type)
   }
-else if(whatToPlot == "Var"){
-  data=QC$Var
-  col = which(colnames(QC$Var)== type)   	
+else if(whatToPlot == "StDev"){
+  data=QC$StDev
+  col = which(colnames(QC$StDev)== type)   	
 }	
 else if(whatToPlot == "Detection"){
   data=QC$Detection

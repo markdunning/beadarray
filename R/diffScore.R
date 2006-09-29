@@ -1,4 +1,7 @@
-DiffScore = function(BSData, QC, cond, ref){
+DiffScore = function(BSData, QC=NULL, cond, ref){
+
+if(is.null(QC)) QC = QCInfo(BSData)
+
 
 if(length(cond)==1){
   Avg_Intensity_Ref = exprs(BSData)[,ref]
@@ -7,8 +10,8 @@ if(length(cond)==1){
   BeadStDev_Ref = se.exprs(BSData)[,ref]
   BeadStDev_Cond = se.exprs(BSData)[,cond]
 
-  SigmaRef = QC$Var[ref,11]*sqrt(40)
-  SigmaCond = QC$Var[cond,11]*sqrt(40)
+  SigmaRef = QC$StDev[ref,11]*sqrt(40)
+  SigmaCond = QC$StDev[cond,11]*sqrt(40)
 }
 
 

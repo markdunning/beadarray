@@ -36,9 +36,6 @@ targets=dir()
   samples = read.table(as.character(targets[1,2]), sep=",", header=T, skip=7)
 
   QC = readQC(as.character(targets[1,3]))
-  QCSignal = QC$Signal
-  QCVar = QC$Var
-  QCDetection = QC$Detection
 
   #cat("First line", "\n")
   #print(r[1,])
@@ -85,7 +82,7 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
       if(i==1){
         if(readAcross){
 #First item in columns is the ProbeID columnd, we only read this once 
-        BSData = readCols(r, columns=columns[2:5])
+        a = readCols(r, columns=columns[2:5])
         
 
     #	Other columns
@@ -168,33 +165,19 @@ if(length(which(match(strtrim(colnames(r), nchar(columns$ProbeID)), columns$Prob
 
     }
 
-if(!readAcross & ArraysPerFile==1){
- for(i in 1:length(names(BSData))){
-   colnames(BSData[[i]]) = targets
-  }
 
-}
+names(a$exprs) <- gsub("AVG_Signal.(\.+)","\\1",names(a$exprs))
 
-for(i in 1:length(names(BSData))){
-  rownames(BSData[[i]]) = as.character(unique(r[,columns$ProbeID]))
-  colnames(BSData[[i]]) = colnames(BSData$R)
-}
-    
-    BSData$ProbeID = as.character(unique(r[,columns$ProbeID]))
-    BSData$targets = targets
-    BSData
-
-names(BSData$R) <- gsub("AVG_Signal.(\.+)","\\1",names(BSData$R))
-
-a = assayDataNew(exprs = BSData$R, BeadStDev=BSData$BeadStDev, NoBeads = BSData$NoBeads, Detection=BSData$Detection)
+BSData = new("ExpressionSetIllumina")
+assayData(BSData) = a
 f = annotatedDataFrameFrom(a, byrow=TRUE)
-rownames(samples) = colnames(BSData$R)
+featureData(BSData)=f
+
+rownames(samples) = names(a$exprs)
 p=new("AnnotatedDataFrame", samples,data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
-e=new("MIAME")
+phenoData(BSData) = p
+BSData@QC = QC
 
-
-BSData<-new("ExpressionSetIllumina",phenoData=p, annotation="Illumina", exprs=BSData$R, BeadStDev=BSData$BeadStDev, NoBeads= BSData$NoBeads, Detection = BSData$Detection, featureData=f, experimentData=e, QCSignal = QCSignal, QCVar=QCVar, QCDetection=QCDetection)
-BSData@QC =assayDataNew(Signal = QCSignal, StDev=QCVar, Detection=QCDetection, storage.mode="list")
 BSData    
 
 }
@@ -203,7 +186,7 @@ BSData
 
 readCols <- function(table, columns = list(AvgSig = "AVG_Signal", NoBeads = "Avg_NBEADS",
                               Detection="Detection", BeadStDev="BEAD_STDEV"),
-                     colnames = c("R", "NoBeads", "Detection", "BeadStDev")){
+                     colnames = c("G", "NoBeads", "Detection", "BeadStDev")){
   
   cols.to.read=list(length=length(columns))
 
@@ -224,14 +207,11 @@ if(length(cols.to.read[[i]])==0) stop(paste("Could not find any columns called",
 
   output=list()
   
-  for(i in 1:length(columns)){
 
-    output[[i]] = as.data.frame(table[, cols.to.read[[i]]])
 
-  }
+  a = assayDataNew(exprs = table[,cols.to.read[[1]]], BeadStDev=table[,cols.to.read[[4]]], NoBeads=table[,cols.to.read[[2]]], Detection=table[,cols.to.read[[3]]], storage.mode="list")
 
-  names(output) <- colnames
-  output
+  a
 
 }
 

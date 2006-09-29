@@ -16,6 +16,8 @@ Reads the standard format of Illumina quality control information and produces d
 }
 \usage{
 readQC(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Signal.cy3_hyb_high", cy3_low="AVG.Signal.cy3_hyb_low", cy3_med="AVG.Signal.cy3_hyb_med", gene="AVG.Signal.gene", hs="AVG.Signal.high_stringency_hyb", house="AVG.Signal.housekeeping", labeling="AVG.Signal.labeling", mm="AVG.Signal.low_stringency_hyb_mm2", pm="AVG.Signal.low_stringency_hyb_pm", negative="AVG.Signal.negative"),skip=7,sep=",",header=T)
+plotQC(object,...)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,7 +25,9 @@ readQC(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Signal.cy3_h
   \item{columns}{a vector of column names to read from the file} 
   \item{skip}{number of lines of header information to ignore in the file}
   \item{header}{if TRUE the column names in the file are read}
-  \item{sep}{a character string for the file separator}	 
+  \item{sep}{a character string for the file separator}
+  \item{object}{a ExpressionSetIllumina object containing QC information or QC object created by readQC}
+  \item{\dots}{extra plotting arguments that can be sent to plotQC}		 
 }
 \details{
 
@@ -51,9 +55,12 @@ data(QC)
 
 QC$Signal
 
-plotQC(QC)
 
-singleQCPlot(QC, type="negative")
+data(BSData)
+
+QC = QCInfo(BSData)
+
+
 
 }
 

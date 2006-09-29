@@ -12,6 +12,8 @@ setMethod("initialize", "BeadLevelList",
 									) {
 									.Object@G<-G
 									.Object@Gb<-Gb
+									.Object@R<-G
+									.Object@Rb<-Gb
 									.Object@GrnX<-GrnX
 									.Object@GrnY<-GrnY
 									.Object@ProbeID<-ProbeID
@@ -22,6 +24,14 @@ setMethod("initialize", "BeadLevelList",
 									
 								  .Object
 })
+
+
+
+setMethod("show", "BeadLevelList", function(object){
+printHead(object)
+
+})
+
 
 
 

@@ -9,7 +9,7 @@ setMethod("initialize", "ExpressionSetIllumina",
 		   featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
                    QCSignal = new("matrix"),
-                   QCVar = new("matrix"),
+                   QCStDev = new("matrix"),
                    QCDetection = new("matrix")
                    ) {
 
@@ -20,7 +20,7 @@ setMethod("initialize", "ExpressionSetIllumina",
                            annotation = annotation,
                            featureData = featureData
                      )
-            .Object@QC=assayDataNew(Signal = QCSignal, StDev=QCVar, Detection=QCDetection,storage.mode="list")
+            .Object@QC=assayDataNew(Signal = QCSignal, StDev=QCStDev, Detection=QCDetection,storage.mode="list")
             .Object
 
           })
