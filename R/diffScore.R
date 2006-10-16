@@ -10,8 +10,8 @@ if(length(cond)==1){
   BeadStDev_Ref = se.exprs(BSData)[,ref]
   BeadStDev_Cond = se.exprs(BSData)[,cond]
 
-  SigmaRef = QC$StDev[ref,11]*sqrt(40)
-  SigmaCond = QC$StDev[cond,11]*sqrt(40)
+  SigmaRef = QC$StDev[ref,11]*2.5
+  SigmaCond = QC$StDev[cond,11]*2.5
 }
 
 
@@ -73,66 +73,36 @@ DiffScore
 
 }
 
+###Code to make it work for Semyon's example
 
-##
+r=read.table("BeadStudio_example_diff_score_calc.txt", sep="\t", header=T)
+        Aref = 3.37
+       Bref = 0.0347
+         Acond = 2.13
+         Bcond = 0.0441
 
-##
-##Read in the DiffScore values as D
-##
+ Avg_Intensity_Ref = r[,2]
+BeadStDev_Ref=r[,4]
 
-##
-##constant values for Semyon's example
-##
+Avg_Intensity_Cond = r[,5]
+BeadStDev_Cond = r[,18]
 
-
-#r=read.table("BeadStudio_example_diff_score_calc.txt", sep="\t", header=T)
- #        Aref = 3.37
-  #       Bref = 0.0347
-   #      Acond = 2.13
-    #     Bcond = 0.0441
-
-# Avg_Intensity_Ref = r[,2]
+##Standard deviation of negative controls (apparently...)
+SigmaRef = 49.5
+SigmaCond = 41.6
 
 
- #Avg_Intensity_Cond = r[,5]
+Numerator = abs(Avg_Intensity_Cond - Avg_Intensity_Ref)
 
-#D = r[,8]
-
-##These are the constants we want to calculate
-#SigmaRef = 49.5
-#SigmaCond = 41.6
-
-
-
-
-#lm.ref = lm(BeadStDev_Ref~Avg_Intensity_Ref)
-#lm.cond = lm(BeadStDev_Cond~Avg_Intensity_Cond)
-
-#Aref = lm.ref$coefficients[1]
- # Bref = lm.ref$coefficients[2]
-
-#  Acond = lm.cond$coefficients[1]
- # Bcond = lm.cond$coefficients[2]
-
-#Numerator = abs(Avg_Intensity_Cond - Avg_Intensity_Ref)
-
-
-#p =10^( D / -10*sign(Avg_Intensity_Cond - Avg_Intensity_Ref))
-
-
-#FullDenom = Numerator/(qnorm(p / 2, lower.tail=FALSE))
-
-#F = FullDenom^2
-
-#sigma_sum = F - (Aref +  (2.5*Bref*Avg_Intensity_Ref))^2 - (Acond +  (2.5*Bcond*Avg_Intensity_Cond))^2
+sigma_sum =  (Aref +  (2.5*Bref*Avg_Intensity_Ref))^2 + (Acond +  (2.5*Bcond*Avg_Intensity_Cond))^2
 
 
 #sigma_sum =median(sigma_sum,na.rm=TRUE)
 
-#FullDenom = sqrt(sigma + s_ref+s_cond)
+FullDenom = sqrt(sigma_sum+ SigmaRef^2+SigmaCond^2)
 
-#Diff_Pvalue = 2*pnorm(Numerator/FullDenom, lower.tail=FALSE)
+Diff_Pvalue = 2*pnorm(Numerator/FullDenom, lower.tail=FALSE)
 
-#DiffScore = -10*sign(Avg_Intensity_Cond - Avg_Intensity_Ref)*log10(Diff_Pvalue)
+DiffScore = -10*sign(Avg_Intensity_Cond - Avg_Intensity_Ref)*log10(Diff_Pvalue)
 
 

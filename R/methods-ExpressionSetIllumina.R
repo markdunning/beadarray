@@ -70,12 +70,25 @@ setReplaceMethod("QC", "ExpressionSetIllumina", function(object, value){
 	object
 })
 
+setGeneric("NoBeads<-", function(object, value) standardGeneric("NoBeads<-"))
+
+setReplaceMethod("NoBeads", "ExpressionSetIllumina", function(object, value){
+	
+	assayDataElementReplace(object, "NoBeads", value)
+})
 
 
 
 setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
 
 setMethod("NoBeads", "ExpressionSetIllumina", function(object) assayDataElement(object, "NoBeads"))
+
+setGeneric("Detection<-", function(object, value) standardGeneric("Detection<-"))
+
+setReplaceMethod("Detection", "ExpressionSetIllumina", function(object, value){
+	
+	assayDataElementReplace(object, "Detection", value)
+})
 
 
 setGeneric("Detection", function(object) standardGeneric("Detection"))
