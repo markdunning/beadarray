@@ -5,6 +5,8 @@ setMethod("initialize", "BeadLevelList",
 									 Gb = new("matrix"),
 									 GrnX = new("matrix"),
 									 GrnY= new("matrix"),
+									 RedX=  new("matrix"),
+									 RedY=new("matrix"),	
 									R = "matrixOrNull",
 									Rb = "matrixOrNull",	
 									 ProbeID = new("matrix"),
@@ -16,6 +18,8 @@ setMethod("initialize", "BeadLevelList",
 									.Object@Rb<-Gb
 									.Object@GrnX<-GrnX
 									.Object@GrnY<-GrnY
+									.Object@RedX<-RedX
+									.Object@RedY<-RedY
 									.Object@ProbeID<-ProbeID
 									.Object@targets<-targets
 									
