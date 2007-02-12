@@ -1,9 +1,10 @@
 \name{ExpressionSetIllumina}
 \docType{class}
 \alias{backgroundNormalise, ExpressionSetIllumina-methods}
-\alias{backgroundNormalise, ExpressionSetIllumina, ExpressionSetIllumina-method}
+\alias{backgroundNormalise, ExpressionSetIllumina,ExpressionSetIllumina-method}
 \alias{class:ExpressionSetIllumina}
 \alias{ExpressionSetIllumina-class}
+\alias{exprs<-,ExpressionSetIllumina,ANY-method}
 \alias{exprs<-,ExpressionSetIllumina,matrix-method}
 \alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
 \alias{exprs,ExpressionSetIllumina-method}
@@ -17,30 +18,22 @@
 \alias{show,ExpressionSetIllumina-method}
 \alias{NoBeads,ExpressionSetIllumina-method}
 \alias{Detection,ExpressionSetIllumina-method}
-
 \alias{NoBeads}
 \alias{Detection}
-
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
   Expression BeadArrays.
 }
-
-
 \description{
   Container for high-throughput assays and experimental
   metadata. \code{ExpressionSetIllumina} class is derived from
-  \code{\link[Biobase:eSet]{eSet}}, and requires matrices \code{exprs}, \code{BeadStDev}, \code{NoBeads},
-  \code{Detection} as assay data members.  
-  
- } 
-
-
+  \code{\link[Biobase:eSet]{eSet}}, and requires matrices \code{exprs},
+  \code{BeadStDev}, \code{NoBeads}, \code{Detection} as assay data members.
+ }
 \section{Extends}{
    Directly extends class \code{\link[Biobase:eSet]{eSet}}.
 }
 \section{Creating Objects}{
-
   \code{new('ExpressionSetIllumina',
     phenoData = [AnnotatedDataFrame],
     experimentData = [MIAME],
@@ -52,7 +45,6 @@
     reporterInfo = [data.frameOrNULL],
     ...)
   }
-
   \code{ExpressionSetIllumina} instances are usually created through
   \code{new("ExpressionSetIllumina", ...)}. Arguments to \code{new}
   include \code{exprs}, \code{BeadStDev},
@@ -66,7 +58,7 @@
   \describe{
     \item{\code{assayData}:}{Contains matrices with equal dimensions, and with 
       column number equal to \code{nrow(phenoData)}. \code{assayData} must 
-      contain a matrix \code{exprs} with rows representing features (e.g., genes) 
+      contain a matrix \code{exprs} with rows representing features (e.g., genes)
       and columns representing samples, a matrix \code{BeadStDev} 
       describing the standard error of each gene, and matrices \code{NoBeads} and \code{Detection} 
       to describe the number of beads used to produce the summary and a
@@ -79,7 +71,7 @@
     \item{\code{reporterInfo}:}{annotation for SNPs, usually will contain a 
       \code{CHR} and a \code{MapInfo} column for genomic localization }
   }
-}
+ }
 \section{Methods}{
 
   Class-specific methods:
@@ -139,10 +131,6 @@
     \item{\code{ExpressionSetSetIllumina$}, \code{ExpressionSetSetIllumina$<-}}{See \code{\link[Biobase:eSet]{eSet}}}
   }
 }
-\author{Mark Dunning, based on Biobase eSet class }
-
-\seealso{
-  \code{\link[Biobase:eSet]{eSet}}}
-}
-
+\author{Mark Dunning, based on Biobase eSet class}
+\seealso{\code{\link[Biobase:eSet]{eSet}}}
 \keyword{classes}

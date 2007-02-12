@@ -4,22 +4,13 @@ setClassUnion("matrixOrNull", c("matrix", "NULL"))
 setClass("ExpressionSetIllumina",
          representation(QC = "AssayDataOrNull"),
          contains="eSet"
-
 )
 
+# Define new class, modified from the 'cytoSet' class in prada
 setClass("BeadLevelList",
-
-	representation(
-	G="matrix",
-	R="matrixOrNull",
-	Rb="matrixOrNull",
-	Gb="matrix",
-	GrnY ="matrix",
-	GrnX="matrix",
-	RedX="matrixOrNull",
-	RedY="matrixOrNull",
-	ProbeID="matrix",
-	targets ="data.frame"
-)
-
-)
+          representation(beadData="environment",
+             phenoData="AnnotatedDataFrame",
+             arrayInfo ="list",
+#             probeindex="matrix",
+             beadAnno="data.frame",
+             scanMetrics="data.frame"))

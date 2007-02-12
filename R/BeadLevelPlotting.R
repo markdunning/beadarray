@@ -1,23 +1,69 @@
-"plotBeadLocations" <- function(BLData, ProbeIDs=NULL, BeadIDs=NULL, array, SAM=FALSE,...){
+boxplotBeads = function(BLData, whatToPlot="G", arrays=NULL,
+                                  log=TRUE, varwidth=TRUE,  ...) {
+  tmp = list()
+  arraynms = arrayNames(BLData)
+  narrays = length(arraynms)
+  if(is.null(arrays))  # plot all arrays
+    arrays = 1:narrays
+  for(i in arrays)
+      tmp[[arraynms[i]]] = getArrayData(BLData,array=i, which=whatToPlot, log=log)
+  boxplot(tmp,varwidth=varwidth,...)
+}
 
-xmax = max(BLData@GrnX[,array])
-ymax = max(BLData@GrnY[,array])
 
-plot(1, xlim=range(0:xmax), ylim=range(0:ymax) ,type="n", new=TRUE,...)
+plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
+                   xlim=c(8,16), ylim=c(8,16), xlab="G intensities",
+                   ylab="R intensities", smooth=TRUE,...) {
+  arraynms = arrayNames(BLData)
+  narrays = length(arraynms)
+  if(length(arrays)==1 & is.null(ProbeIDs) & is.null(BeadIDs)) {
+     if(smooth)
+       smoothScatter(getArrayData(BLData, which="G", array=arrays, log=log),
+            getArrayData(BLData, which="R", array=arrays, log=log),
+            xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
+            main=arraynms[arrays],...)
+     else
+       plot(getArrayData(BLData, which="G", array=arrays, log=log),
+            getArrayData(BLData, which="R", array=arrays, log=log),
+            xlim=xlim, ylim=ylim, new=TRUE, xlab=xlab, ylab=ylab,
+            main=arraynms[arrays],...)
+  }
+  else{
+    cols = rainbow(narrays)
+    plot(1, xlim=xlim, ylim=ylim, type="n", new=TRUE, xlab=xlab, ylab=ylab,...)
+     for(i in arrays) {
+           if(!is.null(ProbeIDs))
+             for(j in 1:length(ProbeIDs)) {
+               points(getArrayData(BLData, which="G", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])],
+                      getArrayData(BLData, which="R", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])], col = cols[i], ...)
+                }
+            if (!is.null(BeadIDs)) 
+                points(getArrayData(BLData, which = "G", array = i, 
+                  log = log)[BeadIDs], getArrayData(BLData, which = "R", 
+                  array = i, log = log)[BeadIDs], col = cols[i], 
+                  ...)
+        }
+    }
+}
+ 
+plotBeadLocations = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, array=1, SAM=FALSE, xlab="x-coordinate", ylab="y-coordinate", main=paste("Bead", ProbeIDs, "locations"),...){
+
+xmax = max(BLData[[array]]$GrnX)
+ymax = max(BLData[[array]]$GrnY)
+
+plot(1, xlim=range(0:xmax), ylim=range(0:ymax) ,type="n", new=TRUE, xlab=xlab, ylab=ylab,main=main,...)
 
 if(!(is.null(ProbeIDs))){
 
-xs = BLData@GrnX[which(BLData@ProbeID[,array] %in% ProbeIDs),array]
-ys = BLData@GrnY[which(BLData@ProbeID[,array] %in% ProbeIDs),array]
+xs = BLData[[array]]$GrnX[which(BLData[[array]]$ProbeID %in% ProbeIDs)]
+ys = BLData[[array]]$GrnY[which(BLData[[array]]$ProbeID %in% ProbeIDs)]
 
 }
 else{
 
-xs = BLData@GrnX[BeadIDs,array]
-ys = BLData@GrnY[BeadIDs,array]
+xs = BLData[[array]]$GrnX[BeadIDs]
+ys = BLData[[array]]$GrnY[BeadIDs]
  
-
-
 }
 
 if(SAM) {
@@ -39,8 +85,7 @@ points(xs, ys,...)
 }
 
 
-
-plotBeadIntensities=function(BLData, ProbeIDs, arrays, log=FALSE, n=3, ProbeCols=NULL,ylim=NULL,...){
+plotBeadIntensities = function(BLData, ProbeIDs, arrays, log=FALSE, n=3, whatToPlot="G", ProbeCols=NULL, ylim=NULL,...){
 
 
 
@@ -52,25 +97,30 @@ ProbeCols = rainbow(n=length(ProbeIDs), start=0, end=5/6)
 
 }
 
-if(is.null(ylim)) ylim=range(5,12)
+if(is.null(ylim)) {
+  if(log==TRUE)
+    ylim=c(0,16)
+  else
+    ylim=c(1,2^16)
+}
 
-plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE, xlab="", ylab="log2 intensities")
+plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE, xlab="", ylab="intensities")
 count=1
 
 
 for(i in 1:length(arrays)){
-j=1
+#j=1
 for(j in 1:length(ProbeIDs)){
 
-I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=TRUE)
-
-o = findBeadStatus(BLData, probes = ProbeIDs[j], array=arrays[i], log=TRUE, n=n)
-
-o = log2(BLData@G[o,arrays[i]])
-
-boxplot(I, at=count-0.5, add=TRUE, axes=FALSE, col=ProbeCols[j])
-
-points(x=rep(count-0.5, length(o)), y = o, pch=16, col="red")
+  I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, which=whatToPlot)
+  if (length(I) > 1) {
+      sel = is.finite(I) & !is.na(I)
+      boxplot(I[sel], at = count - 0.5, add = TRUE, axes = FALSE, col = ProbeCols[j])
+  }
+  else {
+    cat("\nNo bead with ID", ProbeIDs[j], "on array", i, "\n")
+  }
+#points(x=rep(count-0.5, length(o)), y = o, pch=16, col=ProbeCols[j])
 
 count = count+1
 
@@ -87,88 +137,92 @@ box()
 
 
 
-"imageplot"<-function(BLData, array = 1, nrow = 18, ncol = 2,
-                        low = NULL, high = NULL, ncolors = 123, whatToPlot ="G",zlim=NULL,...){
+imageplot = function(BLData, array = 1, nrow = 18, ncol = 2,
+                     low = NULL, high = NULL, ncolors = 123,
+                     whatToPlot ="G", log=TRUE, zlim=NULL,
+                     main=whatToPlot,...){
 
   par(mar = c(2,1,1,1), xaxs = "i")
   
 #Not needed since the co-ords are automatically scaled to zero now  
-#  xs <- floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
-#  ys <- floor(BLData@GrnY[,array] - min(BLData@GrnY[,array]))
+#  xs = floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
+#  ys = floor(BLData@GrnY[,array] - min(BLData@GrnY[,array]))
 
 
-  data = slot(BLData, whatToPlot)
-
+  data = getArrayData(BLData, which=whatToPlot, array=array, log=log)
   if (is.character(low)) 
-    low <- col2rgb(low)/255
+    low = col2rgb(low)/255
   if (is.character(high)) 
-    high <- col2rgb(high)/255
+    high = col2rgb(high)/255
   if (!is.null(low) && is.null(high)) 
-    high <- c(1, 1, 1) - low
+    high = c(1, 1, 1) - low
   if (is.null(low) && !is.null(high)) 
-    low <- c(1, 1, 1) - high
+    low = c(1, 1, 1) - high
 
   if (is.null(low)) 
-    low <- c(1, 1, 1)
+    low = c(1, 1, 1)
   if (is.null(high)) 
-    high <- c(0, 1, 0)
-  
-  col <- rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
-        high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
+    high = c(0, 1, 0)
+#  if(whatToPlot=="G" | whatToPlot=="Gb")
+    col = rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
+          high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
 
-  xs <- floor(BLData@GrnX[,array])
-  ys <- floor(BLData@GrnY[,array])
+#  else  # plot in Red colour scheme
+#    col = rgb(seq(low[2], high[2], len = ncolors), seq(low[1], 
+#          high[1], len = ncolors), seq(low[3], high[3], len = ncolors))
 
-  xgrid <- floor(seq(0, max(xs), by = max(xs)/ncol))
-  ygrid <- floor(seq(0, max(ys), by = max(ys)/nrow))
+  xs = floor(BLData[[array]]$GrnX)
+  ys = floor(BLData[[array]]$GrnY)
 
-  imageMatrix <- matrix(ncol = ncol, nrow = nrow)
+  xgrid = floor(seq(0, max(xs), by = max(xs)/ncol))
+  ygrid = floor(seq(0, max(ys), by = max(ys)/nrow))
+
+  imageMatrix = matrix(ncol = ncol, nrow = nrow)
 
   for(i in 1:ncol){
     idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
-    fground = data[idx,array]
+    fground = data[idx]
     yvalues = ys[idx]
 #    yvalues = BLData@GrnY[idx,array]
 
-    out <- .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
+    out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
               result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
 
-    imageMatrix[,i] <- rev(out$result)
+    imageMatrix[,i] = out$result # rev(out$result)
   }
-
+ 
   imageMatrix = t((imageMatrix))
-  image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col,...)
+  if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
+  image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
 }
 
 
 
-"SAMSummary" <-
-function(BLData, mode="outliers", missing_arrays=NULL, colour=TRUE, scale = NULL,...){
-
+SAMSummary =
+function(BLData, mode="outliers", whatToPlot="G", log=TRUE, n=3, missing_arrays=NULL, colour=TRUE, scale = NULL, low="yellow", high="red",...) {
 
 #mode=screenSetup(BLData)
-  
+
 #Setup up outliers
 
 split.screen(c(1,2))
 screen(1)
 
-if(mode=="outliers") title="Number of Outliers"
-if(mode=="fg") title="Median Foreground"
-if(mode=="bg") title="Median Background"
+#if(mode=="outliers") title=paste("Number of Outliers:", whatToPlot)
+#if(mode=="intensities") title=paste("Median Intensities:", whatToPlot)
 
-
-
+arraynms = arrayNames(BLData)
+narrays = length(arraynms)
+len = min(96, narrays)                                                                                                           
 values = vector(length=96)
 
 if(mode == "outliers"){
 
-  o = list(length=96)
-
+  o = list(length=len)
   
-  for(i in 1:96){
+  for(i in 1:len){
 
-    o[[i]] = findAllOutliers(BLData, array=i)
+    o[[i]] = findAllOutliers(BLData, array=i, log=log, which=whatToPlot, n=n,...)
 
     values[i] = length(o[[i]])
 
@@ -176,34 +230,29 @@ if(mode == "outliers"){
 
 }
   
-if(mode == "fg"){
+if(mode == "intensities") {
 
- for(i in 1:96){
+ for(i in 1:len) {
 
-   values[i] = median(log2(BLData@G[,i]),na.rm=TRUE)
+   values[i] =  median(getArrayData(BLData, array=i, log=log, which=whatToPlot), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
  }
  
-
 }
-
-if(mode == "bg"){
-
-  for(i in 1:96){
-    values[i] = median(log2(BLData@Gb[,i]),na.rm=TRUE)
-  }
-  
-
-}
-
-  
-len = 96
-
+#if(mode == "bg"){
+#
+#  for(i in 1:96){
+#    values[i] = median(log2(BLData@Gb[,i]),na.rm=TRUE)
+#  }
+#  
+#
+#}
+#len = 96
 
 if(!is.null(missing_arrays)){
 
-values = vector(length=96)
+values = vector(length=len)
 
-i = 1:96
+i = 1:len
 
 values[i[-missing_arrays]]=v
 
@@ -213,10 +262,10 @@ values[missing_arrays] = NA
 
 
 doLoop = TRUE
-
+counter = 0
 while(doLoop){
-
-  x=1/13
+counter = counter+1
+x=1/13
 y=1/9
 
 ys = c(y/2, 0, 0, y/2, y, y)
@@ -254,14 +303,16 @@ ys = ys + 1/8
 
 
 }
-
-
+if(counter>1) {
+  answer = readline("Type Q to quit, or anything else to continue:  ")
+  if(answer=="Q")
+    break# doLoop=FALSE
+}
+cat(paste("\nClick on plot device to select an array to show", mode, "from\n\n"))
 l=locator(n=1)
 
 x.clicked = strtrim(as.character(l$x),5)
-print(l)
-
-
+#print(l)
 
 y.clicked = strtrim(as.character(l$y),5)
 
@@ -269,12 +320,13 @@ y.clicked = 8-(as.double(y.clicked)*8)
 
 x.clicked = as.double(x.clicked)*12
 
-print(x.clicked)
-print(y.clicked)
+#print(x.clicked)
+#print(y.clicked)
 
 ArrayClickedOn = ceiling(y.clicked)*12 + ceiling(x.clicked) - 12
 
-print(ArrayClickedOn)
+#print(ArrayClickedOn)
+cat(paste("Displaying", mode, "from array", arraynms[ArrayClickedOn], "\n\n"))
 
 screen(2, new=TRUE)
 
@@ -285,89 +337,80 @@ if(mode == "outliers"){
 
 os= o[[ArrayClickedOn]]
 
-plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, new=TRUE, main=as.character(BLData@targets[ArrayClickedOn,2]))
-
+plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, SAM=TRUE, new=TRUE, main=paste("Outliers:", whatToPlot))
 screen(1)
 }
 
-if(mode == "fg"){
+if(mode == "intensities") {
 
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="G", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]),...)
-
+  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=50, ncol=50, high=high, low=low,main=paste("Intensities:", whatToPlot),...)
   screen(1)
 }
-
-if(mode == "bg"){
-
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="Gb", nrow=50, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]),...)
-  screen(1)
-  
+}
 }
 
-}
+"BeadChipSummary" =
+function(BLData, mode="outliers", whatToPlot="G", log=TRUE, n=3, colour=TRUE, scale = NULL,low="yellow", high="red",...){
 
-}
-
-"BeadChipSummary" <-
-function(BLData, mode="outliers",colour=TRUE, scale = NULL,...){
-
-
-  
 split.screen(c(1,2))
 screen(1)
 
-if(mode=="outliers") title="Number of Outliers"
-if(mode=="fg") title="Median Foreground"
-if(mode=="bg") title="Median Background"
-
-  
-values = vector(length=12)
+#if(mode=="outliers") title=paste("Number of Outliers:", whatToPlot)
+#if(mode=="intensities") title=paste("Median Intensities:", whatToPlot)
+arraynms = arrayNames(BLData)
+narrays = length(arraynms)
+len = min(12, narrays)                                                          
+values = vector(length=len)
 
 if(mode == "outliers"){
 
-  o = list(length=12)
+  o = list(length=len)
 
   
-  for(i in 1:12){
+  for(i in 1:len){
 
-    o[[i]] = findAllOutliers(BLData, array=i)
-
+    o[[i]] = findAllOutliers(BLData, array=i, log=log, n=n, which=whatToPlot)
     values[i] = length(o[[i]])
 
   }
 
 }
-  
-if(mode == "fg"){
 
-  values = apply(log2(BLData@G), 2, median)
+if(mode == "intensities"){
 
-}
-
-
-if(mode == "bg"){
-
-  values = apply(log2(BLData@G), 2, median)
+ for(i in 1:len){
+   values[i] =  median(getArrayData(BLData, which=whatToPlot, log=log, array=i), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
+ }
+ 
 
 }
+#if(mode == "fg"){
 
-  
+#  values = getArrayData(BLData, which=whatToPlot, array=array, log=log)
+# apply(log2(BLData@G), 2, median)
 
-len = 12
+#}
 
 
+#if(mode == "bg"){
 
+#  values = apply(log2(BLData@G), 2, median)
+
+#}
+
+
+#len = 12
 
 doLoop = TRUE
-
+counter = 0
 while(doLoop){
-
+counter = counter + 1
   y=1
 ys = c(y, y, y-y/12, y - y/12)
 
   
 
-for(i in 1:12){
+for(i in 1:len){
 control_intensity = values[i]
 
 
@@ -382,7 +425,12 @@ ys = ys - 1/12
 
 }
 
-
+if(counter>1) {
+  answer = readline("Type Q to quit, or anything else to continue:  ")
+  if(answer=="Q")
+    break# doLoop=FALSE
+}
+cat(paste("\nClick on plot device to select an array to show", mode, "from\n\n"))
 l=locator(n=1)
 
 
@@ -393,7 +441,7 @@ y.clicked = as.double(y.clicked)*12
 
 ArrayClickedOn = 12 - ceiling(y.clicked) + 1
 
-print(ArrayClickedOn)
+cat(paste("Displaying", mode, "from array", arraynms[ArrayClickedOn], "\n\n"))
 
 screen(2, new=TRUE)
 
@@ -404,31 +452,26 @@ if(mode == "outliers"){
 
 os= o[[ArrayClickedOn]]
 
-plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, new=TRUE, main=as.character(BLData@targets[ArrayClickedOn,2]))
+plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, new=TRUE, main=paste("Outliers:", whatToPlot))
 
 screen(1)
 }
 
-if(mode == "fg"){
+if(mode == "intensities"){
 
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="G", nrow=100, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]))
+  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=100, ncol=50, high=high, low=low, main=paste("Intensities:", whatToPlot),...)
 
   screen(1)
 }
+#if(mode == "bg"){
 
-if(mode == "bg"){
-
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot="Gb", nrow=100, ncol=50, high="red", low="yellow",main=as.character(BLData@targets[ArrayClickedOn,2]))
-  screen(1)
+#  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=100, ncol=50, high="red", low="yellow",main=as.character(arrayNames(BLData)[ArrayClickedOn]))
+#  screen(1)
   
-}
+#}
 
 }
 
 }
- 
 
-
-
-
-
+# qcPlots = function(BLData)

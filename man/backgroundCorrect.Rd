@@ -2,70 +2,69 @@
 \alias{backgroundCorrect}
 \alias{backgroundCorrect,BeadLevelList-methods}
 \alias{backgroundCorrect,BeadLevelList-method}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{Background Correct a BeadLevelList object }
+\title{Background Correct a BeadLevelList object}
 \description{
-Adapted from 'limma' backgroundCorrect function to correct R intensities of a BLData object using the Rb background values.
-
+  Adapted from 'limma' backgroundCorrect function to correct the
+  foreground intensities of a BLData object using the background values.
 }
-
 \usage{
-backgroundCorrect(object, method = "subtract", offset = 0)
+backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{object}{BeadLevelList object containing bead level data}
-  \item{method}{character string specifying correction method.  Possible
-          values are '"none"', '"subtract"', '"half"', '"minimum"')}
-          
+  \item{object}{a BeadLevelList object}
+  \item{method}{character string specifying correction method. Possible
+          values are '"none"', '"subtract"', '"half"', '"minimum"',
+	  '"edwards"', '"normexp"', '"rma"')}
   \item{offset}{numeric value to add to intensities}
+  \item{verbose}{logical. Used when method = '"normexp"'.  If TRUE,
+    the parameters estimated by the model are output.}	
 }
 \details{
-If 'method="none"' then the corrected intensities are equal to the
-     foreground intensities, i.e., the background intensities are
-     treated as zero. If 'method="subtract"' then this function simply
-     subtracts the background intensities from the foreground
-     intensities which is the usual background correction method. 
+  If 'method="none"' then the corrected intensities are equal to the
+  foreground intensities, i.e., the background intensities are
+  treated as zero. If 'method="subtract"' then this function simply
+  subtracts the background intensities from the foreground
+  intensities which is the usual background correction method.
 
-     The remaining methods are all designed to produce positive
-     corrected intensities. If 'method="half"' then any intensity which
-     is less than 0.5 after background subtraction is reset to be equal
-     to 0.5. If 'method="minimum"' then any intensity which is zero or
-     negative after background subtraction is set equal to half the
-     minimum of the positive corrected intensities for that array. 
-     
+  The remaining methods are all designed to produce positive
+  corrected intensities. If 'method="half"' then any intensity which
+  is less than 0.5 after background subtraction is reset to be equal
+  to 0.5. If 'method="minimum"' then any intensity which is zero or
+  negative after background subtraction is set equal to half the
+  minimum of the positive corrected intensities for that array.
+  If 'method="edwards"' the method of Edwards (2003) is used.
+  If 'method="normexp"' or '"rma"', a normal-exponential convolution
+  model is fitted to the intensities, using different estimation
+  procedures.  See Smyth (2005) for further details on normexp.
 
-     The 'offset' can be used to add a constant to the intensities
-     before log-transforming, so that the log-ratios are shrunk towards
-     zero at the lower intensities. This may eliminate or reverse the
-     usual 'fanning' of log-ratios at low intensities associated with
-     local background subtraction.
-
+  The 'offset' can be used to add a constant to the intensities
+  before log-transforming, so that the log-ratios are shrunk towards
+  zero at the lower intensities. This may eliminate or reverse the
+  usual 'fanning' of log-ratios at low intensities associated with
+  local background subtraction.
 }
 \value{
-An 'BeadLevelList' object in which components 'R' and 'G' are background
-     corrected 
+  An 'BeadLevelList' object in which the 'R' and 'G' intensities for
+  each array are background corrected 
 }
-
-
 \author{Mark Dunning based on the limma function}
+\references{
+  Edwards, D. E. (2003). Non-linear normalization and background
+  correction in one-channel cDNA microarray studies, Bioinformatics,
+  19, 825-833.
 
+  Smyth, G. K. (2005). Limma: linear models for microarray data. In:
+  Bioinformatics and Computational Biology Solutions using R and
+  Bioconductor, R. Gentleman, V. Carey, S. Dudoit, R. Irizarry, W.
+  Huber (eds.), Springer, New York, pages 397-420.
+}    
 \examples{
-
 data(BLData)
 
 #default is to simply subtract Rb from R
-
 BLData.bc = backgroundCorrect(BLData)
 
-min(BLData.bc$G)
-
 #Use 'minimum' method to stop negative values appearing
-
 BLData.min = backgroundCorrect(BLData, method="minimum")
-
-min(BLData.min$G)
-
 }
-
 \keyword{methods}

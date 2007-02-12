@@ -1,0 +1,26 @@
+Version 1.3.1 - 12 Feb 2007
+
+BeadLevelList
+ - changed structure to accommodate varying numbers of beads per array
+ - new slots 'beadData' (environment) which stores raw data in data.frames,
+ one for each array, 'phenoData' (AnnotatedDataFrame) to store targets/sample 
+ information, 'arrayInfo' (list) which stores array names, number of beads 
+ and other array information, and 'scanMetrics' which stores scanner setting 
+ information
+ - updated plotting functions to handle data in new structure
+ - updated createBeadSummaryData to handle new structure
+
+New functions
+ - plotRG, for two-colour data
+ - boxplotBeads, to do boxplots of the raw intensities
+ - getArrayData, numBeads, arrayNames for use on BeadLevelList data
+
+Changes to C code
+ - commented out 'bead is too close to edge, ignoring' warning in readBeadimages
+ - changed default setting of BLImagePlot to take log2 of the data passed to it
+ - findAllOutliers now takes 'nmads' argument to select outliers
+ - createBeadSummary also accepts 'nmads'
+
+Data
+ - new BLData object (4 arrays from a SAM)
+

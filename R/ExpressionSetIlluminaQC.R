@@ -4,6 +4,7 @@ readQC=function(file, columns=list(Biotin="AVG.Signal.biotin", cy3_high="AVG.Sig
 
   r=read.table(as.character(file), sep=sep, header=header, skip=skip)
 
+  r=t(r)
 
    signal = matrix(nrow=nrow(r), ncol=length(columns))
 

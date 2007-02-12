@@ -4,11 +4,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Illumina's DE statistic}
 \description{
-Function to compute the DiffScore statistic to assess the probability of differential expression of genes between a reference and condition array.
+  Function to compute the DiffScore statistic to assess the probability
+  of differential expression of genes between a reference and condition array.
 
-NB At present this function does not compute the same values as output by BeadStudio
-
-
+  NB At present this function does not compute the same values as output
+  by BeadStudio
 }
 \usage{
 DiffScore(BSData, QC=NULL, cond, ref)
@@ -19,9 +19,7 @@ DiffScore(BSData, QC=NULL, cond, ref)
   \item{QC}{quality control information, usually created automatically by the readBeadSummaryData function}
   \item{cond}{index for the condition array}
   \item{ref}{index for the reference array}	
-
 }
-
 \details{
 The model assumes that bead variation is comprised or nonspecific biological variation and technical error. Technical error
 is estimated using a robust least squares fit of the standard error and mean for beads on the reference and condition arrays respectively. Biological 
@@ -31,8 +29,9 @@ condition and reference arrays. The DiffScore is then
 
 $10*sign(mu_cond - mu_ref)log_10(p)$
 
-Note that this statistic is intended to be used on unlogged intensities. For log$_2$ data, the lmFit function from limma can be easily used on the exprs matrix.
-
+Note that this statistic is intended to be used on unlogged
+intensities. For log$_2$ data, the lmFit function from limma can be
+easily used on the exprs matrix.
 
 
 For more details see the BeadStudio manual and "A model of Technical Variation of Microarray Signal" - Chudin et al. Journal of Comp Bio. Vol 13, 4 (2006)

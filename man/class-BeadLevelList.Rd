@@ -1,51 +1,61 @@
 \name{BeadLevelList-class}
 \docType{class}
 \alias{BeadLevelList-class}
-\alias{show, BeadLevelList-method}
+\alias{BeadLevelList}
+\alias{show,BeadLevelList-method}
+\alias{dim,BeadLevelList-method}
 \alias{initialize,BeadLevelList-method}
-\alias{imageplot, BeadLevelList-methods}
-\alias{[.BeadLevelList}
-\alias{print.BeadLevelList}
+\alias{arrayNames,BeadLevelList-method}
+\alias{numBeads,BeadLevelList-method}
+\alias{copyBeadLevelList,BeadLevelList-method}
+\alias{combineBeadLevelLists,BeadLevelList,BeadLevelList-method}
+\alias{[[,BeadLevelList,ANY,missing-method}
+\alias{getArrayData,BeadLevelList,character,ANY,logical-method}
+\alias{backgroundCorrect,BeadLevelList,character,double,logical-method}
 
 \title{Class "BeadLevelList" }
 
 \description{
-A simple list-based class for storing red and green channel foreground and background intensities for an Illumina experiment.
-
+A class for storing red and green channel foreground and background intensities from an Illumina experiment.
 }
 
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("BeadLevelList", G, Gb, x, y, ProbeID, targets)}, but are usually created by \code{\link{readBeadLevelData}}.
+Objects can be created by calls of the form \code{new("BeadLevelList")}, but are usually created by \code{\link{readIllumina}}.
 }
 
 \section{Slots/List Components}{
-\code{BeadLevelList} objects can be created by \code{new("BeadLevelList",BLData)} where \code{BLData} is a list.
-Objects of this class contains no slots (other than \code{.Data}), but objects should contain the following list components:
-\tabular{ll}{
-  \code{R}:\tab numeric matrix containing the red (foreground intensities.  Rows correspond to spots and columns to arrays.\cr
-  \code{G}:\tab numeric matrix containing the green foreground intensities\cr
-  \code{Rb}:\tab numeric matrix containing the red  background intensities\cr
-  \code{Gb}:\tab numeric matrix containing the green background intensities
+  Objects of this class contain the following slots
+  \tabular{ll}{
+  \code{beadData}:\tab an environment for storing the raw bead-level
+  data.  Each item stored in beadData is a data.frame which can be
+  accessed by \code{BLData[[1]]}.  Each row correspond to a bead and
+  columns the data.\cr
+  \code{phenoData}:\tab an 'AnnotatedDataFrame' containing experimental
+  information.\cr
+  \code{arrayInfo}:\tab a list containing array information.\cr
+  \code{beadAnno}:\tab a data.frame containing Bead annotation
+  information.\cr
+  \code{scanMetrics}:\tab a data.frame containing scanner information.\cr
+  }
 }
 
-}
-}
 \section{Methods}{
   \describe{
     \item{show(BeadLevelList)}{printing method for BeadLevelList}
     \item{initialize}{\code{signature(.Object = "BeadLevelList")}  }
-    \item{createBeadSummaryData}{Summarise each probe on the array to
-      create an \code{ExpressionSetIlluminaObject}}
-      \item{\code{imageplot(BeadLevelList)}}{An imageplot function for
-	\code{BeadLevelList}}
-      	\item{\code{findAllOutliers(BeadLevelList)}}{Find all beads on
-	  an array that are outliers for their particular bead type}
-       		
-       		
+    \item{\code{copyBeadLevelList(object)}}{Creates a new copy of a
+      \code{BeadLevelList} object}
+    \item{\code{arrayNames(object)}}{Returns the array names from a
+      \code{BeadLevelList} object}
+    \item{\code{combineBeadLevelLists(object1,object2)}}{Combines two
+      \code{BeadLevelList} objects into one}
+    \item{\code{getArrayData(object,which="G",log=TRUE)}}{Retrieves the
+      \code{which} intensities on the \code{log} scale from the
+      \code{BeadLevelList}}
+    \item{\code{numBeads(object)}}{Returns the numbers of bead on each
+	array}    		
   }
 }
-
 \author{Mark Dunning}
-\seealso{ \code{\link{readBeadLevelData}} }
+\seealso{\code{\link{readIllumina}}}
 \keyword{classes}
-

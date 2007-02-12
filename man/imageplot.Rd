@@ -1,15 +1,15 @@
 \name{imageplot}
 \alias{imageplot}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{imageplot for BeadArrays object}
 \description{
-Plots an image plot of a bead level data object.  
+Plots an image plot of a bead level data object.
 }
 \usage{
 imageplot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
-high = NULL, ncolors = 123, whatToPlot="G",zlim=NULL,...)
+           high = NULL, ncolors = 123, whatToPlot ="G", log=TRUE,
+           zlim=NULL, main=whatToPlot, ...)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{BLData}{Object of class BLData}
   \item{array}{array to plot}
@@ -18,28 +18,38 @@ high = NULL, ncolors = 123, whatToPlot="G",zlim=NULL,...)
   \item{low}{Color for area of lowest intensity}
   \item{high}{color for area of highest intensity}
   \item{ncolors}{The number of color graduations between high and low}
-  \item{whatToPlot}{string identifying which matrix in BLData to use in the imageplot}
+  \item{whatToPlot}{character string specifying which intensities to plot.
+    Possibilities are \code{"G"}, \code{"Gb"} for single channel data
+    and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
+    two-colour data}
+  \item{log}{if TRUE, log2 intensities are plotted}
   \item{zlim}{numerical vector of length 2 giving the extreme values of 'z'
-          to associate with  colors 'low' and 'high'.}	
-  \item{\dots}{other graphical parameters to plot that can be specified}
-}
+    to associate with  colors 'low' and 'high'.}
+  \item{main}{character string for plot title}
+  \item{\dots}{other graphical parameters to plot that can be specified}}
 \details{
-Because of the high volume
-of bead level data, this function works by mapping a grid (who's size is specified by the nrow and
-ncol) arguments and averages the intensities of the beads within each
-section of this grid.
+  Because of the high volume of bead level data, this function
+  works by mapping a grid (who's size is specified by the nrow and ncol)
+  arguments and averages the (log base 2) intensities of the beads within each
+  section of this grid.
 
-The number of rows and columns may change the appearance of the plots. If the array is divided into too many sqaures it will difficult to detect changes. 
-We recommend using nrow=200 and ncol=20 for whole genome arrays
+  The number of rows and columns may change the appearance of the
+  plots. If the array is divided into too many squares it will difficult
+  to detect changes. We recommend using nrow=200 and ncol=20 for whole
+  genome arrays.
 
-An imageplot of the forgeround intensities is produced be default. Other matrices in BLData can be plotted by using the whatToPlot argument. eg change to
-Gb to plot the background intensities.
-
+  An imageplot of the forgeround intensities is produced be default.
+  Other intensities can be plotted by using the \code{which}
+  argument.
 }
 \value{
 Plot is produced on current graphical device.
 }
 
 \author{Mike Smith, Mark Dunning}
+\examples{
+data(BLData)
 
+imageplot(BLData, nrow=100, ncol=100)
+}
 \keyword{hplot}
