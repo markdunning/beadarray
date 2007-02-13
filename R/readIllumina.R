@@ -152,8 +152,8 @@
                        as.integer(fground),PACKAGE = "beadarray")
 
      l = length(unique(data[,1]))
-     e <- .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
-     endPos[[i]]=e[[4]]
+#     e <- .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
+#     endPos[[i]]=e[[4]]
      
      
      

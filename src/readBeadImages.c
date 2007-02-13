@@ -532,11 +532,11 @@ void IlluminaForeground(int **pixels, double *xs, double *ys, int numBeads, int 
      free(y2);
 }
 
-void startEndPos(int *ProbeIDs, int numBeads, int *starts, int *ends){
+void startEndPos(int *ProbeIDs, int *numBeads, int *starts, int *ends){
 	int i, j;
 
 	j = 0;
-	for(i = 1; i < numBeads; i++){
+	for(i = 1; i < *numBeads; i++){
 
 		  starts[0] = 1;
 		  if(ProbeIDs[i] != ProbeIDs[i-1]){
