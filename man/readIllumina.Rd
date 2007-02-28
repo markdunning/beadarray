@@ -3,13 +3,15 @@
 
 \title{Read BeadArray information into R}
 \description{
-Uses image and csv or txt files to load information about each array
-used in a BeadChip or SAM experiment.
+Uses csv or txt and image files (where available) to load information
+about each array used in a BeadChip or SAM experiment.
 }
 \usage{
 readIllumina(arrayNames=NULL, path=NULL, textType=".csv", annoFile=NULL,
         targets=NULL, imageManipulation="sharpen", backgroundSize=17,
-        storeXY=TRUE, sepchar="_", ...)
+        storeXY=TRUE, sepchar="_", metrics=FALSE,
+        metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
+        normalizeMethod="none", ...)
 }
 
 \arguments{
@@ -31,7 +33,19 @@ readIllumina(arrayNames=NULL, path=NULL, textType=".csv", annoFile=NULL,
   \item{storeXY}{logical scalar, indicating whether the xy coordinates
     should be stored}
   \item{sepchar}{character string which separates row and column in file
-     name (default value is \code{"_"})}
+    name (default value is \code{"_"})}
+  \item{metrics}{logical scalar, indicating whether the scanner metrics
+    file \code{metricsFile} is to be read in}
+  \item{metricsFile}{name of the scanner metrics file}
+  \item{backgroundMethod}{method to use for background correcting the
+    data.  Options are \code{"none"}, \code{"subtract"}, \code{"half"},
+    \code{"minimum"}, \code{"edwards"}, \code{"normexp"} or \code{"rma"}}
+  \item{offset}{numeric value to add to intensities}
+  \item{normalizeMethod}{method to use to normalize the background
+    corrected bead-level data. Options are \code{"none"},
+    \code{"quantile"} and \code{"vsn"}. Note that the normalization occurs
+    at the bead-level and is only available for two-colour data at this
+    stage}
   \item{...}{other arguments}
 }
 
@@ -60,8 +74,8 @@ take a 17 x 17 square for sampling.  In this case the background value
 is taken as the mean of all the previous background values and the user is
 informed that this has been done.
 
-The function creates an BeadLevelList containing foreground and background
-intensities for each bead on each array.
+The function creates an BeadLevelList containing foreground and
+background intensities for each bead on each array.
 }
 \value{
   BeadLevelList object

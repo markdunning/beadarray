@@ -13,39 +13,41 @@ boxplotBeads = function(BLData, whatToPlot="G", arrays=NULL,
 
 plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
                    xlim=c(8,16), ylim=c(8,16), xlab="G intensities",
-                   ylab="R intensities", smooth=TRUE,...) {
+                   ylab="R intensities", main=arrayNames(BLData)[arrays],
+                   smooth=TRUE, cols=NULL, ...) {
   arraynms = arrayNames(BLData)
-  narrays = length(arraynms)
+  narrays = length(arrays)
   if(length(arrays)==1 & is.null(ProbeIDs) & is.null(BeadIDs)) {
      if(smooth)
        smoothScatter(getArrayData(BLData, which="G", array=arrays, log=log),
             getArrayData(BLData, which="R", array=arrays, log=log),
             xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
-            main=arraynms[arrays],...)
+            main=main, ...)
      else
        plot(getArrayData(BLData, which="G", array=arrays, log=log),
             getArrayData(BLData, which="R", array=arrays, log=log),
             xlim=xlim, ylim=ylim, new=TRUE, xlab=xlab, ylab=ylab,
-            main=arraynms[arrays],...)
+            main=main, ...)
   }
   else{
-    cols = rainbow(narrays)
-    plot(1, xlim=xlim, ylim=ylim, type="n", new=TRUE, xlab=xlab, ylab=ylab,...)
+    if(is.null(cols))
+      cols = rainbow(narrays)
+    plot(1, xlim=xlim, ylim=ylim, type="n", new=TRUE, xlab=xlab, ylab=ylab, main=main, ...)
      for(i in arrays) {
            if(!is.null(ProbeIDs))
              for(j in 1:length(ProbeIDs)) {
                points(getArrayData(BLData, which="G", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])],
-                      getArrayData(BLData, which="R", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])], col = cols[i], ...)
+                      getArrayData(BLData, which="R", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])], col = cols[which(arrays %in% i)], ...)
                 }
             if (!is.null(BeadIDs)) 
                 points(getArrayData(BLData, which = "G", array = i, 
                   log = log)[BeadIDs], getArrayData(BLData, which = "R", 
-                  array = i, log = log)[BeadIDs], col = cols[i], 
+                  array = i, log = log)[BeadIDs], col = cols[which(arrays %in% i)],
                   ...)
         }
     }
 }
- 
+
 plotBeadLocations = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, array=1, SAM=FALSE, xlab="x-coordinate", ylab="y-coordinate", main=paste("Bead", ProbeIDs, "locations"),...){
 
 xmax = max(BLData[[array]]$GrnX)

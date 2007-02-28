@@ -1,7 +1,9 @@
-"readIllumina" <-
+"readIllumina" =
   function(arrayNames=NULL, path=NULL, textType=".csv", annoFile=NULL,
            targets=NULL, imageManipulation = "sharpen", backgroundSize=17,
-           storeXY=TRUE, sepchar="_", ...){
+           storeXY=TRUE, sepchar="_", metrics=FALSE,
+           metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
+           normalizeMethod="none", ...){
 
   if(textType==".csv") sep=","
   else sep="\t"	
@@ -108,7 +110,7 @@
      arrayInfo$row = tmp[seq(2,length(tmp), by=3)]
      arrayInfo$col = tmp[seq(3,length(tmp), by=3)]
    }                                                                                                                                                         
-   for(i in 1:k){
+   for(i in 1:k) {
     
 
      	 
@@ -117,52 +119,51 @@
      if(!is.null(path)) file=file.path(path, file) 
 
      if(csvNcol == 4){
-       dat1 <- scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
+       dat1 = scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
                             GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
      }
 
 
      else if(csvNcol == 7){
-       dat1 <- scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
+       dat1 = scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
                             GrnY = numeric(0), NULL, RedX = numeric(0), RedY = numeric(0)),
                     sep = sep, skip = 1, quiet = TRUE)
      }
 
      ##An older single channel format 
      else if(csvNcol==6){
-       dat1 <- scan(file, what = list(NULL,ProbeID = integer(0),NULL, NULL, GrnX = numeric(0),
+       dat1 = scan(file, what = list(NULL,ProbeID = integer(0),NULL, NULL, GrnX = numeric(0),
                             GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
        RedX = dat1$GrnX
        RedY = dat1$GrnY
      }
      
-     ord <- order(dat1$ProbeID)
+     ord = order(dat1$ProbeID)
      data = matrix(nrow=length(ord), ncol = ncolumns)
      colnames(data) = headings	
      
-     data[,1]<- dat1$ProbeID[ord]
+     data[,1] = dat1$ProbeID[ord]
      usedIDs = union(usedIDs, unique(data[,1]))
 
      numBeads = length(dat1$GrnX)
      arrayInfo$nBeads[i] = numBeads
      
-     greenIntensities <- .C("readBeadImage", as.character(tifFiles[i]), as.double(dat1$GrnX[ord]),
+     greenIntensities = .C("readBeadImage", as.character(tifFiles[i]), as.double(dat1$GrnX[ord]),
                        as.double(dat1$GrnY[ord]), as.integer(numBeads), foreGround = double(length = numBeads),
                        backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                        as.integer(fground),PACKAGE = "beadarray")
 
      l = length(unique(data[,1]))
-#     e <- .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
+#     e = .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
 #     endPos[[i]]=e[[4]]
      
-     
-     
-     data[,2] <- greenIntensities[[5]]
-     data[,3] <- greenIntensities[[6]]
+     cat("Background correcting: method =", backgroundMethod, "\n")
+     data[,2] = bgCorrectSingleArray(fg=greenIntensities[[5]], bg=greenIntensities[[6]], method=backgroundMethod, offset=offset)
+     data[,3] = greenIntensities[[6]]
 
 	if(storeXY){
-     data[,4] <- (dat1$GrnX[ord] - min(dat1$GrnX))
-     data[,5] <- (dat1$GrnY[ord] - min(dat1$GrnY))
+     data[,4] = (dat1$GrnX[ord] - min(dat1$GrnX))
+     data[,5] = (dat1$GrnY[ord] - min(dat1$GrnY))
 	}
 
      rm(greenIntensities)
@@ -171,26 +172,32 @@
      if(TwoChannel){
        if(csvNcol ==7) RedX=dat1$RedX;RedY=dat1$RedY
        
-       redIntensities <- .C("readBeadImage", as.character(tifFiles2[i]), as.double(RedX[ord]),
+       redIntensities = .C("readBeadImage", as.character(tifFiles2[i]), as.double(RedX[ord]),
                             as.double(RedY[ord]), as.integer(numBeads), foreGround = double(length = numBeads),
                             backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
                             as.integer(fground), PACKAGE = "beadarray")
-       if(storeXY){
-       data[,6] <- redIntensities[[5]]
-       data[,7] <- redIntensities[[6]]
-     }
-       else{
-       data[,4] <- redIntensities[[5]]
-       data[,5] <- redIntensities[[6]]
-         
+       rm(dat1)
+       gc()             
+       if(storeXY) {
+       cat("Background correcting: method =", backgroundMethod, "\n")
+       data[,6] = bgCorrectSingleArray(fg=redIntensities[[5]], bg=redIntensities[[6]], method=backgroundMethod, offset=offset)
+       data[,7] = redIntensities[[6]]
+       }
+       else {
+       cat("Background correcting: method =", backgroundMethod, "\n")
+       data[,4] = bgCorrectSingleArray(fg=redIntensities[[5]], bg=redIntensities[[6]], method=backgroundMethod, offset=offset) #redIntensities[[5]]
+       data[,5] = redIntensities[[6]]
+       }
        
        rm(redIntensities)
+       gc()
+       cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
+       if(storeXY)
+         data[,c(2,6)] = normalizeSingleArray(data[,c(2,6)], method=normalizeMethod)
+       else
+         data[,c(2,4)] = normalizeSingleArray(data[,c(2,4)], method=normalizeMethod)
      }
-     rm(dat1)
-     gc()
-
-   }
-   assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
+     assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
    }
 
    BLData@arrayInfo = arrayInfo
@@ -225,10 +232,12 @@ if(!is.null(targets))
    pData(BLData@phenoData) = targets
 
 ##Look for scanner metrics file
-
-metrics = dir(pattern="Metrics.txt")
-if(length(metrics)==1)
-  BLData@scanMetrics = read.table(metrics, sep="\t", header=T)
+                                           
+if(metrics) {                                                          
+  metrics = dir(pattern=metricsFile)
+  if(length(metrics)==1)
+    BLData@scanMetrics = read.table(metrics, sep="\t", header=T)
+}
 
 BLData
 }                                                              
@@ -359,7 +368,8 @@ Ps=function(list) {
 
 }
 
-                                                                                readOPA <- function(OPAfile, path=NULL) { # code taken from BeadarraySNP package (methods-SnpSetIllumina.R file)
+
+readOPA <- function(OPAfile, path=NULL) { # code taken from BeadarraySNP package (methods-SnpSetIllumina.R file)
   if(!is.null(path))
     OPAfile <- file.path(path, OPAfile)
   firstfield <- scan(OPAfile, what = "", sep = ",", flush = TRUE, quiet = TRUE, blank.lines.skip = FALSE, multi.line = FALSE)
@@ -372,3 +382,72 @@ Ps=function(list) {
   rownames(OPAinfo)<-OPAinfo[,"snpid"]
   OPAinfo
 }
+
+bgCorrectSingleArray = function(fg, bg, method = "subtract", offset = 0, verbose=FALSE) {
+    method = match.arg(method, c("none", "subtract", "half", 
+        "minimum", "edwards", "normexp", "rma"))
+    switch(method,
+	subtract={
+            fg = fg - bg
+        },
+	half={
+            fg = pmax(fg - bg, 0.5)
+        },
+	minimum={
+            fg = fg - bg
+            j = fg < 1e-18
+            if(any(j, na.rm = TRUE)) {
+              m = min(fg[!j], na.rm = TRUE)
+              fg[j] = m/2
+            }
+        },
+	edwards={
+#		Log-linear interpolation for dull spots as in Edwards (2003).
+#		The threshold values (delta) are chosen such that the number of
+#		spots with (0 < R-Rb < delta) is f=10% of the number spots
+#		with (R-Rb <= 0) for each channel and array.
+#		Note slight change from Edwards (2003).
+            one = matrix(1,NROW(fg),1)
+	    delta.vec = function(d, f=0.1) {
+	      quantile(d, mean(d<1e-16,na.rm=TRUE)*(1+f), na.rm=TRUE)
+	    }
+	    sub = as.matrix(fg-bg)
+	    delta = one %*% apply(sub, 2, delta.vec)
+	    fg = ifelse(sub < delta, delta*exp(1-(bg+delta)/fg), sub)
+	},
+	normexp={
+	    x = fg - bg
+	    out = normexp.fit(x)
+            gc()
+#	     if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
+	    fg = normexp.signal(out$par,x)
+            gc()
+#	    if(verbose) cat("Corrected array",i,"\n")
+        },
+        rma={
+	  require("affy")
+	    fg = bg.adjust(fg - bg)
+        })    
+	if(offset) {
+            fg = fg + offset
+        }
+        gc()
+        fg
+    }
+
+normalizeSingleArray = function(x, method = "quantile") {
+    method = match.arg(method, c("none", "quantile", "vsn"))
+    switch(method,
+        none={
+          y = x
+        },
+	quantile={
+            require("affy")
+            y = normalize.quantiles(x)
+        },
+	vsn={
+            require("vsn")
+            y = vsn(x)@exprs/log(2)
+        })
+    y
+  }

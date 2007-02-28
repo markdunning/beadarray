@@ -9,7 +9,9 @@
 \usage{
 plotRG(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
                    xlim=c(8,16), ylim=c(8,16), xlab="G intensities",
-                   ylab="R intensities", smooth=TRUE,...)
+                   ylab="R intensities",
+                   main=arrayNames(BLData)[arrays], smooth=TRUE,
+                   cols=NULL, ...)
 }
 
 \arguments{
@@ -21,10 +23,12 @@ plotRG(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
   \item{arrays}{which array/s to plot}
   \item{xlim}{x-axis limits for plot}
   \item{ylim}{y-axis limits for plot}
-  \item{xlab}{character string specifying x-axis label}
+    \item{xlab}{character string specifying x-axis label}
   \item{ylab}{character string specifying y-axis label}
+  \item{main}{main plot title}
   \item{smooth}{logical, whether to smooth the points
     (only used when one array is selected for plotting)}
+  \item{cols}{colours to use on the plot}
   \item{\dots}{further graphical parameters to \code{plot}}
 }
 \details{
