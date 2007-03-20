@@ -3,7 +3,6 @@
 #include <string.h>
 #include <R.h>
 #include "beadarray.h"
-
 #define B0 256
 
 void quicksort(int arr[], int low, int high) {
@@ -631,6 +630,7 @@ void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *fo
            
    Rprintf("Reading pixels of %s\n", tif[0]); 
    getPixelIntensities(pixels, fp, ImageWidth, ImageHeight, ImageSize, BeginData);
+   fclose(fp);
 /*
    if((*manip) != 2){
    			   Rprintf("Calculating background\n");

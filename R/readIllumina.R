@@ -119,21 +119,27 @@
      if(!is.null(path)) file=file.path(path, file) 
 
      if(csvNcol == 4){
-       dat1 = scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
                             GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+       close(fc)
      }
 
 
      else if(csvNcol == 7){
-       dat1 = scan(file, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
                             GrnY = numeric(0), NULL, RedX = numeric(0), RedY = numeric(0)),
                     sep = sep, skip = 1, quiet = TRUE)
+       close(fc)                   
      }
 
      ##An older single channel format 
      else if(csvNcol==6){
-       dat1 = scan(file, what = list(NULL,ProbeID = integer(0),NULL, NULL, GrnX = numeric(0),
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(NULL,ProbeID = integer(0),NULL, NULL, GrnX = numeric(0),
                             GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+       close(fc) 
        RedX = dat1$GrnX
        RedY = dat1$GrnY
      }

@@ -1,3 +1,4 @@
+#include <stdio.h>
 //Structure definition
 typedef struct
 {
@@ -15,4 +16,4 @@ double matrixMean(int**, int, int);
 void calculateBackground(int**, double*, double*, int, int, int, double*, int);
 void HIPForeground(int**, double*, double*, int, int, int, double*);
 void IlluminaForeground(int**, double*, double*, int, int, int, double*);
-
+void getPixelIntensities(int**, FILE*, int, int, int, int);

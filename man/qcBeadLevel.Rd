@@ -6,7 +6,7 @@
 
 \usage{
 qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
-                    colDens=1, colBox=1, html=TRUE,
+                    colDens=1, colBox=0, html=TRUE,
                     fileName="qcsummary.htm", plotdir=NULL, ...)
 }
 
@@ -23,7 +23,7 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
   \item{ncol}{How many columns should the array be divided into (used by
     imageplot)}
   \item{colDens}{colors for density plots (default is 1)}
-  \item{colBox}{colors for box plot (default is 1)}
+  \item{colBox}{colors for box plot (default is 0)}
   \item{html}{logical scalar.  If \code{TRUE} an html summary page 
     is generated.  If \code{FALSE}, no summary page is generated.}
   \item{fileName}{name of html summary page.  Default is 'qcsummary.htm'.}
@@ -40,6 +40,6 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
 
 \author{Matt Ritchie}
 \examples{
-#data(BLData)
-#qcBeadLevel(BLData)
+data(BLData)
+qcBeadLevel(BLData)
 }

@@ -105,9 +105,9 @@ setGeneric("combineBeadLevelLists", function(object1, object2)
 setMethod("combineBeadLevelLists", "BeadLevelList",
           function(object1, object2) {
              newbll = copyBeadLevelList(object1)
-             newbll@arrayInfo$arrayNames = c(arrayNames(newbll), arrayNames(object2@arrayInfo))
-             newbll@arrayInfo$nBeads = c(numBeads(newbll), numBeads(object2)) 
-             newbll@phenoData = rbind(pData(newbll@phenoData), pData(object2@phenoData))
+             newbll@arrayInfo$arrayNames = c(arrayNames(newbll), arrayNames(object2))
+             newbll@arrayInfo$nBeads = c(numBeads(newbll), numBeads(object2))
+             pData(newbll@phenoData) = rbind(pData(newbll@phenoData), pData(object2@phenoData))
 #             newbll@probeindex = cbind(newbll1@probeindex , object2@probeindex)
              newbll@scanMetrics = rbind(newbll@scanMetrics, object2@scanMetrics)
              multiassign(arrayNames(object2), mget(arrayNames(object2), object2@beadData),

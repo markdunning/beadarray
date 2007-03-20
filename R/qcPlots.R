@@ -1,15 +1,14 @@
-plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE, type="l", col=1, xlab="Intensity", ylab="Density", xlim=NULL, ylim=NULL,...) {
+plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
+  type="l", col=1, xlab="Intensity", ylab="Density", xlim=NULL, ylim=NULL,...) {
    x = y = list()
    arraynms = arrayNames(BLData)
    narrays = length(arraynms)
+   if (is.null(arrays))
+      arrays = 1:narrays
    if(length(col)!=length(arrays))
      col=rep(1, length(arrays))
    if(length(type)!=length(arrays))
      type=rep("l", length(arrays))
-   if (is.null(arrays))
-      arrays = 1:narrays
-   if(length(type) != length(arrays))
-      type = rep(type, length(arrays))
    for (i in arrays) {
      for(j in whatToPlot) {
        d = density(getArrayData(BLData, array = i, which = j, log = log), na.rm=TRUE)
@@ -32,7 +31,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE, type
 }
 
 qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, ncol = 100,
-                    colDens=1, colBox=1, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, ...) {
+                    colDens=1, colBox=0, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, ...) {
 
     cat("\nGenerating summary plots\n\n")
     arraynms = arrayNames(object)
@@ -84,7 +83,7 @@ qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, nc
       for(j in 1:numplots) {
         filename = file.path(ifelse(is.null(plotdir), ".", plotdir), paste(arraynms[i], ".density", whatToPlot[j], ".png", sep=""))
         png(filename)
-        plotDensities(object, array=i, whatToPlot=whatToPlot[j], log=log)
+        plotBeadDensities(object, array=i, whatToPlot=whatToPlot[j], log=log)
         dev.off()
       }
       if(RG)
@@ -121,10 +120,13 @@ qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, nc
        for(j in 1:numplots)
          tmp = paste(tmp, "<a href=\"", arraynms[i], ".imageplot", whatToPlot[j], ".png\">imageplot", whatToPlot[j], "</a>, ", sep="")
        for(j in 1:numplots) {
-         tmp = paste(tmp, "<a href=\"", arraynms[i], ".density", whatToPlot[j], ".png\">density", whatToPlot[j], "</a>", sep="")
-         if(RG)
-           tmp = paste(tmp, ", <a href=\"", arraynms[i], ".RG.png\">RG</a>", sep="")
+         if(j==numplots)
+           tmp = paste(tmp, "<a href=\"", arraynms[i], ".density", whatToPlot[j], ".png\">density", whatToPlot[j], "</a>", sep="")
+         else
+           tmp = paste(tmp, "<a href=\"", arraynms[i], ".density", whatToPlot[j], ".png\">density", whatToPlot[j], "</a>, ", sep="")
        }
+       if(RG)
+         tmp = paste(tmp, ", <a href=\"", arraynms[i], ".RG.png\">RG</a>", sep="")
        tmp = paste(tmp, "</center></td></tr>", sep="")
        html[[k+2+i]] = paste(html[[k+2+i]], tmp, sep="")
        }
