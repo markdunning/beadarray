@@ -7,7 +7,8 @@
 \usage{
 qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
                     colDens=1, colBox=0, html=TRUE,
-                    fileName="qcsummary.htm", plotdir=NULL, ...)
+                    fileName="qcsummary.htm", plotdir=NULL,
+                    experimentName=NULL, ...)
 }
 
 \arguments{
@@ -27,7 +28,9 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
   \item{html}{logical scalar.  If \code{TRUE} an html summary page 
     is generated.  If \code{FALSE}, no summary page is generated.}
   \item{fileName}{name of html summary page.  Default is 'qcsummary.htm'.}
-  \item{plotdir}{optional character string specifying the filepath where the plots will be saved.  Defaults to current working directory.}
+  \item{plotdir}{optional character string specifying the filepath where
+    the plots will be saved.  Defaults to current working directory.}
+  \item{experimentName}{name to appear on HTML report (default is NULL).}
   \item{...}{further arguments that can be passed to the plotting functions.}
 }
 

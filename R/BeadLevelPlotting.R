@@ -106,7 +106,7 @@ if(is.null(ylim)) {
     ylim=c(1,2^16)
 }
 
-plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE, xlab="", ylab="intensities")
+plot(4, xlim=range(0,nplots), ylim=ylim, type="n", axes=FALSE, xlab="", ylab="intensities",...)
 count=1
 
 
@@ -152,6 +152,7 @@ imageplot = function(BLData, array = 1, nrow = 18, ncol = 2,
 
 
   data = getArrayData(BLData, which=whatToPlot, array=array, log=log)
+  data[is.na(data) | data<0] = 0 
   if (is.character(low)) 
     low = col2rgb(low)/255
   if (is.character(high)) 
@@ -475,5 +476,3 @@ if(mode == "intensities"){
 }
 
 }
-
-# qcPlots = function(BLData)

@@ -31,7 +31,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
 }
 
 qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, ncol = 100,
-                    colDens=1, colBox=0, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, ...) {
+                    colDens=1, colBox=0, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, experimentName=NULL, ...) {
 
     cat("\nGenerating summary plots\n\n")
     arraynms = arrayNames(object)
@@ -86,12 +86,13 @@ qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, nc
         plotBeadDensities(object, array=i, whatToPlot=whatToPlot[j], log=log)
         dev.off()
       }
-      if(RG)
+      if(RG) {
         cat("RG plot ")
         filename = file.path(ifelse(is.null(plotdir), ".", plotdir), paste(arraynms[i], ".RG.png", sep=""))
         png(filename)
         plotRG(object, arrays=i, log=log)
         dev.off()
+      }
       cat(" .... complete\n")
     }
       
@@ -99,9 +100,10 @@ qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, nc
     cat("\nCreating an html summary page")
      html = list(NULL)
      
-     html[[1]] = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n<head>\n<title>Quality assessment of bead array data</title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n</head>"
-
-     html[[2]] = "<h1>Quality assessment of bead array data</h1>\n"
+     html[[1]] = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n<head>\n<title>Quality assessment of bead-level data</title>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n</head>"
+     html[[2]] = "<h1>Quality assessment of bead-level data</h1>\n"
+     if(!is.null(experimentName))
+       html[[2]] = paste(html[[2]],"<h1>",experimentName, "</h1>", sep="")
      html[[3]] = paste("<p>",date(),"</p>\n", sep="")
      html[[4]] = "<h2>Summary plots</h2>\n"
      for(j in 1:numplots) {
