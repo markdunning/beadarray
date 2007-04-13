@@ -47,8 +47,7 @@ The format of the quality control
 #package.
 #QC = readQC(sep=",", skip=7, columns=list(exprs="AVG.Signal", BeadStDev="SeqVAR"))
 
-#the average expression of each control can then be accessed by the $
-operator
+#the average expression of each control can then be accessed by the $ operator
 
 #QC$exprs
 
