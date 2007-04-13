@@ -43,6 +43,6 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
 
 \author{Matt Ritchie}
 \examples{
-data(BLData)
-qcBeadLevel(BLData)
+#data(BLData)
+#qcBeadLevel(BLData)
 }

@@ -1,95 +1,117 @@
 \name{readBeadSummaryData}
 \alias{readBeadSummaryData}
-\alias{readCols}
+
 
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Read bead summary data information into R}
+\title{Read BeadStudio gene expression output}
 \description{
-Function to read pre-processed bead summary data into R. Data can be the output from BeadStudio with either a separate file for each array in the experiment, or each file containing all arrays on a SAM.
+Function to read the output of Illumina's software into beadarray
 
 }
 \usage{
 
-readBeadSummaryData(targets=NULL, header=T, sep=",",path=NULL,
-                                   columns = list(ProbeID = "TargetID",
-                                     AvgSig = "AVG_Signal", NoBeads = "Avg_NBEADS",
-                                     Detection="Detection", BeadStDev="BEAD_STDEV"),
-                                   other.columns = NULL, skip=7)
+readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",ProbeID="TargetID",skip=0,
+                                   columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
+                                     Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
+                                   qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), qc.sep="\t", qc.skip=0
+)
+
+
+
 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{targets}{either a list of files created by
-    readBeadSummaryTargets or  NULL to read all files in a directory.}
-  \item{sep}{character used to seperate each column in the file. Usually either "," or "\t".}
-  \item{columns}{list defining the names for each column to be read from the input files}
-  \item{other.columns}{list defining any additional columns to be read from the input.} 
-  \item{header}{if TRUE then function will read column headers from the input files.}
-  \item{path}{optional argument to specify the location of the data to be read. By default, files are read from the current working directory.}
-  \item{skip}{number of lines to ignore when reading the input files.}
+  \item{dataFile}{character string specifying the name of the file containing
+    BeadStudio output}
+  \item{qcFile}{optional character string giving the location of the
+    control probe profile exported from BeadStudio}
+  \item{sampleSheet}{optional character string used to specify a sample
+    infomation file}
+  \item{sep}{seperator character for the dataFile}
+  \item{header}{set to TRUE if the dataFile contains column headings}
+  \item{skip}{number of header lines to ignore at the top of dataFile}
+  \item{ProbeID}{name of the column heading that contains the probe IDs
+    that can be used to uniquely identify each row}
+  \item{columns}{list defining which column headings are to be read from
+    dataFile and which slots in the ExpressionSetIllumina object they
+    correspond to}
+  \item{qc.columns}{list defining which column headings are to be read
+    from the qcFile and which items in the QCInfo slot of
+     ExpressionSetIllumina they correspond to}
+     \item{qc.sep}{seperator character for qcFile}
+     \item{qc.skip}{number of lines to skip at the top of qcFile}
+     
+  } 
 
-}
+
 \details{
 
-  This function can be used to read the standard output from the
-  Illumina BeadStudio application with default column names for Average
-  Signal, Bead Stdev, Number of Beads and Detection and in the
-  Column-oriented (Comma delimited) file format. ie the number of rows
-  in each file is the number of bead types in the experiment and columns
-  are repeated such that each row describes the information for each
-  array in the experiment. The files are assumed to contain header
-  information created by Illumina and this is skipped when the files are
-  read. The skip parameter can be adjusted accordingly for files with a
-  non-standard amount of header information.
+  This function can be used to read gene expression data exported from versions 1 and 2 of the
+  Illumina BeadStudio application. The format of the BeadStudio output
+  may depend on the version number. For example, the file may be comma
+  or tab seperated of have header information at the top of the
+  file. The parameters sep and skip can be used to adapt the function as
+  required. 
 
-  The names specified in the columns parameter are used to read
-  the file. It is assumed that the average bead intensities for each
+
+  The format of the BeadStudio file is assumed to have one row for each
+  probe sequence in the experiment and a set number of columns for each
+  array. The columns for each array are chosen from the user within
+  BeadStudio. These can include the average expression for each probe,
+  the standard error and the number of beads and more.
+
+  With version 2 of BeadStudio it is possible to export annotation and
+  sequence information. We recommend this data is not exported if the
+  file is to be read into beadarray as it can be retrieved later on from
+  other Bioconductor packages.
+
+  It is assumed that the average bead intensities for each
   array appear in columns with headings of the form 'AVG\_Signal-ARRAY1',
   'AVG\_Signal-ARRAY2',...,'AVG\_Signal-ARRAYN' for the N arrays found in the
   file. All other columns headings are found in the same way.
 
-  A separate BeadSummaryList object (described below) is created for
-  each file listed in the targets object.
+  The default object created by readBeadSummaryData is an
+  ExpressionSetIllumina object with enough slots to store all the
+  columns that it is possible to export from BeadStudio. The columns
+  parameter can be used to select which slots can be found from the data
+  and the relevant column headings.
+
+
+  If quality control information has been exported from BeadStudio
+  (control probe profile) this may be read into beadarray too. The
+  qc.skip and qc.sep and qc.columns parameters can be used to adjust for the contents
+  of the file. 
+
+  Sample sheet information can also be used. This is a file format used
+  by Illumina to specify the contents of each array in the experiment.
   
 }
-\value{
-An BeadSummaryList object containing the components
 
-R data frame containing the averaged foreground intensities for each
-bead type for each array after outlier removal
-BeadStDev data frame containing the standard deviation for each bead type for each array
-NoBeads data frame containing the number of beads used to calculate the average for each bead type
-Detection data frame containing the average detection score for each bead type for each array
-other	data frame containing matrices corresponding to other.columns if given
+
+
+\value{
+  An ExpressionSetIllumina object with the slots defined in the columns
+  parameter filled with data from the input file. 
+
+
 }
 
 \author{Mark Dunning and Mike Smith}
 
 \seealso{
-  \code{\link[beadarray:BeadSummaryList]{BeadSummaryList}}
-  \code{\link{readBeadSummaryTargets}}
+  \code{\link[beadarray:ExpressionSetIllumina]{ExpressionSetIllumina}}
+  
 }
 \examples{
-#To read all bead summary files in current directory simply use
-#
-#BSData = readBeadSummaryData()
-#
-#if the files are contained in subdirectory New Folder
-#BSData = readBeadSummaryData(path="New Folder")
-#
-#if all header information has been removed...
-#BSData = readBeadSummaryData(skip=0)
-#
-#
-#targets=readBeadSummaryTargets("targets.txt")
-#
-#BSData=readBeadSummaryData(targets)
-#
-#
-#to also read the MAX_Signal column for each array 
-#
-#BSData = readBeadSummaryData(other.columns="MAX_Signal")
+##code to read the example BeadStudio output distributed with the package
+#dataFile = "raw_data.csv"
+#sampleSheet = "raw_data_sample_sheet.csv"
+#qcFile = "raw_data_qcinfo.csv"
 
+
+
+#BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet,skip=7, columns=list(exprs="AVG_Signal", BeadStDev="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", BeadStDev="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
 
 
 }

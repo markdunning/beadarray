@@ -71,7 +71,7 @@ if(!is.null(sampleSize)){
  y=y[s]
  }	
 	
-  plot(x,y, pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
+  smoothScatter(x,y, pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
 
   abline(h=c(-log2(foldLine),0,log2(foldLine)),lty=c(2,1,2)) 
   
@@ -143,9 +143,9 @@ exprs=as.matrix(exprs)
  }
 	
 
-  plot(x,y, col="black",xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
- abline(log2(foldLine), 1, lty=2)
- abline(-log2(foldLine),1,lty=2)
+  smoothScatter(x,y, xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
+  abline(log2(foldLine), 1, lty=2)
+  abline(-log2(foldLine),1,lty=2)
   
   if(!is.null(genesToLabel)){
 

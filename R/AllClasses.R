@@ -1,5 +1,3 @@
-setClassUnion("AssayDataOrNull", c("AssayData", "NULL"))
-setClassUnion("matrixOrNull", c("matrix", "NULL"))
 
 setClass("ExpressionSetIllumina",
          representation(QC = "AssayDataOrNull"),

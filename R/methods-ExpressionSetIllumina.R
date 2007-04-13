@@ -1,29 +1,38 @@
+
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
+                   assayData = assayDataNew(exprs=exprs,BeadStDev=BeadStDev, NoBeads=NoBeads, Detection=Detection, Narrays=Narrays, arrayStDev=arrayStDev, DiffScore = DiffScore, storage.mode="list"),
+
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
                    BeadStDev=new("matrix"),
                    NoBeads=new("matrix"),
                    Detection=new("matrix"),
+                   Narrays=new("matrix"),
+                   arrayStDev =new("matrix"),
+                   DiffScore=new("matrix"),
                    annotation = character(),
-		   featureData = new("AnnotatedDataFrame"),
+                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
+                   qcData = assayDataNew(Signal = QCSignal,
+                     StDev=QCStDev, Detection=QCDetection),
                    QCSignal = new("matrix"),
                    QCStDev = new("matrix"),
-                   QCDetection = new("matrix")
-                   ) {
-
+                   QCDetection = new("matrix")) {
             .Object<-callNextMethod(.Object,
-                           assayData = assayDataNew(exprs=exprs,BeadStDev=BeadStDev, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
+                           assayData = assayData,
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData
-                     )
-            .Object@QC=assayDataNew(Signal = QCSignal, StDev=QCStDev, Detection=QCDetection,storage.mode="list")
+                           featureData = featureData)
+            .Object@QC=qcData
             .Object
-
           })
+
+
+
+
+
 
 
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
