@@ -31,7 +31,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
 }
 
 qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, ncol = 100,
-                    colDens=1, colBox=0, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, experimentName=NULL, ...) {
+                    colDens=1, colBox=0, html=TRUE, fileName="qcsummary.htm", plotdir=NULL, experimentName=NULL, targets=NULL, ...) {
 
     cat("\nGenerating summary plots\n\n")
     arraynms = arrayNames(object)
@@ -115,9 +115,27 @@ qcBeadLevel = function(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow= 100, nc
      }
      k = k+j
      html[[k+1]] = "<h2>Individual plots</h2>\n"
-     html[[k+2]] = "<table border=1>\n<tr bgcolor=\"lightgray\"><td><center><strong>Array</strong></center></td><td><center><strong>Plots</strong>,</center/</td></tr>\n"
+     if(is.null(targets)) {
+       html[[k+2]] = "<table border=1>\n<tr bgcolor=\"lightgray\"><td><center><strong>Array</strong></center></td><td><center><strong>Plots</strong>,</center/</td></tr>\n"
+     }
+     else {
+       colnms = colnames(targets)
+       html[[k+2]] = "<table border=1>\n<tr bgcolor=\"lightgray\">"
+       for(i in 1:length(colnms)) {
+         html[[k+2]] = paste(html[[k+2]], "<td><center><strong>", colnms[i], "</strong></center></td>", sep="")
+        }
+        html[[k+2]] = paste(html[[k+2]], "<td><center><strong>Plots</strong></center/</td></tr>\n", sep="")
+     }
      for(i in 1:narrays) {
-       html[[k+2+i]] = paste("<tr><td><center>",arraynms[i], "</center></td><td><center>")
+       if(is.null(targets)) {
+         html[[k+2+i]] = paste("<tr><td><center>",arraynms[i], "</center></td><td><center>")
+       }
+       else {
+         colnms = colnames(targets)
+         html[[k+2+i]] = "<tr><td><center>"
+         for(m in 1:length(colnms))
+           html[[k+2+i]] = paste(html[[k+2+i]], targets[i,m], "</center></td><td><center>")
+       }
        tmp = NULL
        for(j in 1:numplots)
          tmp = paste(tmp, "<a href=\"", arraynms[i], ".imageplot", whatToPlot[j], ".png\">imageplot", whatToPlot[j], "</a>, ", sep="")

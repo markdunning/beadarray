@@ -8,7 +8,7 @@
 qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
                     colDens=1, colBox=0, html=TRUE,
                     fileName="qcsummary.htm", plotdir=NULL,
-                    experimentName=NULL, ...)
+                    experimentName=NULL, targets=NULL, ...)
 }
 
 \arguments{
@@ -30,7 +30,9 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
   \item{fileName}{name of html summary page.  Default is 'qcsummary.htm'.}
   \item{plotdir}{optional character string specifying the filepath where
     the plots will be saved.  Defaults to current working directory.}
-  \item{experimentName}{name to appear on HTML report (default is NULL).}
+  \item{experimentName}{name to appear on HTML report (default is
+    NULL).}
+  \item{targets}{data.frame containing smaple information}
   \item{...}{further arguments that can be passed to the plotting functions.}
 }
 

@@ -28,6 +28,9 @@ setMethod("[[",  # subsetting method, modified from the one in prada
   },
   valueClass="data.frame")
 
+setMethod("phenoData", "BeadLevelList", function(object) object@phenoData)
+
+setMethod("pData", "BeadLevelList", function(object) pData(object@phenoData))
 
 setGeneric("arrayNames", function(object)
    standardGeneric("arrayNames"))
@@ -149,6 +152,7 @@ arraynms = arrayNames(BLData)
 
   if(imagesPerArray == 1){
     G  = GBeadStDev = GNoBeads = Gnooutliers = matrix(0,nrow = noprobes, ncol=len)
+    colnames(G) = colnames(GBeadStDev) = colnames(GNoBeads) = colnames(Gnooutliers) = arraynms
     if(BLData@arrayInfo$channels=="two" | !is.null(BLData[[arraynms[1]]]$R))
        R  = RBeadStDev = RNoBeads = Rnooutliers = G
     else R = NULL
@@ -156,6 +160,7 @@ arraynms = arrayNames(BLData)
 
   else {
     G =  GBeadStDev = GNoBeads = Gnooutliers = matrix(0,nrow = noprobes, ncol=(len/2))
+    colnames(G) = colnames(GBeadStDev) = colnames(GNoBeads) = colnames(Gnooutliers) = arraynms[seq(1,len,by=2)]
     if(BLData@arrayInfo$channels=="two" | !is.null(BLData[[arraynms[1]]]$R))
        R  = RBeadStDev = RNoBeads = Rnooutliers = G
     else R = NULL
