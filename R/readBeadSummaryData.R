@@ -11,12 +11,7 @@ readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL,header=T,
 if(!(is.null(sampleSheet))){ 
 samples = read.table(sampleSheet, sep=",", header=T, skip=7)
 }
-
-   
-
-
-
-
+  
 r=read.table(as.character(dataFile), sep=sep, header=T, skip=skip)
 
 
@@ -158,6 +153,6 @@ for(i in 1:length(columns)){
 
 names(data) = foundColumns
 
-  data
+  assayDataNew(data)
 
 }

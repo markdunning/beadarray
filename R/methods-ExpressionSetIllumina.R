@@ -12,20 +12,23 @@ setMethod("initialize", "ExpressionSetIllumina",
                    arrayStDev =new("matrix"),
                    DiffScore=new("matrix"),
                    annotation = character(),
-                    featureData = new("AnnotatedDataFrame"),
+                   featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
-                   qcData = assayDataNew(Signal = QCSignal,
-                     StDev=QCStDev, Detection=QCDetection),
-                   QCSignal = new("matrix"),
-                   QCStDev = new("matrix"),
-                   QCDetection = new("matrix")) {
+
+                   QCexprs = new("matrix"),
+                   QCBeadStDev = new("matrix"),
+                   QCNoBeads = new("matrix"),
+                   
+                   QCData = assayDataNew(exprs = QCexprs,
+                   BeadStDev=QCBeadStDev, NoBeads=QCNoBeads),storage.mode="list")
+ {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
                            featureData = featureData)
-            .Object@QC=qcData
+            .Object@QC=QCData
             .Object
           })
 

@@ -1,6 +1,6 @@
 
 setClass("ExpressionSetIllumina",
-         representation(QC = "AssayDataOrNull"),
+         representation(QC ="list"),
          contains="eSet"
 )
 
