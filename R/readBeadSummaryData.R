@@ -152,7 +152,23 @@ for(i in 1:length(columns)){
 }
 
 names(data) = foundColumns
+QC = assayDataNew(exprs=new("matrix"), BeadStDev=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"),storage.mode="list")
+  
 
-  assayDataNew(data)
+for(i in 1:length(data)){
+
+  index = which(names(QC)== names(data)[i])
+
+  if(length(index)>0){
+  QC[[index]] = data[[i]]
+}
+    else{
+    cat(paste("Did not find a slot called :", names(data)[i]))
+    cat("\n")
+  }
+}
+
+ QC
+  
 
 }

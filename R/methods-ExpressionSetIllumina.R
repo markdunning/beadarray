@@ -20,7 +20,7 @@ setMethod("initialize", "ExpressionSetIllumina",
                    QCNoBeads = new("matrix"),
                    
                    QCData = assayDataNew(exprs = QCexprs,
-                   BeadStDev=QCBeadStDev, NoBeads=QCNoBeads),storage.mode="list")
+                   BeadStDev=QCBeadStDev, NoBeads=QCNoBeads,storage.mode="list"))
  {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
