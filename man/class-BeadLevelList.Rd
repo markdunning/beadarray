@@ -8,9 +8,11 @@
 \alias{arrayNames,BeadLevelList-method}
 \alias{numBeads,BeadLevelList-method}
 \alias{copyBeadLevelList,BeadLevelList-method}
-\alias{combineBeadLevelLists,BeadLevelList,BeadLevelList-method}
+\alias{combineBeadLevelLists,BeadLevelList-method}
+\alias{pData,BeadLevelList-method}
+\alias{phenoData,BeadLevelList-method}
 \alias{[[,BeadLevelList,ANY,missing-method}
-\alias{getArrayData,BeadLevelList,character,ANY,logical-method}
+\alias{getArrayData,BeadLevelList-method}
 \alias{backgroundCorrect,BeadLevelList,character,double,logical-method}
 
 \title{Class "BeadLevelList" }
@@ -53,7 +55,11 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
       \code{which} intensities on the \code{log} scale from the
       \code{BeadLevelList}}
     \item{\code{numBeads(object)}}{Returns the numbers of bead on each
-	array}    		
+      array}
+    \item{\code{pData(object)}}{Returns a data.frame with samples as
+      rows, variables as columns}
+    \item{\code{phenoData(object)}}{Returns an object containing
+      phenotypic information on both variable values and variable meta-data}
   }
 }
 \author{Mark Dunning}
