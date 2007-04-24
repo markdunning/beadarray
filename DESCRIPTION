@@ -1,6 +1,6 @@
 Package: beadarray
 Title: Quality control and low-level analysis of BeadArrays
-Version: 1.3.6
+Version: 1.4.0
 Date: 2007-04-20
 Author: Mark Dunning, Mike Smith, Isabelle Camilier, Matt Ritchie
 Maintainer: Mark Dunning <md392@cam.ac.uk>
