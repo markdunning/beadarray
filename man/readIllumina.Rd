@@ -7,7 +7,7 @@ Uses csv or txt and image files (where available) to load information
 about each array used in a BeadChip or SAM experiment.
 }
 \usage{
-readIllumina(arrayNames=NULL, path=NULL, textType=".csv", annoFile=NULL,
+readIllumina(arrayNames=NULL, path=".", textType=".csv", annoFile=NULL,
         targets=NULL, imageManipulation="sharpen", backgroundSize=17,
         storeXY=TRUE, sepchar="_", metrics=FALSE,
         metricsFile="Metrics.txt", backgroundMethod="none", offset=0,

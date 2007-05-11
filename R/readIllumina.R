@@ -1,5 +1,5 @@
 "readIllumina" =
-  function(arrayNames=NULL, path=NULL, textType=".csv", annoFile=NULL,
+  function(arrayNames=NULL, path=".", textType=".csv", annoFile=NULL,
            targets=NULL, imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", metrics=FALSE,
            metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
@@ -25,9 +25,14 @@
    }
      
    TwoChannel=FALSE
-                                                                                   GImages = dir(pattern ="_Grn.tif")	
-   RImages = dir(pattern ="_Red.tif")
-   xyFiles = dir(pattern =textType) 
+                                                                                   GImages = dir(path=path, pattern ="_Grn.tif")	
+   RImages = dir(path=path, pattern ="_Red.tif")
+   xyFiles = dir(path=path, pattern =textType) 
+                                        
+   if(length(GImages)==0)
+     stop("No tiffs found")
+   if(length(xyFiles)==0)
+     stop("No xy files found")
 
    ###Find which files have both Green Images and xy information
    arrays = intersect(strtrim(GImages, nchar(GImages)-8), strtrim(xyFiles, nchar(xyFiles)-4))	
@@ -37,7 +42,6 @@
   
    ##Check to see if we have two channels
    if(length(RImages)!=0) {
-
     arrays = intersect(arrays, strtrim(RImages, nchar(RImages)-8))
     TwoChannel = TRUE
    }
@@ -47,11 +51,11 @@
                                                                                    csv_files = tifFiles = tifFiles2 = vector(length=length(arrays))
 
 
-   csv_files = paste(arrays, textType,sep="")
-   tifFiles = paste(arrays, "_Grn.tif",sep="")
+   csv_files = file.path(path, paste(arrays, textType,sep=""))
+   tifFiles = file.path(path, paste(arrays, "_Grn.tif",sep=""))
 
   if(TwoChannel)
-    tifFiles2 = paste(arrays, "_Red.tif",sep="")
+    tifFiles2 = file.path(path, paste(arrays, "_Red.tif",sep=""))
    
   cat("Found", length(arrays), "arrays","\n")
   k = length(arrays)
@@ -116,7 +120,7 @@
      	 
      file=csv_files[i]
      
-     if(!is.null(path)) file=file.path(path, file) 
+#     file=file.path(file) 
 
      if(csvNcol == 4){
        fc = file(file, open="r")
@@ -226,7 +230,7 @@
 
                                                                                 ## Add bead annotation information (if available)
 if(!is.null(annoFile)){
-  if(!is.null(path)) annoFile=file.path(path, annoFile) 
+  annoFile=file.path(path, annoFile) 
   if(length(grep(".opa", annoFile))==1)
      BLData@beadAnno = readOPA(annoFile)
   else
@@ -240,9 +244,9 @@ if(!is.null(targets))
 ##Look for scanner metrics file
                                            
 if(metrics) {                                                          
-  metrics = dir(pattern=metricsFile)
+  metrics = dir(path=path, pattern=metricsFile)
   if(length(metrics)==1)
-    BLData@scanMetrics = read.table(metrics, sep="\t", header=T)
+    BLData@scanMetrics = read.table(file.path(path, metricsFile), sep="\t", header=T)
 }
 
 BLData
