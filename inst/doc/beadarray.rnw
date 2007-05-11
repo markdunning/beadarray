@@ -1,0 +1,66 @@
+%
+% NOTE -- ONLY EDIT beadarraySNP.Rnw!!!
+% beadarraySNP.tex file will get overwritten.
+%
+%\VignetteIndexEntry{beadarray Vignette}
+%\VignetteDepends{}
+%\VignetteKeywords{beadarray expression Analysis}
+%\VignettePackage{beadarray}
+\documentclass{article}
+
+\usepackage{hyperref}
+\usepackage{Sweave}
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textsf{#1}}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+
+
+
+\newcommand{\classdef}[1]{
+  {\em #1}
+}
+\begin{document}
+\title{\Rpackage{beadarray}: R classess and methods for Illumina bead-based data}
+\maketitle
+
+\section*{Introduction}
+
+\Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. The
+main feature of the package is the ability to use the raw data obtained by
+scanning Illumina arrays and stored in convenient R classes. Therefore
+different image processing and background correction methods may be used on the
+data. Alternatively, data which has been processed by Illumina's proprietary
+software may be read.
+
+The documentation for this package is split into two separate user guides for
+raw and summarised data. The documents may be found in the inst/doc directory
+of the downloaded beadarray folder.
+
+\section{Citing beadarray}
+
+If you use \Rpackage{beadarray} for the analysis or pre-processing of
+Illumina data please cite:
+
+Dunning M, Smith M, Ritchie M, Tavar\'e S, \emph{beadarray: R classes and
+  methods for Illumina bead-based data}, Bioinformatics, submitted
+
+
+\section{Getting help with beadarray}
+
+Wherever possible, please send all queries about \Rpackage{beadarray} to the
+Bioconductor mailing list at {\tt bioconductor@stat.math.ethz.ch}. This will
+help to maintain a searchable archive of questions and responses visible to
+all users of the package.
+
+
+\end{document}
