@@ -13,7 +13,8 @@ Function to read the output of Illumina's software into beadarray
 readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",ProbeID="TargetID",skip=0,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
-                                   qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), qc.sep="\t", qc.skip=0
+                                   qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
+                                   qc.sep="\t", qc.skip=0
 )
 
 
@@ -38,9 +39,12 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",P
     correspond to}
   \item{qc.columns}{list defining which column headings are to be read
     from the qcFile and which items in the QCInfo slot of
-     ExpressionSetIllumina they correspond to}
-     \item{qc.sep}{seperator character for qcFile}
-     \item{qc.skip}{number of lines to skip at the top of qcFile}
+     ExpressionSetIllumina they correspond to}  
+  \item{annoPkg}{character string specifying the annotation package 
+     name for the arrays being read in (only available for certain 
+     expression arrays at present)}
+  \item{qc.sep}{seperator character for qcFile}
+  \item{qc.skip}{number of lines to skip at the top of qcFile}
      
   } 
 

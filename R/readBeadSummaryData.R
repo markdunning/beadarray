@@ -1,7 +1,8 @@
 readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t", ProbeID="TargetID",skip=0,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
-                                   qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), qc.sep="\t", qc.skip=0
+                                   qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
+                                   qc.sep="\t", qc.skip=0
 )
 {
 
@@ -61,7 +62,8 @@ names(data) = foundColumns
 
 
 BSData = new("ExpressionSetIllumina")
-
+if(!is.null(annoPkg) & is.character(annoPkg))
+  BSData@annotation = annoPkg
 for(i in 1:length(data)){
 
   index = which(names(assayData(BSData))== names(data)[i])

@@ -23,14 +23,21 @@ readIllumina(arrayNames=NULL, path=".", textType=".csv",
   \item{textType}{character string specifiying the extension of the
     files which store the xy information (typically \code{".txt"} or
     \code{".csv"})}
-  \item{annoPkg}{the annotation package name for the arrays being read in}
-  \item{useImages}{logical.  If TRUE, the foregound and background values are retrieved from the tif images.  When FALSE, the intensity values in the text files are used}
+  \item{annoPkg}{character string specifying the annotation package 
+     name for the arrays being read in (only available for certain 
+     expression arrays at present)}
+  \item{useImages}{logical.  If TRUE, the foregound and background 
+    values are retrieved from the tif images.  When FALSE, the 
+    intensity values in the text files are used.  Note that
+    background values will not be available (set to 0) when FALSE, 
+    as the current option in BeadScan is to store background
+    subtracted signals}
   \item{singleChannel}{logical.  Set to TRUE if the data is single 
    channel (Green) or FALSE for two-colour (both Green and Red data)}
   \item{targets}{data.frame containing sample information}
   \item{imageManipulation}{Currently the only options here are "none"
-    or "sharpen", which indicates the Illumina sharpening mask will be used
-    prior to foreground averages being calculated}
+    or "sharpen", which indicates the Illumina sharpening mask will
+    be used prior to foreground averages being calculated}
   \item{backgroundSize}{numeric value which defines the size of the n x
     n box we will use to calculate local background values}
   \item{storeXY}{logical scalar, indicating whether the xy coordinates

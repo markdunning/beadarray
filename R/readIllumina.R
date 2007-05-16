@@ -66,7 +66,7 @@
   k = length(arrays)
 
   BLData = new("BeadLevelList")
-  if(!is.null(annoPkg))
+  if(!is.null(annoPkg) & is.character(annoPkg))
      BLData@annotation=annoPkg
 #  endPos = new("list")
   usedIDs=NULL
