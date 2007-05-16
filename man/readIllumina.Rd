@@ -7,7 +7,8 @@ Uses csv or txt and image files (where available) to load information
 about each array used in a BeadChip or SAM experiment.
 }
 \usage{
-readIllumina(arrayNames=NULL, path=".", textType=".csv", annoFile=NULL,
+readIllumina(arrayNames=NULL, path=".", textType=".csv",
+        annoPkg=NULL, useImages=TRUE, singleChannel=TRUE,  
         targets=NULL, imageManipulation="sharpen", backgroundSize=17,
         storeXY=TRUE, sepchar="_", metrics=FALSE,
         metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
@@ -22,8 +23,10 @@ readIllumina(arrayNames=NULL, path=".", textType=".csv", annoFile=NULL,
   \item{textType}{character string specifiying the extension of the
     files which store the xy information (typically \code{".txt"} or
     \code{".csv"})}
-  \item{annoFile}{the name of a file (such as \code{.opa}) containing
-    annotation information about each bead type}
+  \item{annoPkg}{the annotation package name for the arrays being read in}
+  \item{useImages}{logical.  If TRUE, the foregound and background values are retrieved from the tif images.  When FALSE, the intensity values in the text files are used}
+  \item{singleChannel}{logical.  Set to TRUE if the data is single 
+   channel (Green) or FALSE for two-colour (both Green and Red data)}
   \item{targets}{data.frame containing sample information}
   \item{imageManipulation}{Currently the only options here are "none"
     or "sharpen", which indicates the Illumina sharpening mask will be used

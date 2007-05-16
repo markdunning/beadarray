@@ -6,12 +6,14 @@ setMethod("initialize", "BeadLevelList",
              phenoData=new("AnnotatedDataFrame", data=data.frame(name=I(character(0))),
                varMetadata=data.frame(labelDescription="Name in frame", row.names="name")),
              arrayInfo=list(arrayName=I(character(0)), nBeads=0), # probeindex=matrix(0),
+             anno=character(0),
              beadAnno=data.frame(name=I(character(0))),
              scanMetrics=data.frame(name=I(character(0)))) {
                .Object@beadData = beadData
                .Object@phenoData = phenoData
                .Object@arrayInfo = arrayInfo
 #               .Object@probeindex = probeindex
+               .Object@annotation = anno
                .Object@beadAnno = beadAnno
                .Object@scanMetrics = scanMetrics
                .Object})
@@ -39,11 +41,12 @@ setMethod("arrayNames", "BeadLevelList", function(object) {
    object@arrayInfo$arrayNames})
 
 
-setGeneric("numBeads", function(object)
+setGeneric("numBeads", function(object, arrays=NULL)
    standardGeneric("numBeads"))
 
-setMethod("numBeads", "BeadLevelList", function(object) {
-   object@arrayInfo$nBeads})
+setMethod("numBeads", "BeadLevelList", function(object, arrays=NULL) {
+   if(is.null(arrays)) object@arrayInfo$nBeads
+   else object@arrayInfo$nBeads[arrays]}) 
 
 
 setMethod("dim", "BeadLevelList", function(x) {
@@ -93,6 +96,7 @@ setMethod("copyBeadLevelList", "BeadLevelList",
              newobj@phenoData = object@phenoData
              newobj@arrayInfo = object@arrayInfo
 #             newobj@probeindex = object@probeindex
+             newobj@annotation = object@annotation
              newobj@beadAnno = object@beadAnno
              newobj@scanMetrics = object@scanMetrics
              arraynms = arrayNames(object)
@@ -261,7 +265,7 @@ rownames(exprs(BSData)) = probes
     else
       BSData@phenoData = BLData@phenoData 
 }
- 
+BSData@annotation=BLData@annotation
 BSData
 } #)
 

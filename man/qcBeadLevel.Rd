@@ -40,7 +40,7 @@ qcBeadLevel(object, whatToPlot="G", RG=FALSE, log=TRUE, nrow = 100, ncol= 100,
   This function creates boxplots, smoothed histogram (density) plots and
   imageplots of raw bead level intensity data.
   
-  An html page called 'qcsummary.htm' which displays the results, is created when \code{html=TRUE}.
+  An html page which displays the results, is created when \code{html=TRUE}.  The html page name is specified by the \code{fileName} argument.
 }
 
 \author{Matt Ritchie}

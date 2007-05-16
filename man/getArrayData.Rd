@@ -2,7 +2,8 @@
 \alias{getArrayData}
 \title{Gets the raw intensity data from a BeadLevelList object}
 \description{
-Retrieves the raw intensity information from a given array stored in a \code{BeadLevelList} object.
+Retrieves the bead data stored in a \code{BeadLevelList} object 
+for a given array.
 }
 \usage{
 getArrayData(BLData,which="G",array=1,log=TRUE)
@@ -22,7 +23,7 @@ getArrayData(BLData,which="G",array=1,log=TRUE)
   log2 scale when \code{log==TRUE}.
 }
 \value{
-A vector containing the intensities
+A vector containing the bead data.
 }
 \author{Matt Ritchie}
 \examples{

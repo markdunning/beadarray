@@ -30,16 +30,16 @@ imageplot(BLData, array = 1, nrow = 18, ncol = 2, low= NULL,
 \details{
   Because of the high volume of bead level data, this function
   works by mapping a grid (who's size is specified by the nrow and ncol)
-  arguments and averages the (log base 2) intensities of the beads within each
+  arguments and averages the intensities of the beads within each
   section of this grid.
 
   The number of rows and columns may change the appearance of the
-  plots. If the array is divided into too many squares it will difficult
-  to detect changes. We recommend using nrow=200 and ncol=20 for whole
-  genome arrays.
+  plots. If the array is divided into too many squares it will be difficult
+  to detect changes. We recommend using \code{nrow=20} and \code{ncol=200} for whole
+  genome arrays, and \code{nrow=100} \code{ncol=100} for arrays on a SAM.
 
-  An imageplot of the forgeround intensities is produced be default.
-  Other intensities can be plotted by using the \code{which}
+  An imageplot of the log base 2 forgeround intensities is produced by default.
+  Other intensities can be plotted by changing the \code{whatToPlot}
   argument.
 }
 \value{

@@ -2,7 +2,7 @@
 \alias{combineBeadLevelLists}
 \title{Combines data a BeadLevelList Object}
 \description{
-Make a new copy of a \code{BeadLevelList} object.
+Combines two \code{BeadLevelList} objects.
 }
 \usage{
 combineBeadLevelLists(object1, object2)
@@ -15,7 +15,7 @@ combineBeadLevelLists(object1, object2)
   \code{combineBeadLevelLists} combines 2 BeadLevelList objects.
   }
 \value{
-A \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object holding data from all the arrays and all genes from the individual objects.
+A \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object holding data from all the arrays and beads from the individual objects.
 }
 \author{Matt Ritchie}
 \keyword{manip}

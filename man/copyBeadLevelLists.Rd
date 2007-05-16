@@ -16,13 +16,13 @@ copyBeadLevelList(object)
   environment.
   }
 \value{
-A \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object holding data from all the arrays and all genes from the individual objects.
+A new \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object containing data from object.
 }
 \author{Matt Ritchie}
 \examples{
 data(BLData)
 BLDataNew <- copyBeadLevelList(BLData)
-BLData@beadData # bead level data stored in different environments
-BLDataNew@beadData
+BLData@beadData # the same bead level data is now
+BLDataNew@beadData # stored in different environments
 }
 \keyword{manip}

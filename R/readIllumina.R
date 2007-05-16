@@ -1,13 +1,27 @@
 "readIllumina" =
-  function(arrayNames=NULL, path=".", textType=".csv", annoFile=NULL,
-           targets=NULL, imageManipulation = "sharpen", backgroundSize=17,
-           storeXY=TRUE, sepchar="_", metrics=FALSE,
-           metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
+  function(arrayNames=NULL, path=".", textType=".csv", 
+           annoPkg=NULL, useImages=TRUE, singleChannel=TRUE, 
+           targets=NULL, imageManipulation = "sharpen",
+           backgroundSize=17, storeXY=TRUE, sepchar="_",
+           metrics=FALSE, metricsFile="Metrics.txt", 
+           backgroundMethod="none", offset=0,
            normalizeMethod="none", ...){
 
   if(textType==".csv") sep=","
   else sep="\t"	
 
+  xyFiles = dir(path=path, pattern =textType)
+  metricpos = grep(metricsFile, xyFiles)
+  if(length(metricpos)>0) {
+     xyFiles = xyFiles[-metricpos]
+  }
+  if(length(xyFiles)==0)
+     stop("No xy files found")
+  arrays = strtrim(xyFiles, nchar(xyFiles)-4)  
+  if(!is.null(arrayNames))
+    arrays = arrayNames[which(arrayNames %in% arrays)] 
+
+  if(useImages) {
    manip = switch(imageManipulation, none = 0, sharpen = 1, sasik = 2, sasikFaster = 3, 4)
 
    if(manip == 4){
@@ -24,125 +38,112 @@
      fground = 1
    }
      
-   TwoChannel=FALSE
-                                                                                   GImages = dir(path=path, pattern ="_Grn.tif")	
+   GImages = dir(path=path, pattern ="_Grn.tif")	
    RImages = dir(path=path, pattern ="_Red.tif")
-   xyFiles = dir(path=path, pattern =textType) 
                                         
    if(length(GImages)==0)
      stop("No tiffs found")
-   if(length(xyFiles)==0)
-     stop("No xy files found")
 
    ###Find which files have both Green Images and xy information
-   arrays = intersect(strtrim(GImages, nchar(GImages)-8), strtrim(xyFiles, nchar(xyFiles)-4))	
-
-
-
+   arrays = intersect(strtrim(GImages, nchar(GImages)-8),
+                    arrays)	
   
    ##Check to see if we have two channels
    if(length(RImages)!=0) {
     arrays = intersect(arrays, strtrim(RImages, nchar(RImages)-8))
-    TwoChannel = TRUE
+    if(singleChannel==TRUE)
+      cat("Red images found, setting singleChannel=FALSE\n")
+    singleChannel = FALSE
    }
+   else { # no Red images found
+    if(singleChannel==FALSE)
+      cat("No red images found, setting singleChannel=TRUE\n")
+    singleChannel = TRUE
+   }
+  }
 
-   if(!is.null(arrayNames))
-     arrays = arrayNames[which(arrayNames %in% arrays)] 
-                                                                                   csv_files = tifFiles = tifFiles2 = vector(length=length(arrays))
-
-
-   csv_files = file.path(path, paste(arrays, textType,sep=""))
-   tifFiles = file.path(path, paste(arrays, "_Grn.tif",sep=""))
-
-  if(TwoChannel)
-    tifFiles2 = file.path(path, paste(arrays, "_Red.tif",sep=""))
-   
   cat("Found", length(arrays), "arrays","\n")
   k = length(arrays)
 
-
-  csvNcol = ncol(read.table(csv_files[1], sep=sep, header=T, nrows = 1))
-
-
   BLData = new("BeadLevelList")
-  endPos = new("list")
+  if(!is.null(annoPkg))
+     BLData@annotation=annoPkg
+#  endPos = new("list")
   usedIDs=NULL
-   if(!TwoChannel){
+  arrayInfo=list(arrayNames=as.character(arrays), 
+             nBeads=rep(0, length(arrays)), 
+             background=backgroundMethod,
+             normalization=normalizeMethod)
 
-	if(storeXY){
-     ncolumns = 5
-     headings=c("ProbeID", "G", "Gb","GrnX", "GrnY")	
-	}
-	else{
-	ncolumns=3
-	headings=c("ProbeID", "G", "Gb")
-	}
-
-   }
-   else {
-	if(storeXY){
-
-        ncolumns = 7
-	headings=c("ProbeID", "G", "Gb", "GrnX", "GrnY", "R", "Rb")
-
-
-	}
-	else{
-	ncolumns = 5
-	headings=c("ProbeID", "G", "Gb","R", "Rb")
-
-}
-
-    
-
-   }
-  
-#    if(!is.null(targets$Image2)){
-#      R = Rb = matrix(nrow = numrow, ncol=k)
-#    }
-
-   arrayInfo=list(arrayNames=as.character(arrays), 
-             nBeads=rep(0, length(arrays))) # targets=matrix(nrow=length(arrays), ncol=2)
-#   targets[,1] = arrays
-   
-                                                                                   if(TwoChannel) arrayInfo$channels = "two"
-                                                                                   else arrayInfo$channels = "single"                    
-
-   if(length(grep(sepchar, arrays))==length(arrays)) {
-     tmp = unlist(strsplit(arrays, "_"))
+  if(length(grep(sepchar, arrays))==length(arrays)) {
+     tmp = unlist(strsplit(arrays, sepchar))
      arrayInfo$chip = tmp[seq(1,length(tmp), by=3)]
      arrayInfo$row = tmp[seq(2,length(tmp), by=3)]
      arrayInfo$col = tmp[seq(3,length(tmp), by=3)]
    }                                                                                                                                                         
-   for(i in 1:k) {
-    
 
-     	 
+  csv_files = vector(length=length(arrays))
+  csv_files = file.path(path, paste(arrays, textType,sep=""))
+  csvNcol = ncol(read.table(csv_files[1], sep=sep, header=T, nrows = 1))
+
+  if(singleChannel) {
+    arrayInfo$channels = "single"
+    if(storeXY){
+      ncolumns = 5
+      headings=c("ProbeID", "G", "Gb","GrnX", "GrnY")	
+    }
+    else{
+      ncolumns=3
+      headings=c("ProbeID", "G", "Gb")
+    }
+  }
+  else { # two-channel data
+    arrayInfo$channels = "two"
+    tifFiles2 = vector(length=length(arrays))
+    tifFiles2 = file.path(path, paste(arrays, "_Red.tif",sep=""))
+    if(storeXY){
+      ncolumns = 7
+      headings=c("ProbeID", "G", "Gb", "GrnX", "GrnY", "R", "Rb")
+    }
+    else{
+      ncolumns = 5
+      headings=c("ProbeID", "G", "Gb","R", "Rb")
+      }
+  }
+
+  if(useImages) {
+    tifFiles = vector(length=length(arrays))
+    tifFiles = file.path(path, paste(arrays, "_Grn.tif",sep=""))
+
+    for(i in 1:k) {
+   	 
      file=csv_files[i]
      
-#     file=file.path(file) 
-
      if(csvNcol == 4){
        fc = file(file, open="r")
-       dat1 = scan(file=fc, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
-                            GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
+                   NULL, GrnX = numeric(0), GrnY = numeric(0)), 
+                   sep = sep, skip = 1, quiet = TRUE)
        close(fc)
      }
 
 
      else if(csvNcol == 7){
        fc = file(file, open="r")
-       dat1 = scan(file=fc, what = list(ProbeID = integer(0), NULL, GrnX = numeric(0),
-                            GrnY = numeric(0), NULL, RedX = numeric(0), RedY = numeric(0)),
-                    sep = sep, skip = 1, quiet = TRUE)
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
+                   NULL, GrnX = numeric(0), GrnY = numeric(0), 
+                   NULL, RedX = numeric(0), RedY = numeric(0)),
+                   sep = sep, skip = 1, quiet = TRUE)
        close(fc)                   
      }
 
      ##An older single channel format 
      else if(csvNcol==6){
        fc = file(file, open="r")
-       dat1 = scan(file=fc, what = list(NULL,ProbeID = integer(0),NULL, NULL, GrnX = numeric(0),
-                            GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+       dat1 = scan(file=fc, what = list(NULL,
+                   ProbeID = integer(0),NULL, NULL, 
+                   GrnX = numeric(0), GrnY = numeric(0)), 
+                   sep = sep, skip = 1, quiet = TRUE)
        close(fc) 
        RedX = dat1$GrnX
        RedY = dat1$GrnY
@@ -179,7 +180,7 @@
      rm(greenIntensities)
      gc()
 
-     if(TwoChannel){
+     if(!singleChannel){
        if(csvNcol ==7) RedX=dat1$RedX;RedY=dat1$RedY
        
        redIntensities = .C("readBeadImage", as.character(tifFiles2[i]), as.double(RedX[ord]),
@@ -209,9 +210,70 @@
      }
      assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
    }
+ }
+ else { # use intensities stored in the text files
+    for(i in 1:k) {
+   	 
+     file=csv_files[i]
+     cat("Reading raw data from", file, "\n")
+     if(csvNcol == 4){
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
+              Grn = numeric(0), GrnX = numeric(0),
+              GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+       close(fc)
+     }
 
-   BLData@arrayInfo = arrayInfo
-   
+     else if(csvNcol == 7){
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
+                   Grn = numeric(0), GrnX = numeric(0),
+                   GrnY = numeric(0), Red = numeric(0),
+                   RedX = numeric(0), RedY = numeric(0)),
+                   sep = sep, skip = 1, quiet = TRUE)
+       close(fc)                   
+     }
+
+     ##An older single channel format 
+     else if(csvNcol==6){
+       fc = file(file, open="r")
+       dat1 = scan(file=fc, what = list(NULL,
+                   ProbeID = integer(0), Grn = numeric(0), 
+                   Red = numeric(0), GrnX = numeric(0), 
+                   GrnY = numeric(0)), sep = sep, 
+                   skip = 1, quiet = TRUE)
+       close(fc) 
+     }
+     
+     ord = order(dat1$ProbeID)
+     data = matrix(nrow=length(ord), ncol = ncolumns)
+     colnames(data) = headings	
+     data[,1] = dat1$ProbeID[ord]
+     usedIDs = union(usedIDs, unique(data[,1]))
+
+     numBeads = length(dat1$GrnX)
+     arrayInfo$nBeads[i] = numBeads
+
+     data[,2]=dat1$Grn[ord]
+     data[,3]=0
+     if(storeXY) {
+       if(!singleChannel) {
+         data[,c(2,6)] = normalizeSingleArray(cbind(dat1$Grn[ord], dat1$Red[ord]), method=normalizeMethod)
+         data[,7]=0
+       }
+       data[,4]=dat1$GrnX[ord]
+       data[,5]=dat1$GrnY[ord]
+     }
+     else {
+       if(!singleChannel) {
+         data[,c(2,4)] = normalizeSingleArray(cbind(dat1$Grn[ord], dat1$Red[ord]), method=normalizeMethod)
+         data[,5] = 0
+       }
+     }    
+     assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
+   }
+  }
+  BLData@arrayInfo = arrayInfo
 
 #   probeindex = matrix(nrow=length(usedIDs), ncol=length(arrays))
 
@@ -229,13 +291,13 @@
 
 
                                                                                 ## Add bead annotation information (if available)
-if(!is.null(annoFile)){
-  annoFile=file.path(path, annoFile) 
-  if(length(grep(".opa", annoFile))==1)
-     BLData@beadAnno = readOPA(annoFile)
-  else
-     BLData@beadAnno = read.table(annoFile, ...)
-}
+#if(!is.null(annoFile)){
+#  annoFile=file.path(path, annoFile) 
+#  if(length(grep(".opa", annoFile))==1)
+#     BLData@beadAnno = readOPA(annoFile)
+#  else
+#     BLData@beadAnno = read.table(annoFile, ...)
+#}
 
 ## Add targets information (if available)
 if(!is.null(targets))
@@ -379,19 +441,19 @@ Ps=function(list) {
 }
 
 
-readOPA <- function(OPAfile, path=NULL) { # code taken from BeadarraySNP package (methods-SnpSetIllumina.R file)
-  if(!is.null(path))
-    OPAfile <- file.path(path, OPAfile)
-  firstfield <- scan(OPAfile, what = "", sep = ",", flush = TRUE, quiet = TRUE, blank.lines.skip = FALSE, multi.line = FALSE)
-  skip <- grep("Ilmn ID", firstfield, fixed=TRUE)
-  if (length(skip) == 0) stop("Cannot find \"Ilmn ID\" in OPA info file")
-        enddata<- grep("[Gentrain Request]", firstfield, fixed=TRUE)
-  if (length(enddata) == 0) stop("Cannot find \"[Gentrain Request]\" in OPA info file")
-        OPAinfo<-read.table(OPAfile, skip=skip[1]-1, header = TRUE, sep = ",", as.is = TRUE, check.names = FALSE, nrows=enddata[1]-skip[1]-1)
-  colnames(OPAinfo)<-c("Illname","snpid","oligo1","oligo2","oligo3","IllCode","IllOligo","IllStrand","snpbases","CHR","Ploidy","Species","MapInfo","TopGenomicSeq","CustomerStrand")
-  rownames(OPAinfo)<-OPAinfo[,"snpid"]
-  OPAinfo
-}
+#readOPA <- function(OPAfile, path=NULL) { # code taken from BeadarraySNP package (methods-SnpSetIllumina.R file)
+#  if(!is.null(path))
+#    OPAfile <- file.path(path, OPAfile)
+#  firstfield <- scan(OPAfile, what = "", sep = ",", flush = TRUE, #quiet = TRUE, blank.lines.skip = FALSE, multi.line = FALSE)
+#  skip <- grep("Ilmn ID", firstfield, fixed=TRUE)
+#  if (length(skip) == 0) stop("Cannot find \"Ilmn ID\" in OPA info file")
+#        enddata<- grep("[Gentrain Request]", firstfield, fixed=TRUE)
+#  if (length(enddata) == 0) stop("Cannot find \"[Gentrain Request]\" in OPA info file")
+#        OPAinfo<-read.table(OPAfile, skip=skip[1]-1, header = TRUE, sep = ",", as.is = TRUE, check.names = FALSE, nrows=enddata[1]-skip[1]-1)
+#  colnames(OPAinfo)<-c("Illname","snpid","oligo1","oligo2","oligo3","IllCode","IllOligo","IllStrand","snpbases","CHR","Ploidy","Species","MapInfo","TopGenomicSeq","CustomerStrand")
+#  rownames(OPAinfo)<-OPAinfo[,"snpid"]
+#  OPAinfo
+#}
 
 bgCorrectSingleArray = function(fg, bg, method = "subtract", offset = 0, verbose=FALSE) {
     method = match.arg(method, c("none", "subtract", "half", 
@@ -461,3 +523,4 @@ normalizeSingleArray = function(x, method = "quantile") {
         })
     y
   }
+

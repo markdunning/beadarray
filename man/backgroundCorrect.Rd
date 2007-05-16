@@ -4,8 +4,8 @@
 \alias{backgroundCorrect,BeadLevelList-method}
 \title{Background Correct a BeadLevelList object}
 \description{
-  Adapted from 'limma' backgroundCorrect function to correct the
-  foreground intensities of a BLData object using the background values.
+  Adapted from the 'limma' backgroundCorrect function to correct the
+  foreground intensities of a BeadLevelList object using the background values.
 }
 \usage{
 backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
@@ -15,11 +15,13 @@ backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
   \item{method}{character string specifying correction method. Possible
           values are '"none"', '"subtract"', '"half"', '"minimum"',
 	  '"edwards"', '"normexp"', '"rma"')}
-  \item{offset}{numeric value to add to intensities}
+  \item{offset}{numeric value to add to the intensities}
   \item{verbose}{logical. Used when method = '"normexp"'.  If TRUE,
     the parameters estimated by the model are output.}	
 }
 \details{
+  Below is an excerpt from the 'limma' backgroundCorrect man page:
+
   If 'method="none"' then the corrected intensities are equal to the
   foreground intensities, i.e., the background intensities are
   treated as zero. If 'method="subtract"' then this function simply
@@ -42,10 +44,12 @@ backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
   zero at the lower intensities. This may eliminate or reverse the
   usual 'fanning' of log-ratios at low intensities associated with
   local background subtraction.
+  
+  End of excerpt.
+  
 }
 \value{
-  An 'BeadLevelList' object in which the 'R' and 'G' intensities for
-  each array are background corrected 
+  An 'BeadLevelList' object in which the 'G' (and 'R', if present) intensities for each array are background corrected.  Note that the 'Gb' (and 'Rb' intensities) are not removed. 
 }
 \author{Mark Dunning based on the limma function}
 \references{

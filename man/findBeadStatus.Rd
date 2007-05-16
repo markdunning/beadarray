@@ -21,7 +21,7 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE,which="G")
   \item{BLData}{BeadLevelList object containing bead level data}
   \item{probes}{numeric vector for the ProbeIDs of the bead type we
     want to find outliers for}
-  \item{array}{numeric value for the array we want to find outliers on}
+  \item{array}{numeric value for the array we want data from}
   \item{log}{if TRUE the log2 intensities of each bead will be used to
     find outliers. Otherwise un-logged data is used}
   \item{which}{character string specifying which intensities to use.
@@ -74,12 +74,10 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE,which="G")
 \seealso{ \code{findAllOutliers} }
 
 \examples{
-#data(BLData)
-
-#findBeadStatus(BLData, 70450, 1, outputValid=TRUE)
-
-#findBeadStatus(BLData, 70450, 1, log=TRUE, outputValid=TRUE)
-
-#getProbeIntensities(BLData, 70450, 1)
+data(BLData)
+findBeadStatus(BLData, 2, 1, outputValid=TRUE)
+findBeadStatus(BLData, 2, 1, log=TRUE, outputValid=TRUE)
+findBeadStatus(BLData, 23, 1, outputValid=TRUE)
+findBeadStatus(BLData, 23, 1, log=TRUE, outputValid=TRUE)
 }
 \keyword{methods}

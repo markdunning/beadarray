@@ -18,7 +18,7 @@ findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
     used to calculate outliers}
   \item{n}{Specify a cut-off for outliers as n median
     absolute deviations from the median. The default value is 3}
-  \item{which}{character string specifying which intensities to plot.
+  \item{which}{character string specifying which intensities to use.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}
@@ -28,7 +28,7 @@ findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
   turn using the \code{\link{findBeadStatus}} function and
   keep a list of the outliers found. By default, outliers
   for a particular bead type are determined using a 3
-  MAD cut-off from the mean.
+  MAD cut-off from the median.
 }
 \value{
   numeric vector giving the row indices of BLData (in the
@@ -39,11 +39,12 @@ findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
 \seealso{\code{\link{findBeadStatus}}}
 \examples{
 data(BLData)
-
+# how many outliers are there on the original scale?
 length(findAllOutliers(BLData, 1))
-
-length(findAllOutliers(BLData, 1, log=TRUE))
-
-length(findAllOutliers(BLData, 1, n=5))
+# how many outliers are there on the log2-scale?
+length(findAllOutliers(BLData, 1, log=TRUE)) #
+# how many outliers are there using a 4 MAD 
+# cut-off from the median?
+length(findAllOutliers(BLData, 1, n=4))
 }
 \keyword{methods}

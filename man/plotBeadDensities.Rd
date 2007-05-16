@@ -12,11 +12,13 @@ plotBeadDensities(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
 }
 \arguments{
   \item{BLData}{a BeadLevelList object}
-  \item{whatToPlot}{character string specifying which intensities to plot.
+  \item{whatToPlot}{character string specifying which intensities 
+    to plot.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}
-  \item{arrays}{numeric vector of arrays to plot}
+  \item{arrays}{numeric vector of arrays to plot. If set to 
+    \code{NULL} (default value), data from all arrays are plotted}
   \item{log}{if TRUE log2 intensities are plotted}
   \item{type}{character string specifying what type of plot to draw}
   \item{col}{the colors for lines and points}
@@ -27,8 +29,8 @@ plotBeadDensities(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
   \item{\dots}{further graphical parameters to \code{plot}}
 }
 \details{
-  Produces density plots or the raw intensities from a bead array
-  When \code{arrays="NULL"}, densities  from all arrays are plotted.
+  Produces density plots of the raw intensities from a BeadArray
+  When \code{arrays="NULL"}, densities from all arrays are plotted.
 }
 \value{
 Plot is produced on current graphical device
@@ -38,7 +40,6 @@ Plot is produced on current graphical device
 
 \examples{
 data(BLData)
-
-plotBeadDensities(BLData, arrays=1)
+plotBeadDensities(BLData)
 }
 \keyword{hplot}

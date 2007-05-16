@@ -87,9 +87,7 @@ points(xs, ys,...)
 }
 
 
-plotBeadIntensities = function(BLData, ProbeIDs, arrays, log=FALSE, n=3, whatToPlot="G", ProbeCols=NULL, ylim=NULL,...){
-
-
+plotBeadIntensities = function(BLData, ProbeIDs, arrays, log=FALSE, whatToPlot="G", ProbeCols=NULL, ylim=NULL,...){
 
 nplots  = length(ProbeIDs)*length(arrays)
 
@@ -111,10 +109,8 @@ count=1
 
 
 for(i in 1:length(arrays)){
-#j=1
 for(j in 1:length(ProbeIDs)){
-
-  I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, which=whatToPlot)
+I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, which=whatToPlot)
   if (length(I) > 1) {
       sel = is.finite(I) & !is.na(I)
       boxplot(I[sel], at = count - 0.5, add = TRUE, axes = FALSE, col = ProbeCols[j])

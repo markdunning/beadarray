@@ -20,10 +20,10 @@ boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
   \item{varwidth}{logial, indicating whether box widths should be
     proportional to the number of values in each box plot}
   \item{\dots}{further graphical parameters to \code{boxplot}
-    function from graphics package}
+    function from the graphics package}
 }
 \details{
-  Produces box plots or the raw intensities from a bead array}
+  Produces box plots of the raw intensities from a bead array}
 }
 \value{
 Plot is produced on current graphical device

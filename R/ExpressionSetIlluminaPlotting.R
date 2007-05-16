@@ -44,7 +44,7 @@ close.screen(all=TRUE)
 
 
 "plotMA" <-
-function(exprs, array1, array2=0, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,identify=FALSE, ma.ylim=2,sampleSize=NULL,...){
+function(exprs, array1=1, array2=2, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,ma.ylim=2,sampleSize=NULL,...){
 exprs=as.matrix(exprs)
 
 if(log) exprs=log2(exprs)
@@ -82,30 +82,12 @@ if(!is.null(sampleSize)){
     points(x[index], y[index], col=labelCol, pch=labelpch)
   }
 
-
-if(identify){
-
-
-id=identify(x,y, x,n=1, plot=FALSE)
-
-points(x[id],y[id],, pch="X", col="red")
-
-text(15,2,paste("Probe ID: ", rownames(exprs)[id],sep=""))
-text(15,1.4,paste("Value from Array 1: ", round(exprs[id,array1],2), sep=""))
-text(15,1.2,paste("Value from Array 2: ", round(exprs[id,array2],2), sep=""))
-
 }
-
-
-}
-
-
-
 
 
 
 "plotXY" <-
-function(exprs,array1, array2=0, genesToLabel=NULL, labelCol="red", log=TRUE,labelpch=16,identify=FALSE, foldLine=2,sampleSize=NULL,...){
+function(exprs,array1=1, array2=2, genesToLabel=NULL, labelCol="red", log=TRUE,labelpch=16,foldLine=2,sampleSize=NULL,...){
 
 #XY plot of either two samples against each other, or red and green channels of one channel
 
@@ -153,23 +135,6 @@ exprs=as.matrix(exprs)
 
     points(x[index], y[index], col=labelCol, pch=labelpch)
   }
-
-
-if(identify){
-
-
-id=identify(x,y, x,n=1, plot=FALSE)
-
-points(x[id],y[id],, pch="X", col="red")
-
-text(15,14,paste("Probe ID: ", rownames(exprs)[id],sep=""))
-text(15,13.4,paste("Value from Array 1: ", round(exprs[id,array1],2), sep=""))
-text(15,13.2,paste("Value from Array 2: ", round(exprs[id,array2],2), sep=""))
-
-}
-
-
-
 
 }
 

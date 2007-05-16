@@ -3,22 +3,19 @@
 \title{Plot bead intensities}
 \description{
   Function to plot the intensities of all beads of a particular
-  type on an array against their distance from the centre of the
-  array. Any outliers for the bead type will be highlighted.
+  type on an array.
 }
 \usage{
-plotBeadIntensities(BLData, ProbeIDs, arrays, log = FALSE, n=3,
+plotBeadIntensities(BLData, ProbeIDs, arrays, log = FALSE,
           whatToPlot="G", ProbeCols=NULL, ylim=NULL,...)
 }
 \arguments{
   \item{BLData}{a BeadLevelList object}
-  \item{ProbeIDs}{numeric value giving the ProbeID for the bead
-    type we are interested in}
+  \item{ProbeIDs}{numeric value giving the ProbeID(s) for the bead
+    type(s) we are interested in}
   \item{arrays}{numeric value giving the array we are interested in}
   \item{log}{if TRUE log2 intensities are plotted (and used to
     find outliers)}
-  \item{n}{outlier values for the bead type are beads with intensity
-    more than 'n' times away from the mean}
   \item{whatToPlot}{character string specifying which intensities to plot.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
@@ -29,18 +26,7 @@ plotBeadIntensities(BLData, ProbeIDs, arrays, log = FALSE, n=3,
   \item{\dots}{further graphical parameters to \code{plot}}
 }
 \details{
-We find the intensities for each bead of the specified bead type by
-finding the G, Gb, R or Rb intensities for each bead in the array
-whose BLData\$ProbeID matches the specified ProbeID. The distance from
-the centre of the hexagon can be found in a similar fashion by looking
-at the GrnX and GrnY values.
-
-The outliers for the bead type are beads which have intensity more
-than 'n' times away from the standard deviation using logged or
-un-logged bead intensities (specified using 'log' argument).
-
-The mean for the bead type and lines 3 standard deviations from
-the mean are shown on the plot.
+Boxplots of the G, Gb, R or Rb intensities on the original or log-scale for each bead type specified by \code{ProbeIDs} on selected \code{arrays} is produced.
 }
 \value{
 Plot is produced on current graphical device
