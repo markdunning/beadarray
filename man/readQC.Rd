@@ -24,7 +24,7 @@ readQC(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detect
 The format of the quality control
   files differs slightly between BeadStudio versions 1 and 2. Version 1 of the
   software gives one averaged value for each control type, whereas version 2
-  gives suumarised values for each control of a particular type. The user does
+  gives summarised values for each control of a particular type. The user does
   not have to know the version of BeadStudio used to generate the file.
 
 

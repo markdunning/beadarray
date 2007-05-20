@@ -8,11 +8,12 @@ about each array used in a BeadChip or SAM experiment.
 }
 \usage{
 readIllumina(arrayNames=NULL, path=".", textType=".csv",
-        annoPkg=NULL, useImages=TRUE, singleChannel=TRUE,  
-        targets=NULL, imageManipulation="sharpen", backgroundSize=17,
+        annoPkg=NULL, beadInfo=NULL, useImages=TRUE,  
+        singleChannel=TRUE, targets=NULL, 
+        imageManipulation="sharpen", backgroundSize=17,
         storeXY=TRUE, sepchar="_", metrics=FALSE,
-        metricsFile="Metrics.txt", backgroundMethod="none", offset=0,
-        normalizeMethod="none", ...)
+        metricsFile="Metrics.txt", backgroundMethod="none", 
+        offset=0, normalizeMethod="none", ...)
 }
 
 \arguments{
@@ -26,7 +27,9 @@ readIllumina(arrayNames=NULL, path=".", textType=".csv",
   \item{annoPkg}{character string specifying the annotation package 
      name for the arrays being read in (only available for certain 
      expression arrays at present)}
-  \item{useImages}{logical.  If TRUE, the foregound and background 
+  \item{beadInfo}{data.frame specifying bead information, such as 
+     probe sequence, Illumina ID, etc.}
+  \item{useImages}{logical. If TRUE, the foregound and background 
     values are retrieved from the tif images.  When FALSE, the 
     intensity values in the text files are used.  Note that
     background values will not be available (set to 0) when FALSE, 

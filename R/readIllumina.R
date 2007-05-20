@@ -1,11 +1,11 @@
 "readIllumina" =
   function(arrayNames=NULL, path=".", textType=".csv", 
-           annoPkg=NULL, useImages=TRUE, singleChannel=TRUE, 
-           targets=NULL, imageManipulation = "sharpen",
-           backgroundSize=17, storeXY=TRUE, sepchar="_",
-           metrics=FALSE, metricsFile="Metrics.txt", 
-           backgroundMethod="none", offset=0,
-           normalizeMethod="none", ...){
+           annoPkg=NULL, beadInfo=NULL, useImages=TRUE, 
+           singleChannel=TRUE, targets=NULL, 
+           imageManipulation = "sharpen", backgroundSize=17,
+           storeXY=TRUE, sepchar="_", metrics=FALSE,
+           metricsFile="Metrics.txt", backgroundMethod="none",
+           offset=0, normalizeMethod="none", ...){
 
   if(textType==".csv") sep=","
   else sep="\t"	
@@ -302,6 +302,10 @@
 ## Add targets information (if available)
 if(!is.null(targets))
    pData(BLData@phenoData) = targets
+
+## Add bead information (sequence, Illumina IDs used in annoPkg etc)
+if(!is.null(beadInfo) & is.data.frame(beadInfo))
+   BLData@beadAnno = beadInfo
 
 ##Look for scanner metrics file
                                            
