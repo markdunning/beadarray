@@ -258,7 +258,7 @@ if(!is.null(R)) { # create SNPSetIllumina
 }
 else{
     BSData = new("ExpressionSetIllumina")
-    assayData(BSData)=assayDataNew(exprs = G, BeadStDev=GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
+    assayData(BSData)=assayDataNew(exprs = G, se.exprs=GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
 rownames(exprs(BSData)) = probes
     if(imagesPerArray==2)
       BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[seq(1,len,by=2),,drop=FALSE])

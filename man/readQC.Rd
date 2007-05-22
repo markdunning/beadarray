@@ -8,7 +8,7 @@ Reads the standard format of Illumina quality control information and produces d
 }
 
 \usage{
-readQC(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T)
+readQC(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T)
 
 }
 \arguments{
@@ -43,7 +43,7 @@ The format of the quality control
 \examples{
 ##Code to read the example quality control file included with the
 #package.
-#QC = readQC("raw_data_qcinfo.csv", sep=",", skip=7, columns=list(exprs="AVG.Signal", BeadStDev="SeqVAR"))
+#QC = readQC("raw_data_qcinfo.csv", sep=",", skip=7, columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"))
 
 #the average expression of each control can then be accessed by the $ operator
 

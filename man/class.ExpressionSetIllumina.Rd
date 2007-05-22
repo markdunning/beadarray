@@ -28,7 +28,7 @@
   Container for high-throughput assays and experimental
   metadata. \code{ExpressionSetIllumina} class is derived from
   \code{\link[Biobase:eSet]{eSet}}, and requires matrices \code{exprs},
-  \code{BeadStDev}, \code{NoBeads}, \code{Detection} as assay data members.
+  \code{se.exprs}, \code{NoBeads}, \code{Detection} as assay data members.
  }
 \section{Extends}{
    Directly extends class \code{\link[Biobase:eSet]{eSet}}.
@@ -39,7 +39,7 @@
     experimentData = [MIAME],
     annotation = [character],
     exprs = [matrix],
-    BeadStDev = [matrix],
+    se.exprs = [matrix],
     NoBeads = [matrix],
     Detection = [matrix],
     reporterInfo = [data.frameOrNULL],
@@ -47,7 +47,7 @@
   }
   \code{ExpressionSetIllumina} instances are usually created through
   \code{new("ExpressionSetIllumina", ...)}. Arguments to \code{new}
-  include \code{exprs}, \code{BeadStDev},
+  include \code{exprs}, \code{se.exprs},
   \code{NoBeads}, \code{Detection}, \code{phenoData},
   \code{experimentData}, and \code{annotation}. 
   \code{phenoData}, \code{experimentData}, and \code{annotation} can be
@@ -59,7 +59,7 @@
     \item{\code{assayData}:}{Contains matrices with equal dimensions, and with 
       column number equal to \code{nrow(phenoData)}. \code{assayData} must 
       contain a matrix \code{exprs} with rows representing features (e.g., genes)
-      and columns representing samples, a matrix \code{BeadStDev} 
+      and columns representing samples, a matrix \code{se.exprs} 
       describing the standard error of each gene, and matrices \code{NoBeads} and \code{Detection} 
       to describe the number of beads used to produce the summary and a
       probability of a gene being expressed above background. The contents of these matrices 
@@ -81,7 +81,7 @@
        slot.}
 
      \item{\code{se.exprs(ExpressionSetIllumina)}, \code{se.exprs(ExpressionSetIllumina,matrix)<-}}{Access and
-       set elements named \code{BeadStDev} in the \code{AssayData}
+       set elements named \code{se.exprs} in the \code{AssayData}
        slot.}
 	\item{\code{NoBeads(ExpressionSetIllumina)}}{Access elements named \code{NoBeads} in the \code{AssayData}
        slot.}

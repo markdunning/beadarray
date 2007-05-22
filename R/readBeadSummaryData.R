@@ -1,6 +1,6 @@
 readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t", ProbeID="TargetID",skip=0,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
-                                     Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
+                                     Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
                                    qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
                                    qc.sep="\t", qc.skip=0
 )
@@ -99,7 +99,7 @@ BSData
 
 }
 
-readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T){
+readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T){
 
 
 ##
@@ -154,7 +154,7 @@ for(i in 1:length(columns)){
 }
 
 names(data) = foundColumns
-QC = assayDataNew(exprs=new("matrix"), BeadStDev=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"),storage.mode="list")
+QC = assayDataNew(exprs=new("matrix"), se.exprs=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"),controlType=new("matrix"),storage.mode="list")
   
 
 for(i in 1:length(data)){

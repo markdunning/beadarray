@@ -1,11 +1,11 @@
 
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
-                   assayData = assayDataNew(exprs=exprs,BeadStDev=BeadStDev, NoBeads=NoBeads, Detection=Detection, Narrays=Narrays, arrayStDev=arrayStDev, DiffScore = DiffScore, storage.mode="list"),
+                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, Narrays=Narrays, arrayStDev=arrayStDev, DiffScore = DiffScore, storage.mode="list"),
 
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
-                   BeadStDev=new("matrix"),
+                   se.exprs=new("matrix"),
                    NoBeads=new("matrix"),
                    Detection=new("matrix"),
                    Narrays=new("matrix"),
@@ -18,9 +18,9 @@ setMethod("initialize", "ExpressionSetIllumina",
                    QCexprs = new("matrix"),
                    QCBeadStDev = new("matrix"),
                    QCNoBeads = new("matrix"),
-                   
+                   controlType=new("matrix"),
                    QCData = assayDataNew(exprs = QCexprs,
-                   BeadStDev=QCBeadStDev, NoBeads=QCNoBeads,storage.mode="list"))
+                   se.exprs=QCBeadStDev, NoBeads=QCNoBeads,controlType=controlType,storage.mode="list"))
  {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
@@ -46,13 +46,13 @@ setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
 
 
 setValidity("ExpressionSetIllumina", function(object) {
-  assayDataValidMembers(assayData(object), c("exprs", "BeadStDev", "NoBeads"))
+  assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "NoBeads"))
 })
 
 
 setMethod("exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
 
-setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "BeadStDev"))
+setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "se.exprs"))
 
 setMethod("show", "ExpressionSetIllumina", function(object) {
 
@@ -124,7 +124,7 @@ setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object,
 })
 
 setReplaceMethod("se.exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
-  assayDataElementReplace(object, "BeadStDev", value)
+  assayDataElementReplace(object, "se.exprs", value)
 })
 
 

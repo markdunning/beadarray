@@ -12,7 +12,7 @@ Function to read the output of Illumina's software into beadarray
 
 readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",ProbeID="TargetID",skip=0,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
-                                     Detection="Detection", BeadStDev="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
+                                     Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
                                    qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
                                    qc.sep="\t", qc.skip=0
 )
@@ -115,7 +115,7 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",P
 
 
 
-#BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet,skip=7, columns=list(exprs="AVG_Signal", BeadStDev="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", BeadStDev="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
+#BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet,skip=7, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
 
 
 }

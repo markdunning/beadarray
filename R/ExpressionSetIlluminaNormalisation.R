@@ -22,24 +22,6 @@ exprs
 
 }
 
-"backgroundNormalise"<-function(object){
-
-QC = QCInfo(object)
-
-if(length(which(colnames(QC$Signal) == "negative"))==0){
-
-stop("Could not find the the column headings negative in the QC object")
-
-}
-
-col = which(colnames(QC$Signal) == "negative")
-
-object <- assayDataElementReplace(object, "exprs", exprs(object) - QC$Signal[,col])
-
-object
-
-}
-
 
 
 
@@ -49,8 +31,12 @@ function(exprs, log=TRUE){
 
 narrays = ncol(exprs)
 
+if(log){
+                          
 exprs = log2(as.matrix(exprs))
 
+}
+                          
 med = median(exprs,na.rm=TRUE)
 
 for(i in 1:narrays){
