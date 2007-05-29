@@ -45,8 +45,7 @@
      stop("No tiffs found")
 
    ###Find which files have both Green Images and xy information
-   arrays = intersect(strtrim(GImages, nchar(GImages)-8),
-                    arrays)	
+   arrays = intersect(arrays, strtrim(GImages, nchar(GImages)-8))	
   
    ##Check to see if we have two channels
    if(length(RImages)!=0) {
