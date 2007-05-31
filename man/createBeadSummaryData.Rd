@@ -13,7 +13,8 @@ createBeadSummaryData(BLData, log=FALSE, n=3,
 \arguments{
   \item{BLData}{an BeadLevelList object}
   \item{log}{if TRUE then summarise the log2 intensities of each bead}
-  \item{n}{use n median absolute deviations from the median as a cut-off for outliers}
+  \item{n}{use n median absolute deviations from the median as a
+    cut-off for outliers}
   \item{imagesPerArray}{Specifies how many images there are per array.
     Normally 1 for a SAM and 2 for a BeadChip.  The images from the same
     array will be combined so each column in the output represents a
@@ -30,7 +31,7 @@ createBeadSummaryData(BLData, log=FALSE, n=3,
   the bead type on the array. The default method is the method used by
   Illumina which uses the raw (un-logged) intensities and categorises
   outliers as being those beads which have intensity more than 3 
-  median absolute deviations from the bead mean intensity. By setting
+  median absolute deviations from the bead median intensity. By setting
   the log argument to \code{TRUE} we calculate outliers and summary 
   values on the log2-scale.  By changing the 'n' argument we choose
   beads with intensity 'n' mads from the median.

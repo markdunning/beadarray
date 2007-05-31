@@ -17,7 +17,7 @@ findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
   \item{log}{if TRUE the log2 intensities will be
     used to calculate outliers}
   \item{n}{Specify a cut-off for outliers as n median
-    absolute deviations from the median. The default value is 3}
+    absolute deviations (MADs) from the median. The default value is 3}
   \item{which}{character string specifying which intensities to use.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for

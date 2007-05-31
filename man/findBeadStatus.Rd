@@ -46,14 +46,14 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE,which="G")
 \details{
   The intensities of each bead with ProbeID 'probe' on the
   specified array are found and if the 'log' parameter is set
-  to true we do a log2 transformation on the set of values.
+  to true we do a log2 transformation of these values.
 
-  The mean and median absolute deviation of all the bead intensities
+  The median and median absolute deviation for the bead intensities
   are then calculated. Outliers are beads which have intensity more
-  than 'n' median absolute deviations from the mean.
+  than 'n' median absolute deviations (MADs) from the median.
 
   The method used by Illumina is to use un-logged intensities with
-  a value 'n' = 3.
+  'n' = 3.
 
   Any beads which have intensity NA are also counted as outliers.
 
