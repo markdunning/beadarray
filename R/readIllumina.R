@@ -255,18 +255,27 @@
 
      data[,2]=dat1$Grn[ord]
      data[,3]=0
+     cat("Background correcting: method =", backgroundMethod, "\n")
+     data[,2] = bgCorrectSingleArray(fg=data[,2], bg=data[,3], method=backgroundMethod, offset=offset)
+
      if(storeXY) {
        if(!singleChannel) {
-         data[,c(2,6)] = normalizeSingleArray(cbind(dat1$Grn[ord], dat1$Red[ord]), method=normalizeMethod)
+         data[,6]=dat1$Red[ord]
          data[,7]=0
+         data[,6] = bgCorrectSingleArray(fg=data[,6], bg=data[,7], method=backgroundMethod, offset=offset)
+         cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
+         data[,c(2,6)] = normalizeSingleArray(data[,c(2,6)], method=normalizeMethod)
        }
        data[,4]=dat1$GrnX[ord]
        data[,5]=dat1$GrnY[ord]
      }
      else {
        if(!singleChannel) {
-         data[,c(2,4)] = normalizeSingleArray(cbind(dat1$Grn[ord], dat1$Red[ord]), method=normalizeMethod)
+         data[,4]=dat1$Red[ord]
          data[,5] = 0
+         data[,4] = bgCorrectSingleArray(fg=data[,4], bg=data[,5], method=backgroundMethod, offset=offset)
+         cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
+         data[,c(2,4)] = normalizeSingleArray(data[,c(2,4)], method=normalizeMethod)
        }
      }    
      assign(arrays[i], as.data.frame(data), envir=BLData@beadData)

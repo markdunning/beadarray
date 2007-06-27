@@ -148,7 +148,12 @@ imageplot = function(BLData, array = 1, nrow = 18, ncol = 2,
 
 
   data = getArrayData(BLData, which=whatToPlot, array=array, log=log)
-  data[is.na(data) | data<0] = 0 
+  ind = is.na(data) | is.infinite(data)
+  if(sum(ind)>0) {
+    cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))
+    data[ind] = 0
+    rm(ind)
+  }
   if (is.character(low)) 
     low = col2rgb(low)/255
   if (is.character(high)) 

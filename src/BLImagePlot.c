@@ -13,12 +13,12 @@ void BLImagePlot(int *nProbes, double *fground, double *yvalues, int *ygrid, dou
         for(j = 0; j < (*nProbes); j++){
 
             if((yvalues[j] >= ygrid[i]) & (yvalues[j] < ygrid[i+1])){
-				if(fground[j] > 0){
+		//	if(fground[j] > 0){
 				    total = total + fground[j]; // log2(fground[j])
 	    			counter = counter + 1;
-				}
-			}
-		}
+//				}
+	    }		
+	}
 	//Error checking. Total can become NaN if there was a negative value in fground.
 	//Hopefully this shouldn't ever print out.
 		if(isnan(total) == 1){

@@ -7,10 +7,14 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
     bgc = copyBeadLevelList(object)
     arraynms = arrayNames(object)
     narrays = length(arraynms)
+    existingmethod = object@arrayInfo$background
     method = match.arg(method, c("none", "subtract", "half", 
         "minimum", "edwards", "normexp", "rma"))
+    if(existingmethod!="none")
+      stop(paste("Background correction already carried out using method=\"", existingmethod, "\"", sep=""))
+    else {  
 #    if(is.null(RG$Rb) && is.null(RG$Gb)) method = "none"
-    switch(method,
+      switch(method,
 	subtract={
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb
@@ -63,12 +67,12 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 	    }
 	    sub = as.matrix(bgc[[arraynms[i]]]$G-bgc[[arraynms[i]]]$Gb)
 	    delta = one %*% apply(sub, 2, delta.vec)
-	    bgc@beadData[[arraynms[i]]]$G = ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Gb+delta)/bgc[[arraynms[i]]]$G), sub)
+	    bgc@beadData[[arraynms[i]]]$G = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Gb+delta)/bgc[[arraynms[i]]]$G), sub))
 #            bgc@beadData[[arraynms[i]]]$Gb = NULL
             if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
  	      sub = as.matrix(bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb)
 	      delta = one %*% apply(sub, 2, delta.vec)
-	      bgc@beadData[[arraynms[i]]]$R = ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Rb+delta)/bgc[[arraynms[i]]]$R), sub)
+	      bgc@beadData[[arraynms[i]]]$R = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Rb+delta)/bgc[[arraynms[i]]]$R), sub))
 #              bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
           }
@@ -117,4 +121,5 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
           }
         }
         bgc
+      }
     })
