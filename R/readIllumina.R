@@ -1,69 +1,78 @@
 "readIllumina" =
-  function(arrayNames=NULL, path=".", textType=".csv", 
+  function(arrayNames=NULL, path=".", textType=".txt", 
            annoPkg=NULL, beadInfo=NULL, useImages=TRUE, 
            singleChannel=TRUE, targets=NULL, 
            imageManipulation = "sharpen", backgroundSize=17,
-           storeXY=TRUE, sepchar="_", metrics=FALSE,
+           storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
            metricsFile="Metrics.txt", backgroundMethod="none",
            offset=0, normalizeMethod="none", ...){
 
   if(textType==".csv") sep=","
   else sep="\t"	
 
+  if(!useImages) {
+    message(paste("'useImages=FALSE': please check that 'singleChannel=", singleChannel, "' is appropriate for this data set", sep="")) 
+    if(is.null(arrayNames))
+       message(paste("It is also advisable to specify 'arrayNames' to avoid reading in spurious", textType, "files from the specified directory"))
+  }
   xyFiles = dir(path=path, pattern =textType)
   metricpos = grep(metricsFile, xyFiles)
   if(length(metricpos)>0) {
      xyFiles = xyFiles[-metricpos]
   }
   if(length(xyFiles)==0)
-     stop("No xy files found")
+    stop(paste("No files with extension ", textType, "found"))
   arrays = strtrim(xyFiles, nchar(xyFiles)-4)  
-  if(!is.null(arrayNames))
+  if(!is.null(arrayNames)) {
+    # check whether file extensions are present - if they are remove them
+    arrayNames = gsub(textType, "", arrayNames)
     arrays = arrayNames[which(arrayNames %in% arrays)] 
-
+    if(length(arrays)==0)      
+      stop("'arrayNames' did not match with files in this directory")
+    }
   if(useImages) {
-   manip = switch(imageManipulation, none = 0, sharpen = 1, sasik = 2, sasikFaster = 3, 4)
+    manip = switch(imageManipulation, none = 0, sharpen = 1, morph = 2, morphFaster = 3, 4)
 
-   if(manip == 4){
-     stop("The imageManipulation argument must be one of: \"none\", \"sharpen\" or \"sasik\"")
-   }
+    if(manip == 4){
+      stop("The imageManipulation argument must be one of: \"none\", \"sharpen\" or \"morph\"")
+    }
    
-   #Take this line out later and make it optional
-   foregroundCalc = "Illumina"
+    # Take this line out later and make it optional
+    foregroundCalc = "Illumina"
 
-   if(foregroundCalc == "Illumina"){
-     fground = 0
-   }
-   else if(foregroundCalc == "sasik"){
-     fground = 1
-   }
+    if(foregroundCalc == "Illumina"){
+      fground = 0
+    }
+    else if(foregroundCalc == "morph"){
+      fground = 1
+    }
      
-   GImages = dir(path=path, pattern ="_Grn.tif")	
-   RImages = dir(path=path, pattern ="_Red.tif")
+    GImages = dir(path=path, pattern ="_Grn.tif")	
+    RImages = dir(path=path, pattern ="_Red.tif")
                                         
-   if(length(GImages)==0)
-     stop("No tiffs found")
+    if(length(GImages)==0)
+      stop("No tiffs found")
 
-   ###Find which files have both Green Images and xy information
-   arrays = intersect(arrays, strtrim(GImages, nchar(GImages)-8))	
+    ###Find which files have both Green Images and xy information
+    arrays = intersect(arrays, strtrim(GImages, nchar(GImages)-8))	
   
-   ##Check to see if we have two channels
-   if(length(RImages)!=0) {
-    arrays = intersect(arrays, strtrim(RImages, nchar(RImages)-8))
-    if(singleChannel==TRUE)
-      cat("Red images found, setting singleChannel=FALSE\n")
-    singleChannel = FALSE
-   }
-   else { # no Red images found
-    if(singleChannel==FALSE)
-      cat("No red images found, setting singleChannel=TRUE\n")
-    singleChannel = TRUE
-   }
+    ##Check to see if we have two channels
+    if(length(RImages)!=0) {
+      arrays = intersect(arrays, strtrim(RImages, nchar(RImages)-8))
+      if(singleChannel==TRUE)
+        cat("Red images found, setting singleChannel=FALSE\n")
+      singleChannel = FALSE
+    }
+    else { # no Red images found
+      if(singleChannel==FALSE)
+        cat("No red images found, setting singleChannel=TRUE\n")
+      singleChannel = TRUE
+    }
   }
-
-  cat("Found", length(arrays), "arrays","\n")
+  
   k = length(arrays)
-
+  cat("Found", k, "arrays","\n")
+   
   BLData = new("BeadLevelList")
   if(!is.null(annoPkg) & is.character(annoPkg))
      BLData@annotation=annoPkg
@@ -83,7 +92,7 @@
 
   csv_files = vector(length=length(arrays))
   csv_files = file.path(path, paste(arrays, textType,sep=""))
-  csvNcol = ncol(read.table(csv_files[1], sep=sep, header=T, nrows = 1))
+  csvNcol = ncol(read.table(csv_files[1], sep=sep, dec=dec, header=T, nrows = 1))
 
   if(singleChannel) {
     arrayInfo$channels = "single"
@@ -122,7 +131,7 @@
        fc = file(file, open="r")
        dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
                    NULL, GrnX = numeric(0), GrnY = numeric(0)), 
-                   sep = sep, skip = 1, quiet = TRUE)
+                   sep = sep, dec=dec, skip = 1, quiet = TRUE)
        close(fc)
      }
 
@@ -132,7 +141,7 @@
        dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
                    NULL, GrnX = numeric(0), GrnY = numeric(0), 
                    NULL, RedX = numeric(0), RedY = numeric(0)),
-                   sep = sep, skip = 1, quiet = TRUE)
+                   sep = sep, dec=dec, skip = 1, quiet = TRUE)
        close(fc)                   
      }
 
@@ -142,7 +151,7 @@
        dat1 = scan(file=fc, what = list(NULL,
                    ProbeID = integer(0),NULL, NULL, 
                    GrnX = numeric(0), GrnY = numeric(0)), 
-                   sep = sep, skip = 1, quiet = TRUE)
+                   sep = sep, dec=dec, skip = 1, quiet = TRUE)
        close(fc) 
        RedX = dat1$GrnX
        RedY = dat1$GrnY
@@ -219,7 +228,7 @@
        fc = file(file, open="r")
        dat1 = scan(file=fc, what = list(ProbeID = integer(0), 
               Grn = numeric(0), GrnX = numeric(0),
-              GrnY = numeric(0)), sep = sep, skip = 1, quiet = TRUE)
+              GrnY = numeric(0)), sep = sep, dec=dec, skip = 1, quiet = TRUE)
        close(fc)
      }
 
@@ -229,7 +238,7 @@
                    Grn = numeric(0), GrnX = numeric(0),
                    GrnY = numeric(0), Red = numeric(0),
                    RedX = numeric(0), RedY = numeric(0)),
-                   sep = sep, skip = 1, quiet = TRUE)
+                   sep = sep, dec=dec, skip = 1, quiet = TRUE)
        close(fc)                   
      }
 
@@ -240,7 +249,7 @@
                    ProbeID = integer(0), Grn = numeric(0), 
                    Red = numeric(0), GrnX = numeric(0), 
                    GrnY = numeric(0)), sep = sep, 
-                   skip = 1, quiet = TRUE)
+                   dec=dec, skip = 1, quiet = TRUE)
        close(fc) 
      }
      
@@ -320,152 +329,12 @@ if(!is.null(beadInfo) & is.data.frame(beadInfo))
 if(metrics) {                                                          
   metrics = dir(path=path, pattern=metricsFile)
   if(length(metrics)==1)
-    BLData@scanMetrics = read.table(file.path(path, metricsFile), sep="\t", header=T)
+    BLData@scanMetrics = read.table(file.path(path, metricsFile), sep="\t", dec=dec, header=T)
 }
 
 BLData
 }                                                              
 
-
-#u = unique(BLData[[1]][,1])
-
-#probeindex = matrix(nrow=length(u), ncol=length(BLData))
-
-#for(i in 1:length(BLData)){
-
- # for(j in 1:1:length(u)){
-
-  #  probeindex[j,i] = max(which(BLData[[i]][,1]==u[j]))
-
-  #}
-
-#}
-
-
-G=function(list){
-
-  max = 0
-  p=list$probeindex
-
-  for(i in 1:ncol(p)){
-    m = max(p[,i], na.rm=TRUE)
-    if(m >max) max = m
-  }
-  
-
-  Gmat = matrix(nrow=max, ncol=ncol(p),0)
-
-  for(i in 1:ncol(p)){
-    Gcol = which(colnames(list[[i]]) == "G")
-        if(is.null(Gcol)) stop("Could not find R column")
-    Gmat[1:nrow(list[[i]]),i] = list[[i]][,Gcol]
-  }
-
-  Gmat
-
-}
-
-Gb=function(list){
-
-  max = 0
-  p=list$probeindex
-
-  for(i in 1:ncol(p)){
-    m = max(p[,i], na.rm=TRUE)
-    if(m >max) max = m
-  }
-  
-
-  Gmat = matrix(nrow=max, ncol=ncol(p),0)
-
-  for(i in 1:ncol(p)){
-    Gcol = which(colnames(list[[i]]) == "Gb")
-        if(is.null(Gcol)) stop("Could not find R column")
-    Gmat[1:nrow(list[[i]]),i] = list[[i]][,Gcol]
-  }
-
-  Gmat
-
-}
-
-
-R=function(list){
-  max=0
-  for(i in 1:length(list)){
-    if(nrow(list[[i]]) > max) max = nrow(list[[i]])
-
-  }
-
-  Gmat = matrix(nrow=max, ncol=length(list),0)
-
-  for(i in 1:length(list)){
-    Gcol = which(colnames(list[[i]]) == "R")
-        if(is.null(Gcol)) stop("Could not find R column")
-    Gmat[1:nrow(list[[i]]),i] = list[[i]][,Gcol]
-  }
-
-  Gmat
-
-}
-
-Rb=function(list){
-  max=0
-  for(i in 1:length(list)){
-    if(nrow(list[[i]]) > max) max = nrow(list[[i]])
-
-  }
-
-  Gmat = matrix(nrow=max, ncol=length(list),0)
-
-  for(i in 1:length(list)){
-    Gcol = which(colnames(list[[i]]) == "Rb")
-    if(is.null(Gcol)) stop("Could not find R column")
-    Gmat[1:nrow(list[[i]]),i] = list[[i]][,Gcol]
-  }
-
-  Gmat
-
-}
-
-
-
-Ps=function(list) {
-
-  max = 0
-  p=list$probeindex
-
-  for(i in 1:ncol(p)) {
-    m = max(p[,i], na.rm=TRUE)
-    if(m >max) max = m
-  }
-  
-
-  Gmat = matrix(nrow=max, ncol=ncol(p),0)
-
-  for(i in 1:ncol(p)) {
-    Gcol = which(colnames(list[[i]]) == "ProbeID")
-        if(is.null(Gcol)) stop("Could not find R column")
-    Gmat[1:nrow(list[[i]]),i] = list[[i]][,Gcol]
-  }
-
-  Gmat
-
-}
-
-
-#readOPA <- function(OPAfile, path=NULL) { # code taken from BeadarraySNP package (methods-SnpSetIllumina.R file)
-#  if(!is.null(path))
-#    OPAfile <- file.path(path, OPAfile)
-#  firstfield <- scan(OPAfile, what = "", sep = ",", flush = TRUE, #quiet = TRUE, blank.lines.skip = FALSE, multi.line = FALSE)
-#  skip <- grep("Ilmn ID", firstfield, fixed=TRUE)
-#  if (length(skip) == 0) stop("Cannot find \"Ilmn ID\" in OPA info file")
-#        enddata<- grep("[Gentrain Request]", firstfield, fixed=TRUE)
-#  if (length(enddata) == 0) stop("Cannot find \"[Gentrain Request]\" in OPA info file")
-#        OPAinfo<-read.table(OPAfile, skip=skip[1]-1, header = TRUE, sep = ",", as.is = TRUE, check.names = FALSE, nrows=enddata[1]-skip[1]-1)
-#  colnames(OPAinfo)<-c("Illname","snpid","oligo1","oligo2","oligo3","IllCode","IllOligo","IllStrand","snpbases","CHR","Ploidy","Species","MapInfo","TopGenomicSeq","CustomerStrand")
-#  rownames(OPAinfo)<-OPAinfo[,"snpid"]
-#  OPAinfo
-#}
 
 bgCorrectSingleArray = function(fg, bg, method = "subtract", offset = 0, verbose=FALSE) {
     method = match.arg(method, c("none", "subtract", "half", 
@@ -526,13 +395,11 @@ normalizeSingleArray = function(x, method = "quantile") {
           y = x
         },
 	quantile={
-            require("affy")
-            y = normalize.quantiles(x)
+            y = normalizeQuantiles(x)
         },
 	vsn={
             require("vsn")
-            y = vsn(x)@exprs/log(2)
+            y = vsn2(x)@exprs
         })
     y
   }
-

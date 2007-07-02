@@ -1,15 +1,14 @@
 boxplotBeads = function(BLData, whatToPlot="G", arrays=NULL,
-                                  log=TRUE, varwidth=TRUE,  ...) {
+                                  log=TRUE, n=3, varwidth=TRUE,  ...) {
   tmp = list()
   arraynms = arrayNames(BLData)
   narrays = length(arraynms)
   if(is.null(arrays))  # plot all arrays
     arrays = 1:narrays
   for(i in arrays)
-      tmp[[arraynms[i]]] = getArrayData(BLData,array=i, which=whatToPlot, log=log)
+      tmp[[arraynms[i]]] = getArrayData(BLData,array=i, which=whatToPlot, log=log, n=n)
   boxplot(tmp,varwidth=varwidth,...)
 }
-
 
 plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
                    xlim=c(8,16), ylim=c(8,16), xlab="G intensities",
@@ -137,7 +136,7 @@ box()
 
 imageplot = function(BLData, array = 1, nrow = 18, ncol = 2,
                      low = NULL, high = NULL, ncolors = 123,
-                     whatToPlot ="G", log=TRUE, zlim=NULL,
+                     whatToPlot ="G", log=TRUE, n=3, zlim=NULL,
                      main=whatToPlot,...){
 
   par(mar = c(2,1,1,1), xaxs = "i")
@@ -146,8 +145,11 @@ imageplot = function(BLData, array = 1, nrow = 18, ncol = 2,
 #  xs = floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
 #  ys = floor(BLData@GrnY[,array] - min(BLData@GrnY[,array]))
 
-
-  data = getArrayData(BLData, which=whatToPlot, array=array, log=log)
+  whatToPlot = match.arg(whatToPlot, choices=c("G", "Gb", "R", "Rb", "wtsG", "wtsR", "residG", "residR", "M", "A"))
+  if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="A") & BLData@arrayInfo$channels!="two")
+    stop(paste("Need two-channel data to plot", whatToPlot, "values"))
+                                          
+  data = getArrayData(BLData, which=whatToPlot, array=array, log=log) 
   ind = is.na(data) | is.infinite(data)
   if(sum(ind)>0) {
     cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))

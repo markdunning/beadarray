@@ -73,19 +73,38 @@ setMethod("show", "BeadLevelList", function(object) {
  })
 
 
-setGeneric("getArrayData", function(BLData, which="G", array=1, log=TRUE)
+setGeneric("getArrayData", function(BLData, which="G", array=1, log=TRUE, n=3)
    standardGeneric("getArrayData"))
 
-setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, log=TRUE) {
-   which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR"))
-   data = BLData[[array]][[which]]
+setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, log=TRUE, n=3) {
+   which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "A"))
+   if(which=="M") {
+     if(BLData@arrayInfo$channels=="two")
+       data=log2(BLData[[array]][["R"]])-log2(BLData[[array]][["G"]])
+     else
+       stop("Need two-channel data to calculate per bead log-ratios")
+   }
+   else if(which=="A") {
+     if(BLData@arrayInfo$channels=="two")
+       data=(log2(BLData[[array]][["R"]])+log2(BLData[[array]][["G"]]))/2
+     else
+       stop("Need two-channel data to calculate per bead log-ratios")
+   }
+   else if(which=="residR" | which=="residG") {
+     if(BLData@arrayInfo$channels=="two") 
+       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+      else
+       stop("Need two-channel data to calculate per bead log-ratios")
+   }
+   else {
+     data = BLData[[array]][[which]]
+     if(log & (which=="G" | which=="Gb" | which=="R" | which=="Rb"))
+       data = log2(data)
+   }
    if(is.null(data))
-     stop(paste("No", which, "data for array", array))
-   if(log & (which=="G" | which=="Gb" | which=="R" | which=="Rb"))
-     data = log2(data)
+     stop(paste("No", which, "data for array", array))  
    return(data)
  })
-
 
 setGeneric("copyBeadLevelList", function(object) 
   standardGeneric("copyBeadLevelList"))

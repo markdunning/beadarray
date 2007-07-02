@@ -7,11 +7,11 @@ Uses csv or txt and image files (where available) to load information
 about each array used in a BeadChip or SAM experiment.
 }
 \usage{
-readIllumina(arrayNames=NULL, path=".", textType=".csv",
+readIllumina(arrayNames=NULL, path=".", textType=".txt",
         annoPkg=NULL, beadInfo=NULL, useImages=TRUE,  
         singleChannel=TRUE, targets=NULL, 
         imageManipulation="sharpen", backgroundSize=17,
-        storeXY=TRUE, sepchar="_", metrics=FALSE,
+        storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
         metricsFile="Metrics.txt", backgroundMethod="none", 
         offset=0, normalizeMethod="none", ...)
 }
@@ -22,8 +22,8 @@ readIllumina(arrayNames=NULL, path=".", textType=".csv",
   \item{path}{character string specifying the location of files to be
     read by the function}
   \item{textType}{character string specifiying the extension of the
-    files which store the xy information (typically \code{".txt"} or
-    \code{".csv"})}
+    files which store the bead information (ID, x, y, intensities).
+    Typically \code{".txt"} or \code{".csv"}.}
   \item{annoPkg}{character string specifying the annotation package 
      name for the arrays being read in (only available for certain 
      expression arrays at present)}
@@ -47,6 +47,8 @@ readIllumina(arrayNames=NULL, path=".", textType=".csv",
     should be stored}
   \item{sepchar}{character string which separates row and column in file
     name (default value is \code{"_"})}
+  \item{dec}{character used in the files for decimal points.  The default
+    value is \code{"."}}
   \item{metrics}{logical scalar, indicating whether the scanner metrics
     file \code{metricsFile} is to be read in}
   \item{metricsFile}{name of the scanner metrics file}
