@@ -11,7 +11,8 @@
   else sep="\t"	
 
   if(!useImages) {
-    message(paste("'useImages=FALSE': please check that 'singleChannel=", singleChannel, "' is appropriate for this data set", sep="")) 
+    message("'useImages=FALSE': please check that the 'singleChannel'
+            argument is apporpriate for your data set", sep=""))
     if(is.null(arrayNames))
        message(paste("It is also advisable to specify 'arrayNames' to avoid reading in spurious", textType, "files from the specified directory"))
   }
