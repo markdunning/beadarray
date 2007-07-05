@@ -53,3 +53,4 @@ The unzipped file is tab delimited file and should be readable using
 #human6bgx = readBGX("HumanWG-6_V2_0_R0_11223189_A", fill=TRUE)
 #ratbgx = readBGX("RatRef-12_V1_0_R0_11222119_A", fill=TRUE)
 }
+\keyword{IO}
