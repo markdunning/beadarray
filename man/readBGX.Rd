@@ -8,7 +8,7 @@ on each bead type, including the controls.
 }
 \usage{
 readBGX(filename, path=".", sep="\t", quote="\'", header=TRUE,
-           probeStart="\\[Probes\\]", controlStart="\\[Controls\\]", ...) {
+           probeStart="\\[Probes\\]", controlStart="\\[Controls\\]", ...)
 }
 \arguments{
   \item{filename}{character vector specifying name of unzipped bgx file}
