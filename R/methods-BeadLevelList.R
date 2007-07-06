@@ -79,10 +79,12 @@ setGeneric("getArrayData", function(BLData, which="G", array=1, log=TRUE, n=3)
 setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, log=TRUE, n=3) {
    which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "A"))
    if(which=="M") {
-     if(BLData@arrayInfo$channels=="two")
+     if(BLData@arrayInfo$channels=="two") {
        data=log2(BLData[[array]][["R"]])-log2(BLData[[array]][["G"]])
-     else
+     }
+     else {
        stop("Need two-channel data to calculate per bead log-ratios")
+     }
    }
    else if(which=="A") {
      if(BLData@arrayInfo$channels=="two")
@@ -90,7 +92,10 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, 
      else
        stop("Need two-channel data to calculate per bead log-ratios")
    }
-   else if(which=="residR" | which=="residG") {
+   else if(which=="residG") {
+       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+   }
+   else if(which=="residR") {
      if(BLData@arrayInfo$channels=="two") 
        data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
       else
@@ -161,7 +166,11 @@ arraynms = arrayNames(BLData)
     sel2 = BLData[[arraynms[2]]]$ProbeID!=0 
     pr = append(BLData[[arraynms[1]]]$ProbeID[sel1], BLData[[arraynms[2]]]$ProbeID[sel2])
     finten = append(BLData[[arraynms[1]]]$G[sel1], BLData[[arraynms[2]]]$G[sel2])
-    binten = append(BLData[[arraynms[1]]]$Gb[sel1], BLData[[arraynms[2]]]$Gb[sel2])    
+    binten = append(BLData[[arraynms[1]]]$Gb[sel1], BLData[[arraynms[2]]]$Gb[sel2])
+    ord = order(pr)
+    pr = pr[ord]
+    finten = finten[ord]
+    binten = binten[ord]
   }
   else{
     stop("You can only specify 1 or 2 images per array")
@@ -217,8 +226,10 @@ arraynms = arrayNames(BLData)
         }
         else if(imagesPerArray == 2){
            finten = append(BLData[[arraynms[j]]]$R[sel1], BLData[[arraynms[j+1]]]$R[sel2])
-           binten = append(BLData[[arraynms[j]]]$Rb[sel1], BLData[[arraynms[j+1]]]$Rb[sel2])    
-  }
+           binten = append(BLData[[arraynms[j]]]$Rb[sel1], BLData[[arraynms[j+1]]]$Rb[sel2])
+           finten = finten[ord]
+           binten = binten[ord]
+        }   
         if(log){
            finten = log2(finten)
            binten = log2(binten)
@@ -254,7 +265,11 @@ arraynms = arrayNames(BLData)
        sel2 = BLData[[arraynms[j+1]]]$ProbeID!=0 
        pr = append(BLData[[arraynms[j]]]$ProbeID[sel1], BLData[[arraynms[j+1]]]$ProbeID[sel2])
        finten = append(BLData[[arraynms[j]]]$G[sel1], BLData[[arraynms[j+1]]]$G[sel2])
-       binten = append(BLData[[arraynms[j]]]$Gb[sel1], BLData[[arraynms[j+1]]]$Gb[sel2])       
+       binten = append(BLData[[arraynms[j]]]$Gb[sel1], BLData[[arraynms[j+1]]]$Gb[sel2])
+       ord = order(pr)
+       pr = pr[ord]
+       finten = finten[ord]
+       binten = binten[ord]      
      }
    }
 

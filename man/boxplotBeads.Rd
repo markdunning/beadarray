@@ -29,7 +29,7 @@ boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
     function from the graphics package}
 }
 \details{
-  Produces box plots of the raw intensities from a bead array}
+  Produces box plots of the raw intensities from a bead array
 }
 \value{
 Plot is produced on current graphical device

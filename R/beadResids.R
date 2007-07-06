@@ -1,5 +1,7 @@
 beadResids = function(BLData, which="G", array=1, log=TRUE, n=3) {
-  if(which=="G")
+  if(which=="G" & BLData@arrayInfo$channels!="two")
+    bs = createBeadSummaryData(BLData, log=log, n=n, imagesPerArray=1)@assayData$exprs[,array,drop=FALSE]
+  else if(which=="G" & BLData@arrayInfo$channels=="two")
     bs = createBeadSummaryData(BLData, log=log, n=n, imagesPerArray=1)@assayData$G[,array,drop=FALSE]
   else # which=="R"
     bs = createBeadSummaryData(BLData, log=log, n=n, imagesPerArray=1)@assayData$R[,array,drop=FALSE]
