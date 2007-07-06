@@ -207,8 +207,16 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 
 	i = j = k = nsize1 = nsize2 = 0;	
 
+ 
 	/* find the indices of valid probes */
 	while(k < (*count)){
+	    if(ma==0) {
+		validInds[i] = (indices[0]+k);
+		i++;
+		nsize1 = (sizeof(int) * (i+1));
+		validInds = (int *)realloc(validInds, nsize1);	
+	    }
+            else {
 		if((inten[k] < (m + *nmads*ma)) && (inten[k] > (m - *nmads*ma))){
 //					 Rprintf("%d - valid\n",k);
 //					 Rprintf("i: %d, Index: %d\n", i, (indices[0]+k));
@@ -224,6 +232,7 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 			nsize2 = (sizeof(int) * (j+1));
 			outlierInds = (int *)realloc(outlierInds, nsize2);
 		}
+	    }
 		k++;
 	}
 
