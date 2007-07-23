@@ -1,4 +1,4 @@
-plotMAXY <- function(exprs, arrays, log = TRUE, genesToLabel=NULL,labels=NULL,labelCol="red", labelpch=16,foldLine=2,sampleSize=NULL,...){
+plotMAXY <- function(exprs, arrays, log = TRUE, genesToLabel=NULL,labels=colnames(exprs)[arrays],labelCol="red", labelpch=16,foldLine=2,sampleSize=NULL,...){
 
 
   mat <- matrix(c(0,1,0,0.04, 0,1,0.96,1, 0,0.04,0.04,0.96,
@@ -70,8 +70,19 @@ if(!is.null(sampleSize)){
  x=x[s]
  y=y[s]
  }	
-	
-  smoothScatter(x,y, pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
+
+
+                                                                                                                                       
+                                                                                                                                       
+                                                                                                                                       
+  naInd = intersect(which(!is.na(x)),which(!is.na(y)))
+  naInd = intersect(naInd, which(!(is.infinite(x))))
+  naInd = intersect(naInd, which(!(is.infinite(y))))
+                                                                                                                                       
+
+
+ 	
+  smoothScatter(x[naInd],y[naInd], pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
 
   abline(h=c(-log2(foldLine),0,log2(foldLine)),lty=c(2,1,2)) 
   
@@ -106,6 +117,8 @@ exprs=as.matrix(exprs)
       xbox=18
       yspacing=0.3
 
+                 
+
    
   }
   else{
@@ -125,7 +138,14 @@ exprs=as.matrix(exprs)
  }
 	
 
-  smoothScatter(x,y, xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
+ 
+    naInd = intersect(which(!is.na(x)),which(!is.na(y)))
+  naInd = intersect(naInd, which(!(is.infinite(x))))
+  naInd = intersect(naInd, which(!(is.infinite(y))))
+                                                                                                                                       
+                                                                                                                         
+
+  smoothScatter(x[naInd],y[naInd], xlim=range((max(0,min(x),na.rm=TRUE)),16), xlab = "", ylab = "", pch = 16, cex = 0.4, ...)
   abline(log2(foldLine), 1, lty=2)
   abline(-log2(foldLine),1,lty=2)
   
