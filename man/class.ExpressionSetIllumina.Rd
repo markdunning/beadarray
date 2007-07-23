@@ -20,6 +20,7 @@
 \alias{Detection,ExpressionSetIllumina-method}
 \alias{NoBeads}
 \alias{Detection}
+
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
   Expression BeadArrays.

@@ -7,7 +7,9 @@
 Produces scatter and MA-plots for all pairwise comparisons that can be made from a set of arrays.
 }
 \usage{
-plotMAXY(exprs, arrays, log = TRUE, genesToLabel=NULL,labels=NULL,labelCol="red", labelpch=16,foldLine=2,sampleSize=NULL,...)
+plotMAXY(exprs, arrays, log = TRUE, genesToLabel=NULL,
+         labels=colnames(exprs)[arrays],labelCol="red",
+         labelpch=16,foldLine=2,sampleSize=NULL,...)
 }
 \arguments{
   \item{exprs}{an expression matrix from an ExpressionSet or eSet}

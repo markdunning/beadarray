@@ -6,7 +6,7 @@ rankInvariantNormalise = function(exprs, T=NULL){
 
 if(is.null(T)){
 
-T = apply(exprs, 1, mean)
+T = apply(exprs, 1, mean, na.rm=TRUE)
 
 }
 
@@ -29,11 +29,13 @@ exprs
 "medianNormalise" <-
 function(exprs, log=TRUE){
 
+exprs = as.matrix(exprs)
+
 narrays = ncol(exprs)
 
 if(log){
                           
-exprs = log2(as.matrix(exprs))
+exprs = log2(exprs)
 
 }
                           
@@ -54,3 +56,47 @@ exprs
 }
 
 
+normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL) {
+  rownms = rownames(exprs(BSData))
+  colnms = colnames(exprs(BSData))
+  transform = match.arg(transform, c("none", "vst", "log2"))
+  method = match.arg(method, c("quantile", "qspline", "vsn", "rankInvariant", "median", "none"))
+  if(transform=="log2") {
+          BSData = assayDataElementReplace(BSData, "exprs", as.matrix(log2(exprs(BSData))))
+  }
+  else if(transform=="vst") {
+          require("lumi")
+          x = new("LumiBatch")
+          x = assayDataElementReplace(x, "exprs", exprs(BSData))
+          x = assayDataElementReplace(x, "se.exprs", se.exprs(BSData))
+          x = assayDataElementReplace(x, "beadNum", NoBeads(BSData))
+          BSData = assayDataElementReplace(BSData, "exprs", exprs(lumiT(x, method="vst")))
+          rm(x)
+  }
+
+  switch(method,
+         quantile={
+            require("affy")
+            BSData = assayDataElementReplace(BSData, "exprs", normalize.quantiles(as.matrix(exprs(BSData))))
+            rownames(exprs(BSData)) = rownms
+            colnames(exprs(BSData)) = colnms
+         },
+         qspline={
+            require("affy")
+            BSData = assayDataElementReplace(BSData, "exprs", normalize.qspline(as.matrix(exprs(BSData))))
+            rownames(exprs(BSData)) = rownms
+            colnames(exprs(BSData)) = colnms
+         },
+         vsn={
+            require("vsn")
+            BSData = assayDataElementReplace(BSData, "exprs", vsn2(as.matrix(exprs(BSData)))@hx)
+         },
+         rankInvariant={
+            BSData = assayDataElementReplace(BSData, "exprs", rankInvariantNormalise(exprs(BSData), T=T))
+
+         },
+         median={
+            BSData = assayDataElementReplace(BSData, "exprs", medianNormalise(exprs(BSData), log=FALSE))
+         })
+  BSData
+}

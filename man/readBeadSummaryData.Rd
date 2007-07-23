@@ -1,27 +1,18 @@
 \name{readBeadSummaryData}
 \alias{readBeadSummaryData}
-
-
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Read BeadStudio gene expression output}
 \description{
 Function to read the output of Illumina's software into beadarray
-
 }
 \usage{
-
-readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",ProbeID="TargetID",skip=0,
+readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
+header=TRUE, sep="\t", ProbeID="TargetID",skip=8,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
                                    qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
-                                   qc.sep="\t", qc.skip=0
-)
-
-
-
+                                   qc.sep="\t", qc.skip=8)
 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dataFile}{character string specifying the name of the file containing
     BeadStudio output}
@@ -45,19 +36,16 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",P
      expression arrays at present)}
   \item{qc.sep}{seperator character for qcFile}
   \item{qc.skip}{number of lines to skip at the top of qcFile}
-     
-  } 
+  }
 
-
-\details{
-
-  This function can be used to read gene expression data exported from versions 1 and 2 of the
-  Illumina BeadStudio application. The format of the BeadStudio output
-  may depend on the version number. For example, the file may be comma
-  or tab seperated of have header information at the top of the
-  file. The parameters sep and skip can be used to adapt the function as
-  required. 
-
+\details{ 
+  This function can be used to read gene expression data exported
+  from versions 1,2 and 3 of the Illumina BeadStudio application.
+  The format of the BeadStudio output may depend on the version number.
+  For example, the file may be comma or tab seperated of have header
+  information at the top of the file. The parameters sep and skip
+  can be used to adapt the function as required.  Currently, the default
+  options have been set to handle version 3 output.
 
   The format of the BeadStudio file is assumed to have one row for each
   probe sequence in the experiment and a set number of columns for each
@@ -80,24 +68,19 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",P
   columns that it is possible to export from BeadStudio. The columns
   parameter can be used to select which slots can be found from the data
   and the relevant column headings.
-
-
+  
   If quality control information has been exported from BeadStudio
   (control probe profile) this may be read into beadarray too. The
-  qc.skip and qc.sep and qc.columns parameters can be used to adjust for the contents
-  of the file. 
-
+  qc.skip and qc.sep and qc.columns parameters can be used to adjust
+  for the contents of the file.
+  
   Sample sheet information can also be used. This is a file format used
   by Illumina to specify the contents of each array in the experiment.
-  
 }
-
-
 
 \value{
   An ExpressionSetIllumina object with the slots defined in the columns
-  parameter filled with data from the input file. 
-
+  parameter filled with data from the input file.
 
 }
 
@@ -105,18 +88,12 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,header=T, sep="\t",P
 
 \seealso{
   \code{\link[beadarray:ExpressionSetIllumina]{ExpressionSetIllumina}}
-  
 }
 \examples{
-##code to read the example BeadStudio output distributed with the package
+##code to read the example BeadStudio (version 2) output distributed with the package
 #dataFile = "raw_data.csv"
 #sampleSheet = "raw_data_sample_sheet.csv"
 #qcFile = "raw_data_qcinfo.csv"
-
-
-
 #BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet,skip=7, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
-
-
 }
 \keyword{IO}

@@ -12,7 +12,9 @@ boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
 \arguments{
   \item{BLData}{a BeadLevelList object}
   \item{whatToPlot}{character string specifying which intensities to plot.
-    See \code{getArrayData} for a list of the possibilities.}
+    Possibilities are \code{"G"}, \code{"Gb"} for single channel data
+    and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
+    two-colour data}
   \item{arrays}{numeric vector of arrays to plot}
   \item{log}{if TRUE log2 intensities are plotted}
   \item{varwidth}{logial, indicating whether box widths should be
@@ -27,7 +29,7 @@ boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
     function from the graphics package}
 }
 \details{
-  Produces box plots of the raw intensities from a bead array
+  Produces box plots of the raw intensities from a bead array}
 }
 \value{
 Plot is produced on current graphical device

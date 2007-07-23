@@ -77,7 +77,7 @@ setGeneric("getArrayData", function(BLData, which="G", array=1, log=TRUE, n=3)
    standardGeneric("getArrayData"))
 
 setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, log=TRUE, n=3) {
-   which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "A"))
+   which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
    if(which=="M") {
      if(BLData@arrayInfo$channels=="two") {
        data=log2(BLData[[array]][["R"]])-log2(BLData[[array]][["G"]])
@@ -86,11 +86,17 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, 
        stop("Need two-channel data to calculate per bead log-ratios")
      }
    }
+   else if(which=="residM") {
+     if(BLData@arrayInfo$channels=="two") 
+       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+      else
+       stop("Need two-channel data to calculate per bead log-ratio residuals")
+   }
    else if(which=="A") {
      if(BLData@arrayInfo$channels=="two")
        data=(log2(BLData[[array]][["R"]])+log2(BLData[[array]][["G"]]))/2
      else
-       stop("Need two-channel data to calculate per bead log-ratios")
+       stop("Need two-channel data to calculate per bead average intensities")
    }
    else if(which=="residG") {
        data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
@@ -99,11 +105,20 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, 
      if(BLData@arrayInfo$channels=="two") 
        data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
       else
-       stop("Need two-channel data to calculate per bead log-ratios")
+       stop("Need two-channel data to calculate per bead R residuals")
    }
-   else {
+   else if(which=="R" | which=="Rb") {
+     if(BLData@arrayInfo$channels=="two") {
+       data = BLData[[array]][[which]]
+       if(log)
+         data = log2(data)
+     }
+     else
+       stop(paste("Need two-channel data to retrieve per bead", which, "values"))
+   }
+   else { # "G" or "Gb"
      data = BLData[[array]][[which]]
-     if(log & (which=="G" | which=="Gb" | which=="R" | which=="Rb"))
+     if(log & (which=="G" | which=="Gb"))
        data = log2(data)
    }
    if(is.null(data))
@@ -150,27 +165,50 @@ setMethod("combineBeadLevelLists", "BeadLevelList",
 #           standardGeneric("createBeadSummaryData"))
 
 #setMethod("createBeadSummaryData", "BeadLevelList", function(BLData, log = FALSE, n = 3, imagesPerArray = 2, probes = NULL){
-createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 2, probes = NULL){
-arraynms = arrayNames(BLData)
+createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1, what="G", probes = NULL){
+  arraynms = arrayNames(BLData)
   len = length(arraynms)
-
-  if(imagesPerArray == 1){
-    sel = BLData[[arraynms[1]]]$ProbeID!=0
-    pr = BLData[[arraynms[1]]]$ProbeID[sel]
-    finten = BLData[[arraynms[1]]]$G[sel]
-    binten = BLData[[arraynms[1]]]$Gb[sel]
+  what = match.arg(what, c("G", "R", "RG", "M", "A"))
+  whatelse = ""
+  if(what=="RG") {
+    if(BLData@arrayInfo$channels=="two") {
+       what="G"
+       whatelse="R"
+     }
+     else {
+       stop("Need two-channel data to calculate summary R and G values")
+     }
   }
-
+  if(imagesPerArray == 1){
+    sel = getArrayData(BLData, which="ProbeID", array=1)!=0
+    pr = getArrayData(BLData, which="ProbeID", array=1)[sel]
+    finten = getArrayData(BLData, which=what, log=log, array=1)[sel]
+    binten = rep(0, length(finten))
+# BLData[[arraynms[1]]]$Gb[sel]
+  }
   else if(imagesPerArray == 2){
-    sel1 = BLData[[arraynms[1]]]$ProbeID!=0
-    sel2 = BLData[[arraynms[2]]]$ProbeID!=0 
-    pr = append(BLData[[arraynms[1]]]$ProbeID[sel1], BLData[[arraynms[2]]]$ProbeID[sel2])
-    finten = append(BLData[[arraynms[1]]]$G[sel1], BLData[[arraynms[2]]]$G[sel2])
-    binten = append(BLData[[arraynms[1]]]$Gb[sel1], BLData[[arraynms[2]]]$Gb[sel2])
+    if(length(arraynms)%%2!=0)
+       stop("Need an even number of arrays when \'imagesPerArray=2\'")
+    # order array by their pairs
+    arrayord = order(arraynms)
+    arraynms = arraynms[arrayord]
+    # check that arrays are paired correctly
+    tmp = unlist(strsplit(arraynms, "_"))
+    chipnums = tmp[seq(1,length(tmp),by=3)]
+    pos = tmp[seq(2,length(tmp),by=3)]
+    stripnum = as.numeric(tmp[seq(3,length(tmp),by=3)])
+    check = chipnums[seq(1,len, by=2)]==chipnums[seq(2,len, by=2)] & pos[seq(1,len, by=2)]==pos[seq(2,len, by=2)] & (stripnum[seq(1,len, by=2)]==stripnum[seq(2,len, by=2)]-1)
+    if(sum(check)!=length(check))
+       stop("Missing arrays")
+    sel1 = getArrayData(BLData, which="ProbeID", array=arraynms[1])!=0
+    sel2 = getArrayData(BLData, which="ProbeID", array=arraynms[2])!=0 
+    pr = append(getArrayData(BLData, which="ProbeID", array=arraynms[1])[sel1],getArrayData(BLData, which="ProbeID", array=arraynms[2])[sel2])
+    finten = append(getArrayData(BLData, which=what, log=log, array=arraynms[1])[sel1], getArrayData(BLData, which=what, log=log, array=arraynms[2])[sel2])
+    binten = rep(0, length(finten))
     ord = order(pr)
     pr = pr[ord]
     finten = finten[ord]
-    binten = binten[ord]
+#    binten = binten[ord]
   }
   else{
     stop("You can only specify 1 or 2 images per array")
@@ -185,26 +223,26 @@ arraynms = arrayNames(BLData)
   if(imagesPerArray == 1){
     G  = GBeadStDev = GNoBeads = Gnooutliers = matrix(0,nrow = noprobes, ncol=len)
     colnames(G) = colnames(GBeadStDev) = colnames(GNoBeads) = colnames(Gnooutliers) = arraynms
-    if(BLData@arrayInfo$channels=="two" | !is.null(BLData[[arraynms[1]]]$R))
+    if(BLData@arrayInfo$channels=="two" & !is.null(BLData[[arraynms[1]]]$R) & whatelse=="R")
        R  = RBeadStDev = RNoBeads = Rnooutliers = G
     else R = NULL
   }
 
-  else {
+  else if(imagesPerArray == 2) {
     G =  GBeadStDev = GNoBeads = Gnooutliers = matrix(0,nrow = noprobes, ncol=(len/2))
     colnames(G) = colnames(GBeadStDev) = colnames(GNoBeads) = colnames(Gnooutliers) = arraynms[seq(1,len,by=2)]
-    if(BLData@arrayInfo$channels=="two" | !is.null(BLData[[arraynms[1]]]$R))
-       R  = RBeadStDev = RNoBeads = Rnooutliers = G
+    if(BLData@arrayInfo$channels=="two" & !is.null(BLData[[arraynms[1]]]$R) & whatelse=="R")
+       R = RBeadStDev = RNoBeads = Rnooutliers = G
     else R = NULL
   }
 
   i = j = 1
    while(j <= len){
     if(log){
-     finten = log2(finten)
-     binten = log2(binten)
+     #finten = log2(finten)
+     #binten = log2(binten)
      finten[!is.finite(finten) | is.na(finten)] = 0
-     binten[!is.finite(binten) | is.na(binten)] = 0
+ #    binten[!is.finite(binten) | is.na(binten)] = 0
    }
 
      probeIDs = as.integer(pr)
@@ -219,22 +257,23 @@ arraynms = arrayNames(BLData)
      GNoBeads[,i] = blah$noBeads
      Gnooutliers[,i] = blah$noOutliers
     
-     if(BLData@arrayInfo$channels=="two" | !is.null(BLData[[arraynms[i]]]$R)) {
+     if(BLData@arrayInfo$channels=="two" & !is.null(BLData[[arraynms[i]]]$R) & whatelse=="R") {
         if(imagesPerArray == 1){
-           finten = BLData[[arraynms[i]]]$R[sel]
-           binten = BLData[[arraynms[i]]]$Rb[sel]
+           finten = getArrayData(BLData, which=whatelse, log=log, array=arraynms[i])[sel]
+           binten = rep(0, length(finten))
         }
         else if(imagesPerArray == 2){
-           finten = append(BLData[[arraynms[j]]]$R[sel1], BLData[[arraynms[j+1]]]$R[sel2])
-           binten = append(BLData[[arraynms[j]]]$Rb[sel1], BLData[[arraynms[j+1]]]$Rb[sel2])
+           finten = append(getArrayData(BLData, which=whatelse, log=log, array=arraynms[j])[sel1], getArrayData(BLData, which=whatelse, log=log, array=arraynms[j+1])[sel2])
+           binten = rep(0, length(finten))
+#append(BLData[[arraynms[j]]]$Rb[sel1],BLData[[arraynms[j+1]]]$Rb[sel2])
            finten = finten[ord]
-           binten = binten[ord]
+#           binten = binten[ord]
         }   
         if(log){
-           finten = log2(finten)
-           binten = log2(binten)
+#           finten = log2(finten)
+#           binten = log2(binten)
            finten[!is.finite(finten) | is.na(finten)] = 0
-           binten[!is.finite(binten) | is.na(binten)] = 0
+#           binten[!is.finite(binten) | is.na(binten)] = 0
          }
 
         probeIDs = as.integer(pr)
@@ -254,22 +293,35 @@ arraynms = arrayNames(BLData)
      rm(probeIDs, blah)
      gc()
     
-     if((imagesPerArray == 1) && (i <= len)) {
-       sel = BLData[[arraynms[i]]]$ProbeID!=0
-       pr = BLData[[arraynms[i]]]$ProbeID[sel]
-       finten = BLData[[arraynms[i]]]$G[sel]
-       binten = BLData[[arraynms[i]]]$Gb[sel]
+     if((imagesPerArray == 1) && (i <= len)) {    
+       sel = getArrayData(BLData, which="ProbeID", array=arraynms[i])!=0
+       pr = getArrayData(BLData, which="ProbeID", array=arraynms[i])[sel]
+       finten = getArrayData(BLData, which=what, log=log, array=arraynms[i])[sel]
+       binten = rep(0, length(finten))
+#       sel = BLData[[arraynms[i]]]$ProbeID!=0
+#       pr = BLData[[arraynms[i]]]$ProbeID[sel]
+#       finten = BLData[[arraynms[i]]]$G[sel]
+#       binten = BLData[[arraynms[i]]]$Gb[sel]
      }
      else if((imagesPerArray == 2) && (j < len)) {
-       sel1 = BLData[[arraynms[j]]]$ProbeID!=0
-       sel2 = BLData[[arraynms[j+1]]]$ProbeID!=0 
-       pr = append(BLData[[arraynms[j]]]$ProbeID[sel1], BLData[[arraynms[j+1]]]$ProbeID[sel2])
-       finten = append(BLData[[arraynms[j]]]$G[sel1], BLData[[arraynms[j+1]]]$G[sel2])
-       binten = append(BLData[[arraynms[j]]]$Gb[sel1], BLData[[arraynms[j+1]]]$Gb[sel2])
+       sel1 = getArrayData(BLData, which="ProbeID", array=arraynms[j])!=0
+       sel2 = getArrayData(BLData, which="ProbeID", array=arraynms[j+1])!=0 
+       pr = append(getArrayData(BLData, which="ProbeID", array=arraynms[j])[sel1],getArrayData(BLData, which="ProbeID", array=arraynms[j+1])[sel2])
+       finten = append(getArrayData(BLData, which=what, log=log, array=arraynms[j])[sel1], getArrayData(BLData, which=what, log=log, array=arraynms[j+1])[sel2])
+       binten = rep(0, length(finten))
        ord = order(pr)
        pr = pr[ord]
        finten = finten[ord]
-       binten = binten[ord]      
+#       binten = binten[ord]
+#       sel1 = BLData[[arraynms[j]]]$ProbeID!=0
+#       sel2 = BLData[[arraynms[j+1]]]$ProbeID!=0 
+#       pr = append(BLData[[arraynms[j]]]$ProbeID[sel1], BLData[[arraynms[j+1]]]$ProbeID[sel2])
+#       finten = append(BLData[[arraynms[j]]]$G[sel1], BLData[[arraynms[j+1]]]$G[sel2])
+#       binten = append(BLData[[arraynms[j]]]$Gb[sel1], BLData[[arraynms[j+1]]]$Gb[sel2])
+#       ord = order(pr)
+#       pr = pr[ord]
+#       finten = finten[ord]
+#       binten = binten[ord]      
      }
    }
 
@@ -279,14 +331,14 @@ GBeadStDev = GBeadStDev / sqrt(GNoBeads)
 if(!is.null(R))
   RBeadStDev = RBeadStDev / sqrt(RNoBeads)
 
-if(!is.null(R)) { # create SNPSetIllumina
+if(whatelse=="R") { # create SNPSetIllumina
 #    rownames(G) = rownames(R) = rownames(GBeadStDev) = rownames(RBeadStDev) = probes
     BSData = new("SnpSetIllumina")
     assayData(BSData) = assayDataNew(G = G, R = R, GBeadStDev = GBeadStDev,
                RBeadStDev = RBeadStDev, storage.mode="list")
     rownames(BSData@assayData[["G"]]) = rownames(BSData@assayData[["R"]]) = probes = rownames(BSData@assayData[["GBeadStDev"]]) = rownames(BSData@assayData[["RBeadStDev"]]) = probes
     if(imagesPerArray==2)
-      BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[seq(1,len,by=2),,drop=FALSE])
+      BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[arrayord,,drop=FALSE][seq(1,len,by=2),,drop=FALSE])
     else
       BSData@phenoData = BLData@phenoData
 }
@@ -295,7 +347,7 @@ else{
     assayData(BSData)=assayDataNew(exprs = G, se.exprs=GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
 rownames(exprs(BSData)) = probes
     if(imagesPerArray==2)
-      BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[seq(1,len,by=2),,drop=FALSE])
+      BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[arrayord,,drop=FALSE][seq(1,len,by=2),,drop=FALSE])
     else
       BSData@phenoData = BLData@phenoData 
 }
@@ -406,3 +458,73 @@ getProbeIndicesC = function(BLData, probe, array=1, intProbe, index, startSearch
 # getUniqueProbeID <- function(BLData, array=1,...) {
 #    sort(unique(BLData[[array]]$ProbeID),...)
 #}
+
+#setGeneric("imageplot", function(object, ...) standardGeneric("imageplot"))
+
+#setMethod("imageplot", signature(object="BeadLevelList"),
+#          function(object, array = 1, nrow = 100, ncol = 100,
+#                     low = NULL, high = NULL, ncolors = 123,
+#                     whatToPlot ="G", log=TRUE, n=3, zlim=NULL,
+#                     main=whatToPlot){
+#
+#  par(mar = c(2,1,1,1), xaxs = "i")
+#  
+#Not needed since the co-ords are automatically scaled to zero now  
+#  xs = floor(object@GrnX[,array] - min(object@GrnX[,array]))
+#  ys = floor(object@GrnY[,array] - min(object@GrnY[,array]))
+#
+#  whatToPlot = match.arg(whatToPlot, choices=c("G", "Gb", "R", "Rb", "wtsG", "wtsR", "residG", "residR", "M", "residM", "A"))
+#  if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="residM" | whatToPlot=="A") & object@arrayInfo$channels!="two")
+#    stop(paste("Need two-channel data to plot", whatToPlot, "values"))
+#                                          
+#  data = getArrayData(object, which=whatToPlot, array=array, log=log) 
+#  ind = is.na(data) | is.infinite(data)
+#  if(sum(ind)>0) {
+#    cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))
+#    data[ind] = 0
+#    rm(ind)
+#  }
+#  if (is.character(low)) 
+#    low = col2rgb(low)/255
+#  if (is.character(high)) 
+#    high = col2rgb(high)/255
+#  if (!is.null(low) && is.null(high)) 
+#    high = c(1, 1, 1) - low
+#  if (is.null(low) && !is.null(high)) 
+#    low = c(1, 1, 1) - high
+#
+#  if (is.null(low)) 
+#    low = c(1, 1, 1)
+#  if (is.null(high)) 
+#    high = c(0, 1, 0)
+##  if(whatToPlot=="G" | whatToPlot=="Gb")
+#    col = rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
+#          high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
+#
+##  else  # plot in Red colour scheme
+##    col = rgb(seq(low[2], high[2], len = ncolors), seq(low[1], 
+##          high[1], len = ncolors), seq(low[3], high[3], len = ncolors))
+
+#  xs = floor(object[[array]]$GrnX)
+#  ys = floor(object[[array]]$GrnY)
+#
+#  xgrid = floor(seq(0, max(xs), by = max(xs)/ncol))
+#  ygrid = floor(seq(0, max(ys), by = max(ys)/nrow))
+#
+#  imageMatrix = matrix(ncol = ncol, nrow = nrow)
+#
+#  for(i in 1:ncol){
+#    idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
+#    fground = data[idx]
+#    yvalues = ys[idx]
+##    yvalues = object@GrnY[idx,array]
+#    out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
+#              result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
+#
+#    imageMatrix[,i] = out$result # rev(out$result)
+#  }
+# 
+#  imageMatrix = t((imageMatrix))
+#  if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
+#  image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
+#})

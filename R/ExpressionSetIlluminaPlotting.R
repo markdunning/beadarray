@@ -43,8 +43,7 @@ close.screen(all=TRUE)
 }
 
 
-"plotMA" <-
-function(exprs, array1=1, array2=2, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,ma.ylim=2,sampleSize=NULL,...){
+"plotMA" <- function(exprs, array1=1, array2=2, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,ma.ylim=2,sampleSize=NULL,...){
 exprs=as.matrix(exprs)
 
 if(log) exprs=log2(exprs)

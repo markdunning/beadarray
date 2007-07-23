@@ -1,3 +1,20 @@
+Version 1.5.7 - 23 July 2007
+ - normaliseIllumina, offers normalisation for ExpressionSetIllumina objects
+ - readBeadSummaryData, default options changed to handle BeadStudio 3 output (skip=8, added 'quote=""' to read.table (default 'quote'
+ caused R to hang for some BeadStudio version 3 output))
+ sep arguments to be correct for version 3 outputetc.)
+ - vsn2 used in normalizeSingleArray, instead of vsn
+ - displayTIFFImage and plotCoord removed
+ - plotMA and plotXY updated to now check for and exclude missing values from plotting
+ - createBeadSummaryData now checks that the arrays it combines (when 'imagesPerArray=2') are the right ones.  New argument 'what', which allows log-ratios (M), average intensites (A), red (R), green (G) or red and green (RG) intensities to be summarised.  Default 'imagesPerArray' set to 1 instead of 2.
+ - getArrayData:  typos in error messages fixed.  New 'which' option 'residM'
+ top get residuls from log-ratios.
+ - readIllumina: default background correction option changed to 'subtract'
+ - imageplot: changed default nrow and ncol to 100 (was 18 and 2 respectively)
+ - beadResids() simplified after changes to getArrayData
+ - updated man pages
+
+
 Version 1.3.1 - 12 Feb 2007
 
 BeadLevelList
@@ -23,4 +40,3 @@ Changes to C code
 
 Data
  - new BLData object (4 arrays from a SAM)
-

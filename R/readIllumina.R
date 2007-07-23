@@ -4,7 +4,7 @@
            singleChannel=TRUE, targets=NULL, 
            imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
-           metricsFile="Metrics.txt", backgroundMethod="none",
+           metricsFile="Metrics.txt", backgroundMethod="subtract",
            offset=0, normalizeMethod="none", ...){
 
   if(textType==".csv") sep=","
@@ -400,7 +400,7 @@ normalizeSingleArray = function(x, method = "quantile") {
         },
 	vsn={
             require("vsn")
-            y = vsn2(x)@exprs
+            y = vsn2(x)@hx
         })
     y
   }
