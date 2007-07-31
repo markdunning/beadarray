@@ -1,14 +1,12 @@
 plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
-  type="l", col=1, xlab="Intensity", ylab="Density", xlim=NULL, ylim=NULL,...) {
+   type="l", col=1, xlab="Intensity", ylab="Density", xlim=NULL, ylim=NULL,...) {
    x = y = list()
    arraynms = arrayNames(BLData)
    narrays = length(arraynms)
    if (is.null(arrays))
       arrays = 1:narrays
-   if(length(col)!=length(arrays))
-     col=rep(1, length(arrays))
-   if(length(type)!=length(arrays))
-     type=rep("l", length(arrays))
+   if(length(col)!=narrays*length(whatToPlot))
+     col=rep(1, narrays*length(whatToPlot))
    for (i in arrays) {
      for(j in whatToPlot) {
        d = density(getArrayData(BLData, array = i, which = j, log = log), na.rm=TRUE)
@@ -20,12 +18,14 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
      xlim = range(x)
    if(is.null(ylim))
      ylim = range(y)
+   count = 1
    for(i in arrays) {
      for(j in whatToPlot) {
       if(i==arrays[1] & j==whatToPlot[1])
-        plot(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], xlim=xlim, ylim=ylim, type=type[1], col=col[1], xlab=xlab, ylab=ylab, new=TRUE, ...)
+        plot(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], xlim=xlim, ylim=ylim, col=col[count], xlab=xlab, type=type, ylab=ylab, new=TRUE, ...)
       else
-        points(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], type=type[which(arrays %in% i)], col=col[which(arrays %in% i)])
+        points(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], col=col[count], type=type, ...)
+      count = count+1
     }
  }
 }

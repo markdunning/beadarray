@@ -1,8 +1,11 @@
 Version 1.5.8 - 31 July 2007
  - normaliseIllumina.RD added
  - spelling mistake in message in readIllumina() corrected
- - corrected plot orientation in imageplot() and plotBeadLocations()
+ - corrected plot orientation and setting of zlims in imageplot()
+ - corrected plot orientation in plotBeadLocations()
  - createBeadSummaryData() NA or Inf values replaced by 0 when log=TRUE/FALSE (previously only occurred when log=TRUE)
+ - plotBeadDensities() now allows different colours for each channel plotted
+
 
 Version 1.5.7 - 23 July 2007
  - normaliseIllumina, offers normalisation for ExpressionSetIllumina objects
