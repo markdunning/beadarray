@@ -1,3 +1,9 @@
+Version 1.5.8 - 31 July 2007
+ - normaliseIllumina.RD added
+ - spelling mistake in message in readIllumina() corrected
+ - corrected plot orientation in imageplot() and plotBeadLocations()
+ - createBeadSummaryData() NA or Inf values replaced by 0 when log=TRUE/FALSE (previously only occurred when log=TRUE)
+
 Version 1.5.7 - 23 July 2007
  - normaliseIllumina, offers normalisation for ExpressionSetIllumina objects
  - readBeadSummaryData, default options changed to handle BeadStudio 3 output (skip=8, added 'quote=""' to read.table (default 'quote'

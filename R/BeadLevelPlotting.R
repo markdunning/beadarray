@@ -57,13 +57,13 @@ plot(1, xlim=range(0:xmax), ylim=range(0:ymax) ,type="n", new=TRUE, xlab=xlab, y
 if(!(is.null(ProbeIDs))){
 
 xs = BLData[[array]]$GrnX[which(BLData[[array]]$ProbeID %in% ProbeIDs)]
-ys = BLData[[array]]$GrnY[which(BLData[[array]]$ProbeID %in% ProbeIDs)]
+ys = ymax-BLData[[array]]$GrnY[which(BLData[[array]]$ProbeID %in% ProbeIDs)]
 
 }
 else{
 
 xs = BLData[[array]]$GrnX[BeadIDs]
-ys = BLData[[array]]$GrnY[BeadIDs]
+ys = ymax-BLData[[array]]$GrnY[BeadIDs]
  
 }
 
@@ -193,8 +193,11 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 
     out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
               result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
-
-    imageMatrix[,i] = out$result # rev(out$result)
+    if (!is.null(zlim)) {
+       out$result[!is.na(out$result)] = pmax(zlim[1], out$result[!is.na(out$result)], na.rm=TRUE)
+       out$result[!is.na(out$result)] = pmin(zlim[2], out$result[!is.na(out$result)], na.rm=TRUE)
+    }
+    imageMatrix[,i] = rev(out$result)
   }
  
   imageMatrix = t((imageMatrix))

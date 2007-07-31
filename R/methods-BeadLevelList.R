@@ -238,12 +238,12 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
 
   i = j = 1
    while(j <= len){
-    if(log){
+#    if(log){
      #finten = log2(finten)
      #binten = log2(binten)
      finten[!is.finite(finten) | is.na(finten)] = 0
  #    binten[!is.finite(binten) | is.na(binten)] = 0
-   }
+#   }
 
      probeIDs = as.integer(pr)
 
@@ -269,12 +269,12 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
            finten = finten[ord]
 #           binten = binten[ord]
         }   
-        if(log){
+#        if(log){
 #           finten = log2(finten)
 #           binten = log2(binten)
            finten[!is.finite(finten) | is.na(finten)] = 0
 #           binten[!is.finite(binten) | is.na(binten)] = 0
-         }
+#         }
 
         probeIDs = as.integer(pr)
 
@@ -458,73 +458,3 @@ getProbeIndicesC = function(BLData, probe, array=1, intProbe, index, startSearch
 # getUniqueProbeID <- function(BLData, array=1,...) {
 #    sort(unique(BLData[[array]]$ProbeID),...)
 #}
-
-#setGeneric("imageplot", function(object, ...) standardGeneric("imageplot"))
-
-#setMethod("imageplot", signature(object="BeadLevelList"),
-#          function(object, array = 1, nrow = 100, ncol = 100,
-#                     low = NULL, high = NULL, ncolors = 123,
-#                     whatToPlot ="G", log=TRUE, n=3, zlim=NULL,
-#                     main=whatToPlot){
-#
-#  par(mar = c(2,1,1,1), xaxs = "i")
-#  
-#Not needed since the co-ords are automatically scaled to zero now  
-#  xs = floor(object@GrnX[,array] - min(object@GrnX[,array]))
-#  ys = floor(object@GrnY[,array] - min(object@GrnY[,array]))
-#
-#  whatToPlot = match.arg(whatToPlot, choices=c("G", "Gb", "R", "Rb", "wtsG", "wtsR", "residG", "residR", "M", "residM", "A"))
-#  if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="residM" | whatToPlot=="A") & object@arrayInfo$channels!="two")
-#    stop(paste("Need two-channel data to plot", whatToPlot, "values"))
-#                                          
-#  data = getArrayData(object, which=whatToPlot, array=array, log=log) 
-#  ind = is.na(data) | is.infinite(data)
-#  if(sum(ind)>0) {
-#    cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))
-#    data[ind] = 0
-#    rm(ind)
-#  }
-#  if (is.character(low)) 
-#    low = col2rgb(low)/255
-#  if (is.character(high)) 
-#    high = col2rgb(high)/255
-#  if (!is.null(low) && is.null(high)) 
-#    high = c(1, 1, 1) - low
-#  if (is.null(low) && !is.null(high)) 
-#    low = c(1, 1, 1) - high
-#
-#  if (is.null(low)) 
-#    low = c(1, 1, 1)
-#  if (is.null(high)) 
-#    high = c(0, 1, 0)
-##  if(whatToPlot=="G" | whatToPlot=="Gb")
-#    col = rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
-#          high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
-#
-##  else  # plot in Red colour scheme
-##    col = rgb(seq(low[2], high[2], len = ncolors), seq(low[1], 
-##          high[1], len = ncolors), seq(low[3], high[3], len = ncolors))
-
-#  xs = floor(object[[array]]$GrnX)
-#  ys = floor(object[[array]]$GrnY)
-#
-#  xgrid = floor(seq(0, max(xs), by = max(xs)/ncol))
-#  ygrid = floor(seq(0, max(ys), by = max(ys)/nrow))
-#
-#  imageMatrix = matrix(ncol = ncol, nrow = nrow)
-#
-#  for(i in 1:ncol){
-#    idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
-#    fground = data[idx]
-#    yvalues = ys[idx]
-##    yvalues = object@GrnY[idx,array]
-#    out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
-#              result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
-#
-#    imageMatrix[,i] = out$result # rev(out$result)
-#  }
-# 
-#  imageMatrix = t((imageMatrix))
-#  if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
-#  image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
-#})
