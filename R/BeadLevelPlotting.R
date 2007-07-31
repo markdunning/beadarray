@@ -187,17 +187,19 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 
   for(i in 1:ncol){
     idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
-    fground = data[idx]
-    yvalues = ys[idx]
-#    yvalues = BLData@GrnY[idx,array]
+    if(length(idx)>0) {
+      fground = data[idx]
+      yvalues = ys[idx]
+#      yvalues = BLData@GrnY[idx,array]
 
-    out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
+      out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
               result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
-    if (!is.null(zlim)) {
-       out$result[!is.na(out$result)] = pmax(zlim[1], out$result[!is.na(out$result)], na.rm=TRUE)
-       out$result[!is.na(out$result)] = pmin(zlim[2], out$result[!is.na(out$result)], na.rm=TRUE)
+      if (!is.null(zlim)) {
+         out$result[!is.na(out$result)] = pmax(zlim[1], out$result[!is.na(out$result)], na.rm=TRUE)
+         out$result[!is.na(out$result)] = pmin(zlim[2], out$result[!is.na(out$result)], na.rm=TRUE)
+      }
+      imageMatrix[,i] = rev(out$result)
     }
-    imageMatrix[,i] = rev(out$result)
   }
  
   imageMatrix = t((imageMatrix))
