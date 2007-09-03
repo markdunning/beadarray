@@ -73,12 +73,12 @@ setMethod("show", "BeadLevelList", function(object) {
  })
 
 
-setGeneric("getArrayData", function(BLData, which="G", array=1, log=TRUE, n=3)
+setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05)
    standardGeneric("getArrayData"))
 
-setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, log=TRUE, n=3) {
-   which = match.arg(which, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
-   if(which=="M") {
+setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
+   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
+   if(what=="M") {
      if(BLData@arrayInfo$channels=="two") {
        data=log2(BLData[[array]][["R"]])-log2(BLData[[array]][["G"]])
      }
@@ -86,43 +86,43 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, which="G", array=1, 
        stop("Need two-channel data to calculate per bead log-ratios")
      }
    }
-   else if(which=="residM") {
+   else if(what=="residM") {
      if(BLData@arrayInfo$channels=="two") 
-       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+       data = beadResids(BLData, what=gsub("resid", "", what), log=log, array=array, method=method, n=n, trim=trim)
       else
        stop("Need two-channel data to calculate per bead log-ratio residuals")
    }
-   else if(which=="A") {
+   else if(what=="A") {
      if(BLData@arrayInfo$channels=="two")
        data=(log2(BLData[[array]][["R"]])+log2(BLData[[array]][["G"]]))/2
      else
        stop("Need two-channel data to calculate per bead average intensities")
    }
-   else if(which=="residG") {
-       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+   else if(what=="residG") {
+       data = beadResids(BLData, what=gsub("resid", "", what), log=log, array=array, method=method, n=n, trim=trim)
    }
-   else if(which=="residR") {
+   else if(what=="residR") {
      if(BLData@arrayInfo$channels=="two") 
-       data = beadResids(BLData, which=gsub("resid", "", which), log=log, n=n, array=array)
+       data = beadResids(BLData, what=gsub("resid", "", what), log=log, array=array, method=method, n=n, trim=trim)
       else
        stop("Need two-channel data to calculate per bead R residuals")
    }
-   else if(which=="R" | which=="Rb") {
+   else if(what=="R" | what=="Rb") {
      if(BLData@arrayInfo$channels=="two") {
-       data = BLData[[array]][[which]]
+       data = BLData[[array]][[what]]
        if(log)
          data = log2(data)
      }
      else
-       stop(paste("Need two-channel data to retrieve per bead", which, "values"))
+       stop(paste("Need two-channel data to retrieve per bead", what, "values"))
    }
    else { # "G" or "Gb"
-     data = BLData[[array]][[which]]
-     if(log & (which=="G" | which=="Gb"))
+     data = BLData[[array]][[what]]
+     if(log & (what=="G" | what=="Gb"))
        data = log2(data)
    }
    if(is.null(data))
-     stop(paste("No", which, "data for array", array))  
+     stop(paste("No", what, "data for array", array))  
    return(data)
  })
 
@@ -165,10 +165,14 @@ setMethod("combineBeadLevelLists", "BeadLevelList",
 #           standardGeneric("createBeadSummaryData"))
 
 #setMethod("createBeadSummaryData", "BeadLevelList", function(BLData, log = FALSE, n = 3, imagesPerArray = 2, probes = NULL){
-createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1, what="G", probes = NULL){
+createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="G", probes = NULL, arrays=NULL, method="illumina", n = 3, trim=0.05){
   arraynms = arrayNames(BLData)
+  if(!is.null(arrays))
+    arraynms = arraynms[arrays]
   len = length(arraynms)
   what = match.arg(what, c("G", "R", "RG", "M", "A"))
+  method = match.arg(method, c("illumina", "mean", "trim", "winsorize", "median"))
+  method = match(method, c("illumina", "mean", "trim", "winsorize", "median"))
   whatelse = ""
   if(what=="RG") {
     if(BLData@arrayInfo$channels=="two") {
@@ -180,11 +184,10 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
      }
   }
   if(imagesPerArray == 1){
-    sel = getArrayData(BLData, which="ProbeID", array=1)!=0
-    pr = getArrayData(BLData, which="ProbeID", array=1)[sel]
-    finten = getArrayData(BLData, which=what, log=log, array=1)[sel]
+    sel = getArrayData(BLData, what="ProbeID", array=arraynms[1])!=0
+    pr = getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel]
+    finten = getArrayData(BLData, what=what, log=log, array=arraynms[1])[sel]
     binten = rep(0, length(finten))
-# BLData[[arraynms[1]]]$Gb[sel]
   }
   else if(imagesPerArray == 2){
     if(length(arraynms)%%2!=0)
@@ -200,15 +203,14 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
     check = chipnums[seq(1,len, by=2)]==chipnums[seq(2,len, by=2)] & pos[seq(1,len, by=2)]==pos[seq(2,len, by=2)] & (stripnum[seq(1,len, by=2)]==stripnum[seq(2,len, by=2)]-1)
     if(sum(check)!=length(check))
        stop("Missing arrays")
-    sel1 = getArrayData(BLData, which="ProbeID", array=arraynms[1])!=0
-    sel2 = getArrayData(BLData, which="ProbeID", array=arraynms[2])!=0 
-    pr = append(getArrayData(BLData, which="ProbeID", array=arraynms[1])[sel1],getArrayData(BLData, which="ProbeID", array=arraynms[2])[sel2])
-    finten = append(getArrayData(BLData, which=what, log=log, array=arraynms[1])[sel1], getArrayData(BLData, which=what, log=log, array=arraynms[2])[sel2])
+    sel1 = getArrayData(BLData, what="ProbeID", array=arraynms[1])!=0
+    sel2 = getArrayData(BLData, what="ProbeID", array=arraynms[2])!=0 
+    pr = append(getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel1],getArrayData(BLData, what="ProbeID", array=arraynms[2])[sel2])
+    finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[1])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[2])[sel2])
     binten = rep(0, length(finten))
     ord = order(pr)
     pr = pr[ord]
     finten = finten[ord]
-#    binten = binten[ord]
   }
   else{
     stop("You can only specify 1 or 2 images per array")
@@ -238,50 +240,39 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
 
   i = j = 1
    while(j <= len){
-#    if(log){
-     #finten = log2(finten)
-     #binten = log2(binten)
      finten[!is.finite(finten) | is.na(finten)] = 0
- #    binten[!is.finite(binten) | is.na(binten)] = 0
-#   }
 
      probeIDs = as.integer(pr)
 
      start = 0
      blah = .C("createBeadSummary",  as.double(finten),  as.double(binten), probeIDs, as.integer(probes), as.integer(noprobes), as.integer(length(finten)),
                  fore = double(length = noprobes), back = double(length = noprobes), sd = double(length = noprobes), noBeads = integer(length = noprobes),
-                 noOutliers = integer(length = noprobes), nextStart = as.integer(start), nmads = as.double(n), PACKAGE = "beadarray")
+                 noOutliers = integer(length = noprobes), nextStart = as.integer(start), nmads = as.double(n), method = as.integer(method), trimfrac=as.double(trim), PACKAGE = "beadarray")
 
      G[,i] = blah$fore
      GBeadStDev[,i] = blah$sd
      GNoBeads[,i] = blah$noBeads
      Gnooutliers[,i] = blah$noOutliers
-    
+     
      if(BLData@arrayInfo$channels=="two" & !is.null(BLData[[arraynms[i]]]$R) & whatelse=="R") {
         if(imagesPerArray == 1){
-           finten = getArrayData(BLData, which=whatelse, log=log, array=arraynms[i])[sel]
+           finten = getArrayData(BLData, what=whatelse, log=log, array=arraynms[i])[sel]
            binten = rep(0, length(finten))
         }
         else if(imagesPerArray == 2){
-           finten = append(getArrayData(BLData, which=whatelse, log=log, array=arraynms[j])[sel1], getArrayData(BLData, which=whatelse, log=log, array=arraynms[j+1])[sel2])
+           finten = append(getArrayData(BLData, what=whatelse, log=log, array=arraynms[j])[sel1], getArrayData(BLData, what=whatelse, log=log, array=arraynms[j+1])[sel2])
            binten = rep(0, length(finten))
-#append(BLData[[arraynms[j]]]$Rb[sel1],BLData[[arraynms[j+1]]]$Rb[sel2])
            finten = finten[ord]
-#           binten = binten[ord]
         }   
-#        if(log){
-#           finten = log2(finten)
-#           binten = log2(binten)
-           finten[!is.finite(finten) | is.na(finten)] = 0
-#           binten[!is.finite(binten) | is.na(binten)] = 0
-#         }
 
-        probeIDs = as.integer(pr)
+        finten[!is.finite(finten) | is.na(finten)] = 0
+
+#        probeIDs = as.integer(pr)
 
         start = 0
         blah = .C("createBeadSummary",  as.double(finten),  as.double(binten), probeIDs, as.integer(probes), as.integer(noprobes), as.integer(length(finten)),
                  fore = double(length = noprobes), back = double(length = noprobes), sd = double(length = noprobes), noBeads = integer(length = noprobes),
-                 noOutliers = integer(length = noprobes), nextStart = as.integer(start), nmads = as.double(n), PACKAGE = "beadarray")
+                 noOutliers = integer(length = noprobes), nextStart = as.integer(start), nmads = as.double(n), method = as.integer(method), trimfrac=as.double(trim), PACKAGE = "beadarray")
 
      R[,i] = blah$fore
      RBeadStDev[,i] = blah$sd
@@ -294,9 +285,9 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
      gc()
     
      if((imagesPerArray == 1) && (i <= len)) {    
-       sel = getArrayData(BLData, which="ProbeID", array=arraynms[i])!=0
-       pr = getArrayData(BLData, which="ProbeID", array=arraynms[i])[sel]
-       finten = getArrayData(BLData, which=what, log=log, array=arraynms[i])[sel]
+       sel = getArrayData(BLData, what="ProbeID", array=arraynms[i])!=0
+       pr = getArrayData(BLData, what="ProbeID", array=arraynms[i])[sel]
+       finten = getArrayData(BLData, what=what, log=log, array=arraynms[i])[sel]
        binten = rep(0, length(finten))
 #       sel = BLData[[arraynms[i]]]$ProbeID!=0
 #       pr = BLData[[arraynms[i]]]$ProbeID[sel]
@@ -304,10 +295,10 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
 #       binten = BLData[[arraynms[i]]]$Gb[sel]
      }
      else if((imagesPerArray == 2) && (j < len)) {
-       sel1 = getArrayData(BLData, which="ProbeID", array=arraynms[j])!=0
-       sel2 = getArrayData(BLData, which="ProbeID", array=arraynms[j+1])!=0 
-       pr = append(getArrayData(BLData, which="ProbeID", array=arraynms[j])[sel1],getArrayData(BLData, which="ProbeID", array=arraynms[j+1])[sel2])
-       finten = append(getArrayData(BLData, which=what, log=log, array=arraynms[j])[sel1], getArrayData(BLData, which=what, log=log, array=arraynms[j+1])[sel2])
+       sel1 = getArrayData(BLData, what="ProbeID", array=arraynms[j])!=0
+       sel2 = getArrayData(BLData, what="ProbeID", array=arraynms[j+1])!=0 
+       pr = append(getArrayData(BLData, what="ProbeID", array=arraynms[j])[sel1],getArrayData(BLData, what="ProbeID", array=arraynms[j+1])[sel2])
+       finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[j])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[j+1])[sel2])
        binten = rep(0, length(finten))
        ord = order(pr)
        pr = pr[ord]
@@ -326,11 +317,12 @@ createBeadSummaryData = function(BLData, log = FALSE, n = 3, imagesPerArray = 1,
    }
 
 ##Change the standard deviation to the standard error
-
-GBeadStDev = GBeadStDev / sqrt(GNoBeads)
-if(!is.null(R))
-  RBeadStDev = RBeadStDev / sqrt(RNoBeads)
-
+if(method!=6) { # for all methods expect median
+  GBeadStDev = GBeadStDev / sqrt(GNoBeads)
+  if(!is.null(R))
+    RBeadStDev = RBeadStDev / sqrt(RNoBeads)
+}
+  
 if(whatelse=="R") { # create SNPSetIllumina
 #    rownames(G) = rownames(R) = rownames(GBeadStDev) = rownames(RBeadStDev) = probes
     BSData = new("SnpSetIllumina")
@@ -356,12 +348,12 @@ BSData
 } #)
 
 
-#setGeneric("findAllOutliers", function(BLData, array=1, log = FALSE, n = 3, which="G") standardGeneric("findAllOutliers"))
+#setGeneric("findAllOutliers", function(BLData, array=1, log = FALSE, n = 3, what="G") standardGeneric("findAllOutliers"))
 
-#setMethod("findAllOutliers", "BeadLevelList", function(BLData, array=1, log = FALSE, n = 3, which="G"){
-findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, which="G"){
+#setMethod("findAllOutliers", "BeadLevelList", function(BLData, array=1, log = FALSE, n = 3, what="G"){
+findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, what="G"){
   probes = sort(unique(BLData[[array]]$ProbeID[BLData[[array]]$ProbeID>0]))
-  inten = getArrayData(BLData, array=array, log=log, which=which)
+  inten = getArrayData(BLData, array=array, log=log, what=what)
   inten[is.na(inten)| !is.finite(inten)] = 0
 
   probeList = BLData[[array]]$ProbeID
@@ -373,14 +365,14 @@ findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, which="G"){
   which((probeList > 0) & (foo$binStatus == 0))
 }# )
 
-setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array = 1, log = TRUE, which = "G") standardGeneric("getProbeIntensities"))
+setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array = 1, log = TRUE, what = "G") standardGeneric("getProbeIntensities"))
 
-setMethod("getProbeIntensities", "BeadLevelList", function(BLData, ProbeIDs, array=1, log=TRUE, which="G"){
-  return(getArrayData(BLData, array=array, which=which, log=log)[BLData[[array]]$ProbeID %in% ProbeIDs])
+setMethod("getProbeIntensities", "BeadLevelList", function(BLData, ProbeIDs, array=1, log=TRUE, what="G"){
+  return(getArrayData(BLData, array=array, what=what, log=log)[BLData[[array]]$ProbeID %in% ProbeIDs])
  })
 
 
-findBeadStatus = function(BLData, probes, array=1, log=FALSE, which="G", n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL, probeIndex = NULL, startSearch = 1){
+findBeadStatus = function(BLData, probes, array=1, log=FALSE, what="G", n=3, outputValid = FALSE, intProbeID = NULL, ignoreList=NULL, probeIndex = NULL, startSearch = 1){
 
   if(is.null(intProbeID)){
     intProbeID = as.integer(sort(BLData[[array]]$ProbeID))
@@ -408,7 +400,7 @@ findBeadStatus = function(BLData, probes, array=1, log=FALSE, which="G", n=3, ou
 #   probe_ids = probe_ids[!is.na(inten)] 
 #      inten = inten[!is.na(inten)]
 #    }
-      inten = getArrayData(BLData, array=array, which=which, log=log)[probe_ids]
+      inten = getArrayData(BLData, array=array, what=what, log=log)[probe_ids]
 #    if(log){
 #      raw_inten = log2(BLData@G[probe_ids,array])
       inten = inten[!is.na(inten)]

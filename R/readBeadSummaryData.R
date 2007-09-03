@@ -99,8 +99,13 @@ readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS
   r=read.table(as.character(file), sep=sep, header=header, skip=skip)
 
 
-  ##If there is an ArrayID column, the QC file is BeadStudio version 1 and each row in the file is an array
+##If there is an ArrayID column, the QC file is BeadStudio version 1 and each row in the file is an array
+#  read.table(file = fileName, header = TRUE, sep = sep, 
+#        skip = nMetaDataLines, row.names = NULL, quote = "", 
+#        as.is = TRUE, check.names = FALSE, strip.white = TRUE, 
+#        comment.char = "", fill = TRUE)
  
+
   
  ArrayID = grep("ArrayID", colnames(r))
 

@@ -1,12 +1,13 @@
 boxplotBeads = function(BLData, whatToPlot="G", arrays=NULL,
-                                  log=TRUE, n=3, varwidth=TRUE,  ...) {
+                                  log=TRUE, varwidth=TRUE, method="illumina",
+                                  n = 3, trim=0.05,...) {
   tmp = list()
   arraynms = arrayNames(BLData)
   narrays = length(arraynms)
   if(is.null(arrays))  # plot all arrays
     arrays = 1:narrays
   for(i in arrays)
-      tmp[[arraynms[i]]] = getArrayData(BLData,array=i, which=whatToPlot, log=log, n=n)
+      tmp[[arraynms[i]]] = getArrayData(BLData, array=i, what=whatToPlot, log=log, method=method, n=n, trim=trim)
   boxplot(tmp,varwidth=varwidth,...)
 }
 
@@ -18,13 +19,13 @@ plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
   narrays = length(arrays)
   if(length(arrays)==1 & is.null(ProbeIDs) & is.null(BeadIDs)) {
      if(smooth)
-       smoothScatter(getArrayData(BLData, which="G", array=arrays, log=log),
-            getArrayData(BLData, which="R", array=arrays, log=log),
+       smoothScatter(getArrayData(BLData, what="G", array=arrays, log=log),
+            getArrayData(BLData, what="R", array=arrays, log=log),
             xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab,
             main=main, ...)
      else
-       plot(getArrayData(BLData, which="G", array=arrays, log=log),
-            getArrayData(BLData, which="R", array=arrays, log=log),
+       plot(getArrayData(BLData, what="G", array=arrays, log=log),
+            getArrayData(BLData, what="R", array=arrays, log=log),
             xlim=xlim, ylim=ylim, new=TRUE, xlab=xlab, ylab=ylab,
             main=main, ...)
   }
@@ -35,12 +36,12 @@ plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
      for(i in arrays) {
            if(!is.null(ProbeIDs))
              for(j in 1:length(ProbeIDs)) {
-               points(getArrayData(BLData, which="G", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])],
-                      getArrayData(BLData, which="R", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])], col = cols[which(arrays %in% i)], ...)
+               points(getArrayData(BLData, what="G", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])],
+                      getArrayData(BLData, what="R", array=i, log=log)[which(BLData[[i]]$ProbeID %in% ProbeIDs[j])], col = cols[which(arrays %in% i)], ...)
                 }
             if (!is.null(BeadIDs)) 
-                points(getArrayData(BLData, which = "G", array = i, 
-                  log = log)[BeadIDs], getArrayData(BLData, which = "R", 
+                points(getArrayData(BLData, what = "G", array = i, 
+                  log = log)[BeadIDs], getArrayData(BLData, what = "R", 
                   array = i, log = log)[BeadIDs], col = cols[which(arrays %in% i)],
                   ...)
         }
@@ -109,7 +110,7 @@ count=1
 
 for(i in 1:length(arrays)){
 for(j in 1:length(ProbeIDs)){
-I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, which=whatToPlot)
+I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, what=whatToPlot)
   if (length(I) > 1) {
       sel = is.finite(I) & !is.na(I)
       boxplot(I[sel], at = count - 0.5, add = TRUE, axes = FALSE, col = ProbeCols[j])
@@ -136,8 +137,9 @@ box()
 
 imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
                      low = NULL, high = NULL, ncolors = 123,
-                     whatToPlot ="G", log=TRUE, n=3, zlim=NULL,
-                     main=whatToPlot,...){
+                     whatToPlot ="G", log=TRUE, zlim=NULL,
+                     main=whatToPlot, method="illumina",
+                     n = 3, trim=0.05,...){
 
   par(mar = c(2,1,1,1), xaxs = "i")
   
@@ -149,7 +151,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
   if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="residM" | whatToPlot=="A") & BLData@arrayInfo$channels!="two")
     stop(paste("Need two-channel data to plot", whatToPlot, "values"))
                                           
-  data = getArrayData(BLData, which=whatToPlot, array=array, log=log) 
+  data = getArrayData(BLData, what=whatToPlot, array=array, log=log, method=method, n=n, trim=trim) 
   ind = is.na(data) | is.infinite(data)
   if(sum(ind)>0) {
     cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))
@@ -233,7 +235,7 @@ if(mode == "outliers"){
   
   for(i in 1:len){
 
-    o[[i]] = findAllOutliers(BLData, array=i, log=log, which=whatToPlot, n=n,...)
+    o[[i]] = findAllOutliers(BLData, array=i, log=log, what=whatToPlot, n=n,...)
 
     values[i] = length(o[[i]])
 
@@ -245,7 +247,7 @@ if(mode == "intensities") {
 
  for(i in 1:len) {
 
-   values[i] =  median(getArrayData(BLData, array=i, log=log, which=whatToPlot), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
+   values[i] =  median(getArrayData(BLData, array=i, log=log, what=whatToPlot), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
  }
  
 }
@@ -380,7 +382,7 @@ if(mode == "outliers"){
   
   for(i in 1:len){
 
-    o[[i]] = findAllOutliers(BLData, array=i, log=log, n=n, which=whatToPlot)
+    o[[i]] = findAllOutliers(BLData, array=i, log=log, n=n, what=whatToPlot)
     values[i] = length(o[[i]])
 
   }
@@ -390,14 +392,14 @@ if(mode == "outliers"){
 if(mode == "intensities"){
 
  for(i in 1:len){
-   values[i] =  median(getArrayData(BLData, which=whatToPlot, log=log, array=i), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
+   values[i] =  median(getArrayData(BLData, what=whatToPlot, log=log, array=i), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
  }
  
 
 }
 #if(mode == "fg"){
 
-#  values = getArrayData(BLData, which=whatToPlot, array=array, log=log)
+#  values = getArrayData(BLData, what=whatToPlot, array=array, log=log)
 # apply(log2(BLData@G), 2, median)
 
 #}

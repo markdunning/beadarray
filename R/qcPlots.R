@@ -9,7 +9,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
      col=rep(1, narrays*length(whatToPlot))
    for (i in arrays) {
      for(j in whatToPlot) {
-       d = density(getArrayData(BLData, array = i, which = j, log = log), na.rm=TRUE)
+       d = density(getArrayData(BLData, array = i, what = j, log = log), na.rm=TRUE)
        x[[arraynms[i]]][[j]] = d$x
        y[[arraynms[i]]][[j]] = d$y
     }

@@ -55,8 +55,8 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
       \code{BeadLevelList} object}
     \item{\code{combineBeadLevelLists(object1,object2)}}{Combines two
       \code{BeadLevelList} objects into one}
-    \item{\code{getArrayData(object,which="G",log=TRUE)}}{Retrieves 
-      the \code{which} intensities on the \code{log} scale from the
+    \item{\code{getArrayData(object,what="G",log=TRUE)}}{Retrieves 
+      the \code{what} intensities on the \code{log} scale from the
       \code{BeadLevelList}}
     \item{\code{numBeads(object,arrays=NULL)}}{Returns the number of
       beads on selected \code{arrays}}

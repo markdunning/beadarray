@@ -1,3 +1,25 @@
+Version 1.5.10 - 2 September 2007
+ - added new options to createBeadSummaryData (see "method" and "trim"
+ arguments) to allow mean, median, trimmed mean or winsorized means to 
+ be calculated to summarise the values from each beat type on an array.  
+ createBeadSummaryData.c code edited to allow new options
+ - "which" argument changed to "what" in getArrayData().  Also added new
+ arguments ("method" and "trim") for use by createBeadSummaryData when 
+ what="residG", "residR" or "residM" to allow control over summarisation 
+ methods. Updated arguments of getArrayData() when called in other bead 
+ level plotting functions.
+ - Added new arguments to boxplotBeads, imageplot, plotBeadDensities, etc 
+ to accept these new arguments to getArrayData (when whatToPlot="residG", 
+ "residR" or "residM")
+ - added FILL=TRUE to read.table() used in readBeadSummaryData() in response
+ to message on BioC list from Ina Hoeschele about error trying to read in 
+ BeadStudio version 3 data caused by line having incorrect number of entries
+ - updated help pages
+
+Version 1.5.9 - 1 August 2007
+ - changed default quote argument in readBGX() to quote="" (i.e. disabled)
+ - updated readBGX() man page
+
 Version 1.5.8 - 31 July 2007
  - normaliseIllumina.RD added
  - spelling mistake in message in readIllumina() corrected

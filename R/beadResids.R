@@ -1,7 +1,7 @@
-beadResids = function(BLData, which="G", array=1, log=TRUE, n=3) {
-    bs = createBeadSummaryData(BLData, log=log, what=which, n=n, imagesPerArray=1)@assayData$exprs[,array,drop=FALSE]
-    ind = match(getArrayData(BLData, which="ProbeID", array=array), rownames(bs))
-    resid = getArrayData(BLData, which=which, log=log, array=array)-bs[ind]
+beadResids = function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
+    bs = createBeadSummaryData(BLData, what=what, log=log, arrays=array, imagesPerArray=1, method=method, n=n, trim=trim)@assayData$exprs[,,drop=FALSE]
+    ind = match(getArrayData(BLData, what="ProbeID", array=array), rownames(bs))
+    resid = getArrayData(BLData, what=what, log=log, array=array)-bs[ind]
 }
 
 #beadResids = function(BLData, which="G", array=1, log=TRUE, n=3) {

@@ -8,7 +8,7 @@
 }
 
 \usage{
-findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
+findAllOutliers(BLData, array, log=FALSE, n=3, what="G")
 }
 \arguments{
   \item{BLData}{a BeadLevelList object}
@@ -18,7 +18,7 @@ findAllOutliers(BLData, array, log=FALSE, n=3, which="G")
     used to calculate outliers}
   \item{n}{Specify a cut-off for outliers as n median
     absolute deviations (MADs) from the median. The default value is 3}
-  \item{which}{character string specifying which intensities to use.
+  \item{what}{character string specifying which intensities to use.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}

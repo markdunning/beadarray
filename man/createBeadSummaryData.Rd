@@ -7,14 +7,13 @@
   on a specified set of arrays.
 }
 \usage{
-createBeadSummaryData(BLData, log=FALSE, n=3,
-               imagesPerArray = 1, what="G",  probes = NULL)
+createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
+               what="G",  probes = NULL, arrays=NULL, 
+               method="illumina", n=3, trim=0.05)
 }
 \arguments{
   \item{BLData}{an BeadLevelList object}
   \item{log}{if TRUE then summarise the log2 intensities of each bead}
-  \item{n}{use n median absolute deviations from the median as a
-    cut-off for outliers}
   \item{imagesPerArray}{Specifies how many images (strips) there are
     per array.  Normally 1 for a SAM and 1 or 2 for a BeadChip.
     The images (strips) from the same array will be combined so that
@@ -25,22 +24,42 @@ createBeadSummaryData(BLData, log=FALSE, n=3,
     \code{"M"} or  \code{"A"}}
   \item{probes}{Specify particular probes to summarise. If left NULL
     then all the probes on the first array are used.}
+  \item{arrays}{Specify particular arrays to summarise. If left NULL
+    then all arrays are summarised.}
+  \item{method}{chracter string specifying the summarisation method to
+    use. Options are \code{"illumina"}, \code{"mean"}, \code{"median"},
+    \code{"trim"} and \code{"winsorise"}.}
+  \item{n}{use n median absolute deviations from the median as a
+    cut-off for outliers}
+  \item{trim}{fraction of intensities to remove from the bead summary
+    calculations when \code{method="trim"}, or the fraction of
+    intensities to set to the \code{trim} and 1-\code{trim} percentile
+    intensities when \code{method="winsorize"}.  Default value is 0.05.}
 }
 \details{
-  Objects which are created seperately by 'createBeadSummaryData' may
-  be joined by using the \code{\link{cbind}} function.
-
-  To summarise each bead type we first have to remove the outliers for
-  the bead type on the array. The default method is the method used by
-  Illumina which uses the raw (un-logged) intensities and categorises
-  outliers as being those beads which have intensity more than 3 
-  median absolute deviations from the bead median intensity. By setting
-  the log argument to \code{TRUE} we calculate outliers and summary 
-  values on the log2-scale.  By changing the 'n' argument we choose
-  beads with intensity 'n' mads from the median.
-
-  With outliers removed, we calculate the average (mean) intensities
-  of the remaining beads as well as the standard error and number of beads.
+  To summarise the raw data using the default method used by Illumina
+  (\code{method="illumina"}) we first remove outliers for each bead
+  type on each array. Outliers are beads which have an intensity greater
+  than 3 median absolute deviations (MADs) from the bead median intensity on
+  the original (un-logged) scale. The \code{n} argument can be changed to
+  remove beads with intensity \code{n} MADs above or below the median.
+  With outliers removed, the average (mean) intensities of the remaining
+  beads are calculated along with the standard error and number of beads.
+  
+  Other summarisation options are also available. When
+  \code{method="mean"}, the average and standard error of all beads
+  for a given bead type is calculated on each array. For
+  \code{method="median"}, the middle value is returned along with the
+  median absolute deviation (rather than standard error) for each bead type.
+  When \code{method="trim"}, the trimmed mean and standard error are
+  calculated and for \code{method="winsorize"} the winsorised mean and
+  standard error are returned.
+  
+  By setting the \code{log} argument to \code{TRUE}, we calculate outliers and
+  summary values on the log2-scale.
+  
+  Objects which are created separately by 'createBeadSummaryData' may
+  be joined using the \code{combine} function.
 }
 \value{
   An ExpressionSetIllumina (bead summary) object (or SnpSetIllumina
@@ -54,9 +73,9 @@ createBeadSummaryData(BLData, log=FALSE, n=3,
 \code{\link{findBeadStatus}}	
 }
 \examples{
-#produce bead summaries for the first array in our BLData object
+#produce bead summaries for each array
 data(BLData)
-BSData = createBeadSummaryData(BLData, log=TRUE)
+BSData = createBeadSummaryData(BLData, log=TRUE, what="G")
 dim(BSData)
 }
 \keyword{methods}

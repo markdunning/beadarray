@@ -12,10 +12,10 @@
  Function finds all beads which are outliers for a given bead type
 }
 \usage{
-findBeadStatus(BLData, probes, array = 1, log = FALSE, which="G", n=3,
-           outputValid=FALSE, intProbeID = NULL, ignoreList=NULL,
-           probeIndex=NULL, startSearch=1)
-getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE,which="G")
+findBeadStatus(BLData, probes, array = 1, log = FALSE, what = "G", n = 3,
+           outputValid = FALSE, intProbeID = NULL, ignoreList = NULL,
+           probeIndex = NULL, startSearch = 1)
+getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE, what = "G")
 }
 \arguments{
   \item{BLData}{BeadLevelList object containing bead level data}
@@ -24,7 +24,7 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE,which="G")
   \item{array}{numeric value for the array we want data from}
   \item{log}{if TRUE the log2 intensities of each bead will be used to
     find outliers. Otherwise un-logged data is used}
-  \item{which}{character string specifying which intensities to use.
+  \item{what}{character string specifying which intensities to use.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}

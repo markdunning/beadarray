@@ -7,16 +7,14 @@ Reads in unzipped Illumina .bgx file, which provides further information
 on each bead type, including the controls.
 }
 \usage{
-readBGX(filename, path=".", sep="\t", quote="\'", header=TRUE,
+readBGX(filename, path=".", sep="\t", quote="", header=TRUE,
            probeStart="\\[Probes\\]", controlStart="\\[Controls\\]", ...)
 }
 \arguments{
   \item{filename}{character vector specifying name of unzipped bgx file}
   \item{path}{character string specifying the location of the bgx file}
   \item{sep}{separator character (default is tab, \code{"\t"})}
-  \item{quote}{character string specifying the annotation package
-     name for the arrays being read in (only available for certain
-     expression arrays at present)}
+  \item{quote}{character string specifying the quoting characters (disabled by default with \code{quote=""}).  See \code{scan} for further information.}
   \item{header}{logical, TRUE if the bgx file has a header, FALSE otherwise}
   \item{probeStart}{character string, below which the information for
 the beads of interest appear. Default value is "\\[Probes\\]"}
@@ -47,7 +45,7 @@ The unzipped file is tab delimited file and should be readable using
 \author{Matt Ritchie}
 
 \examples{
-#human8bgx = readBGX("HumanRef-8_V2_0_R0_11223162_A", quote="\"", fill=TRUE)
+#human8bgx = readBGX("HumanRef-8_V2_0_R0_11223162_A", fill=TRUE)
 #colnames(human8bgx)
 #summary(human8bgx$Status)
 #human6bgx = readBGX("HumanWG-6_V2_0_R0_11223189_A", fill=TRUE)

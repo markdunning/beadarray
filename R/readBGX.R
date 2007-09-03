@@ -1,5 +1,5 @@
 readBGX = function(filename, path=".", sep="\t",
-       quote="\'", header=TRUE, probeStart="\\[Probes\\]",
+       quote="", header=TRUE, probeStart="\\[Probes\\]",
        controlStart="\\[Controls\\]", ...) {
   tmp = readLines(file.path(path, filename))
   skip = grep(probeStart, tmp)
