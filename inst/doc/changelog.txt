@@ -1,4 +1,26 @@
-Version 1.5.10 - 2 September 2007
+Version 1.5.11 - 17 September 2007
+ - removed returnTIFF.c (not used anymore).
+ - NAs or Infs in imageplot() and createBeadSummaryData() now excluded (previously set to zero).
+ - log2.na() (not exported) used in getArrayData() to avoid throwing up a
+ warning message when 0's or negative values are log2.
+ - when useImages=FALSE in readIllumina(), x-, y-coordinates read from file are
+ now adjusted to start at 0,0 (useful for image plotting).
+ - readBeadSummaryData() has new argument  ... to take additional
+ arguments to read.table (quote="", fill=TRUE sometimes needed for BeadStudio
+ 3 data). Reverses changes to readBeadSummaryData made in 1.5.10 and 1.5.7.
+ - new argument 'legend' in imageplot() to display range and zlim on plot.
+ - new argument 'arrays' in arrayNames() to get the name of a selected array/s.
+ - new function getVariance() returns the variance for each bead-type on each
+ array from an ExpressionSetIllumina object (calculated from se.exprs and
+ NoBeads slots).
+ - SnpSetIllumina doesn't store se.exprs for each channel - removed code
+ which assigns the se.exprs to a SnpSetIllumina object in
+ createBeadSummaryData()
+ - fixed broken link in BSData.Rd help page.
+ - default annoPkg argument in readIllumina() is "illuminaProbeIDs" (not actually an annotation package, but is there to tell the user that ProbeIDs are used to identify each bead type (not Illumina IDs available in existing annotation packages)
+ - createBeadSummaryData(): The phenoData slot is set to have 1 column 'sampleNames' which is set to the array names if no phenoData information has been set.  sampleNames are set to either the 'sampleNames' from phenoData, or the array names.
+
+Version 1.5.10 - 3 September 2007
  - added new options to createBeadSummaryData (see "method" and "trim"
  arguments) to allow mean, median, trimmed mean or winsorized means to 
  be calculated to summarise the values from each beat type on an array.  
@@ -28,7 +50,6 @@ Version 1.5.8 - 31 July 2007
  - createBeadSummaryData() NA or Inf values replaced by 0 when log=TRUE/FALSE (previously only occurred when log=TRUE)
  - plotBeadDensities() now allows different colours for each channel plotted
 
-
 Version 1.5.7 - 23 July 2007
  - normaliseIllumina, offers normalisation for ExpressionSetIllumina objects
  - readBeadSummaryData, default options changed to handle BeadStudio 3 output (skip=8, added 'quote=""' to read.table (default 'quote'
@@ -44,7 +65,6 @@ Version 1.5.7 - 23 July 2007
  - imageplot: changed default nrow and ncol to 100 (was 18 and 2 respectively)
  - beadResids() simplified after changes to getArrayData
  - updated man pages
-
 
 Version 1.3.1 - 12 Feb 2007
 

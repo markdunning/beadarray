@@ -6,5 +6,5 @@
   The ExpressionSetIllumina object for the 18 example whole genome
   arrays included in this library.}
 \usage{data(BSData)}
-\seealso{\code{\link[beadarray:ExpressionSetIllumina]{ExpressionSetIllumina}}}
+\seealso{\code{\link[beadarray:class.ExpressionSetIllumina]{class.ExpressionSetIllumina}}}
 \keyword{datasets}

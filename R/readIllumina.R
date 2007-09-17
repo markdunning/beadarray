@@ -1,6 +1,6 @@
 "readIllumina" =
   function(arrayNames=NULL, path=".", textType=".txt", 
-           annoPkg=NULL, beadInfo=NULL, useImages=TRUE, 
+           annoPkg="illuminaProbeIDs", beadInfo=NULL, useImages=TRUE, 
            singleChannel=TRUE, targets=NULL, 
            imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
@@ -14,7 +14,7 @@
     message("'useImages=FALSE': please check that the 'singleChannel'
             argument is appropriate for your data set", sep="")
     if(is.null(arrayNames))
-       message(paste("It is also advisable to specify 'arrayNames' to avoid reading in spurious", textType, "files from the specified directory"))
+       message(paste("It is advisable to specify 'arrayNames' to avoid reading in spurious", textType, "files from the specified directory"))
   }
   xyFiles = dir(path=path, pattern =textType)
   metricpos = grep(metricsFile, xyFiles)
@@ -75,8 +75,10 @@
   cat("Found", k, "arrays","\n")
    
   BLData = new("BeadLevelList")
-  if(!is.null(annoPkg) & is.character(annoPkg))
+  if(!is.null(annoPkg) && is.character(annoPkg))
      BLData@annotation=annoPkg
+  else
+     BLData@annotation=""
 #  endPos = new("list")
   usedIDs=NULL
   arrayInfo=list(arrayNames=as.character(arrays), 
@@ -276,8 +278,8 @@
          cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
          data[,c(2,6)] = normalizeSingleArray(data[,c(2,6)], method=normalizeMethod)
        }
-       data[,4]=dat1$GrnX[ord]
-       data[,5]=dat1$GrnY[ord]
+       data[,4]=dat1$GrnX[ord]-min(dat1$GrnX)
+       data[,5]=dat1$GrnY[ord]-min(dat1$GrnY)
      }
      else {
        if(!singleChannel) {
@@ -322,7 +324,7 @@ if(!is.null(targets))
    pData(BLData@phenoData) = targets
 
 ## Add bead information (sequence, Illumina IDs used in annoPkg etc)
-if(!is.null(beadInfo) & is.data.frame(beadInfo))
+if(!is.null(beadInfo) && is.data.frame(beadInfo))
    BLData@beadAnno = beadInfo
 
 ##Look for scanner metrics file

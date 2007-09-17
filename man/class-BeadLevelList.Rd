@@ -51,8 +51,8 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
       \code{BeadLevelList} object}
     \item{\code{copyBeadLevelList(object)}}{Creates a new copy of a
       \code{BeadLevelList} object}
-    \item{\code{arrayNames(object)}}{Returns the array names from a
-      \code{BeadLevelList} object}
+    \item{\code{arrayNames(object,arrays=NULL)}}{Returns the array names from a
+      \code{BeadLevelList} object for selected \code{arrays}}
     \item{\code{combineBeadLevelLists(object1,object2)}}{Combines two
       \code{BeadLevelList} objects into one}
     \item{\code{getArrayData(object,what="G",log=TRUE)}}{Retrieves 

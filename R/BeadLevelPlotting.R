@@ -17,7 +17,7 @@ plotRG = function(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
                    smooth=TRUE, cols=NULL, ...) {
   arraynms = arrayNames(BLData)
   narrays = length(arrays)
-  if(length(arrays)==1 & is.null(ProbeIDs) & is.null(BeadIDs)) {
+  if(length(arrays)==1 && is.null(ProbeIDs) && is.null(BeadIDs)) {
      if(smooth)
        smoothScatter(getArrayData(BLData, what="G", array=arrays, log=log),
             getArrayData(BLData, what="R", array=arrays, log=log),
@@ -139,7 +139,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
                      low = NULL, high = NULL, ncolors = 123,
                      whatToPlot ="G", log=TRUE, zlim=NULL,
                      main=whatToPlot, method="illumina",
-                     n = 3, trim=0.05,...){
+                     n = 3, trim=0.05, legend=TRUE, ...){
 
   par(mar = c(2,1,1,1), xaxs = "i")
   
@@ -154,10 +154,11 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
   data = getArrayData(BLData, what=whatToPlot, array=array, log=log, method=method, n=n, trim=trim) 
   ind = is.na(data) | is.infinite(data)
   if(sum(ind)>0) {
-    cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be set to zero.\nCheck your data or try setting log=\"FALSE\"\n"))
-    data[ind] = 0
-    rm(ind)
+    cat(paste("Warning:", sum(ind), "NA, NaN or Inf values, which will be ignored.\nCheck your data or try setting log=\"FALSE\"\n"))
+    data = data[!ind] # dat[ind]= 0
+    #rm(ind)
   }
+
   if (is.character(low)) 
     low = col2rgb(low)/255
   if (is.character(high)) 
@@ -179,14 +180,15 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 #    col = rgb(seq(low[2], high[2], len = ncolors), seq(low[1], 
 #          high[1], len = ncolors), seq(low[3], high[3], len = ncolors))
 
-  xs = floor(BLData[[array]]$GrnX)
-  ys = floor(BLData[[array]]$GrnY)
+  xs = floor(BLData[[array]]$GrnX[!ind])
+  ys = floor(BLData[[array]]$GrnY[!ind])
+  rm(ind)
 
   xgrid = floor(seq(0, max(xs), by = max(xs)/ncol))
   ygrid = floor(seq(0, max(ys), by = max(ys)/nrow))
 
   imageMatrix = matrix(ncol = ncol, nrow = nrow)
-
+  zr = NULL
   for(i in 1:ncol){
     idx = which((xs > xgrid[i]) & (xs < xgrid[i+1]))
     if(length(idx)>0) {
@@ -196,17 +198,26 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 
       out = .C("BLImagePlot", length(fground), as.double(fground), as.double(yvalues), as.integer(ygrid),
               result = double(length = nrow), as.integer(nrow), PACKAGE = "beadarray")
-      if (!is.null(zlim)) {
+      zr[1] = min(zr[1], out$result[!is.na(out$result)], na.rm=TRUE)
+      zr[2] = max(zr[2], out$result[!is.na(out$result)], na.rm=TRUE)
+      if(!is.null(zlim)) {
          out$result[!is.na(out$result)] = pmax(zlim[1], out$result[!is.na(out$result)], na.rm=TRUE)
          out$result[!is.na(out$result)] = pmin(zlim[2], out$result[!is.na(out$result)], na.rm=TRUE)
       }
       imageMatrix[,i] = rev(out$result)
     }
   }
- 
+#  if(!is.null(zlim)) {
+#     imageMatrix = apply(imageMatrix, 1, FUN="pmin", zlim[2], na.rm=TRUE)
+#     imageMatrix = apply(imageMatrix, 1, FUN="pmax", zlim[1], na.rm=TRUE)
+#  }
+#  zr =  range(imageMatrix, na.rm=TRUE)
+
   imageMatrix = t((imageMatrix))
   if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
   image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
+  if(legend)
+    mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
 }
 
 

@@ -114,7 +114,9 @@ setGeneric("Detection", function(object) standardGeneric("Detection"))
 
 setMethod("Detection", "ExpressionSetIllumina", function(object) assayDataElement(object, "Detection"))
 
+setGeneric("getVariance", function(object) standardGeneric("getVariance"))
 
+setMethod("getVariance", "ExpressionSetIllumina", function(object) assayDataElement(object, "se.exprs")^2*assayDataElement(object, "NoBeads"))
 
 
 

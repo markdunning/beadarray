@@ -1,11 +1,11 @@
-readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="TargetID",skip=8, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL, qc.sep="\t", qc.skip=8)
+readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="TargetID",skip=8, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), qc.columns = list(ControlID="TargetID",exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL, qc.sep="\t", qc.skip=8,...)
 {
 
 if(!(is.null(sampleSheet))){ 
 samples = read.table(sampleSheet, sep=",", header=T, skip=7)
 }
   
-r=read.table(as.character(dataFile), sep=sep, header=T, skip=skip, quote="")
+r=read.table(as.character(dataFile), sep=sep, header=T, skip=skip,...) # quote="")
 
 
 foundColumns = NULL
@@ -54,7 +54,7 @@ names(data) = foundColumns
 
 
 BSData = new("ExpressionSetIllumina")
-if(!is.null(annoPkg) & is.character(annoPkg))
+if(!is.null(annoPkg) && is.character(annoPkg))
   BSData@annotation = annoPkg
 for(i in 1:length(data)){
 

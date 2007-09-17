@@ -19,7 +19,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb
  #           bgc@beadData[[arraynms[i]]]$Gb = NULL
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
                bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R - bgc[[arraynms[i]]]$Rb
  #              bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
@@ -29,7 +29,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = pmax(bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb, 0.5)
 #            bgc@beadData[[arraynms[i]]]$Gb = NULL
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
                bgc@beadData[[arraynms[i]]]$R = pmax(bgc[[arraynms[i]]]$R - bgc[[arraynms[i]]]$Rb, 0.5)
 #               bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
@@ -44,7 +44,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
               m = min(bgc[[arraynms[i]]]$G[!j], na.rm = TRUE)
               bgc@beadData[[arraynms[i]]]$G[j] = m/2
             }
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data              bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data              bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb
 #              bgc@beadData[[arraynms[i]]]$Rb = NULL
               j = bgc[[arraynms[i]]]$R < 1e-18
               if(any(j, na.rm = TRUE)) {
@@ -69,7 +69,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 	    delta = one %*% apply(sub, 2, delta.vec)
 	    bgc@beadData[[arraynms[i]]]$G = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Gb+delta)/bgc[[arraynms[i]]]$G), sub))
 #            bgc@beadData[[arraynms[i]]]$Gb = NULL
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
  	      sub = as.matrix(bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb)
 	      delta = one %*% apply(sub, 2, delta.vec)
 	      bgc@beadData[[arraynms[i]]]$R = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Rb+delta)/bgc[[arraynms[i]]]$R), sub))
@@ -84,7 +84,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 #	     if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
 	    bgc@beadData[[arraynms[i]]]$G = normexp.signal(out$par,x)
 #            bgc@beadData[[arraynms[i]]]$Gb = NULL
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
 	      x = bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb
 	      out = normexp.fit(x)
 #   	       if(verbose) cat("R: bg.bias=",out$par[1]," bg.log2sd=",out$par[2]," fg.mean=",exp(out$par[3]),"\n",sep="")
@@ -99,7 +99,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
           for(i in 1:narrays) {      
 	    bgc@beadData[[arraynms[i]]]$G = bg.adjust(bgc[[arraynms[i]]]$G-bgc[[arraynms[i]]]$Gb)
 #            bgc@beadData[[arraynms[i]]]$Gb = NULL
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
               bgc@beadData[[arraynms[i]]]$R = bg.adjust(bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb)
 #              bgc@beadData[[arraynms[i]]]$Rb = NULL
 	    }
@@ -116,7 +116,7 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 	if(offset) {
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = bgc[[arraynms[i]]]$G + offset
-            if(bgc@arrayInfo$channels=="two" | !is.null(bgc[[arraynms[i]]]$Rb)) # two-colour data
+            if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) # two-colour data
               bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R + offset
           }
         }

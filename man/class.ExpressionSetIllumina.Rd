@@ -20,6 +20,7 @@
 \alias{Detection,ExpressionSetIllumina-method}
 \alias{NoBeads}
 \alias{Detection}
+\alias{getVariance,ExpressionSetIllumina-method}
 
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
@@ -84,11 +85,14 @@
      \item{\code{se.exprs(ExpressionSetIllumina)}, \code{se.exprs(ExpressionSetIllumina,matrix)<-}}{Access and
        set elements named \code{se.exprs} in the \code{AssayData}
        slot.}
-	\item{\code{NoBeads(ExpressionSetIllumina)}}{Access elements named \code{NoBeads} in the \code{AssayData}
+     \item{\code{NoBeads(ExpressionSetIllumina)}}{Access elements named \code{NoBeads} in the \code{AssayData}
        slot.}
-	\item{\code{Detection(ExpressionSetIllumina)}}{Access elements named \code{Detection} in the \code{AssayData}
+     \item{\code{Detection(ExpressionSetIllumina)}}{Access elements named \code{Detection} in the \code{AssayData}
        slot.}
-     	\item{\code{QCInfo(ExpressionSetIllumina)}}{Access elements named \code{QC} in the \code{AssayData}
+     \item{\code{getVariance(ExpressionSetIllumina)}}{Calculate
+	  bead-type specific variance using \code{se.exprs} and
+	  \code{NoBeads} from the \code{AssayData} slot.}
+     \item{\code{QCInfo(ExpressionSetIllumina)}}{Access elements named \code{QC} in the \code{AssayData}
        slot.}
      \item{\code{object[(index)}:}{Conducts subsetting of matrices and
        phenoData and reporterInfo components }

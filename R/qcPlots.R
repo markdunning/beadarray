@@ -21,7 +21,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
    count = 1
    for(i in arrays) {
      for(j in whatToPlot) {
-      if(i==arrays[1] & j==whatToPlot[1])
+      if(i==arrays[1] && j==whatToPlot[1])
         plot(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], xlim=xlim, ylim=ylim, col=col[count], xlab=xlab, type=type, ylab=ylab, new=TRUE, ...)
       else
         points(x[[arraynms[i]]][[j]], y[[arraynms[i]]][[j]], col=col[count], type=type, ...)

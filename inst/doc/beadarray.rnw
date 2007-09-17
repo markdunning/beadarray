@@ -36,24 +36,24 @@
 \section*{Introduction}
 
 \Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. The
-main feature of the package is the ability to use the raw data obtained by
-scanning Illumina arrays and stored in convenient R classes. Therefore
-different image processing and background correction methods may be used on the
-data. Alternatively, data which has been processed by Illumina's proprietary
-software may be read.
+main feature of the package is the ability to read in an process the raw data
+from BeadScan (text files and tiffs) and store it in convenient R
+classes. Users may choose between different image processing and background
+correction methods. Alternatively, data which has been processed by Illumina's
+BeadStudio software may be read in (currently only single channel summary data
+can be imported).
 
 The documentation for this package is split into two separate user guides for
-raw and summarised data. The documents may be found in the inst/doc directory
-of the downloaded beadarray folder.
+raw (bead level) data and summarised (bead summary) data. These documents may be found in the inst/doc directory
+of the downloaded beadarray folder, or can be downloaded from the bioconductor website.
 
 \section{Citing beadarray}
 
 If you use \Rpackage{beadarray} for the analysis or pre-processing of
 Illumina data please cite:
 
-Dunning M, Smith M, Ritchie M, Tavar\'e S, \emph{beadarray: R classes and
-  methods for Illumina bead-based data}, Bioinformatics, submitted
-
+Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S, \emph{beadarray: R classes and
+  methods for Illumina bead-based data}, Bioinformatics, 23(16):2183-4. Epub 2007 Jun 22.
 
 \section{Getting help with beadarray}
 

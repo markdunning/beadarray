@@ -8,7 +8,7 @@ Plots an image plot of a bead level data object.
 imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
            high = NULL, ncolors = 123, whatToPlot ="G", log=TRUE,
            zlim=NULL, main=whatToPlot, method="illumina", n = 3,
-           trim=0.05, ...)
+           trim=0.05, legend=TRUE, ...)
 }
 
 \arguments{
@@ -38,6 +38,8 @@ imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
     calculations.  Only applicable when \code{whatToPlot="residG"},
       \code{"residR"} or \code{"residM"}.  Refer to
       \code{createBeadSummaryData} help page for further information.}
+  \item{legend}{logical, if \code{TRUE}, \code{zlim} and range of data
+    is added to plot.}
   \item{\dots}{other graphical parameters to plot that can be specified}
       }
 \details{

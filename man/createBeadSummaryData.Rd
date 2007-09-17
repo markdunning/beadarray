@@ -56,7 +56,9 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
   standard error are returned.
   
   By setting the \code{log} argument to \code{TRUE}, we calculate outliers and
-  summary values on the log2-scale.
+  summary values on the log2-scale.  
+
+  If there are any NAs or Inf values, they are ignored.
   
   Objects which are created separately by 'createBeadSummaryData' may
   be joined using the \code{combine} function.
