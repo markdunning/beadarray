@@ -322,6 +322,8 @@
 ## Add targets information (if available)
 if(!is.null(targets))
    pData(BLData@phenoData) = targets
+else
+   BLData@phenoData = new("AnnotatedDataFrame", data=data.frame(arrayName=arrays))
 
 ## Add bead information (sequence, Illumina IDs used in annoPkg etc)
 if(!is.null(beadInfo) && is.data.frame(beadInfo))

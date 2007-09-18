@@ -1,3 +1,7 @@
+Version 1.5.12 - 18 September 2007
+ - phenoData in BLData object created by readIllumina() contains 1 column 'arrayName' when no targets information is set.
+ - example BLData.rda object in package updated with phenoData information.
+
 Version 1.5.11 - 17 September 2007
  - removed returnTIFF.c (not used anymore).
  - NAs or Infs in imageplot() and createBeadSummaryData() now excluded (previously set to zero).
@@ -18,7 +22,7 @@ Version 1.5.11 - 17 September 2007
  createBeadSummaryData()
  - fixed broken link in BSData.Rd help page.
  - default annoPkg argument in readIllumina() is "illuminaProbeIDs" (not actually an annotation package, but is there to tell the user that ProbeIDs are used to identify each bead type (not Illumina IDs available in existing annotation packages)
- - createBeadSummaryData(): The phenoData slot is set to have 1 column 'sampleNames' which is set to the array names if no phenoData information has been set.  sampleNames are set to either the 'sampleNames' from phenoData, or the array names.
+ - createBeadSummaryData(): The phenoData slot is set to have 1 column 'sampleName' which is set to the array names if no phenoData information has been set.  sampleNames are set to either the 'sampleName' from phenoData, or the array names.
 
 Version 1.5.10 - 3 September 2007
  - added new options to createBeadSummaryData (see "method" and "trim"

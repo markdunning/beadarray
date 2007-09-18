@@ -358,32 +358,26 @@ if(whatelse=="R") { # create SNPSetIllumina
     assayData(BSData) = assayDataNew(G = G, R = R, storage.mode="list") # GBeadStDev = GBeadStDev, RBeadStDev = RBeadStDev,
     rownames(BSData@assayData[["G"]]) = rownames(BSData@assayData[["R"]]) = probes
 #    rownames(BSData@assayData[["GBeadStDev"]]) = rownames(BSData@assayData[["RBeadStDev"]]) = probes
-    if(nrow(pData(BLData))==len) {
-      if(imagesPerArray==2)
-        BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[arrayord,,drop=FALSE][seq(1,len,by=2),,drop=FALSE])
-      else
-        BSData@phenoData = BLData@phenoData
-    }
-    else{
-      BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(sampleNames=colnames(G)))
-    }
+
 }
 else{
     BSData = new("ExpressionSetIllumina")
     assayData(BSData)=assayDataNew(exprs = G, se.exprs=GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
     rownames(exprs(BSData)) = probes
-    if(nrow(pData(BLData))==len) {
-      if(imagesPerArray==2)
-        BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[arrayord,,drop=FALSE][seq(1,len,by=2),,drop=FALSE])
-      else
-        BSData@phenoData = BLData@phenoData
-    }
-    else {
-        BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(sampleNames=colnames(G)))
-    }
 }
-if(!is.null(pData(BSData)$sampleNames)) 
-  sampleNames(BSData) = pData(BSData)$sampleNames
+  
+if(nrow(pData(BLData))==len) {
+  if(imagesPerArray==2)
+    BSData@phenoData = new("AnnotatedDataFrame", data=pData(BLData@phenoData)[arrayord,,drop=FALSE][seq(1,len,by=2),,drop=FALSE])
+  else
+    BSData@phenoData = BLData@phenoData
+  }
+else {
+  BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(sampleName=colnames(G)))
+}
+  
+if(!is.null(pData(BSData)$sampleName)) 
+  sampleNames(BSData) = pData(BSData)$sampleName
 else
   sampleNames(BSData) = colnames(G)
 
