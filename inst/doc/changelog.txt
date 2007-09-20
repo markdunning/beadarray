@@ -1,3 +1,6 @@
+Version 1.5.13 - 20 September 2007
+ - example BLData.rda object in package updated
+
 Version 1.5.12 - 18 September 2007
  - phenoData in BLData object created by readIllumina() contains 1 column 'arrayName' when no targets information is set.
  - example BLData.rda object in package updated with phenoData information.
