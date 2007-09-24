@@ -247,8 +247,7 @@ void findAllOutliers(double *finten, int *binaryStatus, int *probeList, int *pro
 	free(status);
 }
 
-void createBeadSummary(double *finten, double *binten, int *probeList, int *probeIDs, int *numProbes, int *numBeads, double *foreground, 
-	 						  double *background, double *stdev, int *numValid, int *numOutlier, int *nextStart, double *nmads,  int *method, double *trimfrac){
+void createBeadSummary(double *finten, double *binten, int *probeList, int *probeIDs, int *numProbes, int *numBeads, double *foreground, double *background, double *stdev, int *numValid, int *numOutlier, int *nextStart, double *nmads,  int *method, double *trimfrac){
 	 
 	 beadStatusStruct *status;
 	 int *valids, *count, i, j, k, l, ind, probeID, *indices, *start, low, high;

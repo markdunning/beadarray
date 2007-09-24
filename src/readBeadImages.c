@@ -402,7 +402,7 @@ void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int
 
      double dist[4];
      double xc, yc, opt1, opt2, opt3, opt4;
-     int i, j, k, count, newcoord[2], cX[4], cY[4], M[289];
+     int i, j, k, count, newcoord[2], cX[4], cY[4], M[n*n]; // 289
      int n2 = floor(n/2);
      int temp = 0;
      
@@ -437,27 +437,40 @@ void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int
            
            newcoord[0] = floor(xs[i]) + cX[temp];
            newcoord[1] = floor(ys[i]) + cY[temp];
-     
-            if (((newcoord[0] - n2) < 0) || ((newcoord[0] + n2) > ImageWidth) || 
-            ((newcoord[1] - n2) < 0) || ((newcoord[1] + n2) > ImageHeight)) {
+//           Rprintf("i=%i x=%d, y=%d\n", i, xs[i], ys[i]);
+//            if (((newcoord[0] - n2) < 0) || ((newcoord[0] + n2) > ImageWidth) || 
+//            ((newcoord[1] - n2) < 0) || ((newcoord[1] + n2) > ImageHeight)) {
             /* crap average to fill in a blank if a bead is too close to the edge of the image */
   //          Rprintf("crap background\n");
-                         background[i] = 700;
-            }
-            else {
+ //                        background[i] = 700;
+ //           }
+ //           else {
                   count = 0;
                   for(j = 0; j < n; j++){
+//                        Rprintf("j = %i k = ", j);
                         for(k = 0; k < n; k++){
-                              M[count+k] = pixels[(newcoord[0] - n2) + j][(newcoord[1] - n2) + k];
+//                              Rprintf("%i\n", k);
+                              if(((newcoord[0] - n2 + j) < 0) || ((newcoord[1] - n2 + k) < 0) || ((newcoord[0] - n2 + j) >= ImageWidth) || ((newcoord[1] - n2 + k) >= ImageHeight)) {
+//				Rprintf("made it in if");
+                                M[count+k] = 65536;
+//                                Rprintf("exiting if");
+                              }
+                              else {
+//                                Rprintf("started else");
+//                                Rprintf("x=%i, y=%i pix=%d\n", (newcoord[0] - n2 + j), (newcoord[1] - n2 + k), pixels[(newcoord[0] - n2) + j][(newcoord[1] - n2) + k]);
+                                M[count+k] = pixels[(newcoord[0] - n2) + j][(newcoord[1] - n2) + k];
+//                                Rprintf("finished else");
+                              }
                         }
                         count = count+n;
+//			Rprintf("\n");
                   }
                   
-           // qsort(M, 289, sizeof(int), (void *)comp_nums);
-		   quicksort(M, 0, 289);
+            // qsort(M, 289, sizeof(int), (void *)comp_nums);
+            quicksort(M, 0, n*n-1); // 289
 
             background[i] = (M[0] + M[1] + M[2] + M[3] + M[4])/5;
-            }
+//            }
      }
 } 
 
@@ -483,7 +496,7 @@ void HIPForeground(int **pixels, double *xs, double *ys, int numBeads, int Image
                         count = count+5;
                   }
 //          qsort(M, 25, sizeof(int), (void *)comp_nums);
-		  quicksort(M, 0, 25);          
+	  quicksort(M, 0, 25);          
           foreground[i] = M[24];
         }
     }
@@ -509,7 +522,7 @@ void IlluminaForeground(int **pixels, double *xs, double *ys, int numBeads, int 
      for(i = 0; i < numBeads; i++){
            if((x2[i] < 3) || (x2[i] > (ImageWidth) - 3) || (y2[i] < 3) || (y2[i] > (ImageHeight - 3))){
                  foreground[i] = 0;
-//                 Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
+//             Rprintf("Bead %d is too close to the edge of the image to be evaluated and has been ignored.\n", i);
            }
            else {
                 av[0] = matrixMean(pixels, (x2[i] - 1), (y2[i] - 1));
