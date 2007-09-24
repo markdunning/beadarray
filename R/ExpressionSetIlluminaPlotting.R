@@ -169,9 +169,9 @@ if(!is.null(missing_arrays)){
 
 values = vector(length=96)
 
-i = 1:96
+#i = 1:96
 
-values[i[-missing_arrays]]=v
+#values[i[-missing_arrays]]=v
 
 values[missing_arrays] = NA
 

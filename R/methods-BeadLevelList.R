@@ -77,6 +77,8 @@ setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method=
    standardGeneric("getArrayData"))
 
 setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
+   if(is.na(array) || array>length(arrayNames(BLData)))
+      stop("'array' out of range")
    what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
    if(what=="M") {
      if(BLData@arrayInfo$channels=="two") {
@@ -165,12 +167,15 @@ setMethod("combineBeadLevelLists", "BeadLevelList",
 #           standardGeneric("createBeadSummaryData"))
 
 #setMethod("createBeadSummaryData", "BeadLevelList", function(BLData, log = FALSE, n = 3, imagesPerArray = 2, probes = NULL){
+
 createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="G", probes = NULL, arrays=NULL, method="illumina", n = 3, trim=0.05){
   arraynms = arrayNames(BLData)
   if((trim<0 || trim>0.5) && (method=="trim" || method=="winsorize"))
     stop("trim proportion must be between 0 and 0.5")
   if(!is.null(arrays))
     arraynms = arraynms[arrays]
+  if(is.na(arraynms))
+    arraynms = which(arrayNames(BLData) %in% arrays)
   len = length(arraynms)
   what = match.arg(what, c("G", "R", "RG", "M", "A"))
   method = match.arg(method, c("illumina", "mean", "trim", "winsorize", "median"))
@@ -391,17 +396,18 @@ BSData
 
 #setMethod("findAllOutliers", "BeadLevelList", function(BLData, array=1, log = FALSE, n = 3, what="G"){
 findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, what="G"){
-  probes = sort(unique(BLData[[array]]$ProbeID[BLData[[array]]$ProbeID>0]))
+  probeList = getArrayData(BLData, array=array, what="ProbeID")
+  probes = sort(unique(probeList[probeList>0]))
   inten = getArrayData(BLData, array=array, log=log, what=what)
-  inten[is.na(inten)| !is.finite(inten)] = 0
-
-  probeList = BLData[[array]]$ProbeID
+  nasinf = is.na(inten) | !is.finite(inten)
+  inten = inten[!nasinf]
+  probeList = probeList[!nasinf]
   nbeads = length(inten)
   start = 0
 
   foo <- .C("findAllOutliers", as.double(inten), binStatus = integer(length = nbeads), as.integer(probeList), as.integer(probes), as.integer(length(probes)), as.integer(nbeads), as.integer(start), as.double(n), PACKAGE = "beadarray")
 
-  which((probeList > 0) && (foo$binStatus == 0))
+  which((probeList > 0) & (foo$binStatus == 0))
 }# )
 
 setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array = 1, log = TRUE, what = "G") standardGeneric("getProbeIntensities"))

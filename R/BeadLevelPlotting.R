@@ -221,69 +221,68 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 }
 
 
-
 SAMSummary =
-function(BLData, mode="outliers", whatToPlot="G", log=TRUE, n=3, missing_arrays=NULL, colour=TRUE, scale = NULL, low="yellow", high="red",...) {
+function(BLData, mode="outliers", whatToPlot="G", samID=NULL, log=TRUE, n=3, colour=TRUE, scale = NULL, low="yellow", high="red",...) {
 
-#mode=screenSetup(BLData)
-
-#Setup up outliers
+if(is.null(samID))
+  samID=BLData@arrayInfo$chip[1]
 
 split.screen(c(1,2))
 screen(1)
 
-#if(mode=="outliers") title=paste("Number of Outliers:", whatToPlot)
-#if(mode=="intensities") title=paste("Median Intensities:", whatToPlot)
+sel = BLData@arrayInfo$chip==samID
 
-arraynms = arrayNames(BLData)
-narrays = length(arraynms)
-len = min(96, narrays)                                                                                                           
-values = vector(length=96)
+if(sum(sel)>96)
+   stop("SAMSummary cannot plot more than 96 arrays - please check your data")
+
+arraynms = arrayNames(BLData)[sel]
+rows = BLData@arrayInfo$row[sel]
+cols = BLData@arrayInfo$col[sel]
+
+roword = c("R001", "R002", "R003", "R004", "R005", "R006", "R007", "R008")
+colord = c("C001", "C002", "C003", "C004", "C005", "C006", "C007", "C008", "C009", "C010", "C011", "C012")
+
+len = 96
+allnames = rep(NA, len)
+values = vector(length=len)
+arrayseq = 1:len
 
 if(mode == "outliers"){
 
   o = list(length=len)
-  
-  for(i in 1:len){
 
-    o[[i]] = findAllOutliers(BLData, array=i, log=log, what=whatToPlot, n=n,...)
-
-    values[i] = length(o[[i]])
-
+  for(i in 1:8) {
+     for(j in 1:12){
+        tmparray = arraynms[rows==roword[i] & cols==colord[j]]
+        tmpind = (i-1)*12+j
+        if(length(tmparray)>0) {
+           allnames[tmpind] = tmparray
+           o[[tmpind]] = findAllOutliers(BLData, array=tmparray, log=log, what=whatToPlot, n=n,...)
+           values[tmpind] = length(o[[tmpind]])
+        }
+        else {
+          o[[tmpind]] = NA
+          values[tmpind] = NA
+        }
+     }
   }
-
 }
-  
+
 if(mode == "intensities") {
-
- for(i in 1:len) {
-
-   values[i] =  median(getArrayData(BLData, array=i, log=log, what=whatToPlot), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
- }
- 
+  for(i in 1:8) {
+     for(j in 1:12){
+        tmparray = arraynms[rows==roword[i] & cols==colord[j]]
+        tmpind = (i-1)*12+j
+        if(length(tmparray)>0) {
+           allnames[tmpind] = tmparray
+           values[tmpind] =  median(getArrayData(BLData, array=tmparray, log=log, what=whatToPlot, ...), na.rm=TRUE)
+        }
+        else
+          values[tmpind] = NA
+      }
+   }
+  values = values-min(values, na.rm=TRUE)
 }
-#if(mode == "bg"){
-#
-#  for(i in 1:96){
-#    values[i] = median(log2(BLData@Gb[,i]),na.rm=TRUE)
-#  }
-#  
-#
-#}
-#len = 96
-
-if(!is.null(missing_arrays)){
-
-values = vector(length=len)
-
-i = 1:len
-
-values[i[-missing_arrays]]=v
-
-values[missing_arrays] = NA
-
-}
-
 
 doLoop = TRUE
 counter = 0
@@ -298,7 +297,7 @@ for(i in 1:8){
 
 xs = c(0,x/4, 0.75*x, x, 0.75*x, x/4)
 
-if(is.null(scale)) scale=max(values)
+if(is.null(scale)) scale=max(values, na.rm=TRUE)
 
 for(j in 1:12){
 
@@ -306,8 +305,8 @@ array_index =  (12 * (8-i)) + j
 
 control_intensity = values[array_index]
 
-if(is.na (control_intensity)){
-polygon(xs,ys, col=rgb(1,1,1))
+if(is.na(control_intensity)){
+polygon(xs,ys, col="white") # rgb(1,1,1))
 }
 else{
 
@@ -349,88 +348,110 @@ x.clicked = as.double(x.clicked)*12
 
 ArrayClickedOn = ceiling(y.clicked)*12 + ceiling(x.clicked) - 12
 
-#print(ArrayClickedOn)
-cat(paste("Displaying", mode, "from array", arraynms[ArrayClickedOn], "\n\n"))
+if(!is.na(allnames[ArrayClickedOn])) { #print(ArrayClickedOn)
+  cat(paste("Displaying", mode, "from array", allnames[ArrayClickedOn], "\n\n"))
 
-screen(2, new=TRUE)
+  screen(2, new=TRUE)
 
-plot(1:10, type="n", axes=FALSE, xlab="", ylab="")
+  plot(1:10, type="n", axes=FALSE, xlab="", ylab="")
 
-if(mode == "outliers"){
+  if(mode == "outliers"){
 
 
-os= o[[ArrayClickedOn]]
+    os= o[[ArrayClickedOn]]
 
-plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, SAM=TRUE, new=TRUE, main=paste("Outliers:", whatToPlot))
-screen(1)
+    plotBeadLocations(BLData, BeadIDs=os, array=allnames[ArrayClickedOn], SAM=TRUE, new=TRUE, main=paste(allnames[ArrayClickedOn], "outliers"))
+    screen(1)
+    }
+
+  if(mode == "intensities") {
+
+    imageplot(BLData, array=allnames[ArrayClickedOn], whatToPlot=whatToPlot, log=log, high=high, low=low,main=paste(allnames[ArrayClickedOn], whatToPlot), ...)
+    screen(1)
+  }
+}
+else 
+  cat("No data to plot, try again\n\n")
+  
+}
 }
 
-if(mode == "intensities") {
+BeadChipSummary =
+function(BLData, mode="outliers", whatToPlot="G", chipID=NULL, stripsPerChip=12, log=TRUE, n=3, colour=TRUE, scale = NULL,low="yellow", high="red", ...){
 
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=50, ncol=50, high=high, low=low,main=paste("Intensities:", whatToPlot),...)
-  screen(1)
-}
-}
-}
-
-"BeadChipSummary" =
-function(BLData, mode="outliers", whatToPlot="G", log=TRUE, n=3, colour=TRUE, scale = NULL,low="yellow", high="red",...){
+if(is.null(chipID))
+  chipID = BLData@arrayInfo$chip[1]
 
 split.screen(c(1,2))
 screen(1)
 
 #if(mode=="outliers") title=paste("Number of Outliers:", whatToPlot)
 #if(mode=="intensities") title=paste("Median Intensities:", whatToPlot)
-arraynms = arrayNames(BLData)
-narrays = length(arraynms)
-len = min(12, narrays)                                                          
+
+sel = BLData@arrayInfo$chip==chipID
+
+if(sum(sel)>stripsPerChip)
+   stop(paste("BeadChipSummary cannot plot more than", stripsPerChip, "arrays - please check your data"))
+
+arraynms = arrayNames(BLData)[sel]
+sub = BLData@arrayInfo$row[sel]
+strp = BLData@arrayInfo$col[sel]
+
+subarray = c("A", "B", "C", "D", "E", "F")
+if(stripsPerChip==12)
+  strip = 1:2
+else
+  strip = 1
+
+#arraynms = arrayNames(BLData)[sel]
+
+#narrays = length(arraynms)
+len = stripsPerChip # min( , narrays)
+allnames = rep(NA, len)
 values = vector(length=len)
 
 if(mode == "outliers"){
 
   o = list(length=len)
 
-  
-  for(i in 1:len){
-
-    o[[i]] = findAllOutliers(BLData, array=i, log=log, n=n, what=whatToPlot)
-    values[i] = length(o[[i]])
-
-  }
-
+  for(i in 1:length(subarray)) {
+     for(j in strip){
+        tmparray = arraynms[sub==subarray[i] & strp==j]
+        tmpind = (i-1)*2+j
+        if(length(tmparray)>0) {
+           allnames[tmpind] = tmparray
+           o[[tmpind]] = findAllOutliers(BLData, array=tmparray, log=log, what=whatToPlot, n=n,...)
+           values[tmpind] = length(o[[tmpind]])
+        }
+        else {
+          o[[tmpind]] = NA
+          values[tmpind] = NA
+         }
+     }
+  } 
 }
-
 if(mode == "intensities"){
-
- for(i in 1:len){
-   values[i] =  median(getArrayData(BLData, what=whatToPlot, log=log, array=i), na.rm=TRUE) # median(log2(BLData@G[,i]),na.rm=TRUE)
- }
- 
-
+ for(i in 1:length(subarray)) {
+    for(j in strip){
+        tmparray = arraynms[sub==subarray[i] & strp==j]
+        tmpind = (i-1)*2+j
+        if(length(tmparray)>0) {
+           allnames[tmpind] = tmparray
+           values[tmpind] =  median(getArrayData(BLData, array=tmparray, log=log, what=whatToPlot,...), na.rm=TRUE)
+        }
+        else
+          values[tmpind] = NA
+    }
+  }
+  values = values-min(values, na.rm=TRUE)
 }
-#if(mode == "fg"){
-
-#  values = getArrayData(BLData, what=whatToPlot, array=array, log=log)
-# apply(log2(BLData@G), 2, median)
-
-#}
-
-
-#if(mode == "bg"){
-
-#  values = apply(log2(BLData@G), 2, median)
-
-#}
-
-
-#len = 12
-
+tol=0.015
 doLoop = TRUE
 counter = 0
 while(doLoop){
 counter = counter + 1
   y=1
-ys = c(y, y, y-y/12, y - y/12)
+ys = c(y-tol, y-tol, y+tol-y/stripsPerChip, y+tol-y/stripsPerChip)
 
   
 
@@ -439,13 +460,18 @@ control_intensity = values[i]
 
 
 xs=c(0.1,1,1,0.1)
-if(is.null(scale)) scale= max(values)
-polygon(xs,ys, col=rgb(control_intensity/scale,0,0))
+if(is.null(scale)) scale= max(values, na.rm=TRUE)
+if(is.na(control_intensity)){
+polygon(xs,ys, col="white") # rgb(1,1,1))
+}
+else{
 
+if(colour){ polygon(xs,ys, col=rgb(control_intensity/scale,0,0))}
+else{ polygon(xs,ys,col=gray(control_intensity/scale))}
 
-#text(xs[3], ys[4], BLData@other@SAMPLE[1,array_index])
+}
 
-ys = ys - 1/12
+ys = ys - 1/stripsPerChip
 
 }
 
@@ -460,40 +486,35 @@ l=locator(n=1)
 
 y.clicked = strtrim(as.character(l$y),5)
 
-y.clicked = as.double(y.clicked)*12
+y.clicked = as.double(y.clicked)*stripsPerChip
 
 
-ArrayClickedOn = 12 - ceiling(y.clicked) + 1
+ArrayClickedOn = stripsPerChip - ceiling(y.clicked) + 1
+if(!is.na(allnames[ArrayClickedOn])) {
+  cat(paste("Displaying", mode, "from array", arraynms[ArrayClickedOn], "\n\n"))
+  screen(2, new=TRUE)
 
-cat(paste("Displaying", mode, "from array", arraynms[ArrayClickedOn], "\n\n"))
+  plot(1:10, type="n", axes=FALSE, xlab="", ylab="")
 
-screen(2, new=TRUE)
+  if(mode == "outliers"){
 
-plot(1:10, type="n", axes=FALSE, xlab="", ylab="")
+    os= o[[ArrayClickedOn]]
 
-if(mode == "outliers"){
+    plotBeadLocations(BLData, BeadIDs=os, array=allnames[ArrayClickedOn], new=TRUE, main=paste(allnames[ArrayClickedOn], "outliers"))
 
+    screen(1)
+  }
 
-os= o[[ArrayClickedOn]]
+  if(mode == "intensities"){
 
-plotBeadLocations(BLData, BeadIDs=os, array=ArrayClickedOn, new=TRUE, main=paste("Outliers:", whatToPlot))
+    imageplot(BLData, array=allnames[ArrayClickedOn], whatToPlot=whatToPlot, log=log, high=high, low=low, main=paste(allnames[ArrayClickedOn], whatToPlot),...)
 
-screen(1)
+    screen(1)
+  }
 }
 
-if(mode == "intensities"){
-
-  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=100, ncol=50, high=high, low=low, main=paste("Intensities:", whatToPlot),...)
-
-  screen(1)
-}
-#if(mode == "bg"){
-
-#  imageplot(BLData, array=ArrayClickedOn, whatToPlot=whatToPlot, nrow=100, ncol=50, high="red", low="yellow",main=as.character(arrayNames(BLData)[ArrayClickedOn]))
-#  screen(1)
-  
-#}
-
+else 
+  cat("No data to plot, try again\n\n")
 }
 
 }

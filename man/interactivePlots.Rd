@@ -9,12 +9,12 @@ Plots using bead level data to discover spatial effects and artifacts on arrays
 }
 \usage{
 
-SAMSummary(BLData, mode = "outliers", whatToPlot = "G", log = TRUE,
-               n = 3, missing_arrays = NULL, colour = TRUE,
+SAMSummary(BLData, mode = "outliers", whatToPlot = "G",  samID = NULL, 
+               log = TRUE, n = 3, colour = TRUE,
                scale = NULL, low = "yellow", high="red", ...)
-BeadChipSummary(BLData, mode = "outliers", whatToPlot = "G", log = TRUE,
-               n = 3, colour = TRUE, scale = NULL, low = "yellow",
-               high = "red", ...)
+BeadChipSummary(BLData, mode = "outliers", whatToPlot = "G", chipID = NULL, 
+               stripsPerChip = 12, log = TRUE, n = 3, colour = TRUE, 
+               scale = NULL, low = "yellow", high = "red", ...)
 }
 
 \arguments{
@@ -25,19 +25,20 @@ BeadChipSummary(BLData, mode = "outliers", whatToPlot = "G", log = TRUE,
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}
+  \item{samID}{character string specifying which SAM to plot.  If \code{NULL}, data from the first SAM is plotted.}
+  \item{chipID}{character string specifying which BeadChip to plot.  If \code{NULL}, data from the first BeadChip is plotted.}
+ \item{stripsPerChip}{integer specifying number of strips on BeadChip (8 or 12)}
   \item{log}{if TRUE log2 intensities of each bead are used to
     find outliers}
   \item{n}{Specify a cut-off for outliers as n median
     absolute deviations from the median. The default value is 3}
-  \item{missing_arrays}{vector of numeric values specifying the index
-    of any arrays that have been removed from the SAM.}
   \item{colour}{if TRUE the hexagons will be plotted in colour}
   \item{scale}{numeric value giving the amount by which to divide all
     numbers by (eg for log2 intensities this should be 16) to transform
     to range 0 - 1}
    \item{low}{Color for area of lowest intensity}
   \item{high}{color for area of highest intensity}
-  \item{\dots}{other graphical parameters to plot that can be specified}
+  \item{\dots}{other parameters to \code{imageplot} that can be specified}
 }
 \details{
   A plot will be displayed giving a summary of each array in the
