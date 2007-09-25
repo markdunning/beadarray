@@ -77,7 +77,7 @@ setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method=
    standardGeneric("getArrayData"))
 
 setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
-   if(is.na(array) || array>length(arrayNames(BLData)))
+   if(is.na(array))
       stop("'array' out of range")
    what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
    if(what=="M") {
