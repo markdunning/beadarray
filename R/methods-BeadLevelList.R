@@ -172,10 +172,10 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
   arraynms = arrayNames(BLData)
   if((trim<0 || trim>0.5) && (method=="trim" || method=="winsorize"))
     stop("trim proportion must be between 0 and 0.5")
-  if(!is.null(arrays))
+  if(!is.null(arrays) && !is.character(arrays))
     arraynms = arraynms[arrays]
-  if(is.na(arraynms))
-    arraynms = which(arrayNames(BLData) %in% arrays)
+  if(is.character(arrays))
+    arraynms = which(arraynms %in% arrays)
   len = length(arraynms)
   what = match.arg(what, c("G", "R", "RG", "M", "A"))
   method = match.arg(method, c("illumina", "mean", "trim", "winsorize", "median"))

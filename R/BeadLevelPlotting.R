@@ -327,7 +327,7 @@ ys = ys + 1/8
 
 }
 if(counter>1) {
-  answer = readline("Type Q to quit, or anything else to continue:  ")
+  answer = readline("Type Q to quit or anything else to continue, followed by <ENTER>:  ")
   if(answer=="Q")
     break# doLoop=FALSE
 }
@@ -476,7 +476,7 @@ ys = ys - 1/stripsPerChip
 }
 
 if(counter>1) {
-  answer = readline("Type Q to quit, or anything else to continue:  ")
+  answer = readline("Type Q to quit or anything else to continue, followed by <ENTER>:  ")
   if(answer=="Q")
     break# doLoop=FALSE
 }
