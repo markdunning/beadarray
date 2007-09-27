@@ -1,10 +1,14 @@
-Version 1.5.14 - 22 September 2007
+1.5.15 - 27 September 2007
+ - fixed bug in combine() for ExpressionSetIllumina-class (old reference to reporterInfo removed).
+ - updated and renamed pdfs which provde example bead-level (beadlevel.pdf) and summary (beadsummary.pdf) analyses.
+
+Version 1.5.14 - 24 September 2007
  - fixed bug in C code in calculateBackground (readBeadImages.c) function (was over-running end of array).  Also made backgroudSize adaptive (was set to fixed size of 17x17 pixels in C code) and is more careful when at an edge (previously set background to 700 if pixels went off the edge).
- - fixed bug in findAllOutliers() (introduced in 1.5.11 when && and || added to if statements.  Inadvertantly added to which at the end of finaAllOutliers()) 
+ - fixed bug in findAllOutliers() (introduced in 1.5.11 when && and || added to if statements.  Inadvertantly added to which at the end of findAllOutliers()) 
  - fixed bug in SAMSummary() BeadChipSummary() - couldn't handle negative summary values and removed unknown 'v' variable assigned when missing_arrays argument was specified.  Removed missing_arrays argument, and added arguments 'samID', 'chipID' and 'stripsPerChip' to allow user to choose which SAM/BeadChip to plot and specify the correct number of strips per chip.  Function is more careful about plotting the data in the appropriate row/column position, and returns a message it the user clicks out of range.  Missing arrays are coloured white.
 - removed unknown 'v' variable assigned when missing_arrays argument was specified in plotOnSAM().
 - getArrayData() now checks for out of range or NA 'array' argument and returns a message
-- createBeadSummaryData() checks for arraynm in all full list of array names in case 'array' has not been specified as integer.
+- createBeadSummaryData() checks for arraynm in full list of array names in case 'array' has not been specified as an integer.
 
 Version 1.5.13 - 20 September 2007
  - example BLData.rda object in package updated

@@ -116,9 +116,7 @@ setMethod("Detection", "ExpressionSetIllumina", function(object) assayDataElemen
 
 setGeneric("getVariance", function(object) standardGeneric("getVariance"))
 
-setMethod("getVariance", "ExpressionSetIllumina", function(object) assayDataElement(object, "se.exprs")^2*assayDataElement(object, "NoBeads"))
-
-
+setMethod("getVariance", "ExpressionSetIllumina", function(object) assayDataElement(object, "se.exprs")^2*assayDataElement(object, "NoBeads"))
 
 
 setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
@@ -190,7 +188,6 @@ setMethod("combine", c("ExpressionSetIllumina", "ExpressionSetIllumina"), functi
   # a bit of a hack to only keep the union, and discard double entries
   phenoData(x) <- .mergePhenodata(x, y, newdimnames[[2]])
   experimentData(x) <- combine(experimentData(x),experimentData(y))
-  reporterInfo(x)<-.mergeReporterInfo(reporterInfo(x), reporterInfo(y), newdimnames[[1]])
     
   ## annotation -- constant
   if (any(annotation(x) != annotation(y))) {
@@ -200,5 +197,3 @@ setMethod("combine", c("ExpressionSetIllumina", "ExpressionSetIllumina"), functi
   }
   x
 })
-
-
