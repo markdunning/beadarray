@@ -164,7 +164,7 @@ setReplaceMethod("se.exprs", c("ExpressionSetIllumina", "matrix"), function(obje
 
 .mergePhenodata<-function(x , y, samples) {
   variables<-union(colnames(pData(x)),colnames(pData(y)))
-  outarr<-array(data=NA,dim=c(length(samples),length(variables)),dimnames=list(samples,variables))
+ outarr<-array(data=NA,dim=c(length(samples),length(variables)),dimnames=list(samples,variables))
   outarr[sampleNames(y),colnames(pData(y))]<-as.matrix(pData(y))
   outarr[sampleNames(x),colnames(pData(x))]<-as.matrix(pData(x))
   pd<-data.frame(outarr)

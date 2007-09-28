@@ -1,6 +1,8 @@
-1.5.15 - 27 September 2007
- - fixed bug in combine() for ExpressionSetIllumina-class (old reference to reporterInfo removed).
- - updated and renamed pdfs which provde example bead-level (beadlevel.pdf) and summary (beadsummary.pdf) analyses.
+1.5.15 - 28 September 2007
+ - fixed bug in combine() for ExpressionSetIllumina-class (old reference to reporterInfo removed and function now exported properly).
+ - updated and renamed pdfs which provide example bead-level (beadlevel.pdf) and summary (beadsummary.pdf) analyses.
+ - change to C code, calculateBackground: if any of the lowest 5 background pixels are saturated, set background to zero, instead of taking the avearge.
+ - fixed bug in assignment of pData in readIllumina() when 'targets' have been specified.
 
 Version 1.5.14 - 24 September 2007
  - fixed bug in C code in calculateBackground (readBeadImages.c) function (was over-running end of array).  Also made backgroudSize adaptive (was set to fixed size of 17x17 pixels in C code) and is more careful when at an edge (previously set background to 700 if pixels went off the edge).

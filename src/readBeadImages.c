@@ -469,7 +469,10 @@ void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int
             // qsort(M, 289, sizeof(int), (void *)comp_nums);
             quicksort(M, 0, n*n-1); // 289
 
-            background[i] = (M[0] + M[1] + M[2] + M[3] + M[4])/5;
+            if((M[0]==65536) || (M[1]==65536) || (M[2]==65536) || (M[3]==65536) || (M[4]==65536))
+                background[i] = 0;
+            else 
+                background[i] = (M[0] + M[1] + M[2] + M[3] + M[4])/5;
 //            }
      }
 } 

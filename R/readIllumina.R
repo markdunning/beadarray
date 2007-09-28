@@ -321,7 +321,7 @@
 
 ## Add targets information (if available)
 if(!is.null(targets))
-   pData(BLData@phenoData) = targets
+   BLData@phenoData = new("AnnotatedDataFrame", data=targets)
 else
    BLData@phenoData = new("AnnotatedDataFrame", data=data.frame(arrayName=arrays))
 
