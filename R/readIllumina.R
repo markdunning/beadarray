@@ -5,7 +5,8 @@
            imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
            metricsFile="Metrics.txt", backgroundMethod="subtract",
-           offset=0, normalizeMethod="none", ...){
+           offset=0, normalizeMethod="none", tiffExtGrn="_Grn.tif", 
+           tiffExtRed="_Red.tif",...){
 
   if(textType==".csv") sep=","
   else sep="\t"	
@@ -48,8 +49,8 @@
       fground = 1
     }
      
-    GImages = dir(path=path, pattern ="_Grn.tif")	
-    RImages = dir(path=path, pattern ="_Red.tif")
+    GImages = dir(path=path, pattern =tiffExtGrn)
+    RImages = dir(path=path, pattern =tiffExtRed)
                                         
     if(length(GImages)==0)
       stop("No tiffs found")
@@ -111,7 +112,7 @@
   else { # two-channel data
     arrayInfo$channels = "two"
     tifFiles2 = vector(length=length(arrays))
-    tifFiles2 = file.path(path, paste(arrays, "_Red.tif",sep=""))
+    tifFiles2 = file.path(path, paste(arrays, tiffExtRed, sep=""))
     if(storeXY){
       ncolumns = 7
       headings=c("ProbeID", "G", "Gb", "GrnX", "GrnY", "R", "Rb")
@@ -124,7 +125,7 @@
 
   if(useImages) {
     tifFiles = vector(length=length(arrays))
-    tifFiles = file.path(path, paste(arrays, "_Grn.tif",sep=""))
+    tifFiles = file.path(path, paste(arrays, tiffExtGrn, sep=""))
 
     for(i in 1:k) {
    	 

@@ -110,10 +110,10 @@ count=1
 
 for(i in 1:length(arrays)){
 for(j in 1:length(ProbeIDs)){
-I = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, what=whatToPlot)
-  if (length(I) > 1) {
-      sel = is.finite(I) & !is.na(I)
-      boxplot(I[sel], at = count - 0.5, add = TRUE, axes = FALSE, col = ProbeCols[j])
+intens = getProbeIntensities(BLData, ProbeIDs=ProbeIDs[j], array=arrays[i], log=log, what=whatToPlot)
+  if (length(intens) >= 1) {
+      sel = is.finite(intens) & !is.na(intens)
+      boxplot(intens[sel], at = count - 0.5, add = TRUE, axes = FALSE, col = ProbeCols[j])
   }
   else {
     cat("\nNo bead with ID", ProbeIDs[j], "on array", i, "\n")

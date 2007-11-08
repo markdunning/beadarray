@@ -2,9 +2,12 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
    type="l", col=1, xlab="Intensity", ylab="Density", xlim=NULL, ylim=NULL,...) {
    x = y = list()
    arraynms = arrayNames(BLData)
-   narrays = length(arraynms)
-   if (is.null(arrays))
-      arrays = 1:narrays
+   if(is.null(arrays)) {
+     narrays = length(arraynms)
+     arrays = 1:narray
+   }
+   else
+     narrays = length(arrays)
    if(length(col)!=narrays*length(whatToPlot))
      col=rep(1, narrays*length(whatToPlot))
    for (i in arrays) {

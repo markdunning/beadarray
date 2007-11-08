@@ -367,8 +367,9 @@ if(whatelse=="R") { # create SNPSetIllumina
 }
 else{
     BSData = new("ExpressionSetIllumina")
-    assayData(BSData)=assayDataNew(exprs = G, se.exprs=GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
-    rownames(exprs(BSData)) = probes
+    assayData(BSData)=assayDataNew(exprs = G, se.exprs = GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
+    rownames(exprs(BSData)) = rownames(se.exprs(BSData)) = rownames(NoBeads(BSData)) = probes
+
 }
   
 if(nrow(pData(BLData))==len) {

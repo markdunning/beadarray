@@ -48,7 +48,10 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
   
   Other summarisation options are also available. When
   \code{method="mean"}, the average and standard error of all beads
-  for a given bead type is calculated on each array. For
+  for a given bead type is calculated on each array.  This would be 
+  appropriate if the scanner has been set up to exclude outlier beads  
+  from the bead level txt or csv files.
+  
   \code{method="median"}, the middle value is returned along with the
   median absolute deviation (rather than standard error) for each bead type.
   When \code{method="trim"}, the trimmed mean and standard error are
