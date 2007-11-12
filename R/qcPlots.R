@@ -4,7 +4,7 @@ plotBeadDensities = function(BLData, whatToPlot="G", arrays=NULL, log=TRUE,
    arraynms = arrayNames(BLData)
    if(is.null(arrays)) {
      narrays = length(arraynms)
-     arrays = 1:narray
+     arrays = 1:narrays
    }
    else
      narrays = length(arrays)

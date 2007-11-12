@@ -1,8 +1,11 @@
+1.7.2 - 12 November 2007
+ - fixed bug in plotBeadDensities()
+
 1.7.1 - 2 November 2007
  - fixed bug in createBeadSummaryData(). rownames are now assigned to se.exprs and NoBeads slots.
  - fixed bug in plotBeadIntensities().  Changed variable name of intensities from 'I' to 'intens' and now checks that there are 1 or more items for plotting.
  - fixed bug in plotBeadDensities() - when 'col' and 'arrays' was specified, lines weren't coloured correctly.
- - new arguments tiffExtGrn and tiffExtRed in readIllumina allowing user to specify tiff extensions.  Previously assumed all tiffs ended in _Grn.tif or _Red.tif, however this is not always the case. 
+ - new arguments tiffExtGrn and tiffExtRed in readIllumina() allowing user to specify tiff extensions.  Previously assumed all tiffs ended in _Grn.tif or _Red.tif, however this is not always the case. 
  - updated readIllumina() and createBeadSummaryData() documentation 
 
 1.6.0 - released 8 October 2007
