@@ -61,6 +61,10 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
   colnms = colnames(exprs(BSData))
   transform = match.arg(transform, c("none", "vst", "log2"))
   method = match.arg(method, c("quantile", "qspline", "vsn", "rankInvariant", "median", "none"))
+  if(method=="vsn" && transform!="none"){
+          cat(paste("\nmethod =", method, "not compatible with transform =", transform, "\nResetting transform = \"none\"\n\n"))
+          transform="none"
+  }
   if(transform=="log2") {
           BSData = assayDataElementReplace(BSData, "exprs", as.matrix(log2(exprs(BSData))))
   }

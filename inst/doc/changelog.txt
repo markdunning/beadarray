@@ -1,3 +1,7 @@
+1.7.3 - 13 February 2008
+ - changed default ProbeID and qc.columns to ProbeID='ProbeID' and qc.columns=list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV") respectively in readSummaryData(). 
+ - added check to normaliseIllumina() to ensure method="vsn" is not combined with any transform (forces transform="none").  Message is given if this is the case.
+
 1.7.2 - 12 November 2007
  - fixed bug in plotBeadDensities()
 

@@ -14,7 +14,8 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL)
     (options are \code{"quantile"}, \code{"qspline"}, \code{"vsn"},
     \code{"rankInvariant"}, \code{"median"} and \code{"none"}.}
   \item{transform}{character string specifying transformation to apply
-    to the data (options are \code{"none"}, \code{"log2"} and \code{"vst"}}
+    to the data prior to normalisation (options are \code{"none"}, 
+    \code{"log2"} and \code{"vst"}}
   \item{T}{A target distribution vector used in \code{"rankInvariant"}
     normalisation. If \code{NULL}, the mean is used.}  
 }
@@ -23,11 +24,13 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL)
   systematic trends which arise from the microarray technology rather
   than from differences between the probes or between the target RNA
   samples hybridized to the arrays.
-
+ 
+  In this function, the \code{transform} specified by the user is 
+  applied prior to the chosen normalisation procedure.
 
   When \code{transform="vst"} the variance stabilising transformation
-  from the 'lumi' package is applied to the data.  Refer to the 'lumi'
-  documentation for further particulars.
+  from the 'lumi' package is applied to the data.
+  Refer to the 'lumi' documentation for further particulars.
 
   For further particulars on the different normalisation methods options
   refer to the individual help pages (\code{?normalize.quantiles} for
@@ -43,10 +46,12 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL)
 
   Note: If your \code{BSData} object contains data already on the
   log-scale, be careful that you choose an appropriate \code{transform}
-  to avoid logging it twice.  The same applies for the \code{"vst"}
+  to avoid transforming it twice.  The same applies for the \code{"vst"}
   transformation and \code{"vsn"} normalisation methods which require
   the expression data stored in \code{BSData} to be on the original
-  (un-logged) scale.
+  (un-logged) scale.  When \code{method="vsn"}, transform must be set to 
+  \code{"none"}, since this method transforms and normalises the data as 
+  part of the model.
 }
 
 \value{
