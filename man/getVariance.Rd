@@ -5,10 +5,11 @@
 Calculates the variance for each bead-type on each array from an \code{ExpressionSetIllumina} object.
 }
 \usage{
-getVariance(object)
+getVariance(object, offset=0)
 }
 \arguments{
   \item{object}{\code{ExpressionSetIllumina} object}
+  \item{offset}{numeric value to add to the variances to avoid very small values}
   }
 \details{
   \code{getVariance} uses the \code{se.exprs} and \code{NoBeads} slots in \code{assayData} to calculate the variances for each bead-type on each array.

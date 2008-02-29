@@ -9,7 +9,7 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
 header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
-                                   qc.columns = list(controlID="TargetID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
+                                   qc.columns = list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
                                    qc.sep="\t", qc.skip=8, ...)
 
 }
@@ -73,10 +73,17 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
   If quality control information has been exported from BeadStudio
   (control probe profile) this may be read into beadarray too. The
   qc.skip and qc.sep and qc.columns parameters can be used to adjust
-  for the contents of the file.
-  
-  Sample sheet information can also be used. This is a file format used
+  for the contents of the file.  If the 'ControlGeneProfile' is exported, 
+  from BeadStudio, you will need to set controlID="TargetID" in qc.columns.
+
+   Sample sheet information can also be used. This is a file format used
   by Illumina to specify the contents of each array in the experiment.
+
+  Note that if the probe identifiers are non-unique, row numbers will be 
+  used to identify the beads.  This may occur if the 'SampleGeneProfile' 
+  is exported from BeadStudio and/or ProbeID="TargetID" is specified (the 
+  "ProbeID" column has a unique identifier for each bead, whereas the 
+  "TargetID" may not, as multiple beads can target the same transcript).
 }
 
 \value{

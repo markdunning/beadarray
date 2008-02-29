@@ -89,10 +89,17 @@
 
   if(length(grep(sepchar, arrays))==length(arrays)) {
      tmp = unlist(strsplit(arrays, sepchar))
-     arrayInfo$chip = tmp[seq(1,length(tmp), by=3)]
-     arrayInfo$row = tmp[seq(2,length(tmp), by=3)]
-     arrayInfo$col = tmp[seq(3,length(tmp), by=3)]
-   }                                                                                                                                                         
+     if(length(tmp)%%3==0) {
+        arrayInfo$chip = tmp[seq(1,length(tmp), by=3)]
+        arrayInfo$row = tmp[seq(2,length(tmp), by=3)]
+        arrayInfo$col = tmp[seq(3,length(tmp), by=3)]
+     }
+     else {
+        arrayInfo$chip = tmp[seq(1,length(tmp), by=2)]
+        arrayInfo$row = tmp[seq(2,length(tmp), by=2)]
+        arrayInfo$col = rep(1, length(arrayInfo$chip))
+     }
+   }                                                                                                       
 
   csv_files = vector(length=length(arrays))
   csv_files = file.path(path, paste(arrays, textType,sep=""))

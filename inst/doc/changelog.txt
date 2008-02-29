@@ -1,3 +1,8 @@
+1.7.4 - 29 February 2008
+- fixed bug in readIllumina().  Assigning arrayInfo to BeadLevelList assumed array names ended in _row_col, which is not the case for Human/Mouse 8 chips, which don't have _col
+- added offset argument to getVariance() to avoid very small variances (which will give large weights if used in the linear model).  Default value is 0.
+- updated documentation for readBeadSummaryData() and getVariance()
+
 1.7.3 - 13 February 2008
  - changed default ProbeID and qc.columns to ProbeID='ProbeID' and qc.columns=list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV") respectively in readSummaryData(). 
  - added check to normaliseIllumina() to ensure method="vsn" is not combined with any transform (forces transform="none").  Message is given if this is the case.
