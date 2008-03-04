@@ -1,3 +1,6 @@
+1.7.5 - 4 March 2008
+- replaced usage of now defunct reporterInfo and "reporterInfo<-" methods with fData and "fData" in setMethod("[", "ExpressionSetIllumina", ...)
+
 1.7.4 - 29 February 2008
 - fixed bug in readIllumina().  Assigning arrayInfo to BeadLevelList assumed array names ended in _row_col, which is not the case for Human/Mouse 8 chips, which don't have _col
 - added offset argument to getVariance() to avoid very small variances (which will give large weights if used in the linear model).  Default value is 0.
