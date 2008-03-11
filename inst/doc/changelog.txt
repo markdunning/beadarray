@@ -1,3 +1,7 @@
+1.7.6 - 11 March 2008
+- changed readIllumina() to stop over-riding of singleChannel=TRUE setting when both Red and Green images are present and useImages=TRUE.  Now a warning message is given telling the user that while Red images are present only the Green images will be read in (i.e. keeping singleChannel=TRUE).
+- added new references to beadarray.rnw
+
 1.7.5 - 4 March 2008
 - replaced usage of now defunct reporterInfo and "reporterInfo<-" methods with fData and "fData" in setMethod("[", "ExpressionSetIllumina", ...)
 

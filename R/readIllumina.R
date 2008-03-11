@@ -62,13 +62,13 @@
     if(length(RImages)!=0) {
       arrays = intersect(arrays, strtrim(RImages, nchar(RImages)-8))
       if(singleChannel==TRUE)
-        cat("Red images found, setting singleChannel=FALSE\n")
-      singleChannel = FALSE
+        cat("Red images found and 'singleChannel=TRUE'.  Only Green images will be read in.\n")
     }
     else { # no Red images found
-      if(singleChannel==FALSE)
+      if(singleChannel==FALSE) {
         cat("No red images found, setting singleChannel=TRUE\n")
-      singleChannel = TRUE
+        singleChannel = TRUE
+      }
     }
   }
   

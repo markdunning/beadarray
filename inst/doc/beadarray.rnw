@@ -50,10 +50,22 @@ of the downloaded beadarray folder, or can be downloaded from the bioconductor w
 \section{Citing beadarray}
 
 If you use \Rpackage{beadarray} for the analysis or pre-processing of
-Illumina data please cite:
+Illumina data please cite:\\
 
-Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S, \emph{beadarray: R classes and
-  methods for Illumina bead-based data}, Bioinformatics, 23(16):2183-4. Epub 2007 Jun 22.
+Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S. \emph{beadarray: R classes and
+  methods for Illumina bead-based data}. Bioinformatics, 2007 Aug 15; 23(16):2183-4. Epub 2007 Jun 22.\\
+
+If you are interested in the low-level analysis issues of Illumina BeadArray data, or make use of the spike-in data set made available as part of this study, please cite the paper below:\\
+
+Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. BMC Bioinformatics. 2008 Feb 6;9(1):85.\\
+
+Probe reannotation for Illumina expression arrays are available from:\\
+
+{\tt http://www.compbio.group.cam.ac.uk/Resources/Annotation/}\\
+
+If you make use of these, please cite:\\
+
+Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation)
 
 \section{Getting help with beadarray}
 
