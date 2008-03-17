@@ -147,8 +147,8 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 #  xs = floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
 #  ys = floor(BLData@GrnY[,array] - min(BLData@GrnY[,array]))
 
-  whatToPlot = match.arg(whatToPlot, choices=c("G", "Gb", "R", "Rb", "wtsG", "wtsR", "residG", "residR", "M", "residM", "A"))
-  if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="residM" | whatToPlot=="A") & BLData@arrayInfo$channels!="two")
+  whatToPlot = match.arg(whatToPlot, choices=c("G", "Gb", "R", "Rb", "wtsG", "wtsR", "residG", "residR", "M", "residM", "A", "beta"))
+  if((whatToPlot=="R" | whatToPlot=="residR" | whatToPlot=="M" | whatToPlot=="residM" | whatToPlot=="A" | whatToPlot=="beta") & BLData@arrayInfo$channels!="two")
     stop(paste("Need two-channel data to plot", whatToPlot, "values"))
                                           
   data = getArrayData(BLData, what=whatToPlot, array=array, log=log, method=method, n=n, trim=trim) 

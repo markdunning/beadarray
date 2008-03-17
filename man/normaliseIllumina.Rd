@@ -5,7 +5,7 @@
 Normalises expression intensities so that the intensities are comparable between arrays.
 }
 \usage{
-normaliseIllumina(BSData, method="quantile", transform="none", T=NULL)
+normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, ...)
 }
 
 \arguments{
@@ -17,7 +17,8 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL)
     to the data prior to normalisation (options are \code{"none"}, 
     \code{"log2"} and \code{"vst"}}
   \item{T}{A target distribution vector used in \code{"rankInvariant"}
-    normalisation. If \code{NULL}, the mean is used.}  
+    normalisation. If \code{NULL}, the mean is used.}
+  \item{...}{further arguments to be passed to \code{lumiT}}
 }
 \details{
   Normalisation is intended to remove from the expression measures any

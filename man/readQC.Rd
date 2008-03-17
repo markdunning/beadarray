@@ -8,16 +8,16 @@ Reads the standard format of Illumina quality control information and produces d
 }
 
 \usage{
-readQC(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T)
+readQC(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=TRUE, dec=".")
 
 }
 \arguments{
   \item{file}{name of file containing qc information} 
   \item{columns}{a vector of column names to read from the file} 
+  \item{sep}{a character string for the file separator}
   \item{skip}{number of lines of header information to ignore in the file}
   \item{header}{if TRUE the column names in the file are read}
-  \item{sep}{a character string for the file separator}
-		 
+  \item{dec}{the character used in the file for decimal points}
 }
 \details{
 

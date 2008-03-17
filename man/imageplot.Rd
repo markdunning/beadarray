@@ -20,7 +20,7 @@ imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
   \item{high}{color for area of highest intensity}
   \item{ncolors}{The number of color graduations between high and low}
   \item{whatToPlot}{character string specifying which intensities/values
-    to plot. See \code{getArrayData} for a list of the possibilities}
+    to plot. See \code{getArrayData} for a list of possibilities}
   \item{log}{if TRUE, log2 intensities are plotted}
   \item{zlim}{numerical vector of length 2 giving the extreme values of 'z'
     to associate with  colors 'low' and 'high'.}

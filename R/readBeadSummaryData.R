@@ -1,12 +1,11 @@
-readBeadSummaryData<- function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="ProbeID",skip=8, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), qc.columns = list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL, qc.sep="\t", qc.skip=8,...)
+readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="ProbeID",skip=8, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), qc.columns = list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL, qc.sep="\t", qc.skip=8, dec=".", quote="")
 {
 
 if(!(is.null(sampleSheet))){ 
 samples = read.table(sampleSheet, sep=",", header=T, skip=7)
 }
   
-r=read.table(as.character(dataFile), sep=sep, header=T, skip=skip,...) # quote="")
-
+r=read.table(as.character(dataFile), sep=sep, header=TRUE, skip=skip, dec=dec, quote=quote, as.is=TRUE, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
 
 foundColumns = NULL
 
@@ -61,7 +60,7 @@ for(i in 1:length(data)){
   index = which(names(assayData(BSData))== names(data)[i])
 
   if(length(index)>0){
-  assayData(BSData)[[index]] = data[[i]]
+  assayData(BSData)[[index]] = as.matrix(data[[i]])
 }
     else{
     cat(paste("Did not find a slot called :", names(data)[i]))
@@ -73,7 +72,7 @@ for(i in 1:length(data)){
 
 if(!(is.null(qcFile))){
 
-BSData@QC = readQC(file=qcFile, sep=qc.sep, skip=qc.skip, columns=qc.columns)
+BSData@QC = readQC(file=qcFile, sep=qc.sep, skip=qc.skip, columns=qc.columns, dec=dec)
 
 
 }
@@ -91,7 +90,7 @@ BSData
 
 }
 
-readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=T){
+readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS", Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV", controlID = "ProbeID", controlType="TargetID"),sep="\t",skip=7,header=TRUE, dec="."){
 
 
 ##
@@ -124,9 +123,8 @@ readQC=function(file, columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS
 
 data = list()
 
-
+count = 1
 for(i in 1:length(columns)){
-
 
   index = grep(columns[[i]], colnames(r))
 
@@ -136,22 +134,19 @@ for(i in 1:length(columns)){
     cat("\n")
   }
   else{
-
   foundColumns = append(foundColumns,names(columns)[i])  
 
-  if(BeadStudioVersion == 2) data[[i]] = as.data.frame(r[,index])
+  if(BeadStudioVersion == 2) data[[count]] = as.data.frame(r[,index])
   else{
-    data[[i]] = as.data.frame(t(r[,index]))
-    colnames(data[[i]]) = r[,ArrayID]
+    data[[count]] = as.data.frame(t(r[,index]))
+    colnames(data[[count]]) = r[,ArrayID]
   }           
-  
-
-
+  count = count+1
 }
 }
 
 names(data) = foundColumns
-QC = assayDataNew(exprs=new("matrix"), se.exprs=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"),controlType=new("matrix"),storage.mode="list")
+QC = assayDataNew(exprs=new("matrix"), se.exprs=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"),controlType=new("matrix"), controlID=new("matrix"), storage.mode="list")
   
 
 for(i in 1:length(data)){

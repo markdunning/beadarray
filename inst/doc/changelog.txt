@@ -1,3 +1,12 @@
+1.7.7 - 17 March 2008
+- fixed bug in createBeadSummaryData() which was assigning the annotation slot the newly created ExpressionSetIllumina to 'illuminaProbeIDs' irrespective of what it was already set to.
+- simplified the checking around annoPkg in readIllumina() as well.
+- added 'dec="."' and 'quote=""' arguments to readBeadSummaryData() and 'dec="."' argument to readQC().  Also changed default settings in read.table() call within this function (i.e. as.is=TRUE, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE added).  The exprs, se.exprs etc. values should now be stored as class 'matrix' rather than 'data.frame'.
+- fixed bug in readQC() which was assigning items out of order when column names could not be found
+- added what='beta' as an option in getArrayData().  Made changes to createBeadSummaryData() etc to allow 'beta' to be handled
+- added ... argument to normaliseIllumina() to allow additional arguments to be passed to lumiT (if required).  Detection p-values are now passed on to the LumiBatch object when transform="vst".
+- updated readBeadSummaryData(), getArrayData(), normaliseIllumina() etc. documentation to include new arguments/options
+
 1.7.6 - 11 March 2008
 - changed readIllumina() to stop over-riding of singleChannel=TRUE setting when both Red and Green images are present and useImages=TRUE.  Now a warning message is given telling the user that while Red images are present only the Green images will be read in (i.e. keeping singleChannel=TRUE).
 - added new references to beadarray.rnw

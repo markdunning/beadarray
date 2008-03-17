@@ -36,8 +36,8 @@
 \section*{Introduction}
 
 \Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. The
-main feature of the package is the ability to read in an process the raw data
-from BeadScan (text files and tiffs) and store it in convenient R
+main feature of the package is the ability to read in and process the raw data
+from BeadScan (text files and tiffs) and store them in convenient R
 classes. Users may choose between different image processing and background
 correction methods. Alternatively, data which has been processed by Illumina's
 BeadStudio software may be read in (currently only single channel summary data
@@ -55,7 +55,11 @@ Illumina data please cite:\\
 Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S. \emph{beadarray: R classes and
   methods for Illumina bead-based data}. Bioinformatics, 2007 Aug 15; 23(16):2183-4. Epub 2007 Jun 22.\\
 
-If you are interested in the low-level analysis issues of Illumina BeadArray data, or make use of the spike-in data set made available as part of this study, please cite the paper below:\\
+If you are interested in the low-level of Illumina BeadArray data, or make use of the spike-in data set available from\\
+
+{\tt http://www.compbio.group.cam.ac.uk/Resources/spike/}\\
+
+please refer to the following paper:\\
 
 Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. BMC Bioinformatics. 2008 Feb 6;9(1):85.\\
 
@@ -65,7 +69,7 @@ Probe reannotation for Illumina expression arrays are available from:\\
 
 If you make use of these, please cite:\\
 
-Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation)
+Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).
 
 \section{Getting help with beadarray}
 

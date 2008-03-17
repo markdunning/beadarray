@@ -19,9 +19,7 @@ findAllOutliers(BLData, array, log=FALSE, n=3, what="G")
   \item{n}{Specify a cut-off for outliers as n median
     absolute deviations (MADs) from the median. The default value is 3}
   \item{what}{character string specifying which intensities to use.
-    Possibilities are \code{"G"}, \code{"Gb"} for single channel data
-    and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
-    two-colour data}
+    See \code{getArrayData} for a list of possibilities.}
 }
 \details{
   We find the outliers for each bead type on the array in

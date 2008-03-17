@@ -20,8 +20,7 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
     each column in the output represents a sample
   }
   \item{what}{character string specifying which intensities/values
-    to summarise. Choices are \code{"G"}, \code{"R"}, \code{"RG"},
-    \code{"M"} or  \code{"A"}}
+    to summarise. See \code{getArrayData} for a list of possibilities.}
   \item{probes}{Specify particular probes to summarise. If left NULL
     then all the probes on the first array are used.}
   \item{arrays}{Specify particular arrays to summarise. If left NULL

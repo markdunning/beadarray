@@ -79,7 +79,16 @@ setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method=
 setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
    if(is.na(array))
       stop("'array' out of range")
-   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A"))
+   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A", "beta"))
+
+  if(what=="beta") {
+     if(BLData@arrayInfo$channels=="two") {
+       data=BLData[[array]][["R"]]/(BLData[[array]][["G"]]+BLData[[array]][["R"]])
+     }
+     else {
+       stop("Need two-channel data to calculate per bead beta-values")
+     }
+   }
    if(what=="M") {
      if(BLData@arrayInfo$channels=="two") {
        data=log2.na(BLData[[array]][["R"]])-log2.na(BLData[[array]][["G"]])
@@ -177,7 +186,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
   if(is.character(arrays))
     arraynms = which(arraynms %in% arrays)
   len = length(arraynms)
-  what = match.arg(what, c("G", "R", "RG", "M", "A"))
+  what = match.arg(what, c("G", "R", "RG", "M", "A", "beta"))
   method = match.arg(method, c("illumina", "mean", "trim", "winsorize", "median"))
   method = match(method, c("illumina", "mean", "trim", "winsorize", "median"))
   if(method=="trim" && trim==0.5)
@@ -387,7 +396,7 @@ if(!is.null(pData(BSData)$sampleName))
 else
   sampleNames(BSData) = colnames(G)
 
-if(!is.null(BLData@annotation)) BSData@annotation="illuminaProbeIDs"
+if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
 else BSData@annotation=BLData@annotation
 BSData
 } #)

@@ -10,7 +10,7 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
                                    columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
                                      Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
                                    qc.columns = list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
-                                   qc.sep="\t", qc.skip=8, ...)
+                                   qc.sep="\t", qc.skip=8, dec=".", quote="")
 
 }
 \arguments{
@@ -36,7 +36,8 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
      expression arrays at present)}
   \item{qc.sep}{seperator character for qcFile}
   \item{qc.skip}{number of lines to skip at the top of qcFile}
-  \item{...}{further arguments to be passed to \code{read.table}}
+  \item{dec}{the character used in the file for decimal points}
+  \item{quote}{the set of quoting characters (disabled by default)}
   }
 
 \details{ 

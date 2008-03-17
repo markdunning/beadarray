@@ -78,8 +78,6 @@
   BLData = new("BeadLevelList")
   if(!is.null(annoPkg) && is.character(annoPkg))
      BLData@annotation=annoPkg
-  else
-     BLData@annotation=""
 #  endPos = new("list")
   usedIDs=NULL
   arrayInfo=list(arrayNames=as.character(arrays), 

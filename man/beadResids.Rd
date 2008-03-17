@@ -12,9 +12,8 @@ beadResids(BLData, what="G", array=1, log=TRUE,
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{what}{character string specifying which intensities to obtain.
-    Possibilities are \code{"G"} (single channel data) and \code{"R"}
-    (two-colour data)}
+  \item{what}{character string specifying which intensities to use in the 
+    calculation of residuals.  See \code{getArrayData} for a list of possibilities}
   \item{array}{numeric value giving the array we are interested in}
   \item{log}{if TRUE then use log2 intensities of each bead}
   \item{method}{chracter string specifying the summarisation method 

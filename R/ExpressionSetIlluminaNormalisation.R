@@ -26,8 +26,7 @@ exprs
 
 
 
-"medianNormalise" <-
-function(exprs, log=TRUE){
+medianNormalise = function(exprs, log=TRUE){
 
 exprs = as.matrix(exprs)
 
@@ -56,7 +55,7 @@ exprs
 }
 
 
-normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL) {
+normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL, ...) {
   rownms = rownames(exprs(BSData))
   colnms = colnames(exprs(BSData))
   transform = match.arg(transform, c("none", "vst", "log2"))
@@ -74,7 +73,7 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
           x = assayDataElementReplace(x, "exprs", exprs(BSData))
           x = assayDataElementReplace(x, "se.exprs", se.exprs(BSData))
           x = assayDataElementReplace(x, "beadNum", NoBeads(BSData))
-          BSData = assayDataElementReplace(BSData, "exprs", exprs(lumiT(x, method="vst")))
+          BSData = assayDataElementReplace(BSData, "exprs", exprs(lumiT(x, method="vst", ...)))
           rm(x)
   }
 
