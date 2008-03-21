@@ -1,3 +1,7 @@
+1.7.8 - 19 March 2008
+- added warning to readBeadSummaryData() when ProbeIDs non-unique and removed rows in question.  Updated help page to explain this.  Also set column names of exprs, se.exprs etc. matrices to be more sensible (removed parts of heading listed in 'column'.  Also added check that order of arrays and number of arrays is consistent between main data set (assayData slot) and controls (QC slot).
+- did the same to readQC(), and added new arguments 'controlID' and 'quote' to make behaviour more consistent with readBeadSummaryData().  Removed 'controlID' and 'controlType' from columns argument.  Changes carried through to readBeadSummaryData() (i.e. rownames now set to exprs, se.exprs, etc).  Changed default skip from 7 to 8.  Updated help page.
+
 1.7.7 - 17 March 2008
 - fixed bug in createBeadSummaryData() which was assigning the annotation slot the newly created ExpressionSetIllumina to 'illuminaProbeIDs' irrespective of what it was already set to.
 - simplified the checking around annoPkg in readIllumina() as well.

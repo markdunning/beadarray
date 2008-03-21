@@ -6,11 +6,15 @@ Function to read the output of Illumina's software into beadarray
 }
 \usage{
 readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
-header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
-                                   columns = list(exprs = "AVG_Signal", NoBeads = "Avg_NBEADS",
-                                     Detection="Detection", se.exprs="BEAD_STDERR", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
-                                   qc.columns = list(controlID="ProbeID", controlType="TargetID", exprs="AVG_Signal", Detection="Detection", Narrays="NARRAYS", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", arrayStDev="ARRAY_STDEV"), annoPkg=NULL,
-                                   qc.sep="\t", qc.skip=8, dec=".", quote="")
+                    header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
+                    columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR",
+                        NoBeads = "Avg_NBEADS", Detection="Detection Pval",
+			Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
+                    qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", 
+			NoBeads="Avg_NBEADS", Detection="Detection Pval", 
+			Narrays="NARRAYS", arrayStDev="ARRAY_STDEV"), 
+		    controlID="ProbeID", annoPkg=NULL, qc.sep="\t", qc.skip=8, 
+                    dec=".", quote="")
 
 }
 \arguments{
@@ -20,17 +24,19 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
     control probe profile exported from BeadStudio}
   \item{sampleSheet}{optional character string used to specify a sample
     infomation file}
-  \item{sep}{seperator character for the dataFile}
+  \item{sep}{field separator character for the dataFile}
   \item{header}{set to TRUE if the dataFile contains column headings}
   \item{skip}{number of header lines to ignore at the top of dataFile}
-  \item{ProbeID}{name of the column heading that contains the probe IDs
+  \item{ProbeID}{name of the column that contains the probe IDs
     that can be used to uniquely identify each row}
   \item{columns}{list defining which column headings are to be read from
     dataFile and which slots in the ExpressionSetIllumina object they
     correspond to}
   \item{qc.columns}{list defining which column headings are to be read
     from the qcFile and which items in the QCInfo slot of
-     ExpressionSetIllumina they correspond to}  
+     ExpressionSetIllumina they correspond to}
+  \item{controlID}{character string specifying the column that contains 
+     the (unique) control probe IDs}
   \item{annoPkg}{character string specifying the annotation package 
      name for the arrays being read in (only available for certain 
      expression arrays at present)}
@@ -46,8 +52,9 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
   The format of the BeadStudio output may depend on the version number.
   For example, the file may be comma or tab seperated of have header
   information at the top of the file. The parameters sep and skip
-  can be used to adapt the function as required.  Currently, the default
-  options have been set to handle version 3 output.
+  can be used to adapt the function as required (i.e. skip=7 is 
+  appropriate for data from earlier version of BeadStudio, and skip=0 is
+  required if header information hasn't been exported.
 
   The format of the BeadStudio file is assumed to have one row for each
   probe sequence in the experiment and a set number of columns for each
@@ -77,14 +84,15 @@ header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
   for the contents of the file.  If the 'ControlGeneProfile' is exported, 
   from BeadStudio, you will need to set controlID="TargetID" in qc.columns.
 
-   Sample sheet information can also be used. This is a file format used
+  Sample sheet information can also be used. This is a file format used
   by Illumina to specify the contents of each array in the experiment.
 
-  Note that if the probe identifiers are non-unique, row numbers will be 
-  used to identify the beads.  This may occur if the 'SampleGeneProfile' 
-  is exported from BeadStudio and/or ProbeID="TargetID" is specified (the 
-  "ProbeID" column has a unique identifier for each bead, whereas the 
-  "TargetID" may not, as multiple beads can target the same transcript).
+  Note that if the probe identifiers are non-unique, the duplicated 
+  rows are removed.  This may occur if the 'SampleGeneProfile' is 
+  exported from BeadStudio and/or ProbeID="TargetID" is specified 
+  (the "ProbeID" column has a unique identifier in the SampleProebProfile,   
+  whereas the "TargetID" may not, as multiple beads   
+  can target the same transcript).
 }
 
 \value{
