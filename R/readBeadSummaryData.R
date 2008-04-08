@@ -6,7 +6,7 @@ if(!(is.null(sampleSheet))){
 samples = read.table(sampleSheet, sep=",", header=TRUE, skip=7)
 }
   
-r = read.table(as.character(dataFile), sep=sep, header=TRUE, skip=skip, dec=dec, quote=quote, as.is=TRUE, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
+r = read.table(as.character(dataFile), sep=sep, header=TRUE, skip=skip, dec=dec, quote=quote, as.is=TRUE, row.names=NULL, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
 
 #foundColumns = NULL
 
@@ -21,7 +21,7 @@ ProbeID = r[,index]
 #check for non-unique probe names
 if(length(ProbeID) != length(unique(ProbeID))){
       notdup = !duplicated(ProbeID)
-      warning("ProbeIDs non-unique: consider setting 'ProbeID' to another column containing unique values. ",   sum(!notdup), " repeated entries have been removed.\n")
+      warning("ProbeIDs non-unique: consider setting 'ProbeID' to another column containing unique identifiers. ",   sum(!notdup), " repeated entries have been removed.\n")
       ProbeID = ProbeID[notdup]
       r = r[notdup,]
 #    warning("ProbeIDs non-unique: consider setting 'ProbeID' to another column containing unique values.  Adding extension '.repX' to Xth replicate ID to enforce uniqueness.\n")
@@ -35,7 +35,6 @@ if(length(ProbeID) != length(unique(ProbeID))){
 
 data = list()
 
-
 for(i in 1:length(columns)){
 
 
@@ -43,7 +42,7 @@ for(i in 1:length(columns)){
 
   if(length(index) == 0){
     cat("Could not find a column called: ", columns[[i]], "\n")
-    data[[i]] = NULL
+    data[[i]] = "" 
   }
   else{
 
@@ -69,7 +68,7 @@ if(!is.null(annoPkg) && is.character(annoPkg))
 for(i in 1:length(data)){
   index = which(names(assayData(BSData))== names(data)[i])
 
-  if(is.null(data[[i]])) {
+  if(length(data[[i]])==1 && data[[i]]=="") {
     cat("No values stored in slot", names(data)[i], "\n")
   }
 
@@ -157,7 +156,7 @@ for(i in 1:length(columns)){
 
   if(length(index) == 0){
     cat("[readQC] Could not find a column called: ", columns[[i]], "\n")
-    data[[i]] = NULL
+    data[[i]] = ""
   }
   else{
 #  foundColumns = append(foundColumns,names(columns)[i], "\n")  
@@ -181,7 +180,7 @@ QC = assayDataNew(exprs=new("matrix"), se.exprs=new("matrix"), Detection=new("ma
 
 for(i in 1:length(data)){
 
-  if(is.null(data[[i]])) {
+  if(length(data[[i]])==1 && data[[i]]=="") {
     cat("[readQC] No values stored in slot", names(data)[i], "\n")
   }
   else {

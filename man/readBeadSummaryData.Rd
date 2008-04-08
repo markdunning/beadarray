@@ -62,15 +62,16 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
   BeadStudio. These can include the average expression for each probe,
   the standard error and the number of beads and more.
 
-  With version 2 of BeadStudio it is possible to export annotation and
-  sequence information. We recommend this data is not exported if the
-  file is to be read into beadarray as it can be retrieved later on from
-  other Bioconductor packages.
-
   It is assumed that the average bead intensities for each
   array appear in columns with headings of the form 'AVG\_Signal-ARRAY1',
   'AVG\_Signal-ARRAY2',...,'AVG\_Signal-ARRAYN' for the N arrays found in the
   file. All other columns headings are found in the same way.
+
+  NOTE:  With version 2 of BeadStudio it is possible to export annotation and
+  sequence information along with the probe intensities.  We \_don't\_ recommend 
+  exporting this information, as special characters found in the annotation 
+  columns can cause problems when reading in the data.  This annotation information
+  can be retrieved later on from other Bioconductor packages.
 
   The default object created by readBeadSummaryData is an
   ExpressionSetIllumina object with enough slots to store all the
@@ -90,9 +91,9 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
   Note that if the probe identifiers are non-unique, the duplicated 
   rows are removed.  This may occur if the 'SampleGeneProfile' is 
   exported from BeadStudio and/or ProbeID="TargetID" is specified 
-  (the "ProbeID" column has a unique identifier in the SampleProebProfile,   
-  whereas the "TargetID" may not, as multiple beads   
-  can target the same transcript).
+  (the "ProbeID" column has a unique identifier in the SampleProbeProfile,
+  whereas the "TargetID" may not, as multiple beads can target the same 
+  transcript).
 }
 
 \value{
