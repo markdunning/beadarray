@@ -1,26 +1,39 @@
 \name{ExpressionSetIllumina}
 \docType{class}
-\alias{backgroundNormalise, ExpressionSetIllumina-methods}
-\alias{backgroundNormalise, ExpressionSetIllumina,ExpressionSetIllumina-method}
 \alias{class:ExpressionSetIllumina}
 \alias{ExpressionSetIllumina-class}
-\alias{exprs<-,ExpressionSetIllumina,ANY-method}
-\alias{exprs<-,ExpressionSetIllumina,matrix-method}
-\alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
+
 \alias{exprs,ExpressionSetIllumina-method}
+\alias{exprs<-,ExpressionSetIllumina,matrix-method}
+
 \alias{se.exprs,ExpressionSetIllumina-method}
+\alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
+
+\alias{NoBeads}
+\alias{NoBeads,ExpressionSetIllumina-method}
+\alias{NoBeads<-}
+\alias{NoBeads<-,ExpressionSetIllumina,matrix-method}
+
+\alias{Detection}
+\alias{Detection,ExpressionSetIllumina-method}
+\alias{Detection<-}
+\alias{Detection<-,ExpressionSetIllumina,matrix-method}
+
 \alias{QCInfo}
+\alias{QCInfo<-}
+\alias{QCInfo<-,ExpressionSetIllumina,list-method}
 \alias{QCInfo,ExpressionSetIllumina-method}
+
 \alias{[,ExpressionSetIllumina-method}
+
 \alias{initialize,ExpressionSetIllumina-method}
+
 \alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
 \alias{combine,ExpressionSetIllumina,ANY-method}
 \alias{show,ExpressionSetIllumina-method}
-\alias{NoBeads,ExpressionSetIllumina-method}
-\alias{Detection,ExpressionSetIllumina-method}
-\alias{NoBeads}
-\alias{Detection}
+
 \alias{getVariance,ExpressionSetIllumina-method}
+
 
 \title{
   Class to Contain Objects Describing High-Throughput Illumina
@@ -38,13 +51,13 @@
 \section{Creating Objects}{
   \code{new('ExpressionSetIllumina',
     phenoData = [AnnotatedDataFrame],
-    experimentData = [MIAME],
-    annotation = [character],
     exprs = [matrix],
     se.exprs = [matrix],
     NoBeads = [matrix],
     Detection = [matrix],
-    reporterInfo = [data.frameOrNULL],
+    annotation = [character],
+    featureData = [AnnotatedDataFrame],
+    experimentData = [MIAME],
     ...)
   }
   \code{ExpressionSetIllumina} instances are usually created through
@@ -70,7 +83,7 @@
     \item{\code{phenoData}:}{See \code{\link[Biobase:eSet]{eSet}}}
     \item{\code{experimentData}:}{See \code{\link[Biobase:eSet]{eSet}}}
     \item{\code{annotation}:}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{reporterInfo}:}{annotation for SNPs, usually will contain a 
+    \item{\code{featureData}:}{annotation for SNPs, usually will contain a 
       \code{CHR} and a \code{MapInfo} column for genomic localization }
   }
  }
@@ -92,7 +105,7 @@
      \item{\code{getVariance(ExpressionSetIllumina)}}{Calculate
 	  bead-type specific variance using \code{se.exprs} and
 	  \code{NoBeads} from the \code{AssayData} slot.}
-     \item{\code{QCInfo(ExpressionSetIllumina)}}{Access elements named \code{QC} in the \code{AssayData}
+     \item{\code{QCInfo(ExpressionSetIllumina)},\code{QCInfo(ExpressionSetIllumina,list)<-}}{Access elements named \code{QC} in the \code{AssayData}
        slot.}
      \item{\code{object[(index)}:}{Conducts subsetting of matrices and
        phenoData and reporterInfo components }

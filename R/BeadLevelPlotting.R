@@ -171,7 +171,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
   if (is.null(low)) 
     low = c(1, 1, 1)
   if (is.null(high)) 
-    high = c(0, 1, 0)
+    high = c(0, 0, 1)
 #  if(whatToPlot=="G" | whatToPlot=="Gb")
     col = rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
           high[2], len = ncolors), seq(low[3], high[3], len = ncolors))

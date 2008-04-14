@@ -8,7 +8,7 @@ Reads the standard format of Illumina quality control information and produces d
 }
 
 \usage{
-readQC(file, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), controlID = "ProbeID", sep="\t", skip=8, header=TRUE, dec=".", quote="")
+readQC(file, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval"), controlID = "ProbeID", sep="\t", skip=8, header=TRUE, dec=".", quote="")
 
 }
 \arguments{
@@ -24,12 +24,11 @@ readQC(file, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBead
 }
 \details{
 
-The format of the quality control
+  The format of the quality control
   files differs slightly between BeadStudio versions 1 and 2. Version 1 of the
   software gives one averaged value for each control type, whereas version 2
   gives summarised values for each control of a particular type. The user does
   not have to know the version of BeadStudio used to generate the file.
-
 
   Once read in, the quality control information can be very useful for
   diagnostic purposes.

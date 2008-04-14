@@ -1,3 +1,11 @@
+1.7.10 - 14 April 2008
+- default high colour in imageplot changed from green to blue.  Made a note of this in imageplot.Rd
+- removed unused slots from ExpressionSetIllumina (NArrays, AVG_SD_Arrays and DiffScore)
+- edited 'columns' arguments in readBeadSummaryData and readQC to no longer have NArrays and array_St_Dev items.  Also changed function to pad out columns which could not be found with NAs of the appropriate dimension.  Also added phenoData information when sampleSheet not supplied (column names of exprs matrix).  Also added stop() with message telling user to check their data or the 'skip' argument when no data is found in dataFile.
+- added se.exprs assignment operator and commented out repeated lines in methods-ExpressionSetIllumina.R.  Also added more complete signature(object="", value="") in setMethod() declarations.  Also change assignment QC<- to QCInfo<- for consistency. Updated subsetting method for ExpressionSetIllumina.
+- new function beadarayUsersGuide() [similar to limmaUsersGuide]
+- NAMESPACE: now export NoBeads<- and Detection<-
+
 1.7.9 - 8 April 2008
 - fixed bug in readBeadSummaryData() introduced in 1.7.8.  Also added row.names=NULL argument to read.table() in readBeadSummaryData() and readQC()
 

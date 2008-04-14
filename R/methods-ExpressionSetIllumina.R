@@ -1,16 +1,13 @@
 
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
-                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, Narrays=Narrays, arrayStDev=arrayStDev, DiffScore = DiffScore, storage.mode="list"),
+                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
 
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
                    se.exprs=new("matrix"),
                    NoBeads=new("matrix"),
                    Detection=new("matrix"),
-                   Narrays=new("matrix"),
-                   arrayStDev =new("matrix"),
-                   DiffScore=new("matrix"),
                    annotation = character(),
                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
@@ -34,8 +31,12 @@ setMethod("initialize", "ExpressionSetIllumina",
 
 
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
-          x<-callNextMethod(x, i, j, ..., drop=drop)
-          if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
+          x<-callNextMethod() # x, i, j, ..., drop=drop)
+#        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
+          if (!missing(j)) {
+             for(k in 1:length(x@QC))
+                 x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
+          }
           x
 })
 
@@ -45,11 +46,43 @@ setValidity("ExpressionSetIllumina", function(object) {
 })
 
 
-setMethod("exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
+setMethod("exprs", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
 
-setMethod("se.exprs", c("ExpressionSetIllumina"), function(object) assayDataElement(object, "se.exprs"))
+#setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
 
-setMethod("show", "ExpressionSetIllumina", function(object) {
+setReplaceMethod("exprs", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
+	assayDataElementReplace(object, "exprs", value)
+})
+
+setMethod("se.exprs", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "se.exprs"))
+
+#setGeneric("se.exprs<-", function(object, value) standardGeneric("se.exprs<-"))
+
+setReplaceMethod("se.exprs", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
+	assayDataElementReplace(object, "se.exprs", value)
+})
+
+setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
+
+setMethod("NoBeads", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "NoBeads"))
+
+setGeneric("NoBeads<-", function(object, value) standardGeneric("NoBeads<-"))
+
+setReplaceMethod("NoBeads", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
+	assayDataElementReplace(object, "NoBeads", value)
+})
+
+setGeneric("Detection", function(object) standardGeneric("Detection"))
+
+setMethod("Detection", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "Detection"))
+
+setGeneric("Detection<-", function(object, value) standardGeneric("Detection<-"))
+
+setReplaceMethod("Detection", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
+	assayDataElementReplace(object, "Detection", value)
+})
+
+setMethod("show", signature(object="ExpressionSetIllumina"), function(object) {
   callNextMethod(object)
   
   cat("QC Information\n")
@@ -64,57 +97,32 @@ setMethod("show", "ExpressionSetIllumina", function(object) {
 
 setGeneric("QCInfo", function(object) standardGeneric("QCInfo"))
 
-setMethod("QCInfo", "ExpressionSetIllumina", function(object) object@QC)
+setMethod("QCInfo", signature(object="ExpressionSetIllumina"), function(object) object@QC)
 
-setGeneric("QC<-", function(object, value) standardGeneric("QC<-"))
+setGeneric("QCInfo<-", function(object, value) standardGeneric("QC<-"))
 
-setReplaceMethod("QC", "ExpressionSetIllumina", function(object, value){
+setReplaceMethod("QCInfo", signature(object="ExpressionSetIllumina", value="list"), function(object, value){
 	object@QC <- value
 	object
 })
-
-setGeneric("NoBeads<-", function(object, value) standardGeneric("NoBeads<-"))
-
-setReplaceMethod("NoBeads", "ExpressionSetIllumina", function(object, value){
-	assayDataElementReplace(object, "NoBeads", value)
-})
-
-setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
-
-setReplaceMethod("exprs", "ExpressionSetIllumina", function(object, value){
-	assayDataElementReplace(object, "exprs", value)
-})
-
-
-
-setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
-
-setMethod("NoBeads", "ExpressionSetIllumina", function(object) assayDataElement(object, "NoBeads"))
-
-setGeneric("Detection<-", function(object, value) standardGeneric("Detection<-"))
-
-setReplaceMethod("Detection", "ExpressionSetIllumina", function(object, value){
-	assayDataElementReplace(object, "Detection", value)
-})
-
-
-setGeneric("Detection", function(object) standardGeneric("Detection"))
-
-setMethod("Detection", "ExpressionSetIllumina", function(object) assayDataElement(object, "Detection"))
 
 setGeneric("getVariance", function(object, offset=0) standardGeneric("getVariance"))
 
 setMethod("getVariance", "ExpressionSetIllumina", function(object, offset=0) assayDataElement(object, "se.exprs")^2*assayDataElement(object, "NoBeads") + offset)
 
+#setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
 
-setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
-  assayDataElementReplace(object, "exprs", value)
-})
+#setReplaceMethod("exprs", "ExpressionSetIllumina", function(object, value){
+#	assayDataElementReplace(object, "exprs", value)
+#})
 
-setReplaceMethod("se.exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
-  assayDataElementReplace(object, "se.exprs", value)
-})
+#setReplaceMethod("exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
+#  assayDataElementReplace(object, "exprs", value)
+#})
 
+#setReplaceMethod("se.exprs", c("ExpressionSetIllumina", "matrix"), function(object, value) {
+#  assayDataElementReplace(object, "se.exprs", value)
+#})
 
 .mergeAssayData<-function(x, y, newdimnames) {
   # this is derived from assayData combine method

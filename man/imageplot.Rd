@@ -56,6 +56,7 @@ imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
 
   An imageplot of the log base 2 foreround intensities is produced by default.
   Other values can be plotted by changing the \code{whatToPlot} argument.
+  The default colour scheme ranges from white for low values to blue for high values.
 }
 \value{
 Plot is produced on current graphical device.

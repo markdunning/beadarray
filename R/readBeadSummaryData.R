@@ -1,11 +1,10 @@
-readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="ProbeID",skip=8, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval", Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"), qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval", Narrays="NARRAYS", arrayStDev="ARRAY_STDEV"), controlID="ProbeID", annoPkg=NULL, 
-qc.sep="\t", qc.skip=8, dec=".", quote="")
+readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="ProbeID",skip=8, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval"), qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"), controlID="ProbeID", annoPkg=NULL, qc.sep="\t", qc.skip=8, dec=".", quote="")
 {
 
 if(!(is.null(sampleSheet))){ 
-samples = read.table(sampleSheet, sep=",", header=TRUE, skip=7)
+samples = read.table(sampleSheet, sep=",", header=TRUE, skip=7, as.is=TRUE)
 }
-  
+
 r = read.table(as.character(dataFile), sep=sep, header=TRUE, skip=skip, dec=dec, quote=quote, as.is=TRUE, row.names=NULL, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
 
 #foundColumns = NULL
@@ -32,30 +31,39 @@ if(length(ProbeID) != length(unique(ProbeID))){
 #    }
 }
 
-
-data = list()
+data = index = list()
+ncols = NULL
+nrows = nrow(r)
 
 for(i in 1:length(columns)){
 
-
-  index = grep(columns[[i]], colnames(r))
-
-  if(length(index) == 0){
+  index[[i]] = grep(columns[[i]], colnames(r))
+  ncols[i] = length(index[[i]])
+  if(ncols[i] == 0){
     cat("Could not find a column called: ", columns[[i]], "\n")
-    data[[i]] = "" 
   }
-  else{
+}
 
-#  foundColumns = append(foundColumns,names(columns)[i])  
-  data[[i]] = r[,index]
+if(sum(ncols)==0) {
+  stop("No data found, check your file or try changing the \'skip\' argument")
+}
 
+i = seq(1:length(ncols))[ncols==max(ncols)][1]
+defColNames = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
 
+for(i in 1:length(columns)){
+  if(ncols[i]==max(ncols)) {
+    data[[i]] = r[,index[[i]]]
+    colnames(data[[i]]) = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
+  }
+  else { # data missing
+    data[[i]] = matrix(NA, nrows, max(ncols))
+    colnames(data[[i]]) = defColNames
+  }
   rownames(data[[i]]) = ProbeID
-  colnames(data[[i]]) = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index])
-  if(!(is.null(sampleSheet))){
-  colnames(data[[i]]) = as.character(samples[,4])
-}
-}
+#  if(!(is.null(sampleSheet))){
+#    colnames(data[[i]]) = as.character(samples[,4])
+#  }
 }
 
 names(data) = names(columns) #foundColumns
@@ -68,13 +76,11 @@ if(!is.null(annoPkg) && is.character(annoPkg))
 for(i in 1:length(data)){
   index = which(names(assayData(BSData))== names(data)[i])
 
-  if(length(data[[i]])==1 && data[[i]]=="") {
-    cat("No values stored in slot", names(data)[i], "\n")
+  if(ncols[i]==0) {
+    cat("Missing data - NAs stored in slot", names(data)[i], "\n")
   }
 
-  else {
-    assayData(BSData)[[index]] = as.matrix(data[[i]])
-  }
+  assayData(BSData)[[index]] = as.matrix(data[[i]])
 }
 
 if(!(is.null(qcFile))){
@@ -91,17 +97,26 @@ if(!(is.null(qcFile))){
 }
 
 if(!(is.null(sampleSheet))){
-
-p=new("AnnotatedDataFrame", samples,data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
-phenoData(BSData) = p
-
+  colmatch = grep(colnames(exprs(BSData)), samples)
+  rownames(samples) = samples[,colmatch]
+  ord = match(colnames(exprs(BSData)), samples[,colmatch])
+  p = new("AnnotatedDataFrame", samples[ord,], data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
 }
+
+else {
+  p = new("AnnotatedDataFrame", data.frame(sampleID=colnames(exprs(BSData)),row.names=colnames(exprs(BSData))))
+}
+
+featureData = new("AnnotatedDataFrame", data=data.frame(ProbeID,row.names=ProbeID))
+
+phenoData(BSData) = p
+featureData(BSData) = featureData
 
 BSData
 
 }
 
-readQC=function(file, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval", Narrays="NARRAYS", arrayStDev="ARRAY_STDEV"), controlID = "ProbeID", sep="\t", skip=8, header=TRUE, dec=".", quote=""){
+readQC=function(file, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"), controlID = "ProbeID", sep="\t", skip=8, header=TRUE, dec=".", quote=""){
 
 ##
   
@@ -131,64 +146,62 @@ readQC=function(file, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", N
     warning("controlID does not have a match in", file, "check, qc.skip and controlID arguments.  Using numbers as rownames")
     ProbeID = seq(1:nrow(r))
   }
-     
- ArrayID = grep("ArrayID", colnames(r))
- 
- if(length(ArrayID) != 0){
-   
- BeadStudioVersion=1 
-  
-}
 
+ ArrayID = grep("ArrayID", colnames(r))
+
+ if(length(ArrayID) != 0){
+ BeadStudioVersion=1
+}
 
  else BeadStudioVersion=2 
 
-  
 #  foundColumns = NULL
 
 
-data = list()
+data = index = list()
+ncols = NULL
+nrows = nrow(r)
 
-# count = 1
 for(i in 1:length(columns)){
-
-  index = grep(columns[[i]], colnames(r))
-
-  if(length(index) == 0){
+  index[[i]] = grep(columns[[i]], colnames(r))
+  ncols[i] = length(index[[i]])
+  if(ncols[i] == 0){
     cat("[readQC] Could not find a column called: ", columns[[i]], "\n")
-    data[[i]] = ""
   }
-  else{
-#  foundColumns = append(foundColumns,names(columns)[i], "\n")  
-
-  if(BeadStudioVersion == 2) { 
-    data[[i]] = as.matrix(r[,index])
-  }
-  else {
-    data[[i]] = as.matrix(t(r[,index]))
-    colnames(data[[i]]) = r[,ArrayID]
-  }           
-#  count = count+1
-  rownames(data[[i]]) = ProbeID
-  colnames(data[[i]]) = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index])
 }
+
+i = seq(1:length(ncols))[ncols==max(ncols)][1]
+defColNames = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
+
+for(i in 1:length(columns)){
+  if(ncols[i]==max(ncols)) {
+    if(BeadStudioVersion == 2) { 
+      data[[i]] = as.matrix(r[,index[[i]]])
+      colnames(data[[i]]) = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
+    }
+    else {
+      data[[i]] = as.matrix(t(r[,index[[i]]]))
+      colnames(data[[i]]) = r[,ArrayID]
+    }
+  }
+  else { # data missing
+    data[[i]] = matrix(NA, nrows, max(ncols))
+    colnames(data[[i]]) = defColNames
+  }
+  rownames(data[[i]]) = ProbeID
 }
 
 names(data) = names(columns) # foundColumns
 QC = assayDataNew(exprs=new("matrix"), se.exprs=new("matrix"), Detection=new("matrix"), NoBeads=new("matrix"), storage.mode="list")
-  
 
 for(i in 1:length(data)){
+  index = which(names(QC)== names(data)[i])
 
-  if(length(data[[i]])==1 && data[[i]]=="") {
-    cat("[readQC] No values stored in slot", names(data)[i], "\n")
+  if(ncols[i]==0) {
+    cat("[readQC] Missing data - NAs stored in slot", names(data)[i], "\n")
   }
-  else {
-    index = which(names(QC)== names(data)[i])
-    if(length(index)>0){
-      QC[[index]] = data[[i]]
-    }
-  }
+
+  QC[[index]] = data[[i]]
 
 }
 

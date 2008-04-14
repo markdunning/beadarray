@@ -8,11 +8,9 @@ Function to read the output of Illumina's software into beadarray
 readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
                     header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
                     columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR",
-                        NoBeads = "Avg_NBEADS", Detection="Detection Pval",
-			Narrays="NARRAYS", arrayStDev = "ARRAY_STDEV"),
+                        NoBeads = "Avg_NBEADS", Detection="Detection Pval"),
                     qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", 
-			NoBeads="Avg_NBEADS", Detection="Detection Pval", 
-			Narrays="NARRAYS", arrayStDev="ARRAY_STDEV"), 
+			NoBeads="Avg_NBEADS", Detection="Detection Pval"), 
 		    controlID="ProbeID", annoPkg=NULL, qc.sep="\t", qc.skip=8, 
                     dec=".", quote="")
 
@@ -74,10 +72,8 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
   can be retrieved later on from other Bioconductor packages.
 
   The default object created by readBeadSummaryData is an
-  ExpressionSetIllumina object with enough slots to store all the
-  columns that it is possible to export from BeadStudio. The columns
-  parameter can be used to select which slots can be found from the data
-  and the relevant column headings.
+  ExpressionSetIllumina object. The columns parameter can be used to select 
+  the relevant column headings to read in.
   
   If quality control information has been exported from BeadStudio
   (control probe profile) this may be read into beadarray too. The

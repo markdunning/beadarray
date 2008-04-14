@@ -2,8 +2,8 @@ useDynLib(beadarray)
 import(tools, Biobase)
 
 exportClasses(ExpressionSetIllumina, BeadLevelList)
-exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", dim, assayData, initialize, NoBeads, Detection, backgroundCorrect, QCInfo, copyBeadLevelList, combineBeadLevelLists, getProbeIntensities, getArrayData, arrayNames, numBeads, getVariance, combine)
+exportMethods(initialize, show,se.exprs, exprs, "[","[[","$", phenoData, pData,sampleNames,samples, "se.exprs<-","exprs<-", "NoBeads<-", "Detection<-", "QCInfo<-", dim, assayData, initialize, NoBeads, Detection, backgroundCorrect, QCInfo, copyBeadLevelList, combineBeadLevelLists, getProbeIntensities, getArrayData, arrayNames, numBeads, getVariance, combine)
 
 
-export(SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, plotBeadIntensities, plotBeadLocations, imageplot, plotMAXY, plotMA, plotRG, plotXY, plotOnSAM, readQC, readIllumina, readBeadSummaryData, findBeadStatus, boxplotBeads, createBeadSummaryData, findAllOutliers, qcBeadLevel, plotBeadDensities, beadResids, readBGX, normaliseIllumina)
+export(SAMSummary, BeadChipSummary, medianNormalise, rankInvariantNormalise, plotBeadIntensities, plotBeadLocations, imageplot, plotMAXY, plotMA, plotRG, plotXY, plotOnSAM, readQC, readIllumina, readBeadSummaryData, findBeadStatus, boxplotBeads, createBeadSummaryData, findAllOutliers, qcBeadLevel, plotBeadDensities, beadResids, readBGX, normaliseIllumina, beadarrayUsersGuide)
 
