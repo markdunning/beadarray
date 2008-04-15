@@ -44,8 +44,13 @@ BeadStudio software may be read in (currently only single channel summary data
 can be imported).
 
 The documentation for this package is split into two separate user guides for
-raw (bead level) data and summarised (bead summary) data. These documents may be found in the inst/doc directory
-of the downloaded beadarray folder, or can be downloaded from the bioconductor website.
+raw (bead level) data and summarised (bead summary) data.  These documents may 
+be accessed using the function \Rfunction{beadarrayUsersGuide()}, i.e.
+
+{\tt beadarrayUsersGuide(topic="beadlevel")}
+{\tt beadarrayUsersGuide(topic="beadsummary")}
+
+The pdfs are also available from the Bioconductor website.
 
 \section{Citing beadarray}
 

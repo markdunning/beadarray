@@ -13,7 +13,7 @@ plotMAXY(exprs, arrays, log = TRUE, genesToLabel=NULL,
 }
 \arguments{
   \item{exprs}{an expression matrix from an ExpressionSet or eSet}
-  \item{arrays}{numeric vector giving the indices of the arrays in BSData we want to plot}  
+  \item{arrays}{numeric vector giving the indices of the arrays (columns of exprs) we want to plot}
   \item{log}{if TRUE then all values will be log2-transformed before plotting}
   \item{genesToLabel}{vector of genes to highlight on the plot. These must match the rownames of exprs}
   \item{labels}{vector of array names to display on the plot}

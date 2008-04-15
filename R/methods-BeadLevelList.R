@@ -378,6 +378,7 @@ else{
     BSData = new("ExpressionSetIllumina")
     assayData(BSData)=assayDataNew(exprs = G, se.exprs = GBeadStDev, NoBeads = GNoBeads,storage.mode="list")
     rownames(exprs(BSData)) = rownames(se.exprs(BSData)) = rownames(NoBeads(BSData)) = probes
+    featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ProbeID=probes,row.names=probes))
 
 }
   

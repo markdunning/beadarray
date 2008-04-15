@@ -31,7 +31,9 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, ...)
 
   When \code{transform="vst"} the variance stabilising transformation
   from the 'lumi' package is applied to the data.
-  Refer to the 'lumi' documentation for further particulars.
+  Refer to the 'lumi' documentation for further particulars.  Note that 
+  the Detection P values are only passed on when they are available 
+  (i.e. not NA) 
 
   For further particulars on the different normalisation methods options
   refer to the individual help pages (\code{?normalize.quantiles} for

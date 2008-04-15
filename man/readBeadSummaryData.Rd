@@ -108,6 +108,6 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
 #dataFile = "raw_data.csv"
 #sampleSheet = "raw_data_sample_sheet.csv"
 #qcFile = "raw_data_qcinfo.csv"
-#BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet,skip=7, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
+#BSData <- readBeadSummaryData(dataFile, qcFile=qcFile, sampleSheet=sampleSheet, skip=7, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDEV", NoBeads="Avg_NBEADS"), qc.columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"),qc.sep="," ,sep=",", qc.skip=7)
 }
 \keyword{IO}

@@ -16,6 +16,9 @@ if(length(index)!=0){
 ProbeID = r[,index]
 }
 
+else {
+  stop("Could not find a column called ", ProbeID, " to use as bead identifiers.  Check your file and try changing the \'ProbeID\' and/or \'skip\' arguments.")
+}
 
 #check for non-unique probe names
 if(length(ProbeID) != length(unique(ProbeID))){
@@ -54,7 +57,15 @@ defColNames = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[i
 for(i in 1:length(columns)){
   if(ncols[i]==max(ncols)) {
     data[[i]] = r[,index[[i]]]
-    colnames(data[[i]]) = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
+    colNames = sub(paste("(.|)", columns[[i]], "(.|)", sep=""), "", colnames(r)[index[[i]]])
+    dupColNames = unique(colNames[duplicated(colNames)])
+    if(length(dupColNames)!=0) {
+      for(j in 1:length(dupColNames)) {
+        sel = colNames==dupColNames[j]
+        colNames[sel] = paste(colNames[sel], ".rep", seq(1:sum(sel)), sep="")
+      }
+    }
+    colnames(data[[i]]) = colNames
   }
   else { # data missing
     data[[i]] = matrix(NA, nrows, max(ncols))
@@ -84,23 +95,45 @@ for(i in 1:length(data)){
 }
 
 if(!(is.null(qcFile))){
-  BSData@QC = readQC(file=qcFile, sep=qc.sep, skip=qc.skip, columns=qc.columns, controlID=controlID, dec=dec, quote=quote)
-  if(ncol(BSData@QC$exprs)!=ncol(exprs(BSData)))
-     stop("Number of arrays doesn't agree: ", ncol(exprs(BSData)), " in main data set, versus ", ncol(BSData@QC$exprs), " in QC data.  Check your files.")
-  notagree = colnames(BSData@QC$exprs)!=colnames(exprs(BSData))
-  if(sum(notagree)!=0){
-     for(i in 1:length(BSData@QC)) {
-       reorder = sapply(colnames(BSData@QC[[i]]), FUN="grep", colnames(exprs(BSData)))
-       BSData@QC[[i]] = BSData@QC[[i]][, reorder]
-     }
+  QC = readQC(file=qcFile, sep=qc.sep, skip=qc.skip, columns=qc.columns, controlID=controlID, dec=dec, quote=quote)
+  if(ncol(QC$exprs)!=ncol(exprs(BSData))) {
+     warning("Number of arrays doesn't agree: ", ncol(exprs(BSData)), " in dataFile, versus ", ncol(QC$exprs), " in qcFile.  qcFile ignored.")
+  }
+  else {
+    reorder = grep(colnames(QC[[i]]), colnames(exprs(BSData)), extended=FALSE)
+    notagree = colnames(QC$exprs)!=colnames(exprs(BSData))
+    if(sum(notagree)==0) {
+       BSData@QC = QC
+    }
+    else {
+      if(length(reorder)!=0) {
+          for(i in 1:length(BSData@QC)) {
+            reorder = sapply(colnames(QC[[i]]), FUN="grep",  colnames(exprs(BSData)), extended=FALSE)
+            if(length(reorder)>0) {
+              QC[[i]] = QC[[i]][, reorder]
+            }
+          }
+          BSData@QC = QC
+      }
+      else {
+        warning("Could not match array names used in dataFile with those in qcFile.  qcFile ignored.")
+      }
+    }
   }
 }
 
 if(!(is.null(sampleSheet))){
-  colmatch = grep(colnames(exprs(BSData)), samples)
-  rownames(samples) = samples[,colmatch]
+  colmatch = grep(colnames(exprs(BSData)), samples, extended=FALSE)
   ord = match(colnames(exprs(BSData)), samples[,colmatch])
-  p = new("AnnotatedDataFrame", samples[ord,], data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
+  if(length(colmatch)==1 && sum(is.na(ord))==0) {
+    samples = samples[ord,]
+    rownames(samples) = colnames(exprs(BSData))
+    p = new("AnnotatedDataFrame", samples, data.frame(labelDescription=colnames(samples), row.names=colnames(samples)))
+  }
+  else { 
+    warning("Could not reconcile dataFile with sampleSheet information. sampleSheet ignored.")
+    p = new("AnnotatedDataFrame", data.frame(sampleID=colnames(exprs(BSData)),row.names=colnames(exprs(BSData))))
+  }
 }
 
 else {
@@ -129,38 +162,43 @@ readQC=function(file, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", N
 #        as.is = TRUE, check.names = FALSE, strip.white = TRUE, 
 #        comment.char = "", fill = TRUE)
 
-  index = grep(controlID, colnames(r))
-  
-  if(length(index)!=0){
-    ProbeID = r[,index]
-
-    # check for non-unique probe names
-    if(length(ProbeID) != length(unique(ProbeID))){
-      notdup = !duplicated(ProbeID)
-      warning("controlIDs non-unique: ", sum(!notdup), " repeated entries have been removed.\n")
-      ProbeID = ProbeID[notdup]
-      r = r[notdup,]
-    }
-  }
-  else { # can't find controlIDs - report warning
-    warning("controlID does not have a match in", file, "check, qc.skip and controlID arguments.  Using numbers as rownames")
-    ProbeID = seq(1:nrow(r))
-  }
-
  ArrayID = grep("ArrayID", colnames(r))
 
  if(length(ArrayID) != 0){
- BeadStudioVersion=1
+    BeadStudioVersion=1
+    index = grep(columns$exprs, colnames(r))
+    if(length(index)!=0){
+       ProbeID = sub(paste("(.|)", columns$exprs, "(.|)", sep=""), "", colnames(r))[index]
+       nrows = length(ProbeID)
+    }
+    else { # can't find controlIDs - report warning
+       stop("Could not find a column called ", controlID, " to use as control identifiers.  Check your file and try changing the \'controlID\' and/or \'skip\' arguments.")
+    }
 }
 
- else BeadStudioVersion=2 
+ else {
+    BeadStudioVersion=2 
+    nrows = nrow(r)
+    index = grep(controlID, colnames(r))
+  
+    if(length(index)!=0){
+       ProbeID = r[,index]
+    }
+    else { # can't find controlIDs - report warning
+       stop("Could not find a column called ", controlID, " to use as control identifiers.  Check your file and try changing the \'controlID\' and/or \'skip\' arguments.")
+    }
+}
 
-#  foundColumns = NULL
-
+# check for non-unique probe names
+if(length(ProbeID) != length(unique(ProbeID))){
+  notdup = !duplicated(ProbeID)
+  warning("controlIDs non-unique: ", sum(!notdup), " repeated entries have been removed.\n")
+  ProbeID = ProbeID[notdup]
+  r = r[notdup,]
+}
 
 data = index = list()
 ncols = NULL
-nrows = nrow(r)
 
 for(i in 1:length(columns)){
   index[[i]] = grep(columns[[i]], colnames(r))
@@ -168,6 +206,10 @@ for(i in 1:length(columns)){
   if(ncols[i] == 0){
     cat("[readQC] Could not find a column called: ", columns[[i]], "\n")
   }
+}
+
+if(sum(ncols)==0) {
+  stop("No data found, check your file or try changing the \'skip\' argument")
 }
 
 i = seq(1:length(ncols))[ncols==max(ncols)][1]
@@ -185,8 +227,14 @@ for(i in 1:length(columns)){
     }
   }
   else { # data missing
-    data[[i]] = matrix(NA, nrows, max(ncols))
-    colnames(data[[i]]) = defColNames
+    if(BeadStudioVersion == 2) { 
+      data[[i]] = matrix(NA, nrows, max(ncols))
+      colnames(data[[i]]) = defColNames
+    }
+    else {
+      data[[i]] = matrix(NA, nrows, nrow(r))
+      colnames(data[[i]]) = r[,ArrayID]
+    }
   }
   rownames(data[[i]]) = ProbeID
 }

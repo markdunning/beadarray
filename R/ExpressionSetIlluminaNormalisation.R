@@ -73,6 +73,8 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
           x = assayDataElementReplace(x, "exprs", exprs(BSData))
           x = assayDataElementReplace(x, "se.exprs", se.exprs(BSData))
           x = assayDataElementReplace(x, "beadNum", NoBeads(BSData))
+          if(!all(is.na(Detection(BSData))))
+             x = assayDataElementReplace(x, "detection", Detection(BSData))
           BSData = assayDataElementReplace(BSData, "exprs", exprs(lumiT(x, method="vst", ...)))
           rm(x)
   }
