@@ -99,7 +99,7 @@ setGeneric("QCInfo", function(object) standardGeneric("QCInfo"))
 
 setMethod("QCInfo", signature(object="ExpressionSetIllumina"), function(object) object@QC)
 
-setGeneric("QCInfo<-", function(object, value) standardGeneric("QC<-"))
+setGeneric("QCInfo<-", function(object, value) standardGeneric("QCInfo<-"))
 
 setReplaceMethod("QCInfo", signature(object="ExpressionSetIllumina", value="list"), function(object, value){
 	object@QC <- value
