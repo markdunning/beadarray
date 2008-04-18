@@ -2,49 +2,46 @@
 \alias{readBeadSummaryData}
 \title{Read BeadStudio gene expression output}
 \description{
-Function to read the output of Illumina's software into beadarray
+Function to read the output of Illumina's BeadStudio software into beadarray
 }
 \usage{
 readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
-                    header=TRUE, sep="\t", ProbeID="ProbeID",skip=8,
+                    sep="\t", skip=8, ProbeID="ProbeID",
                     columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR",
                         NoBeads = "Avg_NBEADS", Detection="Detection Pval"),
+                    qc.sep="\t", qc.skip=8, controlID="ProbeID", 
                     qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", 
 			NoBeads="Avg_NBEADS", Detection="Detection Pval"), 
-		    controlID="ProbeID", annoPkg=NULL, qc.sep="\t", qc.skip=8, 
-                    dec=".", quote="")
+		    annoPkg=NULL, dec=".", quote="")
 
 }
 \arguments{
   \item{dataFile}{character string specifying the name of the file containing
     BeadStudio output}
-  \item{qcFile}{optional character string giving the location of the
-    control probe profile exported from BeadStudio}
-  \item{sampleSheet}{optional character string used to specify a sample
-    infomation file}
-  \item{sep}{field separator character for the dataFile}
-  \item{header}{set to TRUE if the dataFile contains column headings}
-  \item{skip}{number of header lines to ignore at the top of dataFile}
-  \item{ProbeID}{name of the column that contains the probe IDs
-    that can be used to uniquely identify each row}
-  \item{columns}{list defining which column headings are to be read from
-    dataFile and which slots in the ExpressionSetIllumina object they
-    correspond to}
-  \item{qc.columns}{list defining which column headings are to be read
-    from the qcFile and which items in the QCInfo slot of
-     ExpressionSetIllumina they correspond to}
-  \item{controlID}{character string specifying the column that contains 
-     the (unique) control probe IDs}
-  \item{annoPkg}{character string specifying the annotation package 
-     name for the arrays being read in (only available for certain 
-     expression arrays at present)}
-  \item{qc.sep}{seperator character for qcFile}
+  \item{qcFile}{character string giving the name of the file containing the 
+    control probe intensities (optional)}
+  \item{sampleSheet}{character string used to specify the file containing sample
+    infomation (optional)}
+  \item{sep}{field separator character for the dataFile (\code{"\t"} for tab delimited or \code{","} for comma separated)}
+  \item{skip}{number of header lines to ignore at the top of \code{dataFile}}
+  \item{ProbeID}{character string of the column in \code{dataFile} that contains identifiers 
+    that can be used to uniquely identify each probe}
+  \item{columns}{list defining the column headings in \code{dataFile} which 
+    correspond to the matrices stored in the \code{assayData} slot of the final \code{ExpressionSetIllumina} object}
+  \item{qc.sep}{separator character for qcFile}
   \item{qc.skip}{number of lines to skip at the top of qcFile}
+  \item{controlID}{character string specifying the column in \code{qcFile} that contains 
+     the identifiers that uniquely identify each control probe}
+  \item{qc.columns}{list defining the column headings in \code{qcFile} which 
+     correspond to the matrices stored in the \code{QCInfo} slot of
+     the final \code{ExpressionSetIllumina} object}
+  \item{annoPkg}{character string specifying the name of the annotation package 
+     (only available for certain expression arrays at present)}
   \item{dec}{the character used in the file for decimal points}
   \item{quote}{the set of quoting characters (disabled by default)}
   }
 
-\details{ 
+\details{
   This function can be used to read gene expression data exported
   from versions 1,2 and 3 of the Illumina BeadStudio application.
   The format of the BeadStudio output may depend on the version number.

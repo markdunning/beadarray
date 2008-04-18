@@ -30,29 +30,26 @@
   {\em #1}
 }
 \begin{document}
-\title{\Rpackage{beadarray}: R classess and methods for Illumina bead-based data}
+\title{\Rpackage{beadarray}: R classes and methods for Illumina bead-based data}
 \maketitle
 
 \section*{Introduction}
 
-\Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. The
-main feature of the package is the ability to read in and process the raw data
-from BeadScan (text files and tiffs) and store them in convenient R
-classes. Users may choose between different image processing and background
-correction methods. Alternatively, data which has been processed by Illumina's
-BeadStudio software may be read in (currently only single channel summary data
-can be imported).
+\Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. 
+The main feature of the package is its ability to process the raw data (text files and TIFFs) from BeadScan and store this information in convenient R classes.
+Access to this \emph{bead-level data} offers users' the choice between different image processing and background correction methods and allows for detailed quality assessments to be made on each array.
+The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can also be imported using the \Rpackage{beadarray} package.
 
-The documentation for this package is split into two separate user guides for
-raw (bead level) data and summarised (bead summary) data.  These documents may 
-be accessed using the function \Rfunction{beadarrayUsersGuide()}, i.e.
+The documentation for this package is split into two separate user guides, one for
+bead-level data and a second for bead-summary data. 
+These documents may be accessed using the following commands:
 
-{\tt beadarrayUsersGuide(topic="beadlevel")}
-{\tt beadarrayUsersGuide(topic="beadsummary")}
+<<Help, eval=FALSE>>=
+beadarrayUsersGuide(topic="beadlevel")
+beadarrayUsersGuide(topic="beadsummary")
+@
 
-The pdfs are also available from the Bioconductor website.
-
-\section{Citing beadarray}
+\section{Citing \Rpackage{beadarray}}
 
 If you use \Rpackage{beadarray} for the analysis or pre-processing of
 Illumina data please cite:\\
@@ -76,12 +73,17 @@ If you make use of these, please cite:\\
 
 Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).
 
-\section{Getting help with beadarray}
+\section{Getting help with \Rpackage{beadarray}}
 
 Wherever possible, please send all queries about \Rpackage{beadarray} to the
 Bioconductor mailing list at {\tt bioconductor@stat.math.ethz.ch}. This will
-help to maintain a searchable archive of questions and responses visible to
-all users of the package.
+help maintain a searchable archive of questions and responses.
+When posting to the list, please include the commands you used along with the
+version of \Rpackage{beadarray} and {\tt R} you are working with.
+Version information can be obtained by running the following command:
 
+<<Mailing list, eval=FALSE>>=
+sessionInfo()
+@
 
 \end{document}

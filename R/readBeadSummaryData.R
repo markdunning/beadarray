@@ -1,4 +1,4 @@
-readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, header=TRUE, sep="\t", ProbeID="ProbeID",skip=8, columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval"), qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"), controlID="ProbeID", annoPkg=NULL, qc.sep="\t", qc.skip=8, dec=".", quote="")
+readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, sep="\t", skip=8, ProbeID="ProbeID", columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", NoBeads = "Avg_NBEADS", Detection="Detection Pval"), qc.sep="\t", qc.skip=8, controlID="ProbeID", qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"), annoPkg=NULL, dec=".", quote="")
 {
 
 if(!(is.null(sampleSheet))){ 
@@ -149,11 +149,11 @@ BSData
 
 }
 
-readQC=function(file, columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"), controlID = "ProbeID", sep="\t", skip=8, header=TRUE, dec=".", quote=""){
+readQC=function(file, sep="\t", skip=8, controlID = "ProbeID", columns=list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", NoBeads="Avg_NBEADS", Detection="Detection Pval"),  dec=".", quote=""){
 
 ##
   
-  r=read.table(as.character(file), sep=sep, header=header, skip=skip, quote=quote, as.is=TRUE, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
+  r=read.table(as.character(file), sep=sep, header=TRUE, skip=skip, quote=quote, as.is=TRUE, check.names=FALSE, strip.white=TRUE, comment.char="", fill=TRUE)
 
 
 ##If there is an ArrayID column, the QC file is BeadStudio version 1 and each row in the file is an array
