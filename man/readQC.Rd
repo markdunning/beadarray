@@ -2,9 +2,9 @@
 \alias{readQC}
 
 
-\title{Read Illumina quality control information}
+\title{Read Illumina control intensities}
 \description{
-Reads the standard format of Illumina quality control information and produces diagnostic plots
+Reads the standard format of Illumina control intensities output by BeadStudio
 }
 
 \usage{
@@ -12,7 +12,8 @@ readQC(file, sep="\t", skip=8, controlID = "ProbeID", columns = list(exprs = "AV
 
 }
 \arguments{
-  \item{file}{name of file containing qc information} 
+  \item{file}{character string giving the name of the file output by BeadStudio
+    containing the control probe intensities.  This file should be either the 'ControlProbeProfile' or 'ControlGeneProfile'.} 
   \item{sep}{a character string for the file separator}
   \item{skip}{number of lines of header information to ignore in the file}
   \item{controlID}{character string specifying the column that contains the 
@@ -23,34 +24,32 @@ readQC(file, sep="\t", skip=8, controlID = "ProbeID", columns = list(exprs = "AV
 }
 \details{
 
-  The format of the quality control
-  files differs slightly between BeadStudio versions 1 and 2. Version 1 of the
-  software gives one averaged value for each control type, whereas version 2
-  gives summarised values for each control of a particular type. The user does
-  not have to know the version of BeadStudio used to generate the file.
+  The format of the quality control files differs slightly between BeadStudio 
+  versions 1 and later versions.  This function is able to read in data 
+  in either format
 
-  Once read in, the quality control information can be very useful for
-  diagnostic purposes.
+  Note that if the control identifiers are non-unique, the duplicated 
+  rows are removed.  This may occur if the 'ControlProbeProfile' is 
+  exported from BeadStudio and \code{controlID="TargetID"} is specified 
+  (the "ProbeID" column has a unique identifier in the 'ControlProbeProfile',
+  whereas the "TargetID" may not, as multiple beads can be of the same type).
+
+  Once read in, the control intensities can be used for quality assessment purposes.
 }
 
 \value{
-  readQC produces an assayData object with list items defined by the
-  columns parameter.
-
- 
+  \code{readQC} produces an \code{assayData} object with a list of items defined 
+  by the \code{columns} parameter.  The row names of each matrix are given by the 
+  \code{controlID} argument .
 }
 \author{Mark Dunning}
 
 \examples{
 ##Code to read the example quality control file included with the
 #package.
-#QC = readQC("raw_data_qcinfo.csv", sep=",", skip=7, columns=list(exprs="AVG.Signal", se.exprs="SeqVAR"))
-
+#QC = readQC("ControlGeneProfile.txt", controlID="TargetID")
 #the average expression of each control can then be accessed by the $ operator
-
 #QC$exprs
-
-
 }
 
 \keyword{methods}

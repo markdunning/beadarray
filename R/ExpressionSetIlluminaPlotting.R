@@ -48,7 +48,7 @@ exprs=as.matrix(exprs)
 
 if(log) exprs=log2(exprs)
 
-if(array2!=0){
+if(array2!=0 && array2!=array1){
 
 
 x = 0.5*(exprs[,array1] + exprs[,array2])
@@ -59,9 +59,9 @@ y = exprs[,array1]- exprs[,array2]
 
 
 else{
-x = log2(exprs[,array1])
-y = log2(exprs[,array1])
-
+#x = log2(exprs[,array1])
+#y = log2(exprs[,array1])
+  stop("\'array1\' and \'array2\' must be different")
 }
 
 if(!is.null(sampleSize)){
@@ -105,7 +105,7 @@ if(log) exprs=log2(exprs)
   
 exprs=as.matrix(exprs)
 
-  if (array2!=0){
+  if (array2!=0 && array2!=array1){
 
  
       x = exprs[,array1]
@@ -121,12 +121,13 @@ exprs=as.matrix(exprs)
    
   }
   else{
-      x = log2(exprs[,array1])
-      y = log2(exprs[,array1])
-
-      xmax = 16
-      xbox=18
-      yspacing=0.3
+#      x = log2(exprs[,array1])
+#      y = log2(exprs[,array1])
+#
+#      xmax = 16
+#      xbox=18
+#      yspacing=0.3
+      stop("\'array1\' and \'array2\' must be different")
     }
 
   

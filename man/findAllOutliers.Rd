@@ -1,37 +1,39 @@
 \name{findAllOutliers}
 \alias{findAllOutliers}
-\alias{findAllOutliers-methods}
-\title{Find outliers on array}
+%\alias{findAllOutliers-methods}
+\title{Find outliers on a given strip/array}
 \description{
   Function to find all beads which are outliers for their
-  particular bead type on a given array.
+  particular bead type on a given strip/array using Illumina's 
+  standard outlier detection method.
 }
 
 \usage{
 findAllOutliers(BLData, array, log=FALSE, n=3, what="G")
 }
 \arguments{
-  \item{BLData}{a BeadLevelList object}
-  \item{array}{numeric value specifying which array we
+  \item{BLData}{\code{BeadLevelList}}
+  \item{array}{integer specifying which strip/array we
     want to find outliers on}
-  \item{log}{if TRUE the log2 intensities will be
-    used to calculate outliers}
-  \item{n}{Specify a cut-off for outliers as n median
-    absolute deviations (MADs) from the median. The default value is 3}
+  \item{log}{if TRUE the intensities will be calculated on the 
+    log2 scale. Otherwise un-logged data is used}
+  \item{n}{numeric value defining a cut-off for the number of 
+    median absolute deviations (MADs) from the median to use for 
+    determining outliers.  The default value is 3.}
   \item{what}{character string specifying which intensities to use.
     See \code{getArrayData} for a list of possibilities.}
 }
 \details{
   We find the outliers for each bead type on the array in
   turn using the \code{\link{findBeadStatus}} function and
-  keep a list of the outliers found. By default, outliers
+  store the indices of the outliers found. By default, outliers
   for a particular bead type are determined using a 3
   MAD cut-off from the median.
 }
 \value{
-  numeric vector giving the row indices of BLData (in the
-  range 1 to total number of beads on the array) of all
-  the beads that are outliers for their bead type.
+  numeric vector giving the row indices of \code{BLData} (in the
+  range 1 to total number of beads on the array) of all beads 
+  that are outliers for their bead type.
 }
 \author{Mark Dunning}
 \seealso{\code{\link{findBeadStatus}}}

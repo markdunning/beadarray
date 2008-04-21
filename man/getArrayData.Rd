@@ -1,9 +1,9 @@
 \name{getArrayData}
 \alias{getArrayData}
-\title{Gets the raw data from a BeadLevelList object}
+\title{Get raw data from a BeadLevelList object}
 \description{
-Retrieves the per bead data from a \code{BeadLevelList} object 
-for a given array.
+Retrieves the raw bead data from a \code{BeadLevelList} object 
+for a given strip/array.
 }
 \usage{
 getArrayData(BLData, what="G", array=1,log=TRUE, method="illumina", n=3, trim=0.05)
@@ -16,15 +16,14 @@ getArrayData(BLData, what="G", array=1,log=TRUE, method="illumina", n=3, trim=0.
     \code{"Rb"}, \code{"residR"}, \code{"residG"}, \code{"M"} (log-ratios)
     \code{"residM"}, \code{"A"} (average log-intensities) and \code{"beta"} 
     (=R/(R+G)) for two-colour data}
-  \item{array}{numeric value giving the array we are interested in}
+  \item{array}{integer specifying the strip/array to use}
   \item{log}{if TRUE log2 of the raw intensities are returned (ignored if \code{what="beta"})}
-  \item{method}{chracter string specifying the summarisation method to
+  \item{method}{character string specifying the summarisation method to
     use in \code{createBeadSummaryData} (see help page for further
     details). Only used when \code{what="residR"}, \code{"residG"}
     or \code{"residM"}.}
-  \item{n}{use n median absolute deviations from the median as a
-    cut-off for outliers. Only used when \code{what="residR"}, \code{"residG"}
-    or \code{"residM"} and \code{method="illumina"}.}
+  \item{n}{numeric value specifying the number of median absolute deviations (MADs)
+    from the median to use as a cut-off for outliers.  Only used when \code{what="residR"}, \code{"residG"} or \code{"residM"} and \code{method="illumina"}.}
   \item{trim}{fraction of intensities to remove from the bead summary
     calculations when \code{method="trim"}, or the fraction of
     intensities to set to the \code{trim} and 1-\code{trim} percentile
@@ -32,7 +31,7 @@ getArrayData(BLData, what="G", array=1,log=TRUE, method="illumina", n=3, trim=0.
     Only used when \code{what="residR"}, \code{"residG"} or \code{"residM"}.}
   }
 \details{
-  \code{getArrayData} retrieves the raw per bead data from a given
+  \code{getArrayData} retrieves the raw bead data from a given
   array.  The data is either extracted from a \code{BeadLevelList} object
   (e.g. \code{"ProbeID"}, \code{"GrnX"}, \code{"GrnY"}, \code{"G"},
   \code{"Gb"}, \code{"R"} and \code{"Rb"} or calculated from these

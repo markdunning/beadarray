@@ -11,17 +11,17 @@ copyBeadLevelList(object)
   \item{object}{\code{BeadLevelList}}
 }
 \details{
-  \code{copyBeadLevelList} makes a new copy of a BeadLevelList object.
-  This is necessary beacuse the beadData slot is stored as an
-  environment.
+  \code{copyBeadLevelList} makes a new copy of a \code{BeadLevelList} object.
+  This is necessary beacuse the beadData slot is stored as an environment.
   }
 \value{
-A new \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object containing data from object.
+A new \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object containing the 
+data from \code{object}.
 }
 \author{Matt Ritchie}
 \examples{
 data(BLData)
-BLDataNew <- copyBeadLevelList(BLData)
+BLDataNew = copyBeadLevelList(BLData)
 BLData@beadData # the same bead level data is now
 BLDataNew@beadData # stored in different environments
 }

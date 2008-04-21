@@ -1,9 +1,9 @@
 \name{medianNormalise}
 \alias{medianNormalise}
-\title{Median Normalisation for BeadLevelList objects }
+\title{Median normalise data in a matrix}
 \description{
   Normalises expression intensities so that the intensities or
-  log-ratios have equal median values across a series of arrays.
+  log-ratios have equal median values across a series of arrays (columns).
 }
 \usage{
 medianNormalise(exprs, log=TRUE)
@@ -24,8 +24,8 @@ medianNormalise(exprs, log=TRUE)
   same median value.
 }
 \value{
-  Produces a matrix of normalised intensity values, on the log2 scale by
-  default.
+  Produces a matrix of normalised intensity values (on the log2 scale by
+  default) with the same dimensions as \code{exprs}.
 }
 \author{Mark Dunning}
 

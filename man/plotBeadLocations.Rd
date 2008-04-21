@@ -1,10 +1,10 @@
 \name{plotBeadLocations}
 \alias{plotBeadLocations}
-\title{Show bead locations}
+\title{Plot bead locations}
 \description{
-  Shows location of a set of beads on an array. The beads can
+  Shows location of a set of beads on a strip/array. The beads can
   either be defined to be all beads with particular ProbeIDs
-  or individual beadIDs
+  or as rows in \code{BeadLevelList}.
 }
 \usage{
 plotBeadLocations(BLData, ProbeIDs = NULL, BeadIDs = NULL, array = 1,
@@ -14,10 +14,11 @@ plotBeadLocations(BLData, ProbeIDs = NULL, BeadIDs = NULL, array = 1,
 }
 
 \arguments{
-  \item{BLData}{a BeadLevelList object}
+  \item{BLData}{\code{BeadLevelList}}
   \item{ProbeIDs}{a vector of ProbeIDs to plot}
-  \item{BeadIDs}{a vector of beadIDs to plot}
-  \item{array}{numeric value specifying the array}
+  \item{BeadIDs}{logical/integer vector specifying which rows of data from
+   \code{BeadLevelList}) to plot (used if \code{ProbeIDs} is \code{NULL})}
+  \item{array}{integer specifying the strip/array to plot}
   \item{SAM}{if TRUE then the data is assumed to be
     taken from a SAM array and therefore hexagonal}
   \item{xlab}{character string specifying x-axis label}
@@ -30,7 +31,7 @@ plotBeadLocations(BLData, ProbeIDs = NULL, BeadIDs = NULL, array = 1,
   locations of the specified beads are overlayed. 
 }
 \value{
-Plot is produced on the current graphical device.
+A plot is produced on the current graphical device.
 }
 
 \examples{

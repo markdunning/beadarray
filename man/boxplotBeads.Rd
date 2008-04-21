@@ -3,29 +3,31 @@
 \title{Box plot of bead intensities}
 \description{
   Function to produce box plots of the bead intensities from 
-  different bead arrays
+  selected strips/arrays from a \code{BeadLevelList} object.
 }
 \usage{
 boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
           varwidth = TRUE, method = "illumina", n = 3, trim = 0.05, ...)
 }
 \arguments{
-  \item{BLData}{a BeadLevelList object}
+  \item{BLData}{\code{BeadLevelList}}
   \item{whatToPlot}{character string specifying which intensities to plot.
     See \code{getArrayData} for a list of the possibilities.}
-  \item{arrays}{numeric vector of arrays to plot}
+  \item{arrays}{integer (scalar or vector) specifying the strips/arrays to plot.
+    If \code{NULL}, all the strips/arrays are plotted.}
   \item{log}{if TRUE log2 intensities are plotted}
-  \item{varwidth}{logial, indicating whether box widths should be
+  \item{varwidth}{logical, indicating whether box widths should be
     proportional to the number of values in each box plot}
-  \item{method}{chracter string specifying the summarisation method to
+  \item{method}{character string specifying the summarisation method to
     use (only applicable when \code{whatToPlot="residG"}, \code{"residR"}
     or \code{"residM"}). Refer to help \code{createBeadSummaryData} help
     page for further information.}
-  \item{n}{use n median absolute deviations from the median as a
-    cut-off for outliers.  Only applicable when
-    \code{whatToPlot="residG"}, \code{"residR"} or \code{"residM"}.
-    Refer to help \code{createBeadSummaryData} help page for further
-      information.}
+  \item{n}{numeric value defining a cut-off for the number of 
+    median absolute deviations (MADs) from the median to use for 
+    determining outliers.  The default value is 3.  Only applicable when
+    \code{whatToPlot="residG"}, \code{"residR"} or \code{"residM"} and
+    \code{method="illumina"}.  Refer to help \code{createBeadSummaryData} 
+    help page for further information.}
   \item{trim}{fraction of intensities to remove from the bead summary
     calculations. Only applicable when \code{whatToPlot="residG"},
       \code{"residR"} or \code{"residM"}.  Refer to
@@ -34,10 +36,10 @@ boxplotBeads(BLData, whatToPlot = "G", arrays = NULL, log = TRUE,
 	function from the graphics package}
 }
 \details{
-  Produces box plots of the raw intensities from a bead array
+  Produces box plots of the specified intensities for selected strips/arrays.
 }
 \value{
-Plot is produced on current graphical device
+A plot is produced on the current graphical device
 }
 
 \author{Matt Ritchie}

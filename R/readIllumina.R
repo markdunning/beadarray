@@ -410,7 +410,7 @@ normalizeSingleArray = function(x, method = "quantile") {
         },
 	vsn={
             require("vsn")
-            y = vsn2(x)@hx
+            y = exprs(vsn2(x)) #@hx
         })
     y
   }

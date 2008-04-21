@@ -94,7 +94,7 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
          },
          vsn={
             require("vsn")
-            BSData = assayDataElementReplace(BSData, "exprs", vsn2(as.matrix(exprs(BSData)))@hx)
+            BSData = assayDataElementReplace(BSData, "exprs", exprs(vsn2(exprs(BSData))))
          },
          rankInvariant={
             BSData = assayDataElementReplace(BSData, "exprs", rankInvariantNormalise(exprs(BSData), T=T))

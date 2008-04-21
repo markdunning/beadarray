@@ -1,11 +1,10 @@
 \name{backgroundCorrect}
 \alias{backgroundCorrect}
-\alias{backgroundCorrect,BeadLevelList-methods}
 \alias{backgroundCorrect,BeadLevelList-method}
-\title{Background Correct a BeadLevelList object}
+\title{Background correct a BeadLevelList object}
 \description{
   Adapted from the 'limma' backgroundCorrect function to correct the
-  foreground intensities of a BeadLevelList object using the background values.
+  foreground intensities of a \code{BeadLevelList} object using the background values.
 }
 \usage{
 backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
@@ -46,10 +45,9 @@ backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
   local background subtraction.
   
   End of excerpt.
-  
 }
 \value{
-  An 'BeadLevelList' object in which the 'G' (and 'R', if present) intensities for each array are background corrected.  Note that the 'Gb' (and 'Rb' intensities) are not removed. 
+  A \code{BeadLevelList} object in which the 'G' (and 'R', if present) intensities for each array are background corrected.  Note that the 'Gb' (and 'Rb' intensities) are not removed. 
 }
 \author{Mark Dunning based on the limma function}
 \references{

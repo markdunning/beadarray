@@ -1,10 +1,8 @@
 \name{plotRG}
 \alias{plotRG}
-\title{Plot bead level data: R vs G intensities}
+\title{Plot bead-level data: R vs G intensities}
 \description{
-  Shows R and G intensities fom a BeadLevelList object. The beads can
-  either be defined to be all beads with particular ProbeIDs
-  or rows BeadIDs
+  Plot R versus G intensities fom a \code{BeadLevelList} object. 
 }
 \usage{
 plotRG(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
@@ -15,10 +13,10 @@ plotRG(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
 }
 
 \arguments{
-  \item{BLData}{a BeadLevelList object}
+  \item{BLData}{\code{BeadLevelList}}
   \item{ProbeIDs}{a vector of ProbeIDs to plot}
-  \item{BeadIDs}{logical/integer vector specifying which rows of data to
-    plot (used if ProbeIDs is NULL)}
+  \item{BeadIDs}{logical/integer vector specifying which rows of data from
+    \code{BeadLevelList} to plot (used if \code{ProbeIDs} is \code{NULL})}
   \item{log}{logical, if TRUE, take log base 2 of intensities}
   \item{arrays}{which array/s to plot}
   \item{xlim}{x-axis limits for plot}

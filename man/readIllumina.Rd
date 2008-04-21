@@ -1,9 +1,9 @@
 \name{readIllumina}
 \alias{readIllumina}
 
-\title{Read BeadArray information into R}
+\title{Read bead-level data into R}
 \description{
-Uses .csv or .txt and image files (where available) to load information
+Uses .csv or .txt and TIFFs (where available) to load information
 about each bead on each array in a BeadChip or SAM experiment.
 }
 \usage{
@@ -19,38 +19,41 @@ readIllumina(arrayNames=NULL, path=".", textType=".txt",
 
 \arguments{
   \item{arrayNames}{character vector containing names of arrays to be
-    read in (if present)}
+    read in.  If \code{NULL}, all arrays that can be found in the current 
+    working directory will be read in.}
   \item{path}{character string specifying the location of files to be
     read by the function}
   \item{textType}{character string specifiying the extension of the
-    files which store the bead level information.  Typically \code{".txt"} 
+    files which store the bead-level information.  Typically \code{".txt"} 
     or \code{".csv"}.}
   \item{annoPkg}{character string specifying the annotation package 
      for the arrays being read in (only available for certain 
      expression arrays at present).  Default value is
      \code{"illuminaProbeIDs"} which is not an annotation package, and
      indicates that Illumina bead IDs have been used to identify each bead.}
-  \item{beadInfo}{data.frame specifying bead information, such as 
+  \item{beadInfo}{\code{data.frame} specifying bead information, such as 
      probe sequence, Illumina ID, etc.}
   \item{useImages}{logical. If TRUE, the foregound and background 
-    values are retrieved from the tif images.  When FALSE, the 
+    values are retrieved from the TIFFs.  When FALSE, the 
     intensity values in the text files are used.  Note that
     background values will not be available (set to 0) when FALSE, 
     as the current option in BeadScan is to store background
-    subtracted signals}
+    corrected intensities.}
   \item{singleChannel}{logical.  Set to TRUE if the data is single 
-   channel (Green) or FALSE for two-colour (both Green and Red data)}
-  \item{targets}{data.frame containing sample information}
-  \item{imageManipulation}{Currently the only options here are "none"
-    or "sharpen", which indicates the Illumina sharpening mask will
-    be used prior to foreground averages being calculated}
-  \item{backgroundSize}{numeric value which defines the size of the n x
+   channel (Green images only) or FALSE for two-colour (both Green and Red 
+   data available).}
+  \item{targets}{\code{data.frame} containing sample information}
+  \item{imageManipulation}{character string specifying which image analysis 
+    method to use.  The current options are \code{"none"} (no image manipulation 
+    or \code{"sharpen"} (the Illumina sharpening mask will be used prior to 
+    the foreground averages being calculated).}
+  \item{backgroundSize}{integer value which defines the size of the n x
     n region (in pixels) used to calculate local background values.  
     Default value is 17}
   \item{storeXY}{logical scalar, indicating whether the xy coordinates
     should be stored}
-  \item{sepchar}{character string which separates row and column in file
-    name (default value is \code{"_"})}
+  \item{sepchar}{character string which separates the row and column positions
+    in the file names (default value is \code{"_"})}
   \item{dec}{character used in the files for decimal points.  The default
     value is \code{"."}}
   \item{metrics}{logical scalar, indicating whether the scanner metrics
@@ -74,24 +77,11 @@ readIllumina(arrayNames=NULL, path=".", textType=".txt",
 }
 
 \details{
-This function can be used to read in bead level information using the
-raw .tif and .csv or .txt files output by the scanner.
+This function can be used to read in bead-level information from the
+raw .tif and .csv or .txt files output by BeadScan.
 
 Note that the .txt or .csv files must contain the raw data for each bead 
 on each array/strip, not the summarised data.
-
-To keep track of the samples hybridised to each array, we recommend 
-using a \code{targets} data.frame, which lists each array/strip in the rows,
-and experimental information about each array in the columns 
-(sample, array name, etc.)
-Note that for BeadChips which have multiple strips per array, it is necessary 
-to have a row for each strip, as there will be a .tif and .txt or .csv file for 
-each strip.  The strips can be combined when the data is summarised in 
-\code{createBeadSummaryData}.
-Targets information can easily be created and saved in tab delimited text format,
-read in using \code{read.table} and passed to \code{readIllumina} using the  
-\code{targets} argument.
-
 The .csv or .txt files specify the location and identity of each bead on 
 the array and must contain columns for the $x$ and $y$ position of each 
 bead as well as a ProbeID.  For two-colour arrays, this information is 
@@ -110,15 +100,30 @@ unsharpened image.  The size of this window is controlled by the
 the image, it is ignored.
 
 When \code{useImages=FALSE}, the intensities from the .txt or .csv files are
-stored as the foreground for each bead.  Note that the values stored in 
+stored as the foreground values for each bead.  Note that the values stored in 
 these files have already undergone a local background adjustment, so the 
 background values are set to 0.
 
-The \code{annoFile} (optional) contains information on each bead type 
-on the array.
+To keep track of the samples hybridised to each array, we recommend 
+using a \code{targets} \code{data.frame}, which lists each strip/array in the rows,
+and experimental information about each strip/array in the columns 
+(sample, array name, etc.)
+Targets information can easily be created and saved in tab delimited text format,
+read in using \code{read.table} and passed to \code{readIllumina} using the  
+\code{targets} argument.
+
+%Note that for BeadChips which have multiple strips per array, it is necessary 
+%to have a row in the targets file for each strip, as there will be a .tif and 
+%.txt or .csv file for each strip.  
+
+The pairs of strips from a BeadChip can be combined when the data is summarised with \code{createBeadSummaryData}.
 
 The function creates a \code{BeadLevelList} containing foreground and
 background intensities for each bead on each array.
+
+NOTE:  Reading in bead-level data, particularly with the TIFFs is memory intensive.  
+For example, reading in text and image data from a Human-6 BeadChip requires several 
+Gigabytes of RAM.  If you have limited memory, it is recommnded that you read in the data using the \code{useImages=FALSE} option.
 }
 
 \value{
@@ -134,10 +139,10 @@ background intensities for each bead on each array.
 
 #targets
 #May take a while to run
-#BLData.s = readIllumina(arrayNames=target$Institute.Sample.Label, targets=targets)
+#BLData.s = readIllumina(arrayNames=target$Institute.Sample.Label, targets=targets, imageManipulation="none")
 
 #Create foreground intensities without using sharpening. Should take less time
-#BLData.ns = readIllumina(arrayNames=targets$Institute.Sample.Label, targets=targets, sharpen=FALSE)
+#BLData.ns = readIllumina(arrayNames=targets$Institute.Sample.Label, targets=targets, imageManipulation="sharpen")
 
 }
 \keyword{IO}

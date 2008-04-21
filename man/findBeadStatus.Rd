@@ -1,11 +1,11 @@
 \name{findBeadStatus}
 \alias{findBeadStatus}
-\alias{getProbeIndices}
-\alias{getProbeIndicesC}
-\alias{getProbeIntensities,BeadLevelList-method}
 \alias{getProbeIntensities}
-\alias{findAllOutliers, BeadLevelList-method}
-\alias{createBeadSummaryData, BeadLevelList-method}
+%\alias{getProbeIndices}
+%\alias{getProbeIndicesC}
+\alias{getProbeIntensities,BeadLevelList-method}
+%\alias{findAllOutliers, BeadLevelList-method}
+%\alias{createBeadSummaryData, BeadLevelList-method}
 
 \title{ Find Outliers}
 \description{
@@ -18,18 +18,19 @@ findBeadStatus(BLData, probes, array = 1, log = FALSE, what = "G", n = 3,
 getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE, what = "G")
 }
 \arguments{
-  \item{BLData}{BeadLevelList object containing bead level data}
+  \item{BLData}{\code{BeadLevelList}}
   \item{probes}{numeric vector for the ProbeIDs of the bead type we
     want to find outliers for}
-  \item{array}{numeric value for the array we want data from}
-  \item{log}{if TRUE the log2 intensities of each bead will be used to
-    find outliers. Otherwise un-logged data is used}
+  \item{array}{integer specifying which strip/array to use}
+  \item{log}{if TRUE the intensities will be calculated on the 
+    log2 scale. Otherwise un-logged data is used}
   \item{what}{character string specifying which intensities to use.
     Possibilities are \code{"G"}, \code{"Gb"} for single channel data
     and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
     two-colour data}
-  \item{n}{numeric value defining a cut-off of 'n' median absolute
-    deviations from the median to determine outliers. The default value is 3}
+  \item{n}{numeric value defining a cut-off for the number of 
+    median absolute deviations (MADs) from the median to use for
+    determining outliers.  The default value is 3.}
   \item{outputValid}{if TRUE the IDs of beads which are not outliers
     will be output}
   \item{intProbeID}{BLData\$ProbeID coerced to vector of integers.
@@ -46,11 +47,11 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE, what = "G")
 \details{
   The intensities of each bead with ProbeID 'probe' on the
   specified array are found and if the 'log' parameter is set
-  to true we do a log2 transformation of these values.
+  to TRUE we do a log2 transformation of these values.
 
-  The median and median absolute deviation for the bead intensities
-  are then calculated. Outliers are beads which have intensity more
-  than 'n' median absolute deviations (MADs) from the median.
+  The median and MAD for the bead intensities are then calculated. 
+  Outliers are beads which have intensity more
+  than 'n' MADs from the median.
 
   The method used by Illumina is to use un-logged intensities with
   'n' = 3.
@@ -59,7 +60,6 @@ getProbeIntensities(BLData, ProbeIDs, array = 1, log = TRUE, what = "G")
 
   The function returns only the outliers for a bead type unless the
   outputValid parameter is specified.
-
 }
 
 \value{

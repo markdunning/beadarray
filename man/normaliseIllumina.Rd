@@ -2,22 +2,23 @@
 \alias{normaliseIllumina}
 \title{Normalise Illumina expression data}
 \description{
-Normalises expression intensities so that the intensities are comparable between arrays.
+Normalises expression intensities from an \code{ExpressionSetIllumina} 
+object so that the intensities are comparable between arrays.
 }
 \usage{
 normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, ...)
 }
 
 \arguments{
-  \item{BSData}{an 'ExpressionSetIllumina' object}
+  \item{BSData}{an \code{ExpressionSetIllumina} object}
   \item{method}{character string specifying normalisation method
     (options are \code{"quantile"}, \code{"qspline"}, \code{"vsn"},
     \code{"rankInvariant"}, \code{"median"} and \code{"none"}.}
   \item{transform}{character string specifying transformation to apply
     to the data prior to normalisation (options are \code{"none"}, 
     \code{"log2"} and \code{"vst"}}
-  \item{T}{A target distribution vector used in \code{"rankInvariant"}
-    normalisation. If \code{NULL}, the mean is used.}
+  \item{T}{A target distribution vector used when \code{method="rankInvariant"}
+    normalisation.  If \code{NULL}, the mean is used.}
   \item{...}{further arguments to be passed to \code{lumiT}}
 }
 \details{
@@ -29,9 +30,9 @@ normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, ...)
   In this function, the \code{transform} specified by the user is 
   applied prior to the chosen normalisation procedure.
 
-  When \code{transform="vst"} the variance stabilising transformation
+  When \code{transform="vst"} the variance-stabilising transformation
   from the 'lumi' package is applied to the data.
-  Refer to the 'lumi' documentation for further particulars.  Note that 
+  Refer to the \code{lumiT} documentation for further particulars.  Note that 
   the Detection P values are only passed on when they are available 
   (i.e. not NA) 
 

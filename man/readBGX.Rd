@@ -1,9 +1,9 @@
 \name{readBGX}
 \alias{readBGX}
 
-\title{Read Illumina bgx file into R}
+\title{Read Illumina .bgx file into R}
 \description{
-Reads in unzipped Illumina .bgx file, which provides further information
+Reads in an unzipped Illumina .bgx file, which provides further information
 on each bead type, including the controls.
 }
 \usage{
@@ -38,7 +38,7 @@ The unzipped file is tab delimited file and should be readable using
  arrays.  For Mouse arrays, the .bgx has a more complicated structure.
 }
 \value{
-  data.frame containing information about each bead type (probe
+  \code{data.frame} containing information about each bead type (probe
   sequence, ID, control status, etc)
 }
 

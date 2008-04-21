@@ -1,6 +1,6 @@
 %
-% NOTE -- ONLY EDIT beadarraySNP.Rnw!!!
-% beadarraySNP.tex file will get overwritten.
+% NOTE -- ONLY EDIT beadarray.rnw!!!
+% beadarray.tex file will get overwritten.
 %
 %\VignetteIndexEntry{beadarray Vignette}
 %\VignetteDepends{}
@@ -31,12 +31,17 @@
 }
 \begin{document}
 \title{\Rpackage{beadarray}: R classes and methods for Illumina bead-based data}
+
+\author{Mark Dunning and Matt Ritchie}
+
 \maketitle
+
+
 
 \section*{Introduction}
 
 \Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. 
-The main feature of the package is its ability to process the raw data (text files and TIFFs) from BeadScan and store this information in convenient R classes.
+The main feature of the package is its ability to process raw data (text files and TIFFs) from BeadScan and store this information in convenient R classes.
 Access to this \emph{bead-level data} offers users' the choice between different image processing and background correction methods and allows for detailed quality assessments to be made on each array.
 The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can also be imported using the \Rpackage{beadarray} package.
 
@@ -45,6 +50,7 @@ bead-level data and a second for bead-summary data.
 These documents may be accessed using the following commands:
 
 <<Help, eval=FALSE>>=
+library(beadarray)
 beadarrayUsersGuide(topic="beadlevel")
 beadarrayUsersGuide(topic="beadsummary")
 @
@@ -57,11 +63,11 @@ Illumina data please cite:\\
 Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S. \emph{beadarray: R classes and
   methods for Illumina bead-based data}. Bioinformatics, 2007 Aug 15; 23(16):2183-4. Epub 2007 Jun 22.\\
 
-If you are interested in the low-level of Illumina BeadArray data, or make use of the spike-in data set available from\\
+For recommendations on the low-level analysis of bead-level data, or if you make use of the spike-in data set available from\\
 
 {\tt http://www.compbio.group.cam.ac.uk/Resources/spike/}\\
 
-please refer to the following paper:\\
+please cite:\\
 
 Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. BMC Bioinformatics. 2008 Feb 6;9(1):85.\\
 
@@ -73,7 +79,7 @@ If you make use of these, please cite:\\
 
 Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).
 
-\section{Getting help with \Rpackage{beadarray}}
+\section{Asking for help on \Rpackage{beadarray}}
 
 Wherever possible, please send all queries about \Rpackage{beadarray} to the
 Bioconductor mailing list at {\tt bioconductor@stat.math.ethz.ch}. This will

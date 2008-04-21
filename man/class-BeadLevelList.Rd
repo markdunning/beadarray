@@ -51,7 +51,7 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
       \code{BeadLevelList} object}
     \item{\code{copyBeadLevelList(object)}}{Creates a new copy of a
       \code{BeadLevelList} object}
-    \item{\code{arrayNames(object,arrays=NULL)}}{Returns the array names from a
+    \item{\code{arrayNames(object,arrays=NULL)}}{Returns the strip/array names from a
       \code{BeadLevelList} object for selected \code{arrays}}
     \item{\code{combineBeadLevelLists(object1,object2)}}{Combines two
       \code{BeadLevelList} objects into one}
@@ -67,6 +67,6 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
       meta-data}
   }
 }
-\author{Mark Dunning}
+\author{Mark Dunning and Matt Ritchie}
 \seealso{\code{\link{readIllumina}}}
 \keyword{classes}

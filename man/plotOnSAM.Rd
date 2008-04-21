@@ -1,15 +1,13 @@
 \name{plotOnSAM}
 \alias{plotOnSAM}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Show variation between all 96 arrays}
 \description{
-Function to show how quantities vary across all 96 arrays. eg Mean intensity of a certain control probe
+Function to show how quantities vary across all 96 arrays. eg mean intensity of a certain control probe
 }
 \usage{
 plotOnSAM(values, mx = max(values, na.rm = TRUE), scale = max(values,
 na.rm = TRUE), min = 0, main = NULL, label = TRUE, missing_arrays = NULL, colour=TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{values}{vector containing 96 numeric values to plot}
   \item{mx}{maximum value to display on y axis of plot}

@@ -1,10 +1,9 @@
 \name{beadResids}
 \alias{beadResids}
-\title{Calculates per array bead-level residuals}
+\title{Calculates per strip/array bead-level residuals}
 \description{
-Retrieves the per bead data stored in a \code{BeadLevelList} object
-for a given array.  In the case of the log-ratios or average
-log-intensities, these values are calculated for each bead.
+Calculates the per bead residuals for a given strip/array using 
+data from a \code{BeadLevelList}.
 }
 \usage{
 beadResids(BLData, what="G", array=1, log=TRUE,
@@ -14,14 +13,15 @@ beadResids(BLData, what="G", array=1, log=TRUE,
   \item{BLData}{\code{BeadLevelList}}
   \item{what}{character string specifying which intensities to use in the 
     calculation of residuals.  See \code{getArrayData} for a list of possibilities}
-  \item{array}{numeric value giving the array we are interested in}
+  \item{array}{integer specifying the strip/array to use}
   \item{log}{if TRUE then use log2 intensities of each bead}
-  \item{method}{chracter string specifying the summarisation method 
+  \item{method}{character string specifying the summarisation method 
     (see help page for \code{createBeadSummaryData} for further details).}
-  \item{n}{use n median absolute deviations from the median as a
-    cut-off for outliers. Only used when \code{what="residR"}, \code{"residG"}
-    or \code{"residM"} and \code{method="illumina"} (see
-    \code{createBeadSummaryData} help page for further details).}
+  \item{n}{numeric value defining a cut-off for the number of 
+    median absolute deviations (MADs) from the median to use for 
+    determining outliers.  The default value is 3.  Only used when 
+    \code{method="illumina"} (see \code{createBeadSummaryData} help 
+    page for further details).}
   \item{trim}{fraction of intensities to remove from the bead summary
     calculations when \code{method="trim"}, or the fraction of
     intensities to set to the \code{trim} and 1-\code{trim} percentile

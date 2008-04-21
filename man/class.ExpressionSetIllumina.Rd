@@ -113,8 +113,6 @@
 		   combination in both dimensions of ExpressionSetIllumina objects}
 		 \item{\code{show(ExpressionSetSetIllumina)}}{See
 		   \code{\link[Biobase:eSet]{eSet}}}
-	\item{\code{backgroundNormalise(ExpressionSetIllumina)}}{Normalisation of Illumina data using data from the negative controls on each array stored in the \code{QC} slot.}
-       		 
   }
   
    Derived from \code{\link[Biobase:eSet]{eSet}}:
@@ -128,11 +126,10 @@
      \item{\code{pData(ExpressionSetSetIllumina)}, \code{pData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
      \item{\code{varMetadata(ExpressionSetSetIllumina)}, \code{varMetadata(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:eSet]{eSet}}}
      \item{\code{experimentData(ExpressionSetSetIllumina)},\code{experimentData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{pubMedIds(ExpressionSetSetIllumina)}, \code{pubMedIds(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{abstract(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:eSet]{eSet}}}
+%     \item{\code{pubMedIds(ExpressionSetSetIllumina)}, \code{pubMedIds(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:eSet]{eSet}}}
+%     \item{\code{abstract(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:eSet]{eSet}}}
      \item{\code{annotation(ExpressionSetSetIllumina)}, \code{annotation(ExpressionSetSetIllumina,value)<-}}{See \code{\link[Biobase:eSet]{eSet}}}
      \item{\code{storageMode(eSet)}, \code{storageMode(eSet,character)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{reporterNames(ExpressionSetSetIllumina)}, \code{reporterNames(ExpressionSetSetIllumina,value)<-}:}{DEPRECATED}
   }
 
   Standard generic methods:

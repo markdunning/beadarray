@@ -1,10 +1,10 @@
 \name{createBeadSummaryData}
-\alias{createBeadSummaryData,BeadLevelList-method}
+%\alias{createBeadSummaryData,BeadLevelList-method}
 \alias{createBeadSummaryData}
 \title{Produce bead averages}
 \description{
   Produce bead averages for each bead type used in an experiment
-  on a specified set of arrays.
+  on a specified set of strips/arrays.
 }
 \usage{
 createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
@@ -12,7 +12,7 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
                method="illumina", n=3, trim=0.05)
 }
 \arguments{
-  \item{BLData}{an BeadLevelList object}
+  \item{BLData}{\code{BeadLevelList}}
   \item{log}{if TRUE then summarise the log2 intensities of each bead}
   \item{imagesPerArray}{Specifies how many images (strips) there are
     per array.  Normally 1 for a SAM and 1 or 2 for a BeadChip.
@@ -23,13 +23,15 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
     to summarise. See \code{getArrayData} for a list of possibilities.}
   \item{probes}{Specify particular probes to summarise. If left NULL
     then all the probes on the first array are used.}
-  \item{arrays}{Specify particular arrays to summarise. If left NULL
-    then all arrays are summarised.}
+  \item{arrays}{integer (scalar or vector) specifying the strips/arrays 
+    to summarise. If \code{NULL}, then all strips/arrays are summarised.}
   \item{method}{chracter string specifying the summarisation method to
     use. Options are \code{"illumina"}, \code{"mean"}, \code{"median"},
     \code{"trim"} and \code{"winsorise"}.}
-  \item{n}{use n median absolute deviations from the median as a
-    cut-off for outliers}
+  \item{n}{numeric value defining a cut-off for the number of 
+    median absolute deviations (MADs) from the median to use for 
+    determining outliers.  The default value is 3.  Used when 
+    \code{method="illumina"}}
   \item{trim}{fraction of intensities to remove from the bead summary
     calculations when \code{method="trim"}, or the fraction of
     intensities to set to the \code{trim} and 1-\code{trim} percentile
@@ -49,9 +51,9 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
   \code{method="mean"}, the average and standard error of all beads
   for a given bead type is calculated on each array.  This would be 
   appropriate if the scanner has been set up to exclude outlier beads  
-  from the bead level txt or csv files.
+  from the bead level .txt or .csv files.
   
-  \code{method="median"}, the middle value is returned along with the
+  When \code{method="median"}, the middle value is returned along with the
   median absolute deviation (rather than standard error) for each bead type.
   When \code{method="trim"}, the trimmed mean and standard error are
   calculated and for \code{method="winsorize"} the winsorised mean and
@@ -66,7 +68,7 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
   be joined using the \code{combine} function.
 }
 \value{
-  An ExpressionSetIllumina (bead summary) object (or SnpSetIllumina
+  An \code{ExpressionSetIllumina} object (or \code{SnpSetIllumina}
   object for two-colour data, when \code{what="RG"}) in which all
   components are matrices with number of rows equal to the number of bead
   types for the experiment and number of columns equal to the number
