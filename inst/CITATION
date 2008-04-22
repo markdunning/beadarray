@@ -1,0 +1,22 @@
+citHeader("For a complete list of our publications on Illumina 
+BeadArray data analysis, please refer to the beadarray 
+vignette (to view, type vignette(\"beadarray\") at the R 
+command prompt).  The beadarray software can be cited as follows:")
+
+citEntry(entry="article",
+    title = "beadarray: {R} classes and methods for {I}llumina bead-based data",
+    author = "Mark J. Dunning and Mike L. Smith and Matthew E. Ritchie and Simon Tavar\\'{e}",
+    journal = "Bioinformatics",
+    year = "2007",
+    volume  = "23",
+    number =  "16",
+    pages ="2183--4",
+    textVersion = paste("Dunning, M.J., Smith, M.L., Ritchie, M.E., Tavare, S.",
+        "beadarray: R classes and methods for Illumina bead-based",
+        "data, Bioinformatics. 2007, 23(16):2183-4.")
+    )
+
+citFooter("This free open-source software implements academic
+research by the authors and co-workers. If you use it,
+please support the project by citing the appropriate
+journal articles.")
