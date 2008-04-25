@@ -1,10 +1,10 @@
 Package: beadarray
-Title: Quality control and low-level analysis of BeadArrays
-Version: 1.7.14
-Date: 2008-04-22
+Title: Quality assessment and low-level analysis for Illumina BeadArray data
+Version: 1.7.15
+Date: 2008-04-25
 Author: Mark Dunning, Mike Smith, Isabelle Camilier, Matt Ritchie
 Maintainer: Mark Dunning <md392@cam.ac.uk>
-Description: The package is able to read pre-processed Bead Summary data as well as re-constructing bead-level data using raw TIFF images. Methods for quality control and low-level analysis are provided.
+Description: The package is able to read bead-level data (raw TIFFs and text files) output by  BeadScan as well as bead-summary data from BeadStudio.  Methods for quality assessment and low-level analysis are provided.
 Depends: limma, Biobase, methods, geneplotter, affy
 Suggests: beadarraySNP, lumi, vsn
 License: GPL
