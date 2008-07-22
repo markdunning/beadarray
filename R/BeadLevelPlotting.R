@@ -141,7 +141,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
                      main=whatToPlot, method="illumina",
                      n = 3, trim=0.05, legend=TRUE, ...){
 
-  par(mar = c(2,1,1,1), xaxs = "i")
+  par(mar = c(2,1,1,1), xaxs = "i", yaxs = "i")
   
 #Not needed since the co-ords are automatically scaled to zero now  
 #  xs = floor(BLData@GrnX[,array] - min(BLData@GrnX[,array]))
@@ -215,7 +215,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 
   imageMatrix = t((imageMatrix))
   if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
-  image(x = c(0:ncol), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
+  image(x = c(0:ncol), y = c(0:nrow), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
   if(legend)
     mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
 }

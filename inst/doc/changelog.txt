@@ -1,3 +1,6 @@
+1.7.16 - 22 July 2008
+- changed axes in imageplot() to 0:nrows and 0:ncols (previously y axis was 0:1).
+
 1.7.15 - 25 April 2008
 - update DESCRIPTION file
 
