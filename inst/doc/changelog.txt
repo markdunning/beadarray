@@ -1,3 +1,7 @@
+1.9.1 - 11 August 2008
+- fixed bug in findAllOutliers() - indexes were incorrect when negative values were present and logs were taken.  Thanks to Jonathan Cairns for pointing this out.
+- updated the beadarray vignette to include our BMC Research Notes paper.
+
 1.7.16 - 22 July 2008
 - changed axes in imageplot() to 0:nrows and 0:ncols (previously y axis was 0:1).
 

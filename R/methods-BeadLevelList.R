@@ -418,7 +418,8 @@ findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, what="G"){
 
   foo <- .C("findAllOutliers", as.double(inten), binStatus = integer(length = nbeads), as.integer(probeList), as.integer(probes), as.integer(length(probes)), as.integer(nbeads), as.integer(start), as.double(n), PACKAGE = "beadarray")
 
-  which((probeList > 0) & (foo$binStatus == 0))
+  sel = which((probeList > 0) & (foo$binStatus == 0))
+  which(!nasinf)[sel]
 }# )
 
 setGeneric("getProbeIntensities", function(BLData, ProbeIDs, array = 1, log = TRUE, what = "G") standardGeneric("getProbeIntensities"))
