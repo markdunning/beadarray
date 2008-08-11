@@ -71,7 +71,7 @@ please cite:\\
 
 Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. BMC Bioinformatics. 2008 Feb 6;9(1):85.\\
 
-For a validation of the VST method (implemented in the \Rpackage{lumi} package) on the spike-in data set, along with a comparison of the results obtained from the a full bead-level analysis, see
+For a validation of the VST method (implemented in the \Rpackage{lumi} package) on the spike-in data set, along with a comparison of the results obtained from a full bead-level analysis, see
 
 Dunning MJ, Ritchie ME, Barbosa-Morais NL, Tavar\'e S, Lynch AG. \emph{Spike-in validation of an Illumina-specific variance-stabilizing transformation}. BMC Research Notes, 2008, 1:18.\\
 
