@@ -1,3 +1,6 @@
+1.9.2 - 13 August 2008
+- fixed bug in C code within createBeadSummaryData.c - function "binarySearch" failed to find some elements properly from time to time.
+
 1.9.1 - 11 August 2008
 - fixed bug in findAllOutliers() - indexes were incorrect when negative values were present and logs were taken.  Thanks to Jonathan Cairns for pointing this out.
 - updated the beadarray vignette to include our BMC Research Notes paper.

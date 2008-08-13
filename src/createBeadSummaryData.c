@@ -7,7 +7,7 @@
 int binarySearch(int key, int *arr, int left, int right){
 	int mid;
 	
-	if (right <= left) {
+	if (right < left) {
 		return -1;
 	}
 	
