@@ -1,6 +1,6 @@
 Package: beadarray
 Title: Quality assessment and low-level analysis for Illumina BeadArray data
-Version: 1.9.2
+Version: 1.9.3
 Date: 2008-08-13
 Author: Mark Dunning, Mike Smith, Isabelle Camilier, Jonathan Cairns, Matt Ritchie
 Maintainer: Mark Dunning <md392@cam.ac.uk>
