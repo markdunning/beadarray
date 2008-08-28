@@ -7,21 +7,20 @@
   particular bead type on a given strip/array using Illumina's 
   standard outlier detection method.
 }
-
 \usage{
-findAllOutliers(BLData, array, log=FALSE, n=3, what="G")
+findAllOutliers(BLData, array, log=FALSE, n=3, what="G", usewts=FALSE)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
   \item{array}{integer specifying which strip/array we
     want to find outliers on}
-  \item{log}{if TRUE the intensities will be calculated on the 
-    log2 scale. Otherwise un-logged data is used}
+  \item{log}{if TRUE the intensities will be calculated on the log2 scale. Otherwise un-logged data is used.}
   \item{n}{numeric value defining a cut-off for the number of 
     median absolute deviations (MADs) from the median to use for 
     determining outliers.  The default value is 3.}
   \item{what}{character string specifying which intensities to use.
-    See \code{getArrayData} for a list of possibilities.}
+    See \code{\link{getArrayData}} for a list of possibilities.}
+  \item{usewts}{if TRUE, then beads with weights below 1 will be discarded prior to analysis.}
 }
 \details{
   We find the outliers for each bead type on the array in

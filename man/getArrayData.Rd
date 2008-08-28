@@ -39,6 +39,7 @@ getArrayData(BLData, what="G", array=1,log=TRUE, method="illumina", n=3, trim=0.
   \code{"residM"}, \code{"A"} or \code{"beta"}).
   When \code{log=TRUE}, intensity data is returned on the log2 scale.
 }
+
 \value{
 A vector containing the raw bead data (or residuals) for a particular array.
 }

@@ -106,12 +106,12 @@
   if(singleChannel) {
     arrayInfo$channels = "single"
     if(storeXY){
-      ncolumns = 5
-      headings=c("ProbeID", "G", "Gb","GrnX", "GrnY")	
+      ncolumns = 6
+      headings=c("ProbeID", "G", "Gb","GrnX", "GrnY", "wts")	
     }
     else{
-      ncolumns=3
-      headings=c("ProbeID", "G", "Gb")
+      ncolumns = 4
+      headings=c("ProbeID", "G", "Gb", "wts")
     }
   }
   else { # two-channel data
@@ -119,12 +119,12 @@
     tifFiles2 = vector(length=length(arrays))
     tifFiles2 = file.path(path, paste(arrays, tiffExtRed, sep=""))
     if(storeXY){
-      ncolumns = 7
-      headings=c("ProbeID", "G", "Gb", "GrnX", "GrnY", "R", "Rb")
+      ncolumns = 8
+      headings=c("ProbeID", "G", "Gb", "GrnX", "GrnY", "R", "Rb", "wts")
     }
     else{
-      ncolumns = 5
-      headings=c("ProbeID", "G", "Gb","R", "Rb")
+      ncolumns = 6
+      headings=c("ProbeID", "G", "Gb","R", "Rb", "wts")
       }
   }
 
@@ -225,6 +225,7 @@
        else
          data[,c(2,4)] = normalizeSingleArray(data[,c(2,4)], method=normalizeMethod)
      }
+     data[,which(colnames(data) == "wts")] = 1 ##initialise wts to 1
      assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
    }
  }
@@ -295,7 +296,8 @@
          cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
          data[,c(2,4)] = normalizeSingleArray(data[,c(2,4)], method=normalizeMethod)
        }
-     }    
+     }
+     data[,which(colnames(data) == "wts")] = 1 ##initialise weights to 1
      assign(arrays[i], as.data.frame(data), envir=BLData@beadData)
    }
   }

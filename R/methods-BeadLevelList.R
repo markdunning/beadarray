@@ -79,7 +79,7 @@ setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method=
 setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
    if(is.na(array))
       stop("'array' out of range")
-   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A", "beta"))
+   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A", "beta", "wts"))
 
   if(what=="beta") {
      if(BLData@arrayInfo$channels=="two") {
@@ -127,7 +127,10 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, l
      else
        stop(paste("Need two-channel data to retrieve per bead", what, "values"))
    }
-   else { # "G" or "Gb"
+   else if(what =="wts"){
+     data=BLData[[array]][["wts"]]
+   }
+else { # "G" or "Gb"
      data = BLData[[array]][[what]]
      if(log && (what=="G" || what=="Gb"))
        data = log2.na(data)
@@ -205,6 +208,12 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     sel = getArrayData(BLData, what="ProbeID", array=arraynms[1])!=0
     pr = getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel]
     finten = getArrayData(BLData, what=what, log=log, array=arraynms[1])[sel]
+    if("wts" %in% names(BLData[[arraynms[1]]]))
+    {
+      wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
+      pr = pr[wts==1]
+      finten=finten[wts==1]	
+    }
     nasinf = !is.finite(finten) | is.na(finten)
     pr = pr[!nasinf]
     finten = finten[!nasinf]
@@ -228,6 +237,13 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     sel2 = getArrayData(BLData, what="ProbeID", array=arraynms[2])!=0 
     pr = append(getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel1],getArrayData(BLData, what="ProbeID", array=arraynms[2])[sel2])
     finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[1])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[2])[sel2])
+
+    if(wts %in% names(BLData[[arraynms[1]]])){
+
+    pr = pr[wts==1]
+    finten=finten[wts==1]	
+  	}
+
 #    if(whatelse == "R") {
 #       finten2 = append(getArrayData(BLData, what=whatelse, log=log, array=arraynms[1])[sel1], getArrayData(BLData, what=whatelse, log=log, array=arraynms[2])[sel2])
 #       nasinf = !is.finite(finten) | is.na(finten) | !is.finite(finten2) | is.na(finten2)
@@ -324,6 +340,12 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
        sel = getArrayData(BLData, what="ProbeID", array=arraynms[i])!=0
        pr = getArrayData(BLData, what="ProbeID", array=arraynms[i])[sel]   
        finten = getArrayData(BLData, what=what, log=log, array=arraynms[i])[sel]
+       if("wts" %in% names(BLData[[arraynms[1]]]))
+       {
+         wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
+         pr = pr[wts==1]
+         finten=finten[wts==1]	
+       }
        nasinf = !is.finite(finten) | is.na(finten)
        pr = pr[!nasinf]
        finten = finten[!nasinf]
@@ -406,11 +428,13 @@ BSData
 #setGeneric("findAllOutliers", function(BLData, array=1, log = FALSE, n = 3, what="G") standardGeneric("findAllOutliers"))
 
 #setMethod("findAllOutliers", "BeadLevelList", function(BLData, array=1, log = FALSE, n = 3, what="G"){
-findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, what="G"){
+findAllOutliers = function(BLData, array=1, log = FALSE, n = 3, what="G", usewts = FALSE){
   probeList = getArrayData(BLData, array=array, what="ProbeID")
   probes = sort(unique(probeList[probeList>0]))
+  if(what %in% c("ProbeID","wtsG","wtsR")) {warning(paste(what,"used as \"what\" in findAllOutliers."))}
   inten = getArrayData(BLData, array=array, log=log, what=what)
   nasinf = is.na(inten) | !is.finite(inten)
+  if(usewts){nasinf = nasinf | !getArrayData(BLData=BLData, array=array, what="wtsG")}
   inten = inten[!nasinf]
   probeList = probeList[!nasinf]
   nbeads = length(inten)
@@ -512,4 +536,12 @@ getProbeIndicesC = function(BLData, probe, array=1, intProbe, index, startSearch
 log2.na = function (x, ...)
 {
     log2(ifelse(x > 0, x, NA), ...)
+}
+
+setWeights = function(BLData, wts, array)
+{
+	an = arrayNames(BLData)
+	BLData.copy = copyBeadLevelList(BLData)
+	BLData.copy@beadData[[an[array]]]$wts = wts
+	BLData.copy
 }

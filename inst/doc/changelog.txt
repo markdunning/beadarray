@@ -1,3 +1,10 @@
+1.9.3 - 28 August 2008
+- added weights support to getArrayData(), createBeadSummary(), readIllumina()
+- new function setWeights()
+- updated BLData.rda to include weights
+- findAllOutliers now has a "usewts" option, and gives a warning when "what" is not sensible (e.g. what = "ProbeID")
+- minor manual page edits
+
 1.9.2 - 13 August 2008
 - fixed bug in C code within createBeadSummaryData.c - function "binarySearch" failed to find some elements properly from time to time.
 
