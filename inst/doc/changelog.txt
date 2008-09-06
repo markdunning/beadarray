@@ -1,3 +1,10 @@
+1.9.4 - 5 September 2008
+- Added masking functions: addArrayMask(), removeArrayMask(), clearArrayMask(), showArrayMask()
+- Added BASH functions: BASH(), BASHCompact(), BASHDiffuse(), BASHExtended()
+- Added bead image manipulation functions: generateE(), generateNeighbours(), BGFilter(), BGFilterWeighted(), chooseClusters(), closeImage(), denseRegions(), viewBeads(). (These are used extensively in the BASH functions.)
+- setWeights() can now update multiple arrays, and there is a new option to combine weights instead of replacing
+- createBeadSummaryData() outputs a warning if you use method = "illumina" on a BLData with altered weights. Several bugs involving weights fixed.
+
 1.9.3 - 28 August 2008
 - added weights support to getArrayData(), createBeadSummary(), readIllumina()
 - new function setWeights()

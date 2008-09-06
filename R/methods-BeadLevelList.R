@@ -184,6 +184,8 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
   arraynms = arrayNames(BLData)
   if((trim<0 || trim>0.5) && (method=="trim" || method=="winsorize"))
     stop("trim proportion must be between 0 and 0.5")
+  if(method=="trim" && trim==0.5)
+    method="median"
   if(!is.null(arrays) && !is.character(arrays))
     arraynms = arraynms[arrays]
   if(is.character(arrays))
@@ -192,8 +194,6 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
   what = match.arg(what, c("G", "R", "RG", "M", "A", "beta"))
   method = match.arg(method, c("illumina", "mean", "trim", "winsorize", "median"))
   method = match(method, c("illumina", "mean", "trim", "winsorize", "median"))
-  if(method=="trim" && trim==0.5)
-    method="median"
   whatelse = ""
   if(what=="RG") {
     if(BLData@arrayInfo$channels=="two") {
@@ -204,6 +204,9 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
        stop("Need two-channel data to calculate summary R and G values")
      }
   }
+
+  ##weights check (ensures backwards compatability)
+
   if(imagesPerArray == 1){
     sel = getArrayData(BLData, what="ProbeID", array=arraynms[1])!=0
     pr = getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel]
@@ -211,6 +214,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     if("wts" %in% names(BLData[[arraynms[1]]]))
     {
       wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
+      if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
       pr = pr[wts==1]
       finten=finten[wts==1]	
     }
@@ -238,10 +242,16 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     pr = append(getArrayData(BLData, what="ProbeID", array=arraynms[1])[sel1],getArrayData(BLData, what="ProbeID", array=arraynms[2])[sel2])
     finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[1])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[2])[sel2])
 
-    if(wts %in% names(BLData[[arraynms[1]]])){
-
-    pr = pr[wts==1]
-    finten=finten[wts==1]	
+    if("wts" %in% names(BLData[[arraynms[1]]]) || "wts" %in% names(BLData[[arraynms[2]]]))
+	{
+      if("wts" %in% names(BLData[[arraynms[1]]])) {wts1 = getArrayData(BLData, what="wts", array=arraynms[1])[sel1]}
+      else{wts1 = rep(1,length(sel1))}
+      if("wts" %in% names(BLData[[arraynms[2]]])) {wts2 = getArrayData(BLData, what="wts", array=arraynms[2])[sel2]}
+      else{wts2 = rep(1,length(sel2))}
+      wts = append(wts1,wts2)
+      if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+	  pr = pr[wts==1]
+	  finten=finten[wts==1]	
   	}
 
 #    if(whatelse == "R") {
@@ -340,9 +350,10 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
        sel = getArrayData(BLData, what="ProbeID", array=arraynms[i])!=0
        pr = getArrayData(BLData, what="ProbeID", array=arraynms[i])[sel]   
        finten = getArrayData(BLData, what=what, log=log, array=arraynms[i])[sel]
-       if("wts" %in% names(BLData[[arraynms[1]]]))
+       if("wts" %in% names(BLData[[arraynms[i]]]))
        {
-         wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
+         wts = getArrayData(BLData, what="wts", array=arraynms[i])[sel]
+         if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
          pr = pr[wts==1]
          finten=finten[wts==1]	
        }
@@ -359,7 +370,18 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
        sel1 = getArrayData(BLData, what="ProbeID", array=arraynms[j])!=0
        sel2 = getArrayData(BLData, what="ProbeID", array=arraynms[j+1])!=0 
        pr = append(getArrayData(BLData, what="ProbeID", array=arraynms[j])[sel1],getArrayData(BLData, what="ProbeID", array=arraynms[j+1])[sel2])
-       finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[j])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[j+1])[sel2])       
+       finten = append(getArrayData(BLData, what=what, log=log, array=arraynms[j])[sel1], getArrayData(BLData, what=what, log=log, array=arraynms[j+1])[sel2])      
+       if("wts" %in% names(BLData[[arraynms[j]]]) || "wts" %in% names(BLData[[arraynms[j+1]]]))
+        {
+          if("wts" %in% names(BLData[[arraynms[j]]])) {wts1 = getArrayData(BLData, what="wts", array=arraynms[j])[sel1]}
+          else{wts1 = rep(1,length(sel1))}
+          if("wts" %in% names(BLData[[arraynms[j+1]]])) {wts2 = getArrayData(BLData, what="wts", array=arraynms[j+1])[sel2]}
+          else{wts2 = rep(1,length(sel2))}
+          wts = append(wts1,wts2)
+          if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+    	  pr = pr[wts==1]
+	      finten=finten[wts==1]	
+	    }
        nasinf = !is.finite(finten) | is.na(finten)
        pr = pr[!nasinf]
        finten = finten[!nasinf]
@@ -538,10 +560,51 @@ log2.na = function (x, ...)
     log2(ifelse(x > 0, x, NA), ...)
 }
 
-setWeights = function(BLData, wts, array)
+setWeights = function(BLData, wts, array, combine = FALSE)
 {
-	an = arrayNames(BLData)
 	BLData.copy = copyBeadLevelList(BLData)
-	BLData.copy@beadData[[an[array]]]$wts = wts
+	an = arrayNames(BLData)
+
+	if (length(array) == 1)
+	{
+		##one array
+		if(combine)
+		{
+			#check for existing weights
+			if(is.null(BLData.copy@beadData[[an[array]]]$wts))
+			{
+				BLData.copy@beadData[[an[array]]]$wts = wts
+			}
+			else
+			{
+				BLData.copy@beadData[[an[array]]]$wts = pmin(wts,BLData.copy@beadData[[an[array]]]$wts)
+			}
+		}
+		else
+		{
+			BLData.copy@beadData[[an[array]]]$wts = wts
+		}
+	}
+	else
+	{
+		##multiple arrays
+		if(combine)
+		{
+			for(i in array)
+			{
+				#check for existing weights
+				if(is.null(BLData.copy@beadData[[an[i]]]$wts))
+				{BLData.copy@beadData[[an[i]]]$wts = wts[[i]]}
+				else{BLData.copy@beadData[[an[i]]]$wts = pmin(wts[[i]],BLData.copy@beadData[[an[i]]]$wts)}
+			}		
+		}
+		else
+		{
+			for(i in array)
+			{
+				BLData.copy@beadData[[an[i]]]$wts = wts[[i]]
+			}
+		}
+	}
 	BLData.copy
 }

@@ -10,12 +10,14 @@ setWeights(BLData, wts, array)
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{wts}{a numerical vector }
+  \item{wts}{either a numerical vector of weights to use, or 0 or 1 to set all weights to 0 or 1.}
   \item{array}{integer specifying the strip/array to use}
 }
 
 \details{
-This function replaces the weights column, \code{wts}, on the specified array, with user-specified values. Only rows with \code{wts == 1} are used in CreateBeadSummary.
+This function replaces the weights column, \code{wts}, on the specified array, with user-specified values.
+
+Only rows with \code{wts != 1} are used in CreateBeadSummary.
 }
 
 \value{
@@ -26,5 +28,6 @@ This function replaces the weights column, \code{wts}, on the specified array, w
 \examples{
 data(BLData)
 BLData <- setWeights(BLData,1,1) ##set all weights to 1
+BLData <- setWeights(BLData,0,1) ##set all weights to 0
 }
 \keyword{misc}
