@@ -58,7 +58,7 @@ BASH(BLData, array = NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, log 
 
 \examples{
 	data(BLData)
-	output <- BASH(BLData)
+	output <- BASH(BLData,array=1:4)
 	boxplot(output$ext) #view spread of extended scores
 	for(i in 1:4)
 	{
@@ -66,16 +66,16 @@ BASH(BLData, array = NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, log 
 	}
 
 	#diffuse test is stricter
-	output <- BASH(BLData, diffsig = 0.00001)
+	output <- BASH(BLData, diffsig = 0.00001,array=1)
 
 	#more outliers on the error image are used in the diffuse analysis
-	output <- BASH(BLData, diffn = 2)
+	output <- BASH(BLData, diffn = 2,array=1)
 
 	#only perform compact & diffuse analyses (we will only get weights)
-	output <- BASH(BLData, extended = FALSE)
+	output <- BASH(BLData, extended = FALSE,array=1)
 
 	#attempt to correct for background.
-	output <- BASH(BLData, ebgcorr = TRUE)
+	output <- BASH(BLData, ebgcorr = TRUE,array=1)
 }
 \references{
 	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
