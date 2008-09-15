@@ -52,9 +52,9 @@ If making the change would result in all beads of a certain probe ID being compl
 \author{Jonathan Cairns}
 
 \examples{
-data(BLData)
-addArrayMask(BLData,1)
-showArrayMask(BLData,1)
+##data(BLData)
+##addArrayMask(BLData,1)
+##showArrayMask(BLData,1)
 }
 
 \keyword{misc}
