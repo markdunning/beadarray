@@ -30,10 +30,10 @@ Vector of bead IDs. (This will be a subset of the argument \code{IDs})
 data(BLData)
 neighbours <- generateNeighbours(BLData,1)
 o <- findAllOutliers(BLData,1,log = TRUE)
-clusters8 <- chooseClusters(o, neighbours)
-clusters12 <- chooseClusters(o, neighbours, cutoff = 12) ## only larger clusters
+##clusters8 <- chooseClusters(o, neighbours)
+##clusters12 <- chooseClusters(o, neighbours, cutoff = 12) ## only ##larger clusters
 
-x11()
-plotBeadLocations(BLData,array=1,BeadIDs = clusters8, pch = ".")
+##x11()
+##plotBeadLocations(BLData,array=1,BeadIDs = clusters8, pch = ".")
 }
 \keyword{misc}

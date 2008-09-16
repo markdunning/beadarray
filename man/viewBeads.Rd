@@ -44,17 +44,17 @@ Outputs to the active graphical device.
 \seealso{\code{\link{generateNeighbours}}}
 
 \examples{
-data(BLData)
-o <- findAllOutliers(BLData,2)
+##data(BLData)
+##o <- findAllOutliers(BLData,2)
 
-x11()
-viewBeads(BLData, 2, 1000,1200,250,250, mark = o) ## outliers in this region are marked in blue
-x11()
-viewBeads(BLData, 2, 1000,1200,250,250, mark = o, inten = FALSE) ## removing the intensities makes the outlier locations easier to see
+##x11()
+##viewBeads(BLData, 2, 1000,1200,250,250, mark = o) ## outliers in this ##region are marked in blue
+##x11()
+##viewBeads(BLData, 2, 1000,1200,250,250, mark = o, inten = FALSE) ## ##removing the intensities makes the outlier locations easier to see
 
-neighbours <- generateNeighbours(BLData, 2)
-x11()
-viewBeads(BLData, 2, 1000,1200,250,250, neighbours) ## observe that there are many missing beads in this region, affecting the neighbours algorithm
+##neighbours <- generateNeighbours(BLData, 2)
+##x11()
+##viewBeads(BLData, 2, 1000,1200,250,250, neighbours) ## observe that ##there are many missing beads in this region, affecting the neighbours ##algorithm
 }
 
 \keyword{hplot}

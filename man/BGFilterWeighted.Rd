@@ -39,6 +39,6 @@ A vector - the weighted means. (NB: Whilst \code{BGFilter} manipulates the error
 data(BLData)
 E <- generateE(BLData,1,method = "mean")
 neighbours <- generateNeighbours(BLData,1)
-bgf <- BGFilterWeighted(E, neighbours)
+##bgf <- BGFilterWeighted(E, neighbours)
 }
 \keyword{misc}

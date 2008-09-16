@@ -32,10 +32,10 @@ An updated vector of bead IDs (of which the argument \code{IDs} will be a subset
 data(BLData)
 
 ##This process is equivalent to one iteration of BASHCompact.
-o <- findAllOutliers(BLData,4)
-neighbours <- generateNeighbours(BLData,4)
-o.clusters <- chooseClusters(o, neighbours)
-o.compact <- closeImage(o.clusters, neighbours)
+##o <- findAllOutliers(BLData,4)
+##neighbours <- generateNeighbours(BLData,4)
+##o.clusters <- chooseClusters(o, neighbours)
+##o.compact <- closeImage(o.clusters, neighbours)
 }
 
 \keyword{misc}
