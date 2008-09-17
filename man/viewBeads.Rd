@@ -5,8 +5,7 @@
 View an image of the beads in a certain region, optionally with links between neighbours or certain beads highlighted.
 }
 \usage{
-viewBeads(BLData, array, x, y, xwidth = 100, ywidth = 100, neighbours = NULL, mark = NULL, inten = TRUE, what = "G", log = TRUE, ...)
-viewBeads(BLData, array, x, y, xwidth = 100, ywidth = 100, neighbours = NULL, mark = NULL, markcol = "blue", markpch = 21, inten = TRUE, low = "green", high = "white", what = "G", log = TRUE, zlim = NULL, ...)
+viewBeads(BLData, array, x, y, xwidth = 100, ywidth = 100, neighbours = NULL, mark = NULL, markcol = "blue", markpch = 21, inten = TRUE, low = "black", high = "green", what = "G", log = TRUE, zlim = NULL, ...)
 }
 
 \arguments{

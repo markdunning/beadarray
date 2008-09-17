@@ -5,7 +5,7 @@
 Finds local weighted means at each bead.
 }
 \usage{
-BGFilter(E = NULL, neighbours, invasions = 20, weights = NULL)
+BGFilterWeighted(E = NULL, neighbours, invasions = 20, weights = NULL)
 }
 
 \arguments{

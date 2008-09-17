@@ -5,7 +5,7 @@
 Generates a Neighbours matrix from the X and Y co-ordinates in a \code{BeadLevelList} object.
 }
 \usage{
-generateNeighbours(BLData, array, thresh = 2.2, margin = 10, window = 30)
+generateNeighbours(BLData, array, window = 30, margin = 10, thresh = 2.2)
 }
 
 \arguments{

@@ -5,7 +5,7 @@
 Generates an Error Image from the data in a \code{BeadLevelList} object.
 }
 \usage{
-generateE(BLData, array, neighbours = NULL, log = TRUE, method = "median", what = "residG", bgfilter = "medianMAD", invasions = 20)
+generateE(BLData, array, neighbours = NULL, log = TRUE, method = "median", what = "residG", bgfilter = "none", invasions = 20)
 }
 
 \arguments{

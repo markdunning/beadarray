@@ -1,11 +1,11 @@
 \name{BASH}
 \alias{BASH}
-\title{BASH - BeadArray Artefact Selection, using Harshlight}
+\title{BASH - BeadArray Subversion of Harshlight}
 \description{
 BASH is an automatic detector of physical defects on an array. It is designed to detect three types of defect - COMPACT, DIFFUSE and EXTENDED.
 }
 \usage{
-BASH(BLData, array = NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE)
+BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
@@ -43,13 +43,13 @@ BASH(BLData, array = NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, log 
 }
 
 \value{
-	The output has three attributes:
+	The output is a list with three attributes:
 	
-	$wts: A list, where the ith object in the list corresponds to the weights for array i.
+	wts: A list, where the ith object in the list corresponds to the weights for array i.
 
-	$ext: A vector of extended scores (null if the extended analysis was disabled)
+	ext: A vector of extended scores (null if the extended analysis was disabled)
 
-	$call: The function you used to call BASH.
+	call: The function you used to call BASH.
 }
 
 \author{Jonathan Cairns}
@@ -75,11 +75,10 @@ BASH(BLData, array = NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, log 
 	output <- BASH(BLData, extended = FALSE,array=1)
 
 	#attempt to correct for background.
-	output <- BASH(BLData, ebgcorr = TRUE,array=1)
+	output <- BASH(BLData, bgcorr = "median",array=1)
 }
 \references{
 	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
 
-	#FIXME
 }
 \keyword{misc}

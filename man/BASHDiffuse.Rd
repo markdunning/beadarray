@@ -51,6 +51,5 @@ o <- BASHDiffuse(BLData, 1, cutoff = 12) ##only larger defects will be found wit
 \references{
 	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
 
-	#FIXME
 }
 \keyword{misc}
