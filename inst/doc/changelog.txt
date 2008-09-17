@@ -1,8 +1,5 @@
-1.9.6 - 17 September 2008
+1.9.5 - 17 September 2008
 - fixed typos and misorderings of function arguments in new .Rd files
-
-1.9.5 - 16 September 2008
-- ???
 
 1.9.4 - 5 September 2008
 - Added masking functions: addArrayMask(), removeArrayMask(), clearArrayMask(), showArrayMask()
