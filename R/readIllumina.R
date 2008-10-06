@@ -346,7 +346,7 @@ colnames(outlierScores) = paste("Segment", 1:9)
 
 controlScores = matrix(nrow=k, ncol=9)
 
-rownames(BASHscores) = rownames(ScanMetrics) = rownames(outlierScores) = rownames(beadCounts) = rownames(controlScores) = arrays
+rownames(BASHscores) = rownames(ScanMetrics) = rownames(outlierScores) = rownames(controlScores) = arrays
 
 
 
