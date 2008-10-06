@@ -1,6 +1,6 @@
 
 setClass("ExpressionSetIllumina",
-         representation(QC ="list"),
+         representation(QC ="list",BeadLevelQC="list"),
          contains="eSet"
 )
 
@@ -12,4 +12,4 @@ setClass("BeadLevelList",
 #             probeindex="matrix",
              annotation="character",
              beadAnno="data.frame",
-             scanMetrics="data.frame"))
+             qcScores ="list"))

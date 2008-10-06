@@ -7,15 +7,15 @@ setMethod("initialize", "BeadLevelList",
                varMetadata=data.frame(labelDescription="Name in frame", row.names="name")),
              arrayInfo=list(arrayName=I(character(0)), nBeads=0), # probeindex=matrix(0),
              anno=character(0),
-             beadAnno=data.frame(name=I(character(0))),
-             scanMetrics=data.frame(name=I(character(0)))) {
+             beadAnno=data.frame(name=I(character(0))),qcScores = list()){
                .Object@beadData = beadData
                .Object@phenoData = phenoData
                .Object@arrayInfo = arrayInfo
 #               .Object@probeindex = probeindex
                .Object@annotation = anno
                .Object@beadAnno = beadAnno
-               .Object@scanMetrics = scanMetrics
+               .Object@qcScores = qcScores
+               
                .Object})
 
 
@@ -33,6 +33,7 @@ setMethod("[[",  # subsetting method, modified from the one in prada
 setMethod("phenoData", "BeadLevelList", function(object) object@phenoData)
 
 setMethod("pData", "BeadLevelList", function(object) pData(object@phenoData))
+
 
 setGeneric("arrayNames", function(object, arrays=NULL)
    standardGeneric("arrayNames"))
@@ -69,7 +70,7 @@ setMethod("show", "BeadLevelList", function(object) {
    cat("Experimental information\n\n")
    show(pData(object@phenoData))
    cat("\nScanner metrics\n\n")
-   show(summary(object@scanMetrics))
+   show(summary(object@qcScores))
  })
 
 
@@ -151,7 +152,8 @@ setMethod("copyBeadLevelList", "BeadLevelList",
 #             newobj@probeindex = object@probeindex
              newobj@annotation = object@annotation
              newobj@beadAnno = object@beadAnno
-             newobj@scanMetrics = object@scanMetrics
+             newobj@qcScores = object@qcScores
+             
              arraynms = arrayNames(object)
              multiassign(arraynms, mget(arraynms, object@beadData),
                      envir = newobj@beadData, inherits=FALSE)
@@ -443,6 +445,11 @@ else
 
 if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
 else BSData@annotation=BLData@annotation
+
+
+if("qcScores" %in% slotNames(BLData)) BSData@BeadLevelQC = BLData@qcScores
+
+
 BSData
 } #)
 

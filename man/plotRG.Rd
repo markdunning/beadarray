@@ -36,15 +36,6 @@ plotRG(BLData, ProbeIDs=NULL, BeadIDs=NULL, log=TRUE, arrays=1,
 Plot is produced on the current graphical device.
 }
 
-\examples{
-data(BLData)
-
-#plot all beads from array 1
-plotRG(BLData, arrays=1)
-
-#plot Beads with ProbeIDs 2 on arrays 1-4
-plotRG(BLData, arrays=1:4, ProbeIDs=1000, pch=16)
-}
 
 \author{Matt Ritchie}
 

@@ -11,7 +11,6 @@ setMethod("initialize", "ExpressionSetIllumina",
                    annotation = character(),
                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
-
                    QCexprs = new("matrix"),
                    QCBeadStDev = new("matrix"),
                    QCNoBeads = new("matrix"),
@@ -24,7 +23,8 @@ setMethod("initialize", "ExpressionSetIllumina",
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData)
+                           featureData = featureData
+			   )
             .Object@QC=QCData
             .Object
           })

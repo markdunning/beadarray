@@ -8,7 +8,7 @@ about each bead on each array in a BeadChip or SAM experiment.
 }
 \usage{
 readIllumina(arrayNames=NULL, path=".", textType=".txt",
-        annoPkg="illuminaProbeIDs", beadInfo=NULL, useImages=TRUE,  
+        annoPkg=NULL, beadInfo=NULL, useImages=TRUE,  
         singleChannel=TRUE, targets=NULL, 
         imageManipulation="sharpen", backgroundSize=17,
         storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,

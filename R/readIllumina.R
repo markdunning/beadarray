@@ -1,6 +1,6 @@
 "readIllumina" =
   function(arrayNames=NULL, path=".", textType=".txt", 
-           annoPkg="illuminaProbeIDs", beadInfo=NULL, useImages=TRUE, 
+           annoPkg=NULL, beadInfo=NULL, useImages=TRUE, 
            singleChannel=TRUE, targets=NULL, 
            imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
@@ -76,9 +76,23 @@
   cat("Found", k, "arrays","\n")
    
   BLData = new("BeadLevelList")
-  if(!is.null(annoPkg) && is.character(annoPkg))
-     BLData@annotation=annoPkg
-#  endPos = new("list")
+
+
+####Check the specified annotation name
+
+if(is.null(annoPkg)) warning("No annotation package was specified. Need to use SetAnnotation later\n")
+
+else{
+     data(ExpressionControlData)
+     m=match(annoPkg, names(ExpressionControlData))
+    
+     if(is.na(m)) warning("The argument annoPkg needs to be one of :", names(ExpressionControlData))
+     else BLData@annotation = annoPkg	
+}
+
+
+
+
   usedIDs=NULL
   arrayInfo=list(arrayNames=as.character(arrays), 
              nBeads=rep(0, length(arrays)), 
@@ -303,29 +317,6 @@
   }
   BLData@arrayInfo = arrayInfo
 
-#   probeindex = matrix(nrow=length(usedIDs), ncol=length(arrays))
-
- #  for(i in 1:length(arrays)){
-     
- #    p = unique(get(arrays[i], envir=BLData@beadData)[,1])
- #    probeindex[match(p, usedIDs),i] = endPos[[i]]
-
- #  }
- # rownames(probeindex) = usedIDs
-
-
-
- # BLData@probeindex = probeindex
-
-
-                                                                                ## Add bead annotation information (if available)
-#if(!is.null(annoFile)){
-#  annoFile=file.path(path, annoFile) 
-#  if(length(grep(".opa", annoFile))==1)
-#     BLData@beadAnno = readOPA(annoFile)
-#  else
-#     BLData@beadAnno = read.table(annoFile, ...)
-#}
 
 ## Add targets information (if available)
 if(!is.null(targets))
@@ -339,11 +330,34 @@ if(!is.null(beadInfo) && is.data.frame(beadInfo))
 
 ##Look for scanner metrics file
                                            
+
+##Create template for the various QC scores
+
+ScanMetrics = matrix(nrow=k, ncol=13)
+
+
+BASHscores = matrix(nrow=k, ncol=3)
+colnames(BASHscores) = c("Number of Compact Defects","Number of Diffuse Defects", "Extended Defects Score")
+
+
+outlierScores = matrix(nrow=k, ncol=9)
+colnames(outlierScores) = paste("Segment", 1:9)
+
+
+controlScores = matrix(nrow=k, ncol=9)
+
+rownames(BASHscores) = rownames(ScanMetrics) = rownames(outlierScores) = rownames(beadCounts) = rownames(controlScores) = arrays
+
+
+
 if(metrics) {                                                          
   metrics = dir(path=path, pattern=metricsFile)
   if(length(metrics)==1)
-    BLData@scanMetrics = read.table(file.path(path, metricsFile), sep="\t", dec=dec, header=T)
+    ScanMetrics = read.table(file.path(path, metricsFile), sep="\t", dec=dec, header=T)
 }
+
+qcScores = list("ScanMetrics"=ScanMetrics, "BASHscores"=BASHscores, "OutlierDistribution"=outlierScores, "controlProbeScores" = controlScores)
+BLData@qcScores = qcScores
 
 BLData
 }                                                              
