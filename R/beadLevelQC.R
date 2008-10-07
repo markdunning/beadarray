@@ -275,15 +275,23 @@ cat("Done QC for array ", arnames[i], "\n")
 
 if(writeToFile=="html"){
 
-p=openPage(paste(BLData@arrayInfo$chip,"qcReport.html",sep=""))
+p=openPage(paste(path,"/qcReport.html",sep=""))
 
 IlluminaOutliers = 100*round(outlierMetrics[,10:18]/outlierMetrics[,1:9],3)
-IlluminaOutliers = cbind(IlluminaOutliers, 100*(apply(outlierMetrics[,10:18],1,sum)/apply(outlierMetrics[,1:9],1,sum)))
+IlluminaOutliers = cbind(IlluminaOutliers, round(100*(apply(outlierMetrics[,10:18],1,sum)/apply(outlierMetrics[,1:9],1,sum)),2))
+
 
 LowOutliers = 100*round(outlierMetrics[,19:27]/outlierMetrics[,1:9],3)
 
+LowOutliers = cbind(LowOutliers, round(100*(apply(outlierMetrics[,19:27],1,sum)/apply(outlierMetrics[,1:9],1,sum)),2))
+
+
 HighOutliers = 100*round(outlierMetrics[,28:36]/outlierMetrics[,1:9],3)
 
+HighOutliers = cbind(HighOutliers, round(100*(apply(outlierMetrics[,28:36],1,sum)/apply(outlierMetrics[,1:9],1,sum)),2))
+
+
+colnames(IlluminaOutliers) = colnames(LowOutliers) = colnames(HighOutliers) = c(paste("Section", 1:9), "Total")
 
 
 hwrite("Outlier Metrics", p ,heading=1)
@@ -315,11 +323,13 @@ hwrite("Control Probe Metrics", p ,heading=2)
 hwrite(round(controlProbeMetrics,2), p,col.link=list(paste(path,"/",rownames(controlProbeMetrics),".htm",sep="")))
 
 
+scanMetrics = BLData@qcScores$ScanMetrics
+
 hwrite("Scanner Metrics", p, heading=1)
 
 hwrite(scanMetrics,p,col.link=list(paste(path,"/",rownames(scanMetrics),".htm",sep="")))
 
-out
+closePage(p)
 
 }
 
