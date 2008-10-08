@@ -6,10 +6,8 @@
 \usage{data(ExpressionControlData)}
 
 \examples{
-##library(beadarray)
-##data(ExpressionControlData)
-##H3=ExpressionControlData[["HumanV3"]]
-##H3[1:5,]
+library(beadarray)
+data(ExpressionControlData)
 
 }
 
