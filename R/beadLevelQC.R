@@ -97,10 +97,10 @@ detScores[,i] = sapply(exprs(BSData)[,i], detect)
 detScores
 }
 
-
+###New functionality to calculate QA measures based on bead-level data
 
 ###############################################################################
-calculateBeadLevelScores=function(BLData,path="QC",plot=FALSE,writeToFile=c(NULL,"html","txt")){
+calculateBeadLevelScores=function(BLData,path="QC",plot=FALSE,replacePlots=TRUE,writeToFile=c(NULL,"html","txt")){
 
 chipType = getAnnotation(BLData)
 data(ExpressionControlData)
@@ -147,12 +147,32 @@ outfile = paste(path, "/outliers/",arnames[i],".jpeg",sep="")
 cat("Plotting outlier locations\n")
 
 
-if(plot) jpeg(outfile,width=1250,height=375,quality=100)
-
-outlierMetrics[i,]= outlierplot(BLData,i,plot=plot)
+if(plot){
 
 
-if (plot) dev.off()
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
+
+		outlierMetrics[i,]= outlierplot(BLData,i,plot=plot)
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			outlierMetrics[i,]= outlierplot(BLData,i,plot=plot)
+			dev.off()
+ 		}
+
+		else outlierMetrics[i,]= outlierplot(BLData,i,plot=FALSE)
+
+	}
+}
+
+else outlierMetrics[i,]= outlierplot(BLData,i,plot=FALSE)	
 
 
 
@@ -162,24 +182,70 @@ outfile = paste(path,  "/gradients/",arnames[i],".jpeg",sep="")
 cat("Plotting chip gradients\n")
 
 
-if(plot) jpeg(outfile,width=1250,height=375,quality=100)
-
-gradientplot(BLData,i,plot=plot)
-
-if(plot) dev.off()
+if(plot){
 
 
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
 
-outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
+		gradientplot(BLData,i,plot=plot)
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			gradientplot(BLData,i,plot=plot)
+
+			dev.off()
+ 		}
+
+		else gradientplot(BLData,i,plot=FALSE)
+	}
+}
+
+else gradientplot(BLData,i,plot=FALSE)
+
 
 
 cat("Plotting positive controls\n")
 
-if (plot) jpeg(outfile,width=625,height=350,quality=100)
-
+outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
 controlScores=poscontPlot(BLData,i,plot=plot)
 
-if (plot) dev.off()
+if(plot){
+
+
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
+
+		controlScores=poscontPlot(BLData,i,plot=plot)
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			controlScores=poscontPlot(BLData,i,plot=plot)
+
+			dev.off()
+ 		}
+
+		else controlScores=poscontPlot(BLData,i,plot=FALSE)
+	}
+}
+
+else controlScores=poscontPlot(BLData,i,plot=FALSE)
+
+
 
 
 
@@ -187,44 +253,110 @@ if (plot) dev.off()
 ##samplabHV2(BLData,i)
 ##dev.off()
 
+cat("Plotting hyb controls\n")
+
 outfile = paste(path,"/lmh/",arnames[i],".jpeg",sep="")
 
 
-cat("Plotting strigency controls\n")
-
-if(plot) jpeg(outfile,width=625,height=350,quality=100)
-
-controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+if(plot){
 
 
-if (plot) dev.off()
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
+
+		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
 
 
+	
 
-outfile = paste(path, "/mismatch/",arnames[i],".jpeg",sep="")
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores,lmhPlot(BLData,i,plot=FALSE))
+	}
+}
+else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+
 
 
 cat("Plotting mismatch controls\n")
 
-if(plot) jpeg(outfile,width=625,height=350,quality=100)
-
-probePairsPlot(BLData,i,plot=plot)
+outfile = paste(path, "/mismatch/",arnames[i],".jpeg",sep="")
 
 
-if(plot) dev.off()
+if(plot){
 
 
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
 
-outfile = paste(path,"/background/",arnames[i],".jpeg",sep="")
+		controlScores=c(controlScores,probePairsPlot(BLData,i,plot=plot))
+
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			controlScores=c(controlScores,probePairsPlot(BLData,i,plot=plot))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores,probePairsPlot(BLData,i,plot=FALSE))
+	}
+}
+else controlScores=c(controlScores,probePairsPlot(BLData,i,plot=FALSE))
 
 
 cat("Plotting negative controls\n")
 
-if(plot) jpeg(outfile,width=625,height=350,quality=100)
+outfile = paste(path,"/background/",arnames[i],".jpeg",sep="")
 
-controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+if(plot){
 
-if (plot) dev.off()
+
+	if(replacePlots){
+		jpeg(outfile,width=1250,height=375,quality=100)
+
+		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=1250,height=375,quality=100)
+			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=FALSE))
+	}
+}
+else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
 
 
 
@@ -359,8 +491,8 @@ t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 
 
-pms = unique(controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:pm"])
-mms = unique(controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:mm2"])
+pms = unique(controls$Array_Address[grep("phage_lambda_genome:pm",controls$Reporter_Group_Identifier)])
+mms = unique(controls$Array_Address[grep("phage_lambda_genome:mm2",controls$Reporter_Group_Identifier)])
 
 ##which pm probes are found on the array?
 
@@ -472,6 +604,7 @@ t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 mrnbg = controls$Array_Address[controls$Reporter_Group_Name=="negative"]
 
+mrnbg = unique(mrnbg[mrnbg %in% unique(t2)])
 
 negvals = exprs(createBeadSummaryData(BLData, array=array, probes=mrnbg))[,1]
 
@@ -486,14 +619,14 @@ negvals = negvals[-outliers]
 
 detect= function(x) 1 - (sum(x>negvals)/(length(negvals)))
 
-lowID = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:low"]
+lowID = controls$Array_Address[grep("phage_lambda_genome:low",controls$Reporter_Group_Identifier)]
 
 
 low = t1[t2  %in% lowID]
 
 output= 100*length(which(sapply(low, detect)<0.05))/length(low)
 
-medID = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:med"]
+medID = controls$Array_Address[grep("phage_lambda_genome:med",controls$Reporter_Group_Identifier)]
 
 med = t1[t2  %in% medID]
 
@@ -501,7 +634,7 @@ output= c(output,100*length(which(sapply(med, detect)<0.05))/length(med))
 
 
 
-highID = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:high"]
+highID = controls$Array_Address[grep("phage_lambda_genome:high",controls$Reporter_Group_Identifier)]
 
 high = t1[t2  %in% highID]
 
@@ -521,7 +654,7 @@ t1=log2(t1)
 linepos=0.5
 
 count=1
-mrn = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:low"]
+mrn = controls$Array_Address[grep("phage_lambda_genome:low",controls$Reporter_Group_Identifier)]
 mrn = mrn[mrn %in% unique(t2)]
 newinten = t1[t2 ==  mrn[1]]
 
@@ -547,7 +680,7 @@ labs = c(labs, mrn[i])
 linepos = c(linepos,count-0.5)
 
 
-mrn = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:med"]
+mrn = controls$Array_Address[grep("phage_lambda_genome:med",controls$Reporter_Group_Identifier)]
 mrn = mrn[mrn %in% unique(t2)]
 newinten = t1[t2 ==  mrn[1]]
 labs = c(labs, mrn[1])
@@ -571,8 +704,7 @@ labs = c(labs, mrn[i])
 linepos=c(linepos,count-0.5)
 
 
-mrn = controls$Array_Address[controls$Reporter_Group_Identifier=="phage_lambda_genome:high"]
-
+mrn = controls$Array_Address[grep("phage_lambda_genome:high",controls$Reporter_Group_Identifier)]
 mrn = mrn[mrn %in% unique(t2)]
 newinten = t1[t2 ==  mrn[1]]
 labs = c(labs, mrn[1])
@@ -626,7 +758,7 @@ t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 mrn = controls$Array_Address[controls$Reporter_Group_Name=="negative"]
 
-mrn=mrn[mrn %in% unique(t2)]
+mrn=unique(mrn[mrn %in% unique(t2)])
  
 ###Report the quality scores associated with negatives
 
@@ -701,7 +833,7 @@ linepos=0.5
 
 mrnbg = controls$Array_Address[controls$Reporter_Group_Name=="negative"]
 
-mrnbg=mrnbg[mrnbg %in% unique(t2)]
+mrnbg=unique(mrnbg[mrnbg %in% unique(t2)])
 
 ###Setup average of negatives to be used for detection  
 

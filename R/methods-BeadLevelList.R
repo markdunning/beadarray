@@ -413,10 +413,12 @@ if(method!=6) { # for all methods expect median
   
 if(whatelse=="R") { # create SNPSetIllumina
 #    rownames(G) = rownames(R) = rownames(GBeadStDev) = rownames(RBeadStDev) = probes
-    require("beadarraySNP")
-    BSData = new("SnpSetIllumina")
-    assayData(BSData) = assayDataNew(G = G, R = R, storage.mode="list") # GBeadStDev = GBeadStDev, RBeadStDev = RBeadStDev,
-    rownames(BSData@assayData[["G"]]) = rownames(BSData@assayData[["R"]]) = probes
+#    require("beadarraySNP")
+ #   BSData = new("SnpSetIllumina")
+ #   assayData(BSData) = assayDataNew(G = G, R = R, storage.mode="list") # GBeadStDev = GBeadStDev, RBeadStDev = RBeadStDev,
+	BSData = new("NChannelSet", R=R, G=G)  
+
+  rownames(BSData@assayData[["G"]]) = rownames(BSData@assayData[["R"]]) = probes
 #    rownames(BSData@assayData[["GBeadStDev"]]) = rownames(BSData@assayData[["RBeadStDev"]]) = probes
 
 }
@@ -447,7 +449,7 @@ if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
 else BSData@annotation=BLData@annotation
 
 
-if("qcScores" %in% slotNames(BLData)) BSData@BeadLevelQC = BLData@qcScores
+if("qcScores" %in% slotNames(BLData)) t=try(BSData@BeadLevelQC <- BLData@qcScores,silent=TRUE)
 
 
 BSData
