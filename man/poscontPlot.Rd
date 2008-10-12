@@ -31,7 +31,6 @@ An important point to note that the utility of these housekeeping controls is de
 \end{itemize}
 }
 
-\references{ ~put references to the literature/web site here ~ }
 \author{Mark Dunning and Andy Lynch}
 \seealso{ \code{\link{calculateBeadLevelScores}}, \code{\link{setAnnotation}}}
 
