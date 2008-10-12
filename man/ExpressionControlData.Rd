@@ -8,7 +8,7 @@
 \examples{
 library(beadarray)
 data(ExpressionControlData)
-
+names(ExpressionControlData)
 }
 
 \keyword{datasets}
