@@ -1,56 +1,24 @@
 \name{calculateDetection}
 \alias{calculateDetection}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ ~~function to do ... ~~ }
+\title{Calculate detection scores }
 \description{
-  ~~ A concise (1-5 lines) description of what the function does. ~~
+Function to calculate detection scores for summarized data if they are not available.
 }
 \usage{
 calculateDetection(BSData)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BSData}{ ~~Describe \code{BSData} here~~ }
+  \item{BSData}{An ExpressionSetIllumina object}
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
+
+The function implements Illumina's method for calculating the detection scores for all bead types on a given array. 
+Within an array, Illumina discard negative control bead-types whose summary values are more than three MADs from the median for the negative controls. Illumina then rank the summarized intensity for each other bead-type against the summarized values for the remaining negative control bead-types and calculate a detection p-value  1-R/N, where R is the relative rank of the bead intensity when compared to the $N$ remaining negative controls. Thus, if a particular bead has higher intensity than all the negative controls it will be assigned a value of 0. 
+This calculation is repeated for all arrays stored in the BSData object.
 }
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+A modified version of BSData is returned with the detection slot filled with the newly created scores.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
-
- ~Make other sections like Warning with \section{Warning }{....} ~
-}
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (BSData) 
-{
-    detScores = matrix(nrow = nrow(exprs(BSData)), ncol = ncol(exprs(BSData)))
-    negControls = getNegatives(BSData)
-    detect = function(x) 1 - (sum(x > negvals)/(length(negvals)))
-    for (i in 1:ncol(exprs(BSData))) {
-        negvals = negControls[, i]
-        M = median(negvals)
-        MAD = mad(negvals)
-        negvals = negvals[negvals < M + 3 * MAD]
-        detScores[, i] = sapply(exprs(BSData)[, i], detect)
-    }
-    detScores
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\author{Mark Dunning and Andy Lynch}

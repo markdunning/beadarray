@@ -1,48 +1,38 @@
 \name{getAnnotation}
 \alias{getAnnotation}
 \alias{getControlAnno}
+\alias{setAnnotation}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Set and retrieve annotation for an expression chip}
+\title{Storage of annotation information for Illumina expression chips}
 \description{
+
+Illumina use several control types for QA purposes, however the IDs of these controls change between different organisms and annotation revisions. Therefore we need to store the annotation of a chip in order to perform QA on the bead-level data.
+The functions setAnnotation and getAnnotation are used to manage this annotation information.
 
 }
 \usage{
 getAnnotation(BLData)
+setAnnotation(BLData, aName)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{ ~~Describe \code{BLData} here~~ }
+  \item{BLData}{BeadLevelList for an Illumina expression array.}
+  \item{aName}{Character to define the annotation of the chip}
 }
 \details{
-  ~~ If necessary, more details than the description above ~~
-}
+ We currently store the annotation as a slot in a BeadLevelList. The value in the slot should match one of entries in \code{ExpressionControlData} (see example).}
 \value{
-  ~Describe the value returned
-  If it is a LIST, use
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+setAnnotation returns a modified BeadLevelList with the new value for the annotation slot.
 }
-\references{ ~put references to the literature/web site here ~ }
-\author{ ~~who you are~~ }
-\note{ ~~further notes~~ 
+\author{Mark Dunning}
 
- ~Make other sections like Warning with \section{Warning }{....} ~
-}
-\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+data(BLData)
+data(ExpressionControlData)
+getAnnotation(BLData)
+names(ExpressionControlData)
 
-## The function is currently defined as
-function (BLData) 
-{
-    BLData@annotation
-  }
+setAnnotation(BLData, "foo")
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+\seealso{\code{\link{ExpressionControlData}}}

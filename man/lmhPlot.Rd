@@ -15,22 +15,19 @@ lmhPlot(BLData, array = 1, plot = FALSE)
   \item{plot}{If TRUE then a diagnostic plot will be produced, other only summary values will be returned.}
 }
 \details{
-As well as plotting the controls, the function returns five measures that can be used to evaluate the quality of the array.
-
-\begin{itemize}
-\item{LowDet}{ - \%age of ``low'' control beads that are detected compared to the negative controls.}
-\item{MedDet}{ - \%age of ``medium'' control beads that are detected compared to the negative controls.}
-\item{HighDet}{ - \%age of ``high'' control beads that are detected compared to the negative controls.}
-\item{MvsL}{ - \%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
-\item{HvsM}{ - \%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
-\end{itemize}
-
-On a good quality array, we would expect to see 100\% for all these measures and a drop from 100\% could indicate a defect on the array. However, it should be noted that the HvsM percentage could drop below 100\% often due to the saturation effect often observed at high intensity. \\
+As well as plotting the controls, the function returns five measures that can be used to evaluate the quality of the array (see below). On a good quality array, we would expect to see 100\% for all these measures and a drop from 100\% could indicate a defect on the array. However, it should be noted that the HvsM percentage could drop below 100\% often due to the saturation effect often observed at high intensity. \\
 
 Retrieving the control intensities relies on the accurate setting of the annotation slot of BLData, as the IDs of the controls change for different assays. If the wrong annotation is stored, we may not be able to find the controls, or misleading results may be produced. The function will try and give warning and error messages to guard against these problems. 
 }
 
+\value{
+\item{LowDet - \%age of ``low'' control beads that are detected compared to the negative controls.}
+\item{MedDet - \%age of ``medium'' control beads that are detected compared to the negative controls.}
+\item{HighDet- \%age of ``high'' control beads that are detected compared to the negative controls.}
+\item{MvsL - \%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
+\item{HvsM- \%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
+}
 
-\references{see {\tt www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf} for description of the hybridisation controls}
+\references{see www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf for description of the hybridisation controls}
 \author{Mark Dunning}
 \seealso{\code{\link{calculateBeadLevelScores}},\code{\link{setAnnotation}} }

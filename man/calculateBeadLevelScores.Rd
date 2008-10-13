@@ -1,11 +1,6 @@
 \name{calculateBeadLevelScores}
 \alias{calculateBeadLevelScores}
-\alias{probePairsPlot}
-\alias{lmhPlot}
-\alias{backgroundControlPlot}
-\alias{poscontPlot}
 \alias{gradientplot}
-\alias{outlierplot}
 
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -14,7 +9,7 @@
 A collection of functions for tabulating and plotting various quality control measurements derived from the bead-level data for Illumina expression chips. Currently, HumanV2, HumanV3, HumanV1, MouseV1, MouseV1.1, MouseV2 and Rat chips are supported
 }
 \usage{
-calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, writeToFile = c(NULL, "html", "txt"))
+calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, replacePlots=TRUE,writeToFile = TRUE)
 }
 
 
@@ -24,7 +19,7 @@ calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, writeToFile = c(NULL
   \item{path}{Specifies the directory where diagnostics plot are to be saved in}
   \item{plot}{if TRUE then diagnostic plots will be generated}
   \item{writeToFile}{Argument describing whether results of QA assessment should be output to html, txt or not output at all. }
-  \item{array}{Number of array in the BeadLevelList to perform QA on}
+  \item{replacePlots}{if TRUE any plots that have already been created will be replaced}
 }
 \details{For these QA tools we make use of the controls probes that Illumina use on their expression chips to detect the presence, or lack of, expression. See {\tt www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf} for an overview of these controls. Illumina provide a means to visualize these controls, but the values reported are \emph{after outlier removal} and there is no way to infer how many outliers are removed. Therefore, one does not get a true impression of the quality of an array. For instance, low intensity observations for positive controls may indicate a spatial defect.\\
 
@@ -32,21 +27,22 @@ For our QA measurements we perform a detection score calculation the same as Ill
 
 The purpose of calculateBeadLevelScores is to calculate the following QA measures for all arrays in the BeadLevelList objects and return them in the QCscores slot of a modified BeadLevelList object. We also record the number of outliers found on the array
 
-\begin{itemize}
-\item{HkpDet}{ - \%age of housekeeping control beads that are detected compared to the negative controls.}
-\item{BioDet} {- \%age of  biotin labelling control beads that are detected compared to the negative controls.}
-\item{LowDet}{ - \%age of ``low'' control beads that are detected compared to the negative controls.}
-\item{MedDet}{ - \%age of ``medium'' control beads that are detected compared to the negative controls.}
-\item{HighDet}{ - \%age of ``high'' control beads that are detected compared to the negative controls.}
-\item{MvsL}{ - \%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
-\item{HvsM}{ - \%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
-\end{itemize}
 
 If the plot argument to calculateBeadLevelScores is set to TRUE, then a number of diagnostic plots will be produced for each and compiled into a HTML page for that array. The location of these completed pages is specified by the path argument. Finally, if writeToFile is set to html, a html page compiling all the QA measures for the chip will be created.
 
 }
 \value{
 A modified version of BeadLevelList is created with the QA measures stored in a qcScores slot.
+
+\item{HkpDet \%age of housekeeping control beads that are detected compared to the negative controls.}
+\item{BioDet \%age of  biotin labelling control beads that are detected compared to the negative controls.}
+\item{LowDet  \%age of ``low'' control beads that are detected compared to the negative controls.}
+\item{MedDet \%age of ``medium'' control beads that are detected compared to the negative controls.}
+\item{HighDet  \%age of ``high'' control beads that are detected compared to the negative controls.}
+\item{MvsL \%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
+\item{HvsM \%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
+
+
 }
 
 \author{Mark Dunning and Andy Lynch}

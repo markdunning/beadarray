@@ -100,7 +100,7 @@ detScores
 ###New functionality to calculate QA measures based on bead-level data
 
 ###############################################################################
-calculateBeadLevelScores=function(BLData,path="QC",plot=FALSE,replacePlots=TRUE,writeToFile=c(NULL,"html","txt")){
+calculateBeadLevelScores=function(BLData,path="QC",plot=FALSE,replacePlots=TRUE,writeToFile=TRUE){
 
 chipType = getAnnotation(BLData)
 data(ExpressionControlData)
@@ -141,6 +141,155 @@ cat("Producing QC plots for array:", arnames[i], "\n")
 
 outfile = paste(path, "/outliers/",arnames[i],".jpeg",sep="")
 
+cat("Plotting positive controls\n")
+
+outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
+controlScores=poscontPlot(BLData,i,plot=plot)
+
+if(plot){
+
+
+	if(replacePlots){
+		jpeg(outfile,width=650,height=375,quality=100)
+
+		controlScores=poscontPlot(BLData,i,plot=plot)
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=650,height=375,quality=100)
+			controlScores=poscontPlot(BLData,i,plot=plot)
+
+			dev.off()
+ 		}
+
+		else controlScores=poscontPlot(BLData,i,plot=FALSE)
+	}
+}
+
+else controlScores=poscontPlot(BLData,i,plot=FALSE)
+
+
+
+
+
+##png(paste("QC/samplab/",arnames[i],".png",sep=""),width=625,height=350,quality=100)
+##samplabHV2(BLData,i)
+##dev.off()
+
+cat("Plotting hyb controls\n")
+
+outfile = paste(path,"/lmh/",arnames[i],".jpeg",sep="")
+
+
+if(plot){
+
+
+	if(replacePlots){
+		jpeg(outfile,width=650,height=375,quality=100)
+
+		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=650,height=375,quality=100)
+			controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores,lmhPlot(BLData,i,plot=FALSE))
+	}
+}
+else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+
+
+
+cat("Plotting mismatch controls\n")
+
+outfile = paste(path, "/mismatch/",arnames[i],".jpeg",sep="")
+
+
+if(plot){
+
+
+	if(replacePlots){
+		jpeg(outfile,width=650,height=375,quality=100)
+
+		controlScores=c(controlScores,probePairsPlot(BLData,i))
+
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=650,height=375,quality=100)
+			controlScores=c(controlScores,probePairsPlot(BLData,i))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores,probePairsPlot(BLData,i,plot))
+	}
+}
+else controlScores=c(controlScores,probePairsPlot(BLData,i))
+
+
+cat("Plotting negative controls\n")
+
+outfile = paste(path,"/background/",arnames[i],".jpeg",sep="")
+
+if(plot){
+
+
+	if(replacePlots){
+		jpeg(outfile,width=650,height=375,quality=100)
+
+		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
+
+	
+
+		dev.off()
+	
+	}
+
+	else {
+		if(!file.exists(outfile)){
+			jpeg(outfile,width=650,height=375,quality=100)
+			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
+
+			dev.off()
+ 		}
+
+		else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=FALSE))
+	}
+}
+else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+
+
+
+
+controlProbeMetrics[i,] = controlScores
 
 
 
@@ -212,155 +361,6 @@ else gradientplot(BLData,i,plot=FALSE)
 
 
 
-cat("Plotting positive controls\n")
-
-outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
-controlScores=poscontPlot(BLData,i,plot=plot)
-
-if(plot){
-
-
-	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
-
-		controlScores=poscontPlot(BLData,i,plot=plot)
-
-	
-
-		dev.off()
-	
-	}
-
-	else {
-		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
-			controlScores=poscontPlot(BLData,i,plot=plot)
-
-			dev.off()
- 		}
-
-		else controlScores=poscontPlot(BLData,i,plot=FALSE)
-	}
-}
-
-else controlScores=poscontPlot(BLData,i,plot=FALSE)
-
-
-
-
-
-##png(paste("QC/samplab/",arnames[i],".png",sep=""),width=625,height=350,quality=100)
-##samplabHV2(BLData,i)
-##dev.off()
-
-cat("Plotting hyb controls\n")
-
-outfile = paste(path,"/lmh/",arnames[i],".jpeg",sep="")
-
-
-if(plot){
-
-
-	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
-
-		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
-
-
-	
-
-		dev.off()
-	
-	}
-
-	else {
-		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
-			controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
-
-
-			dev.off()
- 		}
-
-		else controlScores=c(controlScores,lmhPlot(BLData,i,plot=FALSE))
-	}
-}
-else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
-
-
-
-cat("Plotting mismatch controls\n")
-
-outfile = paste(path, "/mismatch/",arnames[i],".jpeg",sep="")
-
-
-if(plot){
-
-
-	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
-
-		controlScores=c(controlScores,probePairsPlot(BLData,i,plot=plot))
-
-
-	
-
-		dev.off()
-	
-	}
-
-	else {
-		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
-			controlScores=c(controlScores,probePairsPlot(BLData,i,plot=plot))
-
-
-			dev.off()
- 		}
-
-		else controlScores=c(controlScores,probePairsPlot(BLData,i,plot=FALSE))
-	}
-}
-else controlScores=c(controlScores,probePairsPlot(BLData,i,plot=FALSE))
-
-
-cat("Plotting negative controls\n")
-
-outfile = paste(path,"/background/",arnames[i],".jpeg",sep="")
-
-if(plot){
-
-
-	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
-
-		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
-
-
-	
-
-		dev.off()
-	
-	}
-
-	else {
-		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
-			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
-
-
-			dev.off()
- 		}
-
-		else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=FALSE))
-	}
-}
-else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
-
-
-
-
-controlProbeMetrics[i,] = controlScores
 
 
 if(plot){
@@ -479,7 +479,7 @@ BLData2
 
 
 
-probePairsPlot=function(BLData,array=1,plot=FALSE){
+probePairsPlot=function(BLData,array=1){
 
 controls = getControlAnno(BLData)
 
@@ -524,12 +524,10 @@ for(j in 1:length(mms)){
 
 sequenceDiff = sum(unlist(strsplit(as.character(pmSeq),""))!=unlist(strsplit(as.character(mmSeqs[j]),"")))
 
-
-
 if(sequenceDiff== 2) mm2 = mms[j]
 
-
 }
+
 
 labs = c(labs,as.character(mm2))
 
@@ -622,7 +620,10 @@ detect= function(x) 1 - (sum(x>negvals)/(length(negvals)))
 lowID = controls$Array_Address[grep("phage_lambda_genome:low",controls$Reporter_Group_Identifier)]
 
 
+if(length(is.na(match(lowID, t2)))>0) warning("Could not find all hyb controls on this chip. Please check that it really is a chip of type ", BLData@annotation)
+
 low = t1[t2  %in% lowID]
+
 
 output= 100*length(which(sapply(low, detect)<0.05))/length(low)
 
@@ -648,6 +649,8 @@ negvals = med
 
 output= c(output,100*length(which(sapply(high, detect)<0.05))/length(high))
 
+names(output) =c("LowDet", "MedDet","HighDet","MvsL","HvsM")
+
 
 if(plot){
 t1=log2(t1)
@@ -656,6 +659,8 @@ linepos=0.5
 count=1
 mrn = controls$Array_Address[grep("phage_lambda_genome:low",controls$Reporter_Group_Identifier)]
 mrn = mrn[mrn %in% unique(t2)]
+
+if(length(mrn)==0) stop("Could not find any low hyb controls for this chip. Please check the annotation\n")
 newinten = t1[t2 ==  mrn[1]]
 
 labs = mrn[1]
@@ -782,7 +787,7 @@ output= 100*length(which(sapply(negvals, detect)<0.05))/length(negvals)
 
 output= c(output, mean(negvals[-outliers]), var(negvals[-outliers]))
 
-
+names(output) = c("NegDet","AveNeg","VarNeg")
 output
 
 
@@ -857,6 +862,9 @@ mrnhk = controls$Array_Address[controls$Reporter_Group_Name=="housekeeping"]
 
 mrnhk = mrnhk[mrnhk %in% unique(t2)]
 
+if(length(is.na(match(mrnhk, t2)))>0) warning("Could not find all housekeeping controls on this chip. Please check that it really is a chip of type ", BLData@annotation)
+
+
 totest = t1[t2  %in% mrnhk]
 
 output= 100*length(which(sapply(totest, detect)<0.05))/length(totest)
@@ -865,11 +873,15 @@ output= 100*length(which(sapply(totest, detect)<0.05))/length(totest)
 
 mrnb = controls$Array_Address[controls$Reporter_Group_Name=="biotin"]
 
+
 totest = t1[t2  %in% mrnb]
+
+if(length(is.na(match(mrnb, t2)))>0) warning("Could not find all biotin controls on this chip. Please check that it really is a chip of type ", BLData@annotation)
+
 
 output= c(output,100*length(which(sapply(totest, detect)<0.05))/length(totest))
 
-
+names(output) = c("HkpDet","BioDet")
 
 ##mrnhs = controls$Array_Address[controls$Reporter_Group_Name=="high_stringency_hyb"]
 
@@ -883,6 +895,9 @@ t1=log2(t1)
 
 labs = mrnhk[1]
 ys = t1[which(t2 == mrnhk[1])]
+
+if(length(ys)==0) stop("Could not find any Biotin controls on this chip. Please check the annotation\n")
+
 xs = rep(1, length(ys))
 
 cols = rep("red", length(ys))
