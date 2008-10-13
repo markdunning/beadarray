@@ -18,7 +18,7 @@ backgroundControlPlot(BLData, array = 1, plot = FALSE)
 }
 \details{
 For QA, we report the mean and variance of all negative controls (of all bead-types) after first removing outiers using a 3 MAD cut-off. To retrieve the IDs of the negative controls, we make use of the annotation slot stored with the BeadLevelList object. It is therefore important that this information is accurate. 
-A plot of all negative control bead-types can also be produced, where each bead-type is represented by a vertical line covering the inter-quartile range and ordered according to mean intensity..
+A plot of all negative control bead-types can also be produced, where each bead-type is represented by a vertical line covering the inter-quartile range and ordered according to mean intensity. Too many high intensity values for the negatives could indicate a poor quality array.
 }
 \value{
 The function returns the mean (AveNeg) and variance (VarNeg) of all negative control beads and a diagnositc plot if requested.
