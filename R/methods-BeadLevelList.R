@@ -416,10 +416,11 @@ if(whatelse=="R") { # create SNPSetIllumina
 #    require("beadarraySNP")
  #   BSData = new("SnpSetIllumina")
  #   assayData(BSData) = assayDataNew(G = G, R = R, storage.mode="list") # GBeadStDev = GBeadStDev, RBeadStDev = RBeadStDev,
-	BSData = new("NChannelSet", R=R, G=G)  
+	
+	rownames(G) = rownames(R) = rownames(GBeadStDev) = rownames(RBeadStDev) = rownames(GNoBeads) = rownames(RNoBeads) = probes
 
-  rownames(BSData@assayData[["G"]]) = rownames(BSData@assayData[["R"]]) = probes
-#    rownames(BSData@assayData[["GBeadStDev"]]) = rownames(BSData@assayData[["RBeadStDev"]]) = probes
+	BSData = new("NChannelSet", R=R, G=G, GBeadStDev = GBeadStDev, RBeadStDev = RBeadStDev, GNoBeads=GNoBeads, RNoBeads=RNoBeads)  
+
 
 }
 else{
@@ -439,11 +440,21 @@ if(nrow(pData(BLData))==len) {
 else {
   BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(sampleName=colnames(G)))
 }
+
   
 if(!is.null(pData(BSData)$sampleName)) 
   sampleNames(BSData) = pData(BSData)$sampleName
 else
   sampleNames(BSData) = colnames(G)
+
+
+###Try and create pData properly for NChannelSet and make each column applicable to all channels
+
+
+if(whatelse =="R"){
+ varMetadata=data.frame(labelDescription=colnames(BSData@phenoData@data), channel="_ALL_")
+ BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(BSData@phenoData@data), varMetadata=varMetadata)
+}
 
 if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
 else BSData@annotation=BLData@annotation

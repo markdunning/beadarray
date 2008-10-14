@@ -68,7 +68,7 @@ createBeadSummaryData(BLData, log=FALSE, imagesPerArray = 1,
   be joined using the \code{combine} function.
 }
 \value{
-  An \code{ExpressionSetIllumina} object (or \code{SnpSetIllumina}
+  An \code{ExpressionSetIllumina} object (or \code{NChannelSet}
   object for two-colour data, when \code{what="RG"}) in which all
   components are matrices with number of rows equal to the number of bead
   types for the experiment and number of columns equal to the number

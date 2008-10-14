@@ -14,7 +14,7 @@ data(ExpressionControlData)
 
 m = match(aName, names(ExpressionControlData))
 
-if(is.na(m)) cat("Annotation package must be one of: ", names(ExpressionControlData), "\n")
+if(is.na(m)) stop("Annotation must be one of ", paste(names(ExpressionControlData)," "))
 else{
 BLData.copy = copyBeadLevelList(BLData)
 
@@ -35,7 +35,7 @@ stop("No annotation recorded for this BeadLevelList. Try using setAnnotation\n")
 
 m = match(chipType, names(ExpressionControlData))
 
-if(is.na(m)) stop("Annotation must be one of ", names(ExpressionControlData), "\n")
+if(is.na(m)) stop("Annotation must be one of ", paste(names(ExpressionControlData)," "))
 
 
 ExpressionControlData[[match(chipType, names(ExpressionControlData))]]

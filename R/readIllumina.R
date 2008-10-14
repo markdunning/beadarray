@@ -86,7 +86,7 @@ else{
      data(ExpressionControlData)
      m=match(annoPkg, names(ExpressionControlData))
     
-     if(is.na(m)) warning("The argument annoPkg needs to be one of :", names(ExpressionControlData))
+     if(is.na(m)) warning("Annotation must be one of ", paste(names(ExpressionControlData)," "))
      else BLData@annotation = annoPkg	
 }
 

@@ -32,7 +32,7 @@ If the plot argument to calculateBeadLevelScores is set to TRUE, then a number o
 
 }
 \value{
-A modified version of BeadLevelList is created with the QA measures stored in a qcScores slot.
+A modified version of BeadLevelList is created with the QA measures stored in a qcScores slot. 
 
 \item{HkpDet \%age of housekeeping control beads that are detected compared to the negative controls.}
 \item{BioDet \%age of  biotin labelling control beads that are detected compared to the negative controls.}
