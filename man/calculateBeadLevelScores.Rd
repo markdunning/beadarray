@@ -1,12 +1,10 @@
 \name{calculateBeadLevelScores}
 \alias{calculateBeadLevelScores}
-\alias{gradientplot}
+\alias{gradientPlot}
 
-
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Quality assessment for expression chips }
 \description{
-A collection of functions for tabulating and plotting various quality control measurements derived from the bead-level data for Illumina expression chips. Currently, HumanV2, HumanV3, HumanV1, MouseV1, MouseV1.1, MouseV2 and Rat chips are supported
+A collection of functions for tabulating and plotting various quality control measurements derived from the bead-level data for Illumina expression chips. Currently, Humanv1, Humanv2, Humanv3, Mousev1, Mousev1p1, Mousev2 and Rat chips are supported
 }
 \usage{
 calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, replacePlots=TRUE,writeToFile = TRUE)
@@ -25,8 +23,7 @@ calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, replacePlots=TRUE,wr
 
 For our QA measurements we perform a detection score calculation the same as Illumina, except on per-bead observations for each control type rather than the summarized values. Specifically, we test each bead observation of a given control bead-type for detection by computing a p-value:- $1-R/N$, where $R$ is the relative rank of the bead intensity when compared to the $N$ negative controls. Thus, if a particular bead has higher intensity than all the negative controls it will be assigned a value of $0$. After these p-values have been calculated for all replicates of the bead type we report the percentage of beads with p-values lower than a set threshold of 0.05 (currently in favour in the Illumina literature). The percentage of beads that are detected at a set threshold is then reported. Another adaptation is to change the bead-types used as a reference in the calculation rather than the negative controls. For example, there are a series of sample-independent controls that have probe sequences complementary to oligonucleotides spiked into the hybridization solution and hence should always have detectable signal. For some of these bead types (six on the Human6 V3), the concentration is either ``medium'', ``low'' or ``high'', with the intention that there should be a predictable gradient between the controls. Thus, we test if the bead-types with a medium concentration are detected compared to the low controls and similar for the medium and high controls.\\
 
-The purpose of calculateBeadLevelScores is to calculate the following QA measures for all arrays in the BeadLevelList objects and return them in the QCscores slot of a modified BeadLevelList object. We also record the number of outliers found on the array
-
+The purpose of calculateBeadLevelScores is to calculate the following QA measures for all arrays in the BeadLevelList objects and return them in the arrayInfo slot of the BeadLevelList object. We also record the number of outliers found on the array
 
 If the plot argument to calculateBeadLevelScores is set to TRUE, then a number of diagnostic plots will be produced for each and compiled into a HTML page for that array. The location of these completed pages is specified by the path argument. Finally, if writeToFile is set to html, a html page compiling all the QA measures for the chip will be created.
 
@@ -46,4 +43,4 @@ A modified version of BeadLevelList is created with the QA measures stored in a 
 }
 
 \author{Mark Dunning and Andy Lynch}
-\seealso{\code{\link{outlierplot}},\code{\link{lmhPlot}},\code{\link{poscontPlot}},\code{\link{backgroundControlPlot}}}
+\seealso{\code{\link{outlierPlot}},\code{\link{lmhPlot}},\code{\link{poscontPlot}},\code{\link{backgroundControlPlot}}}

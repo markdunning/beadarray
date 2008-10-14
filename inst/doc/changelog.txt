@@ -1,3 +1,13 @@
+1.9.10 - 14 October 2008
+- renamed outlierplot and gradientplot to outlierPlot and gradientPlot to keep the naming consistent with other functions
+- removed 'qcScores' and 'beadAnno' slots from BeadLevelList.  'qcScores' now stored in 'arrayInfo' slot 
+- removed copying of BeadLevelList in setAnnotation
+- removed unused 'plot' argument from probePairsPlot 
+- fixed typo - BL -> BLData in removeArrayMask
+- updated man pages to reflect these changes
+
+1.9.6 - 1.9.9 Various changes noted in svn message
+
 1.9.5 - 17 September 2008
 - fixed typos and misorderings of function arguments in new .Rd files
 

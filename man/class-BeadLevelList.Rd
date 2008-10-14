@@ -36,10 +36,6 @@ Objects can be created by calls of the form \code{new("BeadLevelList")}, but are
   \code{arrayInfo}:\tab a list containing array information.\cr
   \code{annotation}:\tab character storing annotation package 
     information.\cr
-  \code{beadAnno}:\tab a data.frame containing Bead annotation
-  information.\cr
-  \code{scanMetrics}:\tab a data.frame containing scanner information.
-   \cr
   }
 }
 

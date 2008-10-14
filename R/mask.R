@@ -253,7 +253,7 @@ removeArrayMask <- function(BLData, array = 0, SAM = FALSE, nrow = 50, ncol = 50
 			temp <- BLData[[an[array]]]
 			temp$wts <- wts
 			assign(an[array], temp , envir = BLData@beadData)
-			if(length(BL[[an[array]]]$wts[BL[[an[array]]]$wts != 1]) == 0) 
+			if(length(BLData[[an[array]]]$wts[BLData[[an[array]]]$wts != 1]) == 0) 
 			{
 				cat("Mask entirely removed. Clearing weights.\n")
 				clearArrayMask(BLData, array)

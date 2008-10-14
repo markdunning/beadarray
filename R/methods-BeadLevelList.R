@@ -6,16 +6,15 @@ setMethod("initialize", "BeadLevelList",
              phenoData=new("AnnotatedDataFrame", data=data.frame(name=I(character(0))),
                varMetadata=data.frame(labelDescription="Name in frame", row.names="name")),
              arrayInfo=list(arrayName=I(character(0)), nBeads=0), # probeindex=matrix(0),
-             anno=character(0),
-             beadAnno=data.frame(name=I(character(0))),qcScores = list()){
+             anno=character(0)) { # ,
+#             beadAnno=data.frame(name=I(character(0))),qcScores = list()){
                .Object@beadData = beadData
                .Object@phenoData = phenoData
                .Object@arrayInfo = arrayInfo
 #               .Object@probeindex = probeindex
                .Object@annotation = anno
-               .Object@beadAnno = beadAnno
-               .Object@qcScores = qcScores
-               
+#               .Object@beadAnno = beadAnno
+#               .Object@qcScores = qcScores               
                .Object})
 
 
@@ -69,8 +68,8 @@ setMethod("show", "BeadLevelList", function(object) {
    cat(paste("... data for", length(arraynms)-1, "more array/s\n\n"))
    cat("Experimental information\n\n")
    show(pData(object@phenoData))
-   cat("\nScanner metrics\n\n")
-   show(summary(object@qcScores))
+   cat("\nQuality metrics\n\n")
+   show(summary(object@arrayInfo$qcScores))
  })
 
 
@@ -151,8 +150,8 @@ setMethod("copyBeadLevelList", "BeadLevelList",
              newobj@arrayInfo = object@arrayInfo
 #             newobj@probeindex = object@probeindex
              newobj@annotation = object@annotation
-             newobj@beadAnno = object@beadAnno
-             newobj@qcScores = object@qcScores
+#             newobj@beadAnno = object@beadAnno
+#             newobj@qcScores = object@qcScores
              
              arraynms = arrayNames(object)
              multiassign(arraynms, mget(arraynms, object@beadData),
@@ -170,8 +169,8 @@ setMethod("combineBeadLevelLists", "BeadLevelList",
              newbll@arrayInfo$arrayNames = c(arrayNames(newbll), arrayNames(object2))
              newbll@arrayInfo$nBeads = c(numBeads(newbll), numBeads(object2))
              pData(newbll@phenoData) = rbind(pData(newbll@phenoData), pData(object2@phenoData))
-#             newbll@probeindex = cbind(newbll1@probeindex , object2@probeindex)
-             newbll@scanMetrics = rbind(newbll@scanMetrics, object2@scanMetrics)
+#             newbll@probeindex = cbind(newbll@probeindex , object2@probeindex)
+#             newbll@scanMetrics = rbind(newbll@scanMetrics, object2@scanMetrics)
              multiassign(arrayNames(object2), mget(arrayNames(object2), object2@beadData),
                      envir = newbll@beadData, inherits=FALSE)
              newbll
@@ -456,12 +455,11 @@ if(whatelse =="R"){
  BSData@phenoData = new("AnnotatedDataFrame", data=data.frame(BSData@phenoData@data), varMetadata=varMetadata)
 }
 
-if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
-else BSData@annotation=BLData@annotation
+#if(length(BLData@annotation)==0) BSData@annotation="illuminaProbeIDs"
+#else BSData@annotation=BLData@annotation
+BSData@annotation=BLData@annotation
 
-
-if("qcScores" %in% slotNames(BLData)) t=try(BSData@BeadLevelQC <- BLData@qcScores,silent=TRUE)
-
+if("qcScores" %in% names(BLData@arrayInfo)) t=try(BSData@BeadLevelQC <- BLData@arrayInfo$qcScores,silent=TRUE)
 
 BSData
 } #)

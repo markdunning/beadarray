@@ -16,10 +16,12 @@ m = match(aName, names(ExpressionControlData))
 
 if(is.na(m)) stop("Annotation must be one of ", paste(names(ExpressionControlData)," "))
 else{
-BLData.copy = copyBeadLevelList(BLData)
+#BLData.copy = copyBeadLevelList(BLData)
 
-BLData.copy@annotation = aName
-BLData.copy
+#BLData.copy@annotation = aName
+#BLData.copy
+BLData@annotation = aName 
+BLData
 }
 }
 
@@ -247,7 +249,7 @@ if(plot){
 			dev.off()
  		}
 
-		else controlScores=c(controlScores,probePairsPlot(BLData,i,plot))
+		else controlScores=c(controlScores,probePairsPlot(BLData,i))
 	}
 }
 else controlScores=c(controlScores,probePairsPlot(BLData,i))
@@ -302,7 +304,7 @@ if(plot){
 	if(replacePlots){
 		jpeg(outfile,width=1250,height=375,quality=100)
 
-		outlierMetrics[i,]= outlierplot(BLData,i,plot=plot)
+		outlierMetrics[i,]= outlierPlot(BLData,i,plot=plot)
 	
 
 		dev.off()
@@ -312,16 +314,16 @@ if(plot){
 	else {
 		if(!file.exists(outfile)){
 			jpeg(outfile,width=1250,height=375,quality=100)
-			outlierMetrics[i,]= outlierplot(BLData,i,plot=plot)
+			outlierMetrics[i,]= outlierPlot(BLData,i,plot=plot)
 			dev.off()
  		}
 
-		else outlierMetrics[i,]= outlierplot(BLData,i,plot=FALSE)
+		else outlierMetrics[i,]= outlierPlot(BLData,i,plot=FALSE)
 
 	}
 }
 
-else outlierMetrics[i,]= outlierplot(BLData,i,plot=FALSE)	
+else outlierMetrics[i,]= outlierPlot(BLData,i,plot=FALSE)	
 
 
 
@@ -337,7 +339,7 @@ if(plot){
 	if(replacePlots){
 		jpeg(outfile,width=1250,height=375,quality=100)
 
-		gradientplot(BLData,i,plot=plot)
+		gradientPlot(BLData,i,plot=plot)
 
 	
 
@@ -348,16 +350,16 @@ if(plot){
 	else {
 		if(!file.exists(outfile)){
 			jpeg(outfile,width=1250,height=375,quality=100)
-			gradientplot(BLData,i,plot=plot)
+			gradientPlot(BLData,i,plot=plot)
 
 			dev.off()
  		}
 
-		else gradientplot(BLData,i,plot=FALSE)
+		else gradientPlot(BLData,i,plot=FALSE)
 	}
 }
 
-else gradientplot(BLData,i,plot=FALSE)
+else gradientPlot(BLData,i,plot=FALSE)
 
 
 
@@ -455,7 +457,8 @@ hwrite("Control Probe Metrics", p ,heading=2)
 hwrite(round(controlProbeMetrics,2), p,col.link=list(paste(path,"/",rownames(controlProbeMetrics),".htm",sep="")))
 
 
-scanMetrics = BLData@qcScores$ScanMetrics
+# scanMetrics = BLData@qcScores$ScanMetrics
+scanMetrics = BLData@arrayInfo$qcScores$ScanMetrics
 
 hwrite("Scanner Metrics", p, heading=1)
 
@@ -467,10 +470,13 @@ closePage(p)
 
 
 
-BLData2 = copyBeadLevelList(BLData)
-BLData2@qcScores$OutlierDistribution = outlierMetrics
-BLData2@qcScores$controlProbeScores = controlProbeMetrics
-BLData2
+#BLData2 = copyBeadLevelList(BLData)
+#BLData2@qcScores$OutlierDistribution = outlierMetrics
+#BLData2@qcScores$controlProbeScores = controlProbeMetrics
+#BLData2
+BLData@arrayInfo$qcScores$OutlierDistribution = outlierMetrics
+BLData@arrayInfo$qcScores$ControlProbeScores = controlProbeMetrics
+BLData
 
 
 
@@ -994,7 +1000,7 @@ output
 
 
 
-gradientplot<-function(BLData,array=array,plot=FALSE){
+gradientPlot<-function(BLData,array=array,plot=FALSE){
 
 t1<-getArrayData(BLData,what="G",array=array,log=TRUE)
 tX<-getArrayData(BLData,what="GrnX",array=array,log=TRUE)
@@ -1062,7 +1068,7 @@ output
 }
 
 
-outlierplot<-function(BLData,array=array,plot=FALSE){
+outlierPlot<-function(BLData,array=array,plot=FALSE){
  
 tX<-getArrayData(BLData,what="GrnX",array=array,log=TRUE)
 tY<-getArrayData(BLData,what="GrnY",array=array,log=TRUE)

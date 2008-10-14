@@ -8,7 +8,7 @@ about each bead on each array in a BeadChip or SAM experiment.
 }
 \usage{
 readIllumina(arrayNames=NULL, path=".", textType=".txt",
-        annoPkg=NULL, beadInfo=NULL, useImages=TRUE,  
+        annoPkg=NULL, useImages=TRUE,  
         singleChannel=TRUE, targets=NULL, 
         imageManipulation="sharpen", backgroundSize=17,
         storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
@@ -31,8 +31,6 @@ readIllumina(arrayNames=NULL, path=".", textType=".txt",
      expression arrays at present).  Default value is
      \code{"illuminaProbeIDs"} which is not an annotation package, and
      indicates that Illumina bead IDs have been used to identify each bead.}
-  \item{beadInfo}{\code{data.frame} specifying bead information, such as 
-     probe sequence, Illumina ID, etc.}
   \item{useImages}{logical. If TRUE, the foregound and background 
     values are retrieved from the TIFFs.  When FALSE, the 
     intensity values in the text files are used.  Note that

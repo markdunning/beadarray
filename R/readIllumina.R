@@ -1,6 +1,6 @@
 "readIllumina" =
   function(arrayNames=NULL, path=".", textType=".txt", 
-           annoPkg=NULL, beadInfo=NULL, useImages=TRUE, 
+           annoPkg=NULL, useImages=TRUE, # beadInfo=NULL, 
            singleChannel=TRUE, targets=NULL, 
            imageManipulation = "sharpen", backgroundSize=17,
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
@@ -55,7 +55,7 @@
     if(length(GImages)==0)
       stop("No tiffs found")
 
-    ###Find which files have both Green Images and xy information
+    ##Find which files have both Green Images and xy information
     arrays = intersect(arrays, strtrim(GImages, nchar(GImages)-8))	
   
     ##Check to see if we have two channels
@@ -203,10 +203,10 @@ else{
      data[,2] = bgCorrectSingleArray(fg=greenIntensities[[5]], bg=greenIntensities[[6]], method=backgroundMethod, offset=offset)
      data[,3] = greenIntensities[[6]]
 
-	if(storeXY){
-     data[,4] = (dat1$GrnX[ord] - min(dat1$GrnX))
-     data[,5] = (dat1$GrnY[ord] - min(dat1$GrnY))
-	}
+     if(storeXY){
+        data[,4] = (dat1$GrnX[ord] - min(dat1$GrnX))
+        data[,5] = (dat1$GrnY[ord] - min(dat1$GrnY))
+     }
 
      rm(greenIntensities)
      gc()
@@ -325,8 +325,8 @@ else
    BLData@phenoData = new("AnnotatedDataFrame", data=data.frame(arrayName=arrays))
 
 ## Add bead information (sequence, Illumina IDs used in annoPkg etc)
-if(!is.null(beadInfo) && is.data.frame(beadInfo))
-   BLData@beadAnno = beadInfo
+#if(!is.null(beadInfo) && is.data.frame(beadInfo))
+#   BLData@beadAnno = beadInfo
 
 ##Look for scanner metrics file
                                            
@@ -356,8 +356,8 @@ if(metrics) {
     ScanMetrics = read.table(file.path(path, metricsFile), sep="\t", dec=dec, header=T)
 }
 
-qcScores = list("ScanMetrics"=ScanMetrics, "BASHscores"=BASHscores, "OutlierDistribution"=outlierScores, "controlProbeScores" = controlScores)
-BLData@qcScores = qcScores
+qcScores = list("ScanMetrics"=ScanMetrics, "BASHscores"=BASHscores, "OutlierDistribution"=outlierScores, "ControlProbeScores" = controlScores)
+BLData@arrayInfo$qcScores = qcScores
 
 BLData
 }                                                              

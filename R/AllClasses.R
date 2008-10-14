@@ -10,6 +10,6 @@ setClass("BeadLevelList",
              phenoData="AnnotatedDataFrame",
              arrayInfo ="list",
 #             probeindex="matrix",
-             annotation="character",
-             beadAnno="data.frame",
-             qcScores ="list"))
+             annotation="character")) #,
+#             beadAnno="data.frame",
+#             qcScores ="list"))

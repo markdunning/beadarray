@@ -3,7 +3,6 @@
 \alias{getControlAnno}
 \alias{setAnnotation}
 
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Storage of annotation information for Illumina expression chips}
 \description{
 
@@ -31,8 +30,6 @@ data(BLData)
 data(ExpressionControlData)
 getAnnotation(BLData)
 names(ExpressionControlData)
-
-setAnnotation(BLData, "foo")
 }
 
 \seealso{\code{\link{ExpressionControlData}}}

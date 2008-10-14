@@ -93,10 +93,13 @@ BGFilter <- function(E = NULL, neighbours, invasions = 20, method = "median")
 }
 
 ##weighted
-BGFilterWeighted <- function(E = NULL, neighbours, invasions = 20, weights = NULL)
+BGFilterWeighted <- function(E = NULL, neighbours, invasions = 20, weights = NULL) #, method="median"
 {
 	if(is.null(weights)) {weights <- rep(1, nrow(neighbours))}
 	if(is.null(E)) {stop("No error image (E). Please run generateE to obtain one.")}
+#        method <- match.arg(method, choices = c("median", "mean", "MAD", "medianMAD"))
+#        method <- switch(method, median = 1, mean = 2, MAD = 3, medianMAD = 4)
+
 
 	##C code here to apply the filter
 	Etilde <- rep(0, length(E))

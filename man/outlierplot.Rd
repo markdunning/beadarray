@@ -1,12 +1,12 @@
-\name{outlierplot}
-\alias{outlierplot}
-%- Also NEED an '\alias' for EACH other topic documented here.
+\name{outlierPlot}
+\alias{outlierPlot}
+
 \title{Locations of outliers on an Illumina chip}
 \description{
 Diagnostic function that reports how many outliers are found on a specific array on a chip. We take advantage of the segmental structure of the array and break-down the number of outliers into 9 sections.
 }
 \usage{
-outlierplot(BLData, array = array, plot = FALSE)
+outlierPlot(BLData, array = array, plot = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
