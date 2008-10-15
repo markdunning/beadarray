@@ -7,14 +7,13 @@
 A collection of functions for tabulating and plotting various quality control measurements derived from the bead-level data for Illumina expression chips. Currently, Humanv1, Humanv2, Humanv3, Mousev1, Mousev1p1, Mousev2 and Rat chips are supported
 }
 \usage{
-calculateBeadLevelScores(BLData, path = "QC", plot = FALSE, replacePlots=TRUE,writeToFile = TRUE)
+calculateBeadLevelScores(BLData, path = "QC", log = TRUE, plot = FALSE, replacePlots=TRUE,writeToFile = TRUE)
 }
 
-
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{A BeadLeveList for an expression chip. The annotation slot of the object should define the type of chip }
   \item{path}{Specifies the directory where diagnostics plot are to be saved in}
+  \item{log}{(used for outlier calculations) if TRUE calculate outliers on the log2 scale.  If FALSE calculate outliers on the original scale}
   \item{plot}{if TRUE then diagnostic plots will be generated}
   \item{writeToFile}{Argument describing whether results of QA assessment should be output to html, txt or not output at all. }
   \item{replacePlots}{if TRUE any plots that have already been created will be replaced}

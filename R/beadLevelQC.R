@@ -87,10 +87,11 @@ for(i in 1:ncol(exprs(BSData))){
 
 negvals = negControls[,i]
 
-M = median(negvals)
-MAD = mad(negvals)
+M = median(negvals, na.rm=TRUE)
+MAD = mad(negvals, na.rm=TRUE)
 
 negvals = negvals[negvals < M+3*MAD]
+negvals = negvals[!is.na(negvals)]
 
 detScores[,i] = sapply(exprs(BSData)[,i], detect)
 
@@ -102,7 +103,7 @@ detScores
 ###New functionality to calculate QA measures based on bead-level data
 
 ###############################################################################
-calculateBeadLevelScores=function(BLData,path="QC",plot=FALSE,replacePlots=TRUE,writeToFile=TRUE){
+calculateBeadLevelScores=function(BLData,path="QC",log=TRUE,plot=FALSE,replacePlots=TRUE,writeToFile=TRUE){
 
 chipType = getAnnotation(BLData)
 data(ExpressionControlData)
@@ -304,7 +305,7 @@ if(plot){
 	if(replacePlots){
 		jpeg(outfile,width=1250,height=375,quality=100)
 
-		outlierMetrics[i,]= outlierPlot(BLData,i,plot=plot)
+		outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 	
 
 		dev.off()
@@ -314,16 +315,16 @@ if(plot){
 	else {
 		if(!file.exists(outfile)){
 			jpeg(outfile,width=1250,height=375,quality=100)
-			outlierMetrics[i,]= outlierPlot(BLData,i,plot=plot)
+			outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 			dev.off()
  		}
 
-		else outlierMetrics[i,]= outlierPlot(BLData,i,plot=FALSE)
+		else outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=FALSE)
 
 	}
 }
 
-else outlierMetrics[i,]= outlierPlot(BLData,i,plot=FALSE)	
+else outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=FALSE)	
 
 
 
@@ -1068,45 +1069,46 @@ output
 }
 
 
-outlierPlot<-function(BLData,array=array,plot=FALSE){
+outlierPlot<-function(BLData,array=array,log=FALSE,plot=FALSE){
  
 tX<-getArrayData(BLData,what="GrnX",array=array,log=TRUE)
 tY<-getArrayData(BLData,what="GrnY",array=array,log=TRUE)
-resids = beadResids(BLData, array=array,log=TRUE)
+resids = beadResids(BLData, array=array,log=log)
 
 
 tYb<-sort(tY)[1+(order((sort(tY))[2:length(tY)]-(sort(tY))[1:(length(tY)-1)],decreasing=T))[1:8]]+sort(tY)[(order((sort(tY))[2:length(tY)]-(sort(tY))[1:(length(tY)-1)],decreasing=T))[1:8]]
 tYb<-sort(tYb)/2
 gY<-(tY>tYb[1])+(tY>tYb[2])+(tY>tYb[3])+(tY>tYb[4])+(tY>tYb[5])+(tY>tYb[6])+(tY>tYb[7])+(tY>tYb[8])
   
-fao.ill<-findAllOutliers(BLData,array,log=FALSE,n=3)
-fao.log <-findAllOutliers(BLData,array,log=TRUE,n=3)
+#fao.ill<-findAllOutliers(BLData,array,log=FALSE,n=3)
+#fao.log <-findAllOutliers(BLData,array,log=TRUE,n=3)
+fao <-findAllOutliers(BLData,array,log=log,n=3)
 
-fao.low = intersect(fao.log, which(resids<0))
-fao.high = intersect(fao.log, which(resids>0))
+#fao.low = intersect(fao.log, which(resids<0))
+#fao.high = intersect(fao.log, which(resids>0))
+fao.low = intersect(fao, which(resids<0))
+fao.high = intersect(fao, which(resids>0))
 
 nbeads = sapply(split(gY,gY),length)
 names(nbeads) = paste("Number of beads", 1:9, sep=":")
-outliers.ill=sapply(split(gY[fao.ill],gY[fao.ill]),length)
-names(outliers.ill) = paste("Number of Illumina outliers", 1:9,sep=":")
+#outliers.ill=sapply(split(gY[fao.ill],gY[fao.ill]),length)
+#names(outliers.ill) = paste("Number of Illumina outliers", 1:9,sep=":")
+outliers=sapply(split(gY[fao],gY[fao]),length)
+names(outliers) = paste("Number of outliers", 1:9,sep=":")
 outliers.low=sapply(split(gY[fao.low],gY[fao.low]),length)
 names(outliers.low) = paste("Number of low outliers", 1:9,sep=":")
 outliers.high=sapply(split(gY[fao.high],gY[fao.high]),length)
 names(outliers.high) = paste("Number of high outliers", 1:9,sep=":")
 
-output=c(nbeads, outliers.ill,outliers.low,outliers.high)
-
+#output=c(nbeads, outliers.ill,outliers.low,outliers.high)
+output=c(nbeads, outliers,outliers.low,outliers.high)
 
 ###split the xs into 100 sections
-
-
-
-
 if(plot){
 
 
 par(mar=c(5.1,0.1,2.1,0.1))
-fao<-findAllOutliers(BLData,array,log=FALSE,n=3)
+#fao<-findAllOutliers(BLData,array,log=log,n=3)
 
 plot(tY[fao],tX[fao],cex=0.2,pch=16,axes=F,xlab="",ylab="",xaxs="i",yaxs="i")
 box()

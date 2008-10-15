@@ -9,10 +9,12 @@ beadarrayUsersGuide(view=TRUE, topic="beadlevel")
 }
 \arguments{
   \item{view}{logical, should the document be opened using the default PDF document reader? (default is \code{TRUE})}
-  \item{topic}{character string specifying topic (\code{"beadlevel"} or \code{"beadsummary"})} 
+  \item{topic}{character string specifying topic (\code{"beadlevel"}, \code{"beadsummary"} or \code{"BASH"})} 
 }
 \details{
-  The function \code{vignette("beadarray")} will find the short beadarray Vignette which describes how to obtain the more detailed user's guide on the analysis of raw \code{"beadlevel"} or summarised \code{"beadsummary"} Illumina data.
+  The function \code{vignette("beadarray")} will find the short beadarray vignette which describes how to obtain 
+  the more detailed user's guide on the analysis of raw \code{"beadlevel"} data, \code{"beadsummary"} data or how 
+  to use the \code{"BASH"} method for detecting spatial artefacts.
    }
 \value{Character string giving the file location.}
 

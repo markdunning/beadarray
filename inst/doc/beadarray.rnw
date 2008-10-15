@@ -41,47 +41,65 @@
 \section*{Introduction}
 
 \Rpackage{beadarray} is a Bioconductor package for the analysis of Illumina data. 
-The main feature of the package is its ability to process raw data (text files and TIFFs) from BeadScan and store this information in convenient R classes.
-Access to this \emph{bead-level data} offers users' the choice between different image processing and background correction methods and allows for detailed quality assessments to be made on each array.
-The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can also be imported using the \Rpackage{beadarray} package.
+The main feature of the package is its ability to process raw data (text files and TIFFs) from 
+BeadScan and store this information in convenient R classes.
+Access to this \emph{bead-level data} offers users' the choice between different image processing 
+and background correction methods and allows for detailed quality assessments to be carried out for 
+each array.
+The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can 
+also be imported using the \Rpackage{beadarray} package.
 
-The documentation for this package is split into two separate user guides, one for
-bead-level data and a second for bead-summary data. 
+The documentation for this package is split into separate user guides: one for bead-level data, 
+a second for bead-summary data, and a third which provides details and examples of using the 
+BASH (\textbf{b}ead\textbf{a}rray \textbf{s}ubversion of \textbf{H}arshlight) method for detecting 
+spatial artefacts. 
 These documents may be accessed using the following commands:
 
 <<Help, eval=FALSE>>=
 library(beadarray)
 beadarrayUsersGuide(topic="beadlevel")
 beadarrayUsersGuide(topic="beadsummary")
+beadarrayUsersGuide(topic="BASH")
 @
 
 \section{Citing \Rpackage{beadarray}}
 
+\begin{flushleft}
 If you use \Rpackage{beadarray} for the analysis or pre-processing of
-Illumina data please cite:\\
+Illumina data please cite:\newline
 
 Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S. \emph{beadarray: R classes and
-  methods for Illumina bead-based data}. Bioinformatics, 2007 Aug 15; 23(16):2183-4. Epub 2007 Jun 22.\\
+methods for Illumina bead-based data}. Bioinformatics, 2007 Aug 15; 23(16):2183-4.\newline
 
-For recommendations on the low-level analysis of bead-level data, or if you make use of the spike-in data set available from\\
+For recommendations on the low-level analysis of bead-level data, or if you make use of the spike-in data set available from\newline
 
-{\tt http://www.compbio.group.cam.ac.uk/Resources/spike/}\\
+{\tt http://www.compbio.group.cam.ac.uk/Resources/spike/}\newline
 
-please cite:\\
+please cite:\newline
 
-Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. BMC Bioinformatics. 2008 Feb 6;9(1):85.\\
+Dunning MJ, Barbosa-Morais NL, Lynch AG, Tavar\'e S, Ritchie ME. \emph{Statistical issues in the analysis of Illumina data}. 
+BMC Bioinformatics. 2008 Feb 6;9(1):85.\newline
 
-For a validation of the VST method (implemented in the \Rpackage{lumi} package) on the spike-in data set and a comparison of the results obtained from a full bead-level analysis, see\\
+For a validation of the VST method (implemented in the \Rpackage{lumi} package) on the spike-in data set and a comparison 
+of the results obtained from a full bead-level analysis, see\newline
 
-Dunning MJ, Ritchie ME, Barbosa-Morais NL, Tavar\'e S, Lynch AG. \emph{Spike-in validation of an Illumina-specific variance-stabilizing transformation}. BMC Research Notes, 2008, 1:18.\\
+Dunning MJ, Ritchie ME, Barbosa-Morais NL, Tavar\'e S, Lynch AG. \emph{Spike-in validation of an Illumina-specific 
+variance-stabilizing transformation}. BMC Research Notes, 2008, 1:18.\newline
 
-Probe reannotation for Illumina expression arrays are available from:\\
+If you use BASH to detect spatial artefacts, please cite\newline
 
-{\tt http://www.compbio.group.cam.ac.uk/Resources/Annotation/}\\
+Cairns JM, Dunning MJ, Ritchie ME, Russell R, Lynch AG. \emph{BASH: A tool for managing BeadArray spatial artefacts}. (submitted).\newline
 
-If you make use of these, please cite:\\
+If you use the probe reannotation for Illumina expression arrays (used in the current Bioconductor annotation packages named \Rpackage{illuminaXXXXX.db}) 
+please cite\newline
 
-Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).
+Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).\newline
+
+Supplementary tables and supporting information for this annotation are available at\newline
+
+{\tt http://www.compbio.group.cam.ac.uk/Resources/Annotation/}.
+
+\end{flushleft}
 
 \section{Asking for help on \Rpackage{beadarray}}
 

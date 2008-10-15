@@ -6,6 +6,12 @@
 - removed line with 'method' from BGFilterWeighted (method not used in this function)
 - remove +1 from line 286 [mad = mediansort(invadedE, nextslot - 1) + 1;] from BASH.c
 - fixed typo - BL -> BLData in removeArrayMask
+- added 'log' argument to outlierPlot to give chioce of scale (the summary output from 
+this function - total number of outliers, number of low and high outliers is now on the 
+scale specified by 'log' as well)
+- added user guide for BASH (/inst/doc/BASH.pdf)
+- option to view BASH.pdf added to beadarryUserGuide()
+- added na.rm to median and mad calculation in calculateDetection function
 - updated man pages to reflect these changes
 
 1.9.6 - 1.9.9 Various changes noted in svn message
