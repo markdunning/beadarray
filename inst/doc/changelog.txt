@@ -3,6 +3,8 @@
 - removed 'qcScores' and 'beadAnno' slots from BeadLevelList.  'qcScores' now stored in 'arrayInfo' slot 
 - removed copying of BeadLevelList in setAnnotation
 - removed unused 'plot' argument from probePairsPlot 
+- removed line with 'method' from BGFilterWeighted (method not used in this function)
+- remove +1 from line 286 [mad = mediansort(invadedE, nextslot - 1) + 1;] from BASH.c
 - fixed typo - BL -> BLData in removeArrayMask
 - updated man pages to reflect these changes
 

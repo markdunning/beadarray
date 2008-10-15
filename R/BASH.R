@@ -93,21 +93,15 @@ BGFilter <- function(E = NULL, neighbours, invasions = 20, method = "median")
 }
 
 ##weighted
-BGFilterWeighted <- function(E = NULL, neighbours, invasions = 20, weights = NULL) #, method="median"
+BGFilterWeighted <- function(E = NULL, neighbours, invasions = 20, weights = NULL)
 {
 	if(is.null(weights)) {weights <- rep(1, nrow(neighbours))}
 	if(is.null(E)) {stop("No error image (E). Please run generateE to obtain one.")}
-#        method <- match.arg(method, choices = c("median", "mean", "MAD", "medianMAD"))
-#        method <- switch(method, median = 1, mean = 2, MAD = 3, medianMAD = 4)
-
 
 	##C code here to apply the filter
 	Etilde <- rep(0, length(E))
 	output <- .C("BGFilterWeighted", as.double(E), as.double(Etilde), as.integer(t(neighbours)), as.double(weights), as.integer(nrow(neighbours)), as.integer(invasions))
 	Etilde <- output[[2]]
-
-	##Variance: Singleton causes NAs (singletons are insignificant so no harm done)
-	if(method > 2) {Etilde <- ifelse(!is.na(Etilde),Etilde,1)}
 
 	Etilde
 }

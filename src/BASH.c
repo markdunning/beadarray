@@ -270,7 +270,7 @@ void BGFilter(double* E, double* Etilde, int* neighbours, int* nbeads, int* inva
 			break;
 
 			case 3:
-			//"MAD filter" (i.e. find MAD of nearby beads)
+			//"MAD filter" (i.e. scale by MAD of nearby beads)
 			case 4:
 			//"Scale MAD filter" (subtract median and scale automatically)
 
@@ -283,7 +283,7 @@ void BGFilter(double* E, double* Etilde, int* neighbours, int* nbeads, int* inva
 				invadedE[j] = fabs(invadedE[j] - median);
 			}
 			//sort to find MAD
-			mad = mediansort(invadedE, nextslot - 1) + 1;
+			mad = mediansort(invadedE, nextslot - 1);
 
 			//output (3: mad) or (4: scaled E)
 			if(*method == 3) {Etilde[i] = E[i]/mad;}
