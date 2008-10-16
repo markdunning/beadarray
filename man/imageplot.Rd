@@ -8,7 +8,7 @@ Generates an image plot for data from a \code{BeadLevelList} object.
 imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
            high = NULL, ncolors = 123, whatToPlot ="G", log=TRUE,
            zlim=NULL, main=whatToPlot, method="illumina", n = 3,
-           trim=0.05, legend=TRUE, ...)
+           trim=0.05, legend=TRUE, SAM=FALSE, ...)
 }
 
 \arguments{
@@ -40,6 +40,7 @@ imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
       \code{createBeadSummaryData} help page for further information.}
   \item{legend}{logical, if \code{TRUE}, \code{zlim} and range of data
     is added to plot.}
+  \item{SAM}{logical, if \code{TRUE}, x and y coordinates are transposed.}
   \item{\dots}{other graphical parameters to plot that can be specified}
       }
 \details{

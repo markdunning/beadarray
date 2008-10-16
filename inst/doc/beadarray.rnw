@@ -51,7 +51,7 @@ also be imported using the \Rpackage{beadarray} package.
 
 The documentation for this package is split into separate user guides: one for bead-level data, 
 a second for bead-summary data, and a third which provides details and examples of using the 
-BASH (\textbf{b}ead\textbf{a}rray \textbf{s}ubversion of \textbf{H}arshlight) method for detecting 
+BASH (\textbf{b}ead\textbf{a}rray \textbf{S}ubversion of \textbf{H}arshlight) method for detecting 
 spatial artefacts. 
 These documents may be accessed using the following commands:
 

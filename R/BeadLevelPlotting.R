@@ -139,7 +139,7 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
                      low = NULL, high = NULL, ncolors = 123,
                      whatToPlot ="G", log=TRUE, zlim=NULL,
                      main=whatToPlot, method="illumina",
-                     n = 3, trim=0.05, legend=TRUE, ...){
+                     n = 3, trim=0.05, legend=TRUE, SAM=FALSE, ...){
 
   par(mar = c(2,1,1,1), xaxs = "i", yaxs = "i")
   
@@ -179,11 +179,15 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 #  else  # plot in Red colour scheme
 #    col = rgb(seq(low[2], high[2], len = ncolors), seq(low[1], 
 #          high[1], len = ncolors), seq(low[3], high[3], len = ncolors))
-
-  xs = floor(BLData[[array]]$GrnX[!ind])
-  ys = floor(BLData[[array]]$GrnY[!ind])
-  rm(ind)
-
+  if(SAM) {
+    xs = floor(BLData[[array]]$GrnX[!ind])
+    ys = floor(BLData[[array]]$GrnY[!ind])
+    rm(ind)
+  }
+  else { # for BeadChip - switch X and Y
+    xs = floor(BLData[[array]]$GrnY[!ind])
+    ys = floor(BLData[[array]]$GrnX[!ind])
+  }
   xgrid = floor(seq(0, max(xs), by = max(xs)/ncol))
   ygrid = floor(seq(0, max(ys), by = max(ys)/nrow))
 
@@ -204,7 +208,10 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
          out$result[!is.na(out$result)] = pmax(zlim[1], out$result[!is.na(out$result)], na.rm=TRUE)
          out$result[!is.na(out$result)] = pmin(zlim[2], out$result[!is.na(out$result)], na.rm=TRUE)
       }
-      imageMatrix[,i] = rev(out$result)
+      if(SAM)
+         imageMatrix[,i] = rev(out$result)
+      else
+         imageMatrix[,i] = out$result
     }
   }
 #  if(!is.null(zlim)) {
@@ -214,8 +221,10 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
 #  zr =  range(imageMatrix, na.rm=TRUE)
 
   imageMatrix = t((imageMatrix))
+
   if(is.null(zlim)) zlim=range(imageMatrix, na.rm=TRUE)
-  image(x = c(0:ncol), y = c(0:nrow), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main,zlim=zlim,...)
+  image(x = c(0:ncol), y = c(0:nrow), z = imageMatrix,  xaxt = "n", yaxt = "n", col = col, main=main, zlim=zlim,...)
+
   if(legend)
     mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
 }
@@ -366,7 +375,7 @@ if(!is.na(allnames[ArrayClickedOn])) { #print(ArrayClickedOn)
 
   if(mode == "intensities") {
 
-    imageplot(BLData, array=allnames[ArrayClickedOn], whatToPlot=whatToPlot, log=log, high=high, low=low,main=paste(allnames[ArrayClickedOn], whatToPlot), ...)
+    imageplot(BLData, array=allnames[ArrayClickedOn], whatToPlot=whatToPlot, log=log, high=high, low=low,main=paste(allnames[ArrayClickedOn], whatToPlot), SAM=TRUE, ...)
     screen(1)
   }
 }

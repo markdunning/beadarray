@@ -1,3 +1,10 @@
+1.9.11 - 15 October 2008
+- added 'SAM' argument to imageplot which inverts (vertically) the images for arrays from a SAM.  
+Also changed the x and y coords so that BeadChip images have the an orientation which is consistent 
+with the outlier plots (they were previously rotated 90 degrees clockwise compared to outlier plots).
+- updated beadlevel.pdf vignette and beadarray.rnw
+- other modifications noted in svn message
+
 1.9.10 - 14 October 2008
 - renamed outlierplot and gradientplot to outlierPlot and gradientPlot to keep the naming consistent with other functions
 - removed 'qcScores' and 'beadAnno' slots from BeadLevelList.  'qcScores' now stored in 'arrayInfo' slot 
