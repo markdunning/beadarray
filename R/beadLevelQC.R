@@ -108,7 +108,7 @@ calculateBeadLevelScores=function(BLData,path="QC",log=TRUE,plot=FALSE,replacePl
 chipType = getAnnotation(BLData)
 data(ExpressionControlData)
 
-if(chipType=="") stop("Could not find annotation type for this prpchip. Try using setAnnotation\n")
+if(chipType=="") stop("Could not find annotation type for this chip. Try using setAnnotation\n")
 
 
 dir.create(path)
@@ -295,6 +295,7 @@ else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
 controlProbeMetrics[i,] = controlScores
 
 
+outfile = paste(path,"/outliers/",arnames[i],".jpeg",sep="")
 
 cat("Plotting outlier locations\n")
 
