@@ -2,7 +2,7 @@
 - added 'SAM' argument to imageplot which inverts (vertically) the images for arrays from a SAM.  
 Also changed the x and y coords so that BeadChip images have the an orientation which is consistent 
 with the outlier plots (they were previously rotated 90 degrees clockwise compared to outlier plots).
-- updated beadlevel.pdf vignette and beadarray.rnw
+- updated beadlevel.pdf and beadsummary.pdf vignettes and beadarray.rnw
 - other modifications noted in svn message
 
 1.9.10 - 14 October 2008
