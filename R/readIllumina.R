@@ -405,7 +405,7 @@ bgCorrectSingleArray = function(fg, bg, method = "subtract", offset = 0, verbose
 #	    if(verbose) cat("Corrected array",i,"\n")
         },
         rma={
-	  require("affy")
+ 	    require("affy")
 	    fg = bg.adjust(fg - bg)
         })    
 	if(offset) {
@@ -419,10 +419,10 @@ normalizeSingleArray = function(x, method = "quantile") {
     method = match.arg(method, c("none", "quantile", "vsn"))
     switch(method,
         none={
-          y = x
+            y = x
         },
 	quantile={
-            y = normalizeQuantiles(x)
+             y = normalizeQuantiles(x)
         },
 	vsn={
             require("vsn")

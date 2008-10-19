@@ -3,7 +3,7 @@
 
 
 rankInvariantNormalise = function(exprs, T=NULL){
-
+require("affy")
 if(is.null(T)){
 
 T = apply(exprs, 1, mean, na.rm=TRUE)
@@ -83,8 +83,7 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
 
   switch(method,
          quantile={
-            require("affy")
-            BSData = assayDataElementReplace(BSData, "exprs", normalize.quantiles(as.matrix(exprs(BSData))))
+            BSData = assayDataElementReplace(BSData, "exprs", normalizeQuantiles(as.matrix(exprs(BSData))))
             rownames(exprs(BSData)) = rownms
             colnames(exprs(BSData)) = colnms
          },

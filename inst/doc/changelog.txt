@@ -1,3 +1,7 @@
+1.9.13 - 19 October 2008
+- changed depends 'affy' to suggests.
+- replaced normalize.quantiles() with normalizeQuantiles() in normaliseIllumina() to avoid error message.
+
 1.9.11 - 15 October 2008
 - added 'SAM' argument to imageplot which inverts (vertically) the images for arrays from a SAM.  
 Also changed the x and y coords so that BeadChip images have the an orientation which is consistent 
