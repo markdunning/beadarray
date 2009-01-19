@@ -1,3 +1,6 @@
+1.11.1 - 19 Jnuary 2009
+- change to readIllumina() to allow new bead-level files to be handled by setting textType="_perBeadFile.txt"
+
 1.9.13 - 19 October 2008
 - changed depends 'affy' to suggests.
 - replaced normalize.quantiles() with normalizeQuantiles() in normaliseIllumina() to avoid error message.

@@ -24,7 +24,7 @@
   }
   if(length(xyFiles)==0)
     stop(paste("No files with extension ", textType, "found"))
-  arrays = strtrim(xyFiles, nchar(xyFiles)-4)  
+  arrays = gsub(textType, "", xyFiles)  
   if(!is.null(arrayNames)) {
     # check whether file extensions are present - if they are remove them
     arrayNames = gsub(textType, "", arrayNames)

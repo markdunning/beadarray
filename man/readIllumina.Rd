@@ -24,8 +24,8 @@ readIllumina(arrayNames=NULL, path=".", textType=".txt",
   \item{path}{character string specifying the location of files to be
     read by the function}
   \item{textType}{character string specifiying the extension of the
-    files which store the bead-level information.  Typically \code{".txt"} 
-    or \code{".csv"}.}
+    files which store the bead-level information.  Typically \code{".txt"}, 
+    \code{".csv"} or \code{"_perBeadFile.txt"}.}
   \item{annoPkg}{character string specifying the annotation package 
      for the arrays being read in (only available for certain 
      expression arrays at present).  Default value is
