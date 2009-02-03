@@ -20,17 +20,17 @@ The IDs for the housekeeping and biotin controls are retrieved making use of the
 
 If plot is TRUE, the values of all bead observations are plotted for each bead-type respectively grouped together according to the type of control (housekeeping or biotin). Any beads with low intensity may be due to array defects and would be impossible to detect with summarized data only. If available, the intensities of any high stringency probes will also be plotted.
 
-An important point to note that the utility of these housekeeping controls is dependant on the probe sequences used targeting the intended genes. If a particular housekeeping control shows lower expression, then it is worth checking the probe sequence by a BLAT search of by checking pre-complied tables from http://www.compbio.group.cam.ac.uk/Resources/Annotation/index.html.
+An important point to note that the utility of these housekeeping controls is dependant on the probe sequences used targeting the intended genes. If a particular housekeeping control shows lower expression, then it is worth checking the probe sequence by a BLAT search of by checking pre-complied tables from \url{http://www.compbio.group.cam.ac.uk/Resources/Annotation/index.html}.
 
 }
 
 \value{
-\item{HkpDet - \%age of housekeeping control beads that are detected compared to the negative controls.}
-\item{BioDet- \%age of  biotin labelling control beads that are detected compared to the negative controls.}
+\item{HkpDet}{\%age of housekeeping control beads that are detected compared to the negative controls.}
+\item{BioDet}{\%age of  biotin labelling control beads that are detected compared to the negative controls.}
 }
 
-\references{www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf}
+\references{\url{www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf}}
 
 \author{Mark Dunning and Andy Lynch}
-\seealso{ \code{\link{calculateBeadLevelScores}},\code{\link{setAnnotation}}}
+\seealso{ \code{\link{calculateBeadLevelScores}}, \code{\link{setAnnotation}}}
 

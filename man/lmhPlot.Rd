@@ -25,13 +25,13 @@ If a plot is requested, the intensities of the hybridisation controls are plotte
 }
 
 \value{
-\item{LowDet - \%age of ``low'' control beads that are detected compared to the negative controls.}
-\item{MedDet - \%age of ``medium'' control beads that are detected compared to the negative controls.}
-\item{HighDet- \%age of ``high'' control beads that are detected compared to the negative controls.}
-\item{MvsL - \%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
-\item{HvsM- \%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
+\item{LowDet}{\%age of ``low'' control beads that are detected compared to the negative controls.}
+\item{MedDet}{\%age of ``medium'' control beads that are detected compared to the negative controls.}
+\item{HighDet}{\%age of ``high'' control beads that are detected compared to the negative controls.}
+\item{MvsL}{\%age of ``medium'' control beads that are detected compared to the ``low'' controls.}
+\item{HvsM}{\%age of ``high'' control beads that are detected compared to the ``medium'' controls.}
 }
 
-\references{see www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf for description of the hybridisation controls}
+\references{see \url{www.illumina.com/downloads/GX_QualityControl_TechNote.pdf} for description of the hybridisation controls}
 \author{Mark Dunning}
-\seealso{\code{\link{calculateBeadLevelScores}},\code{\link{setAnnotation}},\code{\link{calculateDetection}} }
+\seealso{\code{\link{calculateBeadLevelScores}}, \code{\link{setAnnotation}}, \code{\link{calculateDetection}} }
