@@ -8,7 +8,7 @@ on each bead type, including the controls.
 }
 \usage{
 readBGX(filename, path=".", sep="\t", quote="", header=TRUE,
-           probeStart="\\[Probes\\]", controlStart="\\[Controls\\]", ...)
+           probeStart="\\\[Probes\\\]", controlStart="\\\[Controls\\\]", ...)
 }
 \arguments{
   \item{filename}{character vector specifying name of unzipped bgx file}
@@ -17,9 +17,9 @@ readBGX(filename, path=".", sep="\t", quote="", header=TRUE,
   \item{quote}{character string specifying the quoting characters (disabled by default with \code{quote=""}).  See \code{scan} for further information.}
   \item{header}{logical, TRUE if the bgx file has a header, FALSE otherwise}
   \item{probeStart}{character string, below which the information for
-the beads of interest appear. Default value is "\\[Probes\\]"}
+the beads of interest appear. Default value is "\\\[Probes\\\]"}
   \item{controlStart}{character string, below which the information for
-the control beads appear. Default value is "\\[Controls\\]" }
+the control beads appear. Default value is "\\\[Controls\\\]" }
   \item{...}{further arguments to \code{read.table}}
 }
 
