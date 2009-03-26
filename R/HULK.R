@@ -15,12 +15,15 @@ HULK <- function(BLData, array, neighbours = NULL, invasions = 20, what = "G") {
 HULKResids <- function(BLData, array, neighbours = NULL, invasions = 20, what = "G") {
 
   if(is.null(neighbours)) {
+      cat("Calculating Neighbourhood\n")
     neighbours <- generateNeighbours(BLData, array)
   }
   residuals <- beadResids(BLData, what = what, array = array)
+  weights <- getArrayData(BLData, what = "wts", array = array)
   
-  residuals[which(is.na(residuals))] = 0
+  residuals[which((is.na(residuals)) | (weights == 0))] = 0
   
+  cat("HULKING\n")
   output <- .C("HULK", as.double(residuals), as.integer(t(neighbours)), as.integer(nrow(neighbours)), as.integer(invasions), results = as.double(residuals))
 
   output$results

@@ -39,6 +39,7 @@ void HULK(double* residuals, int* neighbours, int* nbeads, int* invasions, doubl
 	  temp2 = neighbours[temp]-1; //vector form for neighbour to invade
 	  if((temp2 >= 0) && (!done[temp2])){
 	    invaded[nextslot] = temp2;
+            /* if the residual is > 0 then include it */
 	    if(residuals[temp2]) {
 	      results[i]  += (residuals[temp2] * weight);
 	      divide += weight;
