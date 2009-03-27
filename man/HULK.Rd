@@ -28,8 +28,7 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, what = "G")
   residual is calculated as the sum of the residuals for each bead in
   the neighbourhood, divided by 1 plus the number of invasions it took to reach
   that bead.  This calculation is made by a call to
-  \code{\link{HULK
-  Resids}}.
+  \code{\link{HULKResids}}.
 
   The average residuals are then subtracted from each bead and the
   resulting \code{\link{BeadLevelList}} object is returned.

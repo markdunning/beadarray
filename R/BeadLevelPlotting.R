@@ -229,7 +229,6 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
     mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
 }
 
-
 SAMSummary =
 function(BLData, mode="outliers", whatToPlot="G", samID=NULL, log=TRUE, n=3, colour=TRUE, scale = NULL, low="yellow", high="red",...) {
 

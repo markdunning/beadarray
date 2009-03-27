@@ -1,4 +1,4 @@
-\name{HULKresids}
+\name{HULKResids}
 \alias{HULKResids}
 \title{HULK - Residuals}
 \description{
