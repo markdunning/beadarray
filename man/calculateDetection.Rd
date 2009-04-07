@@ -16,9 +16,18 @@ calculateDetection(BSData)
 
 The function implements Illumina's method for calculating the detection scores for all bead types on a given array. 
 Within an array, Illumina discard negative control bead-types whose summary values are more than three MADs from the median for the negative controls. Illumina then rank the summarized intensity for each other bead-type against the summarized values for the remaining negative control bead-types and calculate a detection p-value  1-R/N, where R is the relative rank of the bead intensity when compared to the $N$ remaining negative controls. Thus, if a particular bead has higher intensity than all the negative controls it will be assigned a value of 0. 
-This calculation is repeated for all arrays stored in the BSData object.
+This calculation is repeated for all arrays stored in the BSData object. The annotation slot of the BSData object needs to be set correctly in order for the function to find the IDs of the negative control beads.
 }
 \value{
-A modified version of BSData is returned with the detection slot filled with the newly created scores.
+Matrix of detection scores with the same dimensions as the exprs matrix of BSData. This matrix can be stored in a BSData object using the Detection function
 }
+
+\examples{
+
+##BSData@annotation = "Humanv3"
+##Detection(BSData) = calculateDetection(BSData)
+
+}
+
+
 \author{Mark Dunning and Andy Lynch}
