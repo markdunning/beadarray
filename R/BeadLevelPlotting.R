@@ -140,6 +140,9 @@ imageplot = function(BLData, array = 1, nrow = 100, ncol = 100,
                      whatToPlot ="G", log=TRUE, zlim=NULL,
                      main=whatToPlot, method="illumina",
                      n = 3, trim=0.05, legend=TRUE, SAM=FALSE, ...){
+    
+    if(class(BLData)[1] %in% c("RGList", "MAList")) 
+        stop("\nIt appears you are trying to use the imageplot() function on a Limma object, but imageplot() is currently masked by beadarray\n\nIf you wish to use the Limma function, you can either call it directly using:\n\t\"limma::imageplot()\"\nor detach the beadarray package using:\n\t\"detach(package:beadarray)\"\n")
 
   par(mar = c(2,1,1,1), xaxs = "i", yaxs = "i")
   

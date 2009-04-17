@@ -24,6 +24,8 @@ plotMA(exprs, array1=1, array2=2, genesToLabel=NULL, labelCol="red", foldLine=2,
 \details{
 
 The log2 difference in intensity (M-value, log-ratio) are plotted against the log2 average intensity (A-value) for each probe for the two arrays selected.
+
+  As a result of both having identical function names this function can conflict with the \code{\link[limma]{plotMA}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' plotMA() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::plotMA()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
 }
 \value{
 A smoothed MA scatter plot is displayed on the current graphical device.

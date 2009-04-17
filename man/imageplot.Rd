@@ -58,6 +58,8 @@ imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
   An imageplot of the log base 2 foreground intensities is produced by default.
   Other values can be plotted by changing the \code{whatToPlot} argument.
   The default colour scheme ranges from white for low values to blue for high values.
+  
+  As a result of both having identical function names this function can conflict with the  \code{\link[limma]{imageplot}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' imageplot() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::imageplot()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
 }
 \value{
 

@@ -198,7 +198,7 @@ void BGFilter(double* E, double* Etilde, int* neighbours, int* nbeads, int* inva
 {
 	int i, j, k, l, temp, temp2;
 	int nextslot, firstinv, lastinv;
-	double mean, median, mad;
+	double median, mad;
 
 	int *invaded = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 
 	double *invadedE = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(double) );
@@ -305,7 +305,6 @@ void BGFilterWeighted(double* E, double* Etilde, int* neighbours, double* weight
 //this method downweights according to given weights, and also according to distance
 	int i, j, k, l, temp, temp2;
 	int nextslot, firstinv, lastinv;
-	double mean, median, mad;
 	double wtotal = 0;
 
 	int *invaded = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 

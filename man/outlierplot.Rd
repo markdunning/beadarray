@@ -19,8 +19,5 @@ outlierPlot(BLData, array = array, log = FALSE, plot = FALSE)
 The number of outliers are computed for the whole array using the Illumina default method that specifies a cut-off of 3 MADs from the median on either the log2 or original scale. These outliers are then split into 9 different sections on the array (the separation between these sections can usually be seen in the plots).
 }
 
-\value{
-
-}
 \author{Mark Dunning}
 

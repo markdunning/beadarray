@@ -1,8 +1,15 @@
 setGeneric("backgroundCorrect", function(object, method="subtract", offset=0, verbose=FALSE)
    standardGeneric("backgroundCorrect"))
 
+setMethod("backgroundCorrect", "RGList", function(object, method = "subtract", offset = 0, verbose = FALSE) {
+    
+    cat("\nIt appears you are trying to use the backgroundCorrect() function on a Limma object, but backgroundCorrect() is currently masked by beadarray.\n\nIf you wish to use the Limma function, you can either call it directly using:\n\t\"limma::backgroundCorrect()\"\nor detach the beadarray package using:\n\t\"detach(package:beadarray)\"\n")
+    
+} )   
+
 setMethod("backgroundCorrect" ,"BeadLevelList",
           function(object, method = "subtract", offset = 0, verbose=FALSE) {
+                           
 # Code modified from limma backgroundCorrect function (17 Jan 2007)
     bgc = copyBeadLevelList(object)
     arraynms = arrayNames(object)
@@ -13,39 +20,32 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
     if(existingmethod!="none")
       stop(paste("Background correction already carried out using method=\"", existingmethod, "\"", sep=""))
     else {  
-#    if(is.null(RG$Rb) && is.null(RG$Gb)) method = "none"
       switch(method,
 	subtract={
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb
- #           bgc@beadData[[arraynms[i]]]$Gb = NULL
             if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
                bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R - bgc[[arraynms[i]]]$Rb
- #              bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
           }
         },
 	half={
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = pmax(bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb, 0.5)
-#            bgc@beadData[[arraynms[i]]]$Gb = NULL
             if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) { # two-colour data
                bgc@beadData[[arraynms[i]]]$R = pmax(bgc[[arraynms[i]]]$R - bgc[[arraynms[i]]]$Rb, 0.5)
-#               bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
           }
         },
 	minimum={
           for(i in 1:narrays) {
             bgc@beadData[[arraynms[i]]]$G = bgc[[arraynms[i]]]$G-bgc[[arraynms[i]]]$Gb
-#            bgc@beadData[[arraynms[i]]]$Gb = NULL
             j = bgc[[arraynms[i]]]$G < 1e-18
             if(any(j, na.rm = TRUE)) {
               m = min(bgc[[arraynms[i]]]$G[!j], na.rm = TRUE)
               bgc@beadData[[arraynms[i]]]$G[j] = m/2
             }
             if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data              bgc@beadData[[arraynms[i]]]$R = bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb
-#              bgc@beadData[[arraynms[i]]]$Rb = NULL
               j = bgc[[arraynms[i]]]$R < 1e-18
               if(any(j, na.rm = TRUE)) {
                 m = min(bgc[[arraynms[i]]]$R[!j], na.rm = TRUE)
@@ -68,12 +68,10 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 	    sub = as.matrix(bgc[[arraynms[i]]]$G-bgc[[arraynms[i]]]$Gb)
 	    delta = one %*% apply(sub, 2, delta.vec)
 	    bgc@beadData[[arraynms[i]]]$G = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Gb+delta)/bgc[[arraynms[i]]]$G), sub))
-#            bgc@beadData[[arraynms[i]]]$Gb = NULL
             if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
  	      sub = as.matrix(bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb)
 	      delta = one %*% apply(sub, 2, delta.vec)
 	      bgc@beadData[[arraynms[i]]]$R = as.vector(ifelse(sub < delta, delta*exp(1-(bgc[[arraynms[i]]]$Rb+delta)/bgc[[arraynms[i]]]$R), sub))
-#              bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
           }
 	},
@@ -81,15 +79,11 @@ setMethod("backgroundCorrect" ,"BeadLevelList",
 	  for(i in 1:narrays) {
 	    x = bgc[[arraynms[i]]]$G - bgc[[arraynms[i]]]$Gb
 	    out = normexp.fit(x)
-#	     if(verbose) cat("G: bg.bias=",out$par[1]," bg.sd=",exp(out$par[2])," fg.mean=",exp(out$par[3]),"\n",sep="")
 	    bgc@beadData[[arraynms[i]]]$G = normexp.signal(out$par,x)
-#            bgc@beadData[[arraynms[i]]]$Gb = NULL
             if(bgc@arrayInfo$channels=="two" || !is.null(bgc[[arraynms[i]]]$Rb)) {# two-colour data
 	      x = bgc[[arraynms[i]]]$R-bgc[[arraynms[i]]]$Rb
 	      out = normexp.fit(x)
-#   	       if(verbose) cat("R: bg.bias=",out$par[1]," bg.log2sd=",out$par[2]," fg.mean=",exp(out$par[3]),"\n",sep="")
 	      bgc@beadData[[arraynms[i]]]$R = normexp.signal(out$par,x)
-#              bgc@beadData[[arraynms[i]]]$Rb = NULL
             }
 	    if(verbose) cat("Corrected array",i,"\n")
 	  }

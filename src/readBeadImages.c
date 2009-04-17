@@ -364,16 +364,23 @@ void getPixelIntensities(int **pixels, FILE *fp, int ImageWidth, int ImageHeight
 
       char *c;
       char r[1];
-      int l, i, j;    
+      int l, i, j;  
+      size_t result;
            
       c = malloc(ImageSize);      
            
       for (i = 1; i <= BeginData; i++) {
-          fread(r, sizeof(r), 1, fp);
-          }
+        if(fread(r, sizeof(r), 1, fp) != 1) { 
+            Rprintf("Error in fread()\n"); 
+            exit(0); 
+        }
+      }
     
-      fread(c, 1, ImageSize, fp);
-
+      if(fread(c, 1, ImageSize, fp) != ImageSize) { 
+          Rprintf("Error in fread()\n"); 
+          exit(0); 
+      }
+        
       /* convert tif binary data into image intensities */
       l = 0;
       for (j = 0; j < ImageHeight; j++){
@@ -601,13 +608,25 @@ void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *fo
  //     Rprintf("Records: %i\n", records);
    }
    for (i = 1; i <= records; i++) {
-      fread(c2, 1, 2, fp);
+      if(fread(c2, 1, 2, fp) != 2) { 
+          Rprintf("Error in fread()\n"); 
+          exit(0); 
+      }
       tag = number(2, c2);
-      fread(c2, 1, 2, fp);
+      if(fread(c2, 1, 2, fp)!= 2) { 
+          Rprintf("Error in fread()\n"); 
+          exit(0); 
+      }
       type = number(2, c2);
-      fread(c4, 1, 4, fp);
+      if(fread(c4, 1, 4, fp) != 4) { 
+          Rprintf("Error in fread()\n"); 
+          exit(0); 
+      }
       length = number(4, c4);
-      fread(c4, 1, 4, fp);
+      if(fread(c4, 1, 4, fp) != 4) { 
+          Rprintf("Error in fread()\n"); 
+          exit(0); 
+      }
       offset = number(4, c4);
   //    Rprintf("%i %i %i %i\n", tag, type, length, offset);
       switch (tag) {

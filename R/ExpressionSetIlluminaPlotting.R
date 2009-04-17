@@ -44,54 +44,43 @@ close.screen(all=TRUE)
 
 
 "plotMA" <- function(exprs, array1=1, array2=2, genesToLabel=NULL, labelCol="red", foldLine=2, log=TRUE,labelpch=16,ma.ylim=2,sampleSize=NULL,...){
-exprs=as.matrix(exprs)
+    
+    #try to catch any Limma objects and tell the user.
+    if(class(exprs)[1] %in% c("RGList", "MAList")) 
+        stop("\nIt appears you are trying to use the plotMA() function on a Limma object, but plotMA() is currently masked by beadarray\n\nIf you wish to use the Limma function, you can either call it directly using:\n\t\"limma::plotMA()\"\nor detach the beadarray package using:\n\t\"detach(package:beadarray)\"\n")
+    
+    exprs=as.matrix(exprs)
 
-if(log) exprs=log2(exprs)
+    if(log) exprs=log2(exprs)
 
-if(array2!=0 && array2!=array1){
+    if(array2!=0 && array2!=array1){
+        x = 0.5*(exprs[,array1] + exprs[,array2])
+        y = exprs[,array1]- exprs[,array2]
+    }
+    else{
+        #x = log2(exprs[,array1])
+        #y = log2(exprs[,array1])
+        stop("\'array1\' and \'array2\' must be different")
+    }
 
-
-x = 0.5*(exprs[,array1] + exprs[,array2])
-y = exprs[,array1]- exprs[,array2]
-}
-
-
-
-
-else{
-#x = log2(exprs[,array1])
-#y = log2(exprs[,array1])
-  stop("\'array1\' and \'array2\' must be different")
-}
-
-if(!is.null(sampleSize)){
- s = sample(1:length(x), sampleSize)
- x=x[s]
- y=y[s]
- }	
-
-
+    if(!is.null(sampleSize)){
+        s = sample(1:length(x), sampleSize)
+        x=x[s]
+        y=y[s]
+    }	
                                                                                                                                        
-                                                                                                                                       
-                                                                                                                                       
-  naInd = intersect(which(!is.na(x)),which(!is.na(y)))
-  naInd = intersect(naInd, which(!(is.infinite(x))))
-  naInd = intersect(naInd, which(!(is.infinite(y))))
-                                                                                                                                       
-
-
+    naInd = intersect(which(!is.na(x)),which(!is.na(y)))
+    naInd = intersect(naInd, which(!(is.infinite(x))))
+    naInd = intersect(naInd, which(!(is.infinite(y))))
  	
-  smoothScatter(x[naInd],y[naInd], pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
+    smoothScatter(x[naInd],y[naInd], pch=16,cex=0.4, ylim=range(ma.ylim,-ma.ylim), xlab = "", ylab = "", ...) 
 
-  abline(h=c(-log2(foldLine),0,log2(foldLine)),lty=c(2,1,2)) 
+    abline(h=c(-log2(foldLine),0,log2(foldLine)),lty=c(2,1,2)) 
   
-  if(!is.null(genesToLabel)){
-
-    index = which(rownames(exprs) %in% genesToLabel)
-
-    points(x[index], y[index], col=labelCol, pch=labelpch)
-  }
-
+    if(!is.null(genesToLabel)){
+        index = which(rownames(exprs) %in% genesToLabel)
+        points(x[index], y[index], col=labelCol, pch=labelpch)
+    }
 }
 
 
