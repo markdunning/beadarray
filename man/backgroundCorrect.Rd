@@ -1,6 +1,7 @@
 \name{backgroundCorrect}
 \alias{backgroundCorrect}
 \alias{backgroundCorrect,BeadLevelList-method}
+\alias{backgroundCorrect,RGList-method}
 \title{Background correct a BeadLevelList object}
 \description{
   Adapted from the 'limma' backgroundCorrect function to correct the
@@ -51,7 +52,7 @@ backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
 \value{
   A \code{\link{BeadLevelList}} object in which the 'G' (and 'R', if present) intensities for each array are background corrected.  Note that the 'Gb' (and 'Rb' intensities) are not removed. 
 }
-\author{Mark Dunning based on the limma function}
+\author{Mark Dunning and Mike Smith based on the limma function}
 \references{
   Edwards, D. E. (2003). Non-linear normalization and background
   correction in one-channel cDNA microarray studies, Bioinformatics,
