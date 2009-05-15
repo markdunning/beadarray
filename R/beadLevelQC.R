@@ -27,6 +27,8 @@ BLData
 
 getControlAnno = function(BLData){
 
+data(ExpressionControlData)
+
 chipType = getAnnotation(BLData)
 
 if(length(chipType)==0){
@@ -65,7 +67,7 @@ cat("Number of negative controls found :", length(nIDs),"\n")
 if(length(nIDs)!= length(nIdx)) warning("Not all negative controls were found. Please check chip annotation is correct\n")
 
 
-nData = exprs(BSData)[nIDs, ]
+nData = exprs(BSData)[nIDs, drop=FALSE]
 
 nData
 
@@ -103,7 +105,7 @@ detScores
 ###New functionality to calculate QA measures based on bead-level data
 
 ###############################################################################
-calculateBeadLevelScores=function(BLData,path="QC",log=TRUE,plot=FALSE,replacePlots=TRUE,writeToFile=TRUE){
+calculateBeadLevelScores=function(BLData,path="QC",log=TRUE,plot=FALSE,replacePlots=TRUE,writeToFile=TRUE, fileType = c(".jpeg",".pdf")){
 
 chipType = getAnnotation(BLData)
 data(ExpressionControlData)
@@ -128,9 +130,9 @@ arnames<-arrayNames(BLData)
 
 
 outlierMetrics  = matrix(nrow=length(arnames), ncol=36)
-controlProbeMetrics = matrix(nrow=length(arnames), ncol=10)
+controlProbeMetrics = matrix(nrow=length(arnames), ncol=16)
 
-colnames(controlProbeMetrics) = c("HkpDet", "BioDet", "LowDet", "MedDet", "HighDet", "MvsL", "HvsM", "NegDet", "AveNeg", "VarNeg")
+colnames(controlProbeMetrics) = c("HkpDet", "HkpAve", "HkpNegRatio","BioDet", "BioAve", "LowDet", "LowAve", "MedDet", "MedAve", "HighDet", "HighAve", "MvsL", "HvsM", "NegDet", "AveNeg", "VarNeg")
 
 
 colnames(outlierMetrics) = c(paste("Number of beads", 1:9, sep=":"), paste("Number of Illumina outliers", 1:9,sep=":"), paste("Number of low outliers", 1:9,sep=":"), paste("Number of high outliers", 1:9,sep=":"))
@@ -147,15 +149,27 @@ outfile = paste(path, "/outliers/",arnames[i],".jpeg",sep="")
 cat("Plotting positive controls\n")
 
 outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
-controlScores=poscontPlot(BLData,i,plot=plot)
+##controlScores=poscontPlot(BLData,i,plot=plot)
+
+###Get the probe IDs and intensities for all beads on the array
+
+
+t1<-getArrayData(BLData,what="G",array=i,log=FALSE)
+t2<-getArrayData(BLData,what="ProbeID",array=i)
+
+controls = getControlAnno(BLData)
+
+
 
 if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=650,height=375,quality=100)
 
-		controlScores=poscontPlot(BLData,i,plot=plot)
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+
+		controlScores=poscontPlot(BLData,i,plot=plot,t1,t2)
 
 	
 
@@ -165,25 +179,24 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=650,height=375,quality=100)
-			controlScores=poscontPlot(BLData,i,plot=plot)
+			if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=6, height=3)
+			
+			controlScores=poscontPlot(BLData,i,plot=plot,t1,t2)
 
 			dev.off()
  		}
 
-		else controlScores=poscontPlot(BLData,i,plot=FALSE)
+		else controlScores=poscontPlot(BLData,i,plot=FALSE,t1,t2)
 	}
 }
 
-else controlScores=poscontPlot(BLData,i,plot=FALSE)
+else controlScores=poscontPlot(BLData,i,plot=FALSE,t1,t2)
 
 
 
 
 
-##png(paste("QC/samplab/",arnames[i],".png",sep=""),width=625,height=350,quality=100)
-##samplabHV2(BLData,i)
-##dev.off()
 
 cat("Plotting hyb controls\n")
 
@@ -194,9 +207,10 @@ if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=650,height=375,quality=100)
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=6, height=3)
 
-		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot,t1,t2))
 
 
 	
@@ -207,17 +221,17 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=650,height=375,quality=100)
-			controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
 
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=6, height=3)
 
 			dev.off()
  		}
 
-		else controlScores=c(controlScores,lmhPlot(BLData,i,plot=FALSE))
+		else controlScores=c(controlScores,lmhPlot(BLData,i,plot=FALSE,t1,t2))
 	}
 }
-else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot))
+else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot,t1,t2))
 
 
 
@@ -230,9 +244,9 @@ if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=650,height=375,quality=100)
-
-		controlScores=c(controlScores,probePairsPlot(BLData,i))
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+		controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 
 
 	
@@ -243,17 +257,17 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=650,height=375,quality=100)
-			controlScores=c(controlScores,probePairsPlot(BLData,i))
+			if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=6, height=3)
+			controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 
 
 			dev.off()
- 		}
-
-		else controlScores=c(controlScores,probePairsPlot(BLData,i))
+		}
+		else controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 	}
 }
-else controlScores=c(controlScores,probePairsPlot(BLData,i))
+##else controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 
 
 cat("Plotting negative controls\n")
@@ -264,9 +278,10 @@ if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=650,height=375,quality=100)
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=6, height=3)
 
-		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,t2))
 
 
 	
@@ -277,17 +292,18 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=650,height=375,quality=100)
-			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+			if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=6, height=3)
+			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,t2))
 
 
 			dev.off()
  		}
 
-		else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=FALSE))
+		else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=FALSE,t1,t2))
 	}
 }
-else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot))
+else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,t2))
 
 
 
@@ -304,7 +320,9 @@ if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
+		
+		if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
+		if (fileType==".pdf") pdf(outfile, width=13, height=6)	
 
 		outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 	
@@ -315,7 +333,9 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
+			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=13, height=6)
+
 			outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 			dev.off()
  		}
@@ -339,8 +359,8 @@ if(plot){
 
 
 	if(replacePlots){
-		jpeg(outfile,width=1250,height=375,quality=100)
-
+			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=13, height=6)
 		gradientPlot(BLData,i,plot=plot)
 
 	
@@ -351,7 +371,9 @@ if(plot){
 
 	else {
 		if(!file.exists(outfile)){
-			jpeg(outfile,width=1250,height=375,quality=100)
+			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
+			if (fileType==".pdf") pdf(outfile, width=13, height=6)
+			
 			gradientPlot(BLData,i,plot=plot)
 
 			dev.off()
@@ -361,7 +383,7 @@ if(plot){
 	}
 }
 
-else gradientPlot(BLData,i,plot=FALSE)
+##else gradientPlot(BLData,i,plot=FALSE)
 
 
 
@@ -487,13 +509,13 @@ BLData
 
 
 
-probePairsPlot=function(BLData,array=1){
+probePairsPlot=function(BLData,array=1,t1=NULL,t2=NULL,plot=FALSE){
 
 controls = getControlAnno(BLData)
 
+if(is.null(t1))  t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
+if(is.null(t2))  t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
-t1<-getArrayData(BLData,what="G",array=array,log=T)
-t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 
 
@@ -590,7 +612,7 @@ plot(0,0,xlim=c(0,count),ylim=c(3,16),type="n",axes=F,ylab="log-intensity",xlab=
 axis(2)
 box()
 
-points(xs+rnorm(length(xs),0,0.02),ys,col=cols,pch=16)
+points(xs+rnorm(length(xs),0,0.02),log2(ys),col=cols,pch=16)
 axis(1,labels=labs,at=1:(count-1),las=2)
 
 abline(v=seq(0.5,count,by=2),lty=2)
@@ -599,13 +621,14 @@ abline(v=seq(0.5,count,by=2),lty=2)
 
 
 
-lmhPlot<-function(BLData,array=1,plot=FALSE){
+lmhPlot<-function(BLData,array=1,plot=FALSE,t1=NULL,t2=NULL){
 
 controls = getControlAnno(BLData)
 
+if(is.null(t1))  t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
+if(is.null(t2))  t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
-t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
-t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
+
 
 
 mrnbg = controls$Array_Address[controls$Reporter_Group_Name=="negative"]
@@ -634,13 +657,15 @@ low = t1[t2  %in% lowID]
 
 
 output= 100*length(which(sapply(low, detect)<0.05))/length(low)
+output = c(output, mean(low))
+
 
 medID = controls$Array_Address[grep("phage_lambda_genome:med",controls$Reporter_Group_Identifier)]
 
 med = t1[t2  %in% medID]
 
 output= c(output,100*length(which(sapply(med, detect)<0.05))/length(med))
-
+output=c(output, mean(med))
 
 
 highID = controls$Array_Address[grep("phage_lambda_genome:high",controls$Reporter_Group_Identifier)]
@@ -648,6 +673,8 @@ highID = controls$Array_Address[grep("phage_lambda_genome:high",controls$Reporte
 high = t1[t2  %in% highID]
 
 output= c(output,100*length(which(sapply(high, detect)<0.05))/length(high))
+output=c(output, mean(high))
+
 
 negvals = low
 
@@ -657,7 +684,7 @@ negvals = med
 
 output= c(output,100*length(which(sapply(high, detect)<0.05))/length(high))
 
-names(output) =c("LowDet", "MedDet","HighDet","MvsL","HvsM")
+names(output) =c("LowDet", "LowAve","MedDet","MedAve","HighDet","HighAve","MvsL","HvsM")
 
 
 if(plot){
@@ -758,15 +785,16 @@ output
 
 
 
-backgroundControlPlot<-function(BLData,array=1,plot=FALSE){
+backgroundControlPlot<-function(BLData,array=1,plot=FALSE,t1,t2){
 
 controls = getControlAnno(BLData)
+
+if(is.null(t1))  t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
+if(is.null(t2))  t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 
 ##Now get 
 
-t1<-getArrayData(BLData,what="G",array=array,log=T)
-t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 
 mrn = controls$Array_Address[controls$Reporter_Group_Name=="negative"]
@@ -833,12 +861,12 @@ output
 
 
 
-poscontPlot<-function(BLData,array=1,plot=FALSE){
+poscontPlot<-function(BLData,array=1,plot=FALSE,t1=NULL,t2=NULL){
 
 controls = getControlAnno(BLData)
 
-  t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
-  t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
+if(is.null(t1))  t1<-getArrayData(BLData,what="G",array=array,log=FALSE)
+if(is.null(t2))  t2<-getArrayData(BLData,what="ProbeID",array=array,log=T)
 
 ##this will record where to put vertical lines
 
@@ -876,8 +904,8 @@ if(length(is.na(match(mrnhk, t2)))>0) warning("Could not find all housekeeping c
 totest = t1[t2  %in% mrnhk]
 
 output= 100*length(which(sapply(totest, detect)<0.05))/length(totest)
-
-
+output = c(output, mean(totest))
+output=c(output, log2(mean(totest))-log2(mean(negvals)))
 
 mrnb = controls$Array_Address[controls$Reporter_Group_Name=="biotin"]
 
@@ -888,8 +916,11 @@ if(length(is.na(match(mrnb, t2)))>0) warning("Could not find all biotin controls
 
 
 output= c(output,100*length(which(sapply(totest, detect)<0.05))/length(totest))
+output =c(output, mean(totest))
 
-names(output) = c("HkpDet","BioDet")
+
+
+names(output) = c("HkpDet","HkpAve", "HkpNegRatio","BioDet","BioAve")
 
 ##mrnhs = controls$Array_Address[controls$Reporter_Group_Name=="high_stringency_hyb"]
 

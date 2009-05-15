@@ -215,7 +215,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     if("wts" %in% names(BLData[[arraynms[1]]]))
     {
       wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
-      if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+      ##if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
       pr = pr[wts==1]
       finten=finten[wts==1]	
     }
@@ -577,8 +577,7 @@ log2.na = function (x, ...)
 {
     log2(ifelse(x > 0, x, NA), ...)
 }
-setWeights
-function (BLData, wts, array, combine = FALSE)
+setWeights=function (BLData, wts, array, combine = FALSE)
 {
     BLData.copy = copyBeadLevelList(BLData)
     an = arrayNames(BLData)

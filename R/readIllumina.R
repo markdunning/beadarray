@@ -198,8 +198,9 @@ else{
      l = length(unique(data[,1]))
 #     e = .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
 #     endPos[[i]]=e[[4]]
-     
-     cat("Background correcting: method =", backgroundMethod, "\n")
+
+     if(useImages) cat("Reading locally background corrected intensities", "\n")	
+     else cat("Background correcting: method =", backgroundMethod, "\n")
      data[,2] = bgCorrectSingleArray(fg=greenIntensities[[5]], bg=greenIntensities[[6]], method=backgroundMethod, offset=offset)
      data[,3] = greenIntensities[[6]]
 
@@ -221,12 +222,15 @@ else{
        rm(dat1)
        gc()             
        if(storeXY) {
-       cat("Background correcting: method =", backgroundMethod, "\n")
+       if(!useImages) cat("Reading locally background corrected intensities", "\n")	
+       else cat("Background correcting: method =", backgroundMethod, "\n")
        data[,6] = bgCorrectSingleArray(fg=redIntensities[[5]], bg=redIntensities[[6]], method=backgroundMethod, offset=offset)
        data[,7] = redIntensities[[6]]
        }
        else {
-       cat("Background correcting: method =", backgroundMethod, "\n")
+        if(!useImages) cat("Reading locally background corrected intensities", "\n")	
+       
+       else cat("Background correcting: method =", backgroundMethod, "\n")
        data[,4] = bgCorrectSingleArray(fg=redIntensities[[5]], bg=redIntensities[[6]], method=backgroundMethod, offset=offset) #redIntensities[[5]]
        data[,5] = redIntensities[[6]]
        }
@@ -288,7 +292,9 @@ else{
 
      data[,2]=dat1$Grn[ord]
      data[,3]=0
-     cat("Background correcting: method =", backgroundMethod, "\n")
+     if(!useImages) cat("Reading locally background corrected intensities", "\n")		
+     else cat("Background correcting: method =", backgroundMethod, "\n")
+     
      data[,2] = bgCorrectSingleArray(fg=data[,2], bg=data[,3], method=backgroundMethod, offset=offset)
 
      if(storeXY) {
