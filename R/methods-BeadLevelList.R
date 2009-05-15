@@ -577,52 +577,44 @@ log2.na = function (x, ...)
 {
     log2(ifelse(x > 0, x, NA), ...)
 }
-
-setWeights = function(BLData, wts, array, combine = FALSE)
+setWeights
+function (BLData, wts, array, combine = FALSE)
 {
-	BLData.copy = copyBeadLevelList(BLData)
-	an = arrayNames(BLData)
-
-	if (length(array) == 1)
-	{
-		##one array
-		if(combine)
-		{
-			#check for existing weights
-			if(is.null(BLData.copy@beadData[[an[array]]]$wts))
-			{
-				BLData.copy@beadData[[an[array]]]$wts = wts
-			}
-			else
-			{
-				BLData.copy@beadData[[an[array]]]$wts = pmin(wts,BLData.copy@beadData[[an[array]]]$wts)
-			}
-		}
-		else
-		{
-			BLData.copy@beadData[[an[array]]]$wts = wts
-		}
-	}
-	else
-	{
-		##multiple arrays
-		if(combine)
-		{
-			for(i in array)
-			{
-				#check for existing weights
-				if(is.null(BLData.copy@beadData[[an[i]]]$wts))
-				{BLData.copy@beadData[[an[i]]]$wts = wts[[i]]}
-				else{BLData.copy@beadData[[an[i]]]$wts = pmin(wts[[i]],BLData.copy@beadData[[an[i]]]$wts)}
-			}		
-		}
-		else
-		{
-			for(i in array)
-			{
-				BLData.copy@beadData[[an[i]]]$wts = wts[[i]]
-			}
-		}
-	}
-	BLData.copy
+    BLData.copy = copyBeadLevelList(BLData)
+    an = arrayNames(BLData)
+    if (length(array) == 1) {
+        if (combine) {
+            if (is.null(BLData.copy@beadData[[an[array]]]$wts)) {
+                BLData.copy@beadData[[an[array]]]$wts = wts[[1]]
+            }
+            else {
+                BLData.copy@beadData[[an[array]]]$wts = pmin(wts[[1]],
+                  BLData.copy@beadData[[an[array]]]$wts)
+            }
+        }
+        else {
+            BLData.copy@beadData[[an[array]]]$wts = wts[[1]]
+        }
+    }
+    else {
+        if (combine) {
+            for (i in array) {
+                if (is.null(BLData.copy@beadData[[an[i]]]$wts)) {
+                  BLData.copy@beadData[[an[i]]]$wts = wts[[i]]
+                }
+                else {
+                  BLData.copy@beadData[[an[i]]]$wts = pmin(wts[[i]],
+                    BLData.copy@beadData[[an[i]]]$wts)
+                }
+            }
+        }
+        else {
+            for (i in array) {
+                BLData.copy@beadData[[an[i]]]$wts = wts[[i]]
+            }
+        }
+    }
+    BLData.copy
 }
+
+
