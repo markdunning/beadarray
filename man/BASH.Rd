@@ -78,7 +78,7 @@ BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE,
 	output <- BASH(BLData, bgcorr = "median",array=1)
 }
 \references{
-	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
+	J. M. Cairns, M. J. Dunning, M. E. Ritchie, R. Russell, and A. G. Lynch (2008). BASH: a tool for managing BeadArray spatial artefacts. Bioinformatics 15; 24(24)
 
 }
 \keyword{misc}
