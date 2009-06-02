@@ -345,7 +345,7 @@ if(plot){
 	}
 }
 
-else outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=FALSE)	
+else outlierMetrics[i,]<-try(outlierPlot(BLData,i,log=log,plot=FALSE))
 
 
 
@@ -643,7 +643,11 @@ MAD = mad(negvals)
 
 outliers = which(negvals>M+3*MAD)
 
+if(length(outliers) > 0){
+
 negvals = negvals[-outliers]
+
+}
 
 
 detect= function(x) 1 - (sum(x>negvals)/(length(negvals)))
@@ -785,7 +789,7 @@ output
 
 
 
-backgroundControlPlot<-function(BLData,array=1,plot=FALSE,t1,t2){
+backgroundControlPlot<-function(BLData,array=1,plot=FALSE,t1=NULL,t2=NULL){
 
 controls = getControlAnno(BLData)
 
@@ -811,8 +815,10 @@ M = median(negvals)
 MAD = mad(negvals)
 
 outliers = which(negvals>M+3*MAD)
-negvals = negvals[-outliers]
 
+if(length(outliers)>0){
+negvals = negvals[-outliers]
+}
 
 detect= function(x) 1 - (sum(x>negvals)/(length(negvals)))
 
@@ -821,7 +827,7 @@ totest = t1[t2  %in% mrn]
 output= 100*length(which(sapply(negvals, detect)<0.05))/length(negvals)
 
 
-output= c(output, mean(negvals[-outliers]), var(negvals[-outliers]))
+output= c(output, mean(negvals), var(negvals))
 
 names(output) = c("NegDet","AveNeg","VarNeg")
 output
@@ -886,7 +892,10 @@ MAD = mad(negvals)
 
 outliers = which(negvals>M+3*MAD)
 
+if(length(outliers)>0){
+
 negvals = negvals[-outliers]
+}
 
 
 detect= function(x) 1 - (sum(x>negvals)/(length(negvals)))
@@ -1125,11 +1134,27 @@ nbeads = sapply(split(gY,gY),length)
 names(nbeads) = paste("Number of beads", 1:9, sep=":")
 #outliers.ill=sapply(split(gY[fao.ill],gY[fao.ill]),length)
 #names(outliers.ill) = paste("Number of Illumina outliers", 1:9,sep=":")
-outliers=sapply(split(gY[fao],gY[fao]),length)
+
+
+##Stop any segments having no outliers detected
+
+tmp = c(gY[fao], 1:8)
+
+
+
+outliers=sapply(split(tmp,tmp, drop=FALSE),length)-1
+
 names(outliers) = paste("Number of outliers", 1:9,sep=":")
-outliers.low=sapply(split(gY[fao.low],gY[fao.low]),length)
+
+tmp = c(gY[fao.low], 1:8)
+
+outliers.low=sapply(split(tmp,tmp),length)-1
 names(outliers.low) = paste("Number of low outliers", 1:9,sep=":")
-outliers.high=sapply(split(gY[fao.high],gY[fao.high]),length)
+
+tmp = c(gY[fao.high], 1:8)
+
+
+outliers.high=sapply(split(tmp,tmp),length)-1
 names(outliers.high) = paste("Number of high outliers", 1:9,sep=":")
 
 #output=c(nbeads, outliers.ill,outliers.low,outliers.high)
