@@ -6,13 +6,15 @@
 Function for retrieving and plotting the hybridisation controls for an expression array. We know these controls should show high signal and are therefore useful for QA purposes. Moreover, we should expect to see a gradient between the low, medium and high controls. By considering all bead observations (unlike the plots produced by BeadStudio) we get an detailed impression of array quality. 
 }
 \usage{
-lmhPlot(BLData, array = 1, plot = FALSE)
+lmhPlot(BLData, array = 1, plot = FALSE,t1,t2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{BeadLevelList object for an Illumina expression array which must have the annotation slot set appropriately.}
   \item{array}{The number of the array of interest}
   \item{plot}{If TRUE then a diagnostic plot will be produced, other only summary values will be returned.}
+  \item{t1}{Pre-computed list of array intensities}
+  \item{t2}{List of ProbeIDs for all beads on the array}
 }
 \details{
 

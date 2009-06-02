@@ -6,13 +6,15 @@
 Function for retrieving and plotting the biotin and housekeeping controls for an expression array. We know these controls should show high signal and are therefore useful for QA purposes. The housekeeping control targets a bead-type believed to be universally expressed whereas the biotin control targets the biotin used for staining. By considering all bead observations (unlike the plots produced by BeadStudio) we get an detailed impression of array quality. 
 }
 \usage{
-poscontPlot(BLData, array = 1, plot = FALSE)
+poscontPlot(BLData, array = 1, plot = FALSE,t1,t2)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{A BeadLevelList object for an Illumina expression array}
   \item{array}{The number of the array of interest}
   \item{plot}{if TRUE a diagnostic plot will be produced, otherwise only summary values are returned.}
+  \item{t1}{Pre-computed list of array intensities}
+  \item{t2}{List of ProbeIDs for all beads on the array}
 }
 \details{
 

@@ -6,12 +6,15 @@
 QA using the hybridisations controls that are identical expect for a few bases. Hence lower signal should be observed for the mismatch probes.
 }
 \usage{
-probePairsPlot(BLData, array = 1)
+probePairsPlot(BLData, array = 1,t1,t2,plot=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{BLData}{A BeadLevelList object for an Illumina expression array}
   \item{array}{Number of the array in BLData that we want QA for}
+  \item{t1}{Pre-computed list of array intensities}
+  \item{t2}{List of ProbeIDs for all beads on the array}
+  \item{plot}{Return the plot or not}
 }
 \details{
 
