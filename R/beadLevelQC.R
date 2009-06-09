@@ -117,7 +117,6 @@ dir.create(path)
 dir.create(paste(path, "/outliers",sep=""))
 dir.create(paste(path, "/gradients",sep=""))
 dir.create(paste(path, "/poscont",sep=""))
-#dir.create(paste(QC, "/samplab",sep="")
 dir.create(paste(path, "/background",sep=""))
 dir.create(paste(path, "/lmh",sep=""))
 dir.create(paste(path, "/mismatch",sep=""))
@@ -144,11 +143,10 @@ for(i in 1:length(arnames)){
 
 cat("Producing QC plots for array:", arnames[i], "\n")
 
-outfile = paste(path, "/outliers/",arnames[i],".jpeg",sep="")
 
 cat("Plotting positive controls\n")
 
-outfile = paste(path,"/poscont/",arnames[i],".jpeg",sep="")
+outfile = paste(path,"/poscont/",arnames[i],fileType,sep="")
 ##controlScores=poscontPlot(BLData,i,plot=plot)
 
 ###Get the probe IDs and intensities for all beads on the array
@@ -200,7 +198,7 @@ else controlScores=poscontPlot(BLData,i,plot=FALSE,t1,t2)
 
 cat("Plotting hyb controls\n")
 
-outfile = paste(path,"/lmh/",arnames[i],".jpeg",sep="")
+outfile = paste(path,"/lmh/",arnames[i],fileType,sep="")
 
 
 if(plot){
@@ -237,7 +235,7 @@ else controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot,t1,t2))
 
 cat("Plotting mismatch controls\n")
 
-outfile = paste(path, "/mismatch/",arnames[i],".jpeg",sep="")
+outfile = paste(path, "/mismatch/",arnames[i],fileType,sep="")
 
 
 if(plot){
@@ -272,7 +270,7 @@ if(plot){
 
 cat("Plotting negative controls\n")
 
-outfile = paste(path,"/background/",arnames[i],".jpeg",sep="")
+outfile = paste(path,"/background/",arnames[i],fileType,sep="")
 
 if(plot){
 
@@ -311,7 +309,7 @@ else controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,
 controlProbeMetrics[i,] = controlScores
 
 
-outfile = paste(path,"/outliers/",arnames[i],".jpeg",sep="")
+outfile = paste(path,"/outliers/",arnames[i],fileType,sep="")
 
 cat("Plotting outlier locations\n")
 
@@ -349,7 +347,7 @@ else outlierMetrics[i,]<-try(outlierPlot(BLData,i,log=log,plot=FALSE))
 
 
 
-outfile = paste(path,  "/gradients/",arnames[i],".jpeg",sep="")
+outfile = paste(path,  "/gradients/",arnames[i],fileType,sep="")
 
 
 cat("Plotting chip gradients\n")
@@ -389,7 +387,7 @@ if(plot){
 
 
 
-if(plot){
+if(fileType==".jpeg"){
 cat("Making HTML report\n")
 
 html = list(NULL)
@@ -431,7 +429,7 @@ cat("Done QC for array ", arnames[i], "\n")
 
 }
 
-if(writeToFile=="html"){
+if(writeToFile){
 
 p=openPage(paste(path,"/qcReport.html",sep=""))
 
