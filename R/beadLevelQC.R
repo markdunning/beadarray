@@ -67,7 +67,7 @@ cat("Number of negative controls found :", length(nIDs),"\n")
 if(length(nIDs)!= length(nIdx)) warning("Not all negative controls were found. Please check chip annotation is correct\n")
 
 
-nData = exprs(BSData)[nIDs, drop=FALSE]
+nData = exprs(BSData)[nIDs, ,drop=FALSE]
 
 nData
 
