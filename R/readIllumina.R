@@ -201,7 +201,7 @@ else{
 #     e = .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))
 #     endPos[[i]]=e[[4]]
 
-     if(useImages) cat("Reading locally background corrected intensities", "\n")	
+     if(!useImages) cat("Reading locally background corrected intensities", "\n")	
      else cat("Background correcting: method =", backgroundMethod, "\n")
      data[,2] = bgCorrectSingleArray(fg=greenIntensities[[5]], bg=greenIntensities[[6]], method=backgroundMethod, offset=offset)
      data[,3] = greenIntensities[[6]]
