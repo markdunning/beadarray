@@ -79,7 +79,7 @@ setGeneric("getArrayData", function(BLData, what="G", array=1, log=TRUE, method=
 setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, log=TRUE, method="illumina", n=3, trim=0.05) {
    if(is.na(array))
       stop("'array' out of range")
-   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A", "beta", "wts"))
+   what = match.arg(what, choices=c("ProbeID", "GrnX", "GrnY", "G", "Gb", "R", "Rb", "wtsG", "wtsR", "residR", "residG", "M", "residM", "A", "beta", "wts", "xOffset", "yOffset"))
 
   if(what=="beta") {
      if(BLData@arrayInfo$channels=="two") {
@@ -129,6 +129,12 @@ setMethod("getArrayData", "BeadLevelList", function(BLData, what="G", array=1, l
    }
    else if(what =="wts"){
      data=BLData[[array]][["wts"]]
+   }
+   else if(what == "xOffset") {
+     data=BLData@arrayInfo$xOffset[array]
+   }
+   else if(what == "yOffset") {
+     data=BLData@arrayInfo$yOffset[array]
    }
 else { # "G" or "Gb"
      data = BLData[[array]][[what]]

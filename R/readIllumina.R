@@ -96,6 +96,8 @@ else{
   usedIDs=NULL
   arrayInfo=list(arrayNames=as.character(arrays), 
              nBeads=rep(0, length(arrays)), 
+             xOffset = rep(0, length(arrays)),
+             yOffset = rep(0, length(arrays)),
              background=backgroundMethod,
              normalization=normalizeMethod)
 
@@ -205,8 +207,10 @@ else{
      data[,3] = greenIntensities[[6]]
 
      if(storeXY){
-        data[,4] = (dat1$GrnX[ord] - min(dat1$GrnX))
-        data[,5] = (dat1$GrnY[ord] - min(dat1$GrnY))
+        arrayInfo$xOffset[i] = floor(min(dat1$GrnX))
+        arrayInfo$yOffset[i] = floor(min(dat1$GrnY))
+        data[,4] = (dat1$GrnX[ord] - floor(min(dat1$GrnX)))
+        data[,5] = (dat1$GrnY[ord] - floor(min(dat1$GrnY)))
      }
 
      rm(greenIntensities)
@@ -305,8 +309,10 @@ else{
          cat("Normalizing R and G intensities: method =", normalizeMethod, "\n")
          data[,c(2,6)] = normalizeSingleArray(data[,c(2,6)], method=normalizeMethod)
        }
-       data[,4]=dat1$GrnX[ord]-min(dat1$GrnX)
-       data[,5]=dat1$GrnY[ord]-min(dat1$GrnY)
+       arrayInfo$xOffset[i] = floor(min(dat1$GrnX))
+       arrayInfo$yOffset[i] = floor(min(dat1$GrnY))
+       data[,4]=dat1$GrnX[ord] - floor(min(dat1$GrnX))
+       data[,5]=dat1$GrnY[ord] - floor(min(dat1$GrnY))
      }
      else {
        if(!singleChannel) {
