@@ -8,7 +8,8 @@ A collection of functions for tabulating and plotting various quality control me
 }
 \usage{
 calculateBeadLevelScores(BLData, path = "QC", log = TRUE, plot = FALSE, 
-                         replacePlots=TRUE, writeToFile = TRUE,fileType =c(".jpeg", ".pdf")),t1,t2)
+                         replacePlots = TRUE, writeToFile = TRUE,
+                         fileType = c(".jpeg", ".pdf"))
 }
 \arguments{
   \item{BLData}{A BeadLeveList for an expression chip. The annotation slot of the object should define the type of chip }
@@ -18,8 +19,6 @@ calculateBeadLevelScores(BLData, path = "QC", log = TRUE, plot = FALSE,
   \item{writeToFile}{Argument describing whether results of QA assessment should be output to html, txt or not output at all}
   \item{replacePlots}{if TRUE any plots that have already been created will be replaced}
   \item{fileType}{File format for images to be written to. Currently either pdf or jpeg}
-  \item{t1}{Pre-computed list of array intensities}
-  \item{t2}{List of ProbeIDs for all beads on the array}
 }
 \details{For these QA tools we make use of the controls probes that Illumina
 use on their expression chips to detect the presence, or lack of,

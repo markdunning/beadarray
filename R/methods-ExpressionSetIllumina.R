@@ -1,8 +1,9 @@
 
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
-                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
-
+                   assayData =
+                   assayDataNew(exprs=exprs, se.exprs=se.exprs, NoBeads=NoBeads,
+                                Detection=Detection, storage.mode="list"),
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
                    se.exprs=new("matrix"),
@@ -11,21 +12,24 @@ setMethod("initialize", "ExpressionSetIllumina",
                    annotation = character(),
                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
-                   QCexprs = new("matrix"),
-                   QCBeadStDev = new("matrix"),
-                   QCNoBeads = new("matrix"),
-                   controlType=new("matrix"),
-                   QCData = assayDataNew(exprs = QCexprs,
-                   se.exprs=QCBeadStDev, NoBeads=QCNoBeads,controlType=controlType,storage.mode="list"))
+                   .QCexprs = new("matrix"),
+                   .QCBeadStDev = new("matrix"),
+                   .QCNoBeads = new("matrix"),
+                   .controlType=new("matrix"),
+                   QC = assayDataNew(exprs=.QCexprs, se.exprs=.QCBeadStDev,
+                                     NoBeads=.QCNoBeads,
+                                     controlType=.controlType,
+                                     storage.mode="list"),
+                   BeadLevelQC = list())
  {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData
-			   )
-            .Object@QC=QCData
+                           featureData = featureData)
+            .Object@QC=QC
+            .Object@BeadLevelQC=BeadLevelQC
             .Object
           })
 

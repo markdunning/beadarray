@@ -83,6 +83,7 @@
     \item{\code{phenoData}:}{See \code{\link[Biobase:eSet]{eSet}}}
     \item{\code{experimentData}:}{See \code{\link[Biobase:eSet]{eSet}}}
     \item{\code{annotation}:}{See \code{\link[Biobase:eSet]{eSet}}}
+    \item{\code{protocolData}:}{See \code{\link[Biobase:eSet]{eSet}}}
     \item{\code{featureData}:}{annotation for SNPs, usually will contain a 
       \code{CHR} and a \code{MapInfo} column for genomic localization }
   }
