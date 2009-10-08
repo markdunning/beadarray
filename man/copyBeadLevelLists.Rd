@@ -15,8 +15,8 @@ copyBeadLevelList(object)
   This is necessary beacuse the beadData slot is stored as an environment.
   }
 \value{
-A new \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object containing the 
-data from \code{object}.
+A new \code{\link[beadarray:class-BeadLevelList]{BeadLevelList}} object
+containing the data from \code{object}.
 }
 \author{Matt Ritchie}
 \examples{

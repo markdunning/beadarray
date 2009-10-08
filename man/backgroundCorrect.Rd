@@ -47,7 +47,16 @@ backgroundCorrect(object, method = "subtract", offset = 0, verbose = FALSE)
   
   End of excerpt.
   
-  As a result of both having identical function names this function can conflict with the \code{\link[limma]{backgroundCorrect}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' backgroundCorrect() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::backgroundCorrect()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
+  As a result of both having identical function names this function can
+  conflict with the
+  \code{\link[limma:backgroundcorrect]{backgroundCorrect}} method in
+  'limma'.  If both packages are loaded, the function from whichever
+  package was loaded last takes precedence.  If the 'beadarray'
+  backgroundCorrect() function is masking that from 'limma', one can
+  directly call the 'limma' method using the command
+  "limma::backgroundCorrect()".  Alternatively, one can detach the
+  'beadarray' package using "detach(package:beadarray)".  Similar
+  techniques can be used if 'limma' is masking the 'beadarray' method. 
 }
 \value{
   A \code{\link{BeadLevelList}} object in which the 'G' (and 'R', if present) intensities for each array are background corrected.  Note that the 'Gb' (and 'Rb' intensities) are not removed. 

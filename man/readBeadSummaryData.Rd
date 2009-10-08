@@ -103,7 +103,7 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
 \author{Mark Dunning and Mike Smith}
 
 \seealso{
-  \code{\link[beadarray:ExpressionSetIllumina]{ExpressionSetIllumina}}
+  \code{\link[beadarray:class.ExpressionSetIllumina]{ExpressionSetIllumina}}
 }
 \examples{
 ##code to read the example BeadStudio (version 2) output distributed with the package

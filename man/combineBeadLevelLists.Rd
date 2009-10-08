@@ -15,7 +15,9 @@ combineBeadLevelLists(object1, object2)
   \code{combineBeadLevelLists} combines two \code{BeadLevelList} objects.
   }
 \value{
-A \code{\link[beadarray:BeadLevelList]{BeadLevelList}} object holding data from all  strips/arrays and beads from the individual objects.
+A \code{\link[beadarray:class-BeadLevelList]{BeadLevelList}} object
+holding data from all  strips/arrays and beads from the individual
+objects. 
 }
 \author{Matt Ritchie}
 \keyword{manip}

@@ -3,6 +3,7 @@
 \alias{class:ExpressionSetIllumina}
 \alias{ExpressionSetIllumina-class}
 
+
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{exprs<-,ExpressionSetIllumina,matrix-method}
 
@@ -42,11 +43,11 @@
 \description{
   Container for high-throughput assays and experimental
   metadata. \code{ExpressionSetIllumina} class is derived from
-  \code{\link[Biobase:eSet]{eSet}}, and requires matrices \code{exprs},
+  \code{\link[Biobase:class.eSet]{eSet}}, and requires matrices \code{exprs},
   \code{se.exprs}, \code{NoBeads}, \code{Detection} as assay data members.
  }
 \section{Extends}{
-   Directly extends class \code{\link[Biobase:eSet]{eSet}}.
+   Directly extends class \code{\link[Biobase:class.eSet]{eSet}}.
 }
 \section{Creating Objects}{
   \code{new('ExpressionSetIllumina',
@@ -69,7 +70,7 @@
   missing, in which case they are assigned default values.
 }
 \section{Slots}{
-  Inherited from \code{\link[Biobase:eSet]{eSet}}:
+  Inherited from \code{\link[Biobase:class.eSet]{eSet}}:
   \describe{
     \item{\code{assayData}:}{Contains matrices with equal dimensions, and with 
       column number equal to \code{nrow(phenoData)}. \code{assayData} must 
@@ -80,10 +81,10 @@
       probability of a gene being expressed above background. The contents of these matrices 
       are	not enforced by the class. Additional matrices of identical size may 
       also be included in \code{assayData}. Class:\code{\link[Biobase:AssayData]{AssayData}}}
-    \item{\code{phenoData}:}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{experimentData}:}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{annotation}:}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{protocolData}:}{See \code{\link[Biobase:eSet]{eSet}}}
+    \item{\code{phenoData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{experimentData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{annotation}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{protocolData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{featureData}:}{annotation for SNPs, usually will contain a 
       \code{CHR} and a \code{MapInfo} column for genomic localization }
   }
@@ -116,21 +117,21 @@
 		   \code{\link[Biobase:eSet]{eSet}}}
   }
   
-   Derived from \code{\link[Biobase:eSet]{eSet}}:
+   Derived from \code{\link[Biobase:class.eSet]{eSet}}:
    \describe{
-     \item{\code{sampleNames(ExpressionSetSetIllumina)} and \code{sampleNames(ExpressionSetSetIllumina)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{featureNames(ExpressionSetSetIllumina)}, \code{featureNames(ExpressionSetSetIllumina, value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{dims(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{phenoData(ExpressionSetSetIllumina)}, \code{phenoData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{varLabels(ExpressionSetSetIllumina)}, \code{varLabels(ExpressionSetSetIllumina, value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{varMetadata(ExpressionSetSetIllumina)}, \code{varMetadata(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{pData(ExpressionSetSetIllumina)}, \code{pData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{varMetadata(ExpressionSetSetIllumina)}, \code{varMetadata(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{experimentData(ExpressionSetSetIllumina)},\code{experimentData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
-%     \item{\code{pubMedIds(ExpressionSetSetIllumina)}, \code{pubMedIds(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:eSet]{eSet}}}
-%     \item{\code{abstract(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{annotation(ExpressionSetSetIllumina)}, \code{annotation(ExpressionSetSetIllumina,value)<-}}{See \code{\link[Biobase:eSet]{eSet}}}
-     \item{\code{storageMode(eSet)}, \code{storageMode(eSet,character)<-}:}{See \code{\link[Biobase:eSet]{eSet}}}
+     \item{\code{sampleNames(ExpressionSetSetIllumina)} and \code{sampleNames(ExpressionSetSetIllumina)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{featureNames(ExpressionSetSetIllumina)}, \code{featureNames(ExpressionSetSetIllumina, value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{dims(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{phenoData(ExpressionSetSetIllumina)}, \code{phenoData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{varLabels(ExpressionSetSetIllumina)}, \code{varLabels(ExpressionSetSetIllumina, value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{varMetadata(ExpressionSetSetIllumina)}, \code{varMetadata(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{pData(ExpressionSetSetIllumina)}, \code{pData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{varMetadata(ExpressionSetSetIllumina)}, \code{varMetadata(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{experimentData(ExpressionSetSetIllumina)},\code{experimentData(ExpressionSetSetIllumina,value)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+%     \item{\code{pubMedIds(ExpressionSetSetIllumina)}, \code{pubMedIds(ExpressionSetSetIllumina,value)}}{See \code{\link[Biobase:class.eSet]{eSet}}}
+%     \item{\code{abstract(ExpressionSetSetIllumina)}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{annotation(ExpressionSetSetIllumina)}, \code{annotation(ExpressionSetSetIllumina,value)<-}}{See \code{\link[Biobase:class.eSet]{eSet}}}
+     \item{\code{storageMode(eSet)}, \code{storageMode(eSet,character)<-}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
   }
 
   Standard generic methods:
@@ -140,13 +141,13 @@
     \item{\code{validObject(ExpressionSetSetIllumina)}:}{Validity-checking method, ensuring
       that \code{call}, \code{callProbability}, \code{G}, and \code{R} are members of
       \code{assayData}. \code{checkValidity(ExpressionSetSetIllumina)} imposes this
-      validity check, and the validity checks of \code{Biobase:eSet}.}
-    \item{\code{show(ExpressionSetSetIllumina)}}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{dim(ExpressionSetSetIllumina)}, \code{ncol}}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{ExpressionSetSetIllumina[(index)}:}{See \code{\link[Biobase:eSet]{eSet}}}
-    \item{\code{ExpressionSetSetIllumina$}, \code{ExpressionSetSetIllumina$<-}}{See \code{\link[Biobase:eSet]{eSet}}}
+      validity check, and the validity checks of \code{Biobase:class.eSet}.}
+    \item{\code{show(ExpressionSetSetIllumina)}}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{dim(ExpressionSetSetIllumina)}, \code{ncol}}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{ExpressionSetSetIllumina[(index)}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{ExpressionSetSetIllumina$}, \code{ExpressionSetSetIllumina$<-}}{See \code{\link[Biobase:class.eSet]{eSet}}}
   }
 }
 \author{Mark Dunning, based on Biobase eSet class}
-\seealso{\code{\link[Biobase:eSet]{eSet}}}
+\seealso{\code{\link[Biobase:class.eSet]{eSet}}}
 \keyword{classes}
