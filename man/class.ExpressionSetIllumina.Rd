@@ -76,11 +76,14 @@
       column number equal to \code{nrow(phenoData)}. \code{assayData} must 
       contain a matrix \code{exprs} with rows representing features (e.g., genes)
       and columns representing samples, a matrix \code{se.exprs} 
-      describing the standard error of each gene, and matrices \code{NoBeads} and \code{Detection} 
+      describing the standard error of each gene, and matrices
+      \code{NoBeads} and \code{Detection}  
       to describe the number of beads used to produce the summary and a
-      probability of a gene being expressed above background. The contents of these matrices 
-      are	not enforced by the class. Additional matrices of identical size may 
-      also be included in \code{assayData}. Class:\code{\link[Biobase:AssayData]{AssayData}}}
+      probability of a gene being expressed above background. The
+      contents of these matrices  
+      are not enforced by the class. Additional matrices of identical size may 
+      also be included in
+      \code{assayData}. Class:\code{\link[Biobase:class.AssayData]{AssayData}}} 
     \item{\code{phenoData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{experimentData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{annotation}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
@@ -114,7 +117,7 @@
      \item{\code{combine(ExpressionSetIllumina,ExpressionSetIllumina)}:}{performs \code{union}-like 
 		   combination in both dimensions of ExpressionSetIllumina objects}
 		 \item{\code{show(ExpressionSetSetIllumina)}}{See
-		   \code{\link[Biobase:eSet]{eSet}}}
+		   \code{\link[Biobase:class.eSet]{eSet}}}
   }
   
    Derived from \code{\link[Biobase:class.eSet]{eSet}}:

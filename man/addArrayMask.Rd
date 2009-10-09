@@ -64,7 +64,7 @@ associated with it.
 
 \seealso{
   % listeliminatedProbes is not documented
-  \code{\link[beadarray:listEliminatedProbes]{listEliminatedProbes}}
+  % \code{\link[beadarray:listEliminatedProbes]{listEliminatedProbes}}
 }
 
 \author{Jonathan Cairns}
