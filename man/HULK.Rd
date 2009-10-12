@@ -6,7 +6,7 @@ Normalizes an probe intensities by calculating a weighted average
 residual based on the residuals of the surrounding probes.
 }
 \usage{
-HULK(BLData, array, neighbours = NULL, invasions = 20, what = "G")
+HULK(BLData, array, neighbours = NULL, invasions = 20)
 }
 
 \arguments{
@@ -15,8 +15,6 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, what = "G")
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed.}
   \item{invasions}{Integer - Number of invasions used when identifying
     neighbouring beads.}
-  \item{what}{Specify the data in the BLData to create the residuals
-  from.  Defaults to the foreground intensities of the green channel.}
 }
 
 \details{
@@ -31,7 +29,9 @@ HULK(BLData, array, neighbours = NULL, invasions = 20, what = "G")
   \code{\link{HULKResids}}.
 
   The average residuals are then subtracted from each bead and the
-  resulting \code{\link{BeadLevelList}} object is returned.
+  resulting \code{\link{BeadLevelList}} object is returned.  If single channel
+  data is used then the green channel is normalized, if it is two channel data
+  then both channels are normalized.
 }
 
 \value{

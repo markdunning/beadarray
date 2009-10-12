@@ -221,7 +221,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
     if("wts" %in% names(BLData[[arraynms[1]]]))
     {
       wts = getArrayData(BLData, what="wts", array=arraynms[1])[sel]
-      ##if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+      #if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
       pr = pr[wts==1]
       finten=finten[wts==1]	
     }
@@ -256,7 +256,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
       if("wts" %in% names(BLData[[arraynms[2]]])) {wts2 = getArrayData(BLData, what="wts", array=arraynms[2])[sel2]}
       else{wts2 = rep(1,length(sel2))}
       wts = append(wts1,wts2)
-      if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+      #if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
 	  pr = pr[wts==1]
 	  finten=finten[wts==1]	
   	}
@@ -360,7 +360,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
        if("wts" %in% names(BLData[[arraynms[i]]]))
        {
          wts = getArrayData(BLData, what="wts", array=arraynms[i])[sel]
-         if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+         #if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
          pr = pr[wts==1]
          finten=finten[wts==1]	
        }
@@ -385,7 +385,7 @@ createBeadSummaryData = function(BLData, log = FALSE, imagesPerArray = 1, what="
           if("wts" %in% names(BLData[[arraynms[j+1]]])) {wts2 = getArrayData(BLData, what="wts", array=arraynms[j+1])[sel2]}
           else{wts2 = rep(1,length(sel2))}
           wts = append(wts1,wts2)
-          if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
+          #if(length(wts) != sum(wts) && method == 1){warning("Method = \"illumina\" used on an array with altered weights - have outliers been removed already? Consider using method = \"mean\" instead.")}
     	  pr = pr[wts==1]
 	      finten=finten[wts==1]	
 	    }
