@@ -10,6 +10,7 @@ setMethod("initialize", "ExpressionSetIllumina",
                    NoBeads=new("matrix"),
                    Detection=new("matrix"),
                    annotation = character(),
+                   protocolData = phenoData[,integer(0)],   
                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
                    .QCexprs = new("matrix"),
@@ -27,7 +28,8 @@ setMethod("initialize", "ExpressionSetIllumina",
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData)
+                           featureData = featureData,
+		           protocolData = protocolData)
             .Object@QC=QC
             .Object@BeadLevelQC=BeadLevelQC
             .Object
