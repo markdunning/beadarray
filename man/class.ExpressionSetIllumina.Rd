@@ -87,6 +87,8 @@
     \item{\code{phenoData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{experimentData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{annotation}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
+    \item{\code{BeadLevelQC}:}{QC information inherited from the BeadLevelList object}
+    \item{\code{QC}:}{QC info for control probes, if available}
     \item{\code{protocolData}:}{See \code{\link[Biobase:class.eSet]{eSet}}}
     \item{\code{featureData}:}{annotation for SNPs, usually will contain a 
       \code{CHR} and a \code{MapInfo} column for genomic localization }
