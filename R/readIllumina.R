@@ -2,7 +2,7 @@
   function(arrayNames=NULL, path=".", textType=".txt", 
            annoPkg=NULL, useImages=TRUE, # beadInfo=NULL, 
            singleChannel=TRUE, targets=NULL, 
-           imageManipulation = "sharpen", backgroundSize=17,
+           imageManipulation = "sharpen", backgroundSize=17, backgroundCalc = "mean",
            storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
            metricsFile="Metrics.txt", backgroundMethod="subtract",
            offset=0, normalizeMethod="none", tiffExtGrn="_Grn.tif", 
@@ -48,6 +48,13 @@
     else if(foregroundCalc == "morph"){
       fground = 1
     }
+    
+    #choosing the background method
+    #only current options are median and mean of the lowest 5 pixels
+    if(backgroundCalc == "median")
+        bground = 1
+    else #mean is the default method and so is used for anything other than "median"
+        bground = 0
      
     GImages = dir(path=path, pattern =tiffExtGrn)
     RImages = dir(path=path, pattern =tiffExtRed)
@@ -195,7 +202,7 @@ else{
      greenIntensities = .C("readBeadImage", as.character(tifFiles[i]), as.double(dat1$GrnX[ord]),
                        as.double(dat1$GrnY[ord]), as.integer(numBeads), foreGround = double(length = numBeads),
                        backGround = double(length = numBeads), as.integer(backgroundSize), as.integer(manip),
-                       as.integer(fground),PACKAGE = "beadarray")
+                       as.integer(fground), as.integer(bground),PACKAGE = "beadarray")
 
      l = length(unique(data[,1]))
 #     e = .C("startEndPos", as.integer(data[,1]),as.integer(numBeads),integer(length=as.integer(l)), integer(length=as.integer(l)))

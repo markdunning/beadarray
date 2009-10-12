@@ -13,7 +13,7 @@ int number(int, char*);
 void sharpen(int**, int, int);
 void asf(int**, int, int);
 double matrixMean(int**, int, int);
-void calculateBackground(int**, double*, double*, int, int, int, double*, int);
+void calculateBackground(int**, double*, double*, int, int, int, double*, int, int);
 void HIPForeground(int**, double*, double*, int, int, int, double*);
 void IlluminaForeground(int**, double*, double*, int, int, int, double*);
 void getPixelIntensities(int**, FILE*, int, int, int, int);

@@ -34,7 +34,8 @@ These functions are used to manipulate the mask on a single array.
 \code{addArrayMask} adds beads in a specified region to the mask (i.e. sets their weights to 0).
 
 \code{removeArrayMask} removes beads in a specified region from the mask
-(i.e. sets their weights to 0) 
+(i.e. sets their weights to 0)
+ 
 
 On calling either of these functions, an imageplot is displayed. Click
 on the plot to define vertices of a polygon, in order. Having specified
@@ -44,28 +45,28 @@ polygon just defined (in red), with a menu prompting you to accept the
 displayed region - if you do so, then all beads in the polygon then be
 masked or unmasked as appropriate. Alternatively, you can right-click on
 the image without defining any vertices, thus leaving the mask
-unchanged.  
+unchanged. 
+ 
 
 If making the change would result in all beads of a certain probe ID
 being completely covered by the mask, then the functions return a
 warning message, and the beads eliminated in this way are highlighted
-with blue crosses on the plot. 
+with blue crosses on the plot.
+ 
 
 \code{showArrayMask} plots the beads on an array which have been masked,
-over a plot of outliers. 
+over a plot of outliers.
+ 
 
 \code{clearArrayMask} clears the mask on an array, removing all weights
-associated with it. 
+associated with it.
+ 
 }
 
 \value{
   None returned
 }
 
-\seealso{
-  % listeliminatedProbes is not documented
-  % \code{\link[beadarray:listEliminatedProbes]{listEliminatedProbes}}
-}
 
 \author{Jonathan Cairns}
 

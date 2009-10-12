@@ -405,7 +405,7 @@ double matrixMean(int **matrix, int xStart, int yStart){
        return((result/9));
 }
 
-void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int ImageWidth, int ImageHeight, double *background, int n){
+void calculateBackgroundOriginal(int **pixels, double *xs, double *ys, int numBeads, int ImageWidth, int ImageHeight, double *background, int n){
 
      double dist[4];
      double xc, yc, opt1, opt2, opt3, opt4;
@@ -483,6 +483,54 @@ void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int
 //            }
      }
 } 
+
+void calculateBackground(int **pixels, double *xs, double *ys, int numBeads, int ImageWidth, int ImageHeight, double *background, int n, int method){
+
+     double dist[4];
+     double xc, yc, opt1, opt2, opt3, opt4;
+     int i, j, k, count, newcoord[2], cX[4], cY[4], M[n*n]; // 289
+     int n2 = floor(n/2);
+     int temp = 0;
+     
+     for(i = 0; i < numBeads; i++){
+
+         newcoord[0] = floor(xs[i]);
+         newcoord[1] = floor(ys[i]);
+         
+         if(floor(xs[i]) == xs[i])
+            newcoord[0]--;
+         if(floor(ys[i]) == ys[i])
+            newcoord[1]--;
+         
+         count = 0;
+         for(j = 0; j < n; j++){
+            for(k = 0; k < n; k++){
+                if(((newcoord[0] - n2 + j) < 0) || ((newcoord[1] - n2 + k) < 0) || ((newcoord[0] - n2 + j) >= ImageWidth) || ((newcoord[1] - n2 + k) >= ImageHeight)) {
+                M[count+k] = 65536;
+                }
+                else {
+                    M[count+k] = pixels[(newcoord[0] - n2) + j][(newcoord[1] - n2) + k];
+                }
+             }
+          count = count+n;
+       }
+       quicksort(M, 0, n*n-1); // 289
+
+        if((M[0]==65536) || (M[1]==65536) || (M[2]==65536) || (M[3]==65536) || (M[4]==65536))
+            background[i] = 0;
+        else {
+            switch(method) {
+                case 1: /* Use the median of the dimest 5 pixels */
+                    background[i] = M[2];
+                    break;
+                default: /* use illumina's method by default */
+                    background[i] = (M[0] + M[1] + M[2] + M[3] + M[4]) / 5.0;
+                    break;
+            }
+        }
+     }
+} 
+
 
 void HIPForeground(int **pixels, double *xs, double *ys, int numBeads, int ImageWidth, int ImageHeight, double *foreground){
       
@@ -571,7 +619,7 @@ void startEndPos(int *ProbeIDs, int *numBeads, int *starts, int *ends){
 }
 
 
-void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *foreground, double *background, int *n, int *manip, int *fground){
+void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *foreground, double *background, int *n, int *manip, int *fground, int *bground){
      
       FILE *fp;
       int i, BeginData, len, ImageWidth, ImageHeight, ImageSize, StripOffset;
@@ -666,46 +714,39 @@ void readBeadImage(char **tif, double *xs, double *ys, int *numBeads, double *fo
    Rprintf("Reading pixels of %s\n", tif[0]); 
    getPixelIntensities(pixels, fp, ImageWidth, ImageHeight, ImageSize, BeginData);
    fclose(fp);
-/*
-   if((*manip) != 2){
-   			   Rprintf("Calculating background\n");
-               calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n);
-               }
-*/
+
    switch(*manip){
                   case 1: 
-				  	   Rprintf("Calculating background\n");
-               		   calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n);
-               		   Rprintf("Sharpening Image\n");
-                       sharpen(pixels, ImageWidth, ImageHeight);
-                       break;
+                    Rprintf("Calculating background\n");
+                    calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n, *bground);
+                    Rprintf("Sharpening Image\n");
+                    sharpen(pixels, ImageWidth, ImageHeight);
+                    break;
                   case 2:
-                       Rprintf("Morphological Background\n");
-                       asf(pixels, ImageWidth, ImageHeight);
-                       break;
-				  case 3:
-				  	   Rprintf("ASF Faster\n");
-					   asfFaster(pixels, ImageWidth, ImageHeight);
-					   break;	   				
+                    Rprintf("Morphological Background\n");
+                    asf(pixels, ImageWidth, ImageHeight);
+                    break;
+                  case 3:
+                    Rprintf("ASF Faster\n");
+                    asfFaster(pixels, ImageWidth, ImageHeight);
+                    break;	   				
                   default:
-				  	   Rprintf("Calculating background\n");
-               		   calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n);	  
-                       break;
+                    Rprintf("Calculating background\n");
+                    calculateBackground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, background, *n, *bground);	  
+                    break;
                   }
 
    Rprintf("Calculating foregound\n");  
    switch(*fground){
                     case 0:
-						IlluminaForeground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, foreground);
-						break;
-					case 1:
-						HIPForeground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, foreground);
-						break;
-					default:
-						break;
-					}  
-
-//   startEndPos(ProbeIDs, *numBeads, starts, ends);
+			IlluminaForeground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, foreground);
+			break;
+                    case 1:
+			HIPForeground(pixels, xs, ys, *numBeads, ImageWidth, ImageHeight, foreground);
+			break;
+                    default:
+			break;
+                    }  
    
    for(i = 0; i < ImageWidth; i++){
          free(pixels[i]);

@@ -10,7 +10,7 @@ about each bead on each array in a BeadChip or SAM experiment.
 readIllumina(arrayNames=NULL, path=".", textType=".txt",
         annoPkg=NULL, useImages=TRUE,  
         singleChannel=TRUE, targets=NULL, 
-        imageManipulation="sharpen", backgroundSize=17,
+        imageManipulation="sharpen", backgroundSize=17, backgroundCalc = "mean",
         storeXY=TRUE, sepchar="_", dec=".", metrics=FALSE,
         metricsFile="Metrics.txt", backgroundMethod="subtract", 
         offset=0, normalizeMethod="none",
@@ -48,6 +48,10 @@ readIllumina(arrayNames=NULL, path=".", textType=".txt",
   \item{backgroundSize}{integer value which defines the size of the n x
     n region (in pixels) used to calculate local background values.  
     Default value is 17}
+  \item{backgroundCalc}{Specifies how the background value for each bead is calculated.
+    Currently the only options are "mean" and "median", which return the specified statistic 
+    for the five dimest pixels in the region defined by the \code{backgroundSize} argument.  
+    If any other value is given then the mean is returned.}
   \item{storeXY}{logical scalar, indicating whether the xy coordinates
     should be stored}
   \item{sepchar}{character string which separates the row and column positions
