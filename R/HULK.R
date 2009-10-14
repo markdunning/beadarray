@@ -26,6 +26,11 @@ HULKResids <- function(BLData, array, neighbours = NULL, invasions = 20, what = 
   
   residuals[which((is.na(residuals)) | (weights == 0))] = 0
   
+  if(is.null(neighbours)) {
+    cat("Calculating Neighbourhood\n")
+    neighbours <- generateNeighbours(BLData, array)
+  }
+  
   if(what == "R")
       cat("HULKING Red Channel\n")
   else
