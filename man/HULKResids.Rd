@@ -38,8 +38,8 @@ HULKResids(BLData, array, neighbours = NULL, invasions = 20, what = "G")
 \seealso{\code{\link{HULK}}, \code{\link{BASH}}}
 
 \examples{
-data(BLData)
-o <- HULKResids(BLData, 1)
+#data(BLData)
+#o <- HULKResids(BLData, 1)
 }
 \references{
 Cairns JM, Dunning MJ, Ritchie ME, Russell R, Lynch AG. (2008). BASH: a
