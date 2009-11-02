@@ -49,9 +49,9 @@ void performCalc(int start, int end, int nbeads, int imageHeight, SEXP pixelMatr
 SEXP backgroundMP(SEXP pixelMatrix, SEXP coords) {
 
   SEXP background;
-  int imageWidth, imageHeight, nbeads, i, j, k;
-  double x, y, newX, newY, *bg;
-  int tmp, start, end; 
+  int imageWidth, imageHeight, nbeads, i,;
+  double *bg;
+  int start, end; 
   int tid, nthreads, numProcs;
     
   imageHeight = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[0];
@@ -69,7 +69,7 @@ SEXP backgroundMP(SEXP pixelMatrix, SEXP coords) {
   #endif
   
   /* initialize the background vector with zeros, can probably be removed */
-  for(i = 0; i < nbeads; i++) { bg[i] == 0; }
+  for(i = 0; i < nbeads; i++) { bg[i] = 0; }
   
   #pragma omp parallel shared(nthreads, nbeads, imageHeight, pixelMatrix, coords) private(tid, start, end)
   {
