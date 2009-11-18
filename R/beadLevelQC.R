@@ -207,6 +207,7 @@ if(plot){
 	if(replacePlots){
 		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+		if(fileType==".png") png(outfile,width=650,height=375)	  		
 
 		controlScores=c(controlScores,lmhPlot(BLData,i,plot=plot,t1,t2))
 
@@ -222,6 +223,7 @@ if(plot){
 
 		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+		if(fileType==".png") png(outfile,width=650,height=375)		
 
 			dev.off()
  		}
@@ -244,6 +246,8 @@ if(plot){
 	if(replacePlots){
 		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+                if(fileType==".png") png(outfile,width=650,height=375)
+
 		controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 
 
@@ -257,6 +261,8 @@ if(plot){
 		if(!file.exists(outfile)){
 			if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 			if (fileType==".pdf") pdf(outfile, width=6, height=3)
+			if(fileType==".png") png(outfile,width=650,height=375)
+
 			controlScores=c(controlScores,probePairsPlot(BLData,i,t1,t2))
 
 
@@ -278,6 +284,7 @@ if(plot){
 	if(replacePlots){
 		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 		if (fileType==".pdf") pdf(outfile, width=6, height=3)
+		if(fileType==".png") png(outfile,width=650,height=375)
 
 		controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,t2))
 
@@ -292,6 +299,8 @@ if(plot){
 		if(!file.exists(outfile)){
 			if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 			if (fileType==".pdf") pdf(outfile, width=6, height=3)
+			if(fileType==".png") jpeg(outfile,width=650,height=375)
+
 			controlScores=c(controlScores, backgroundControlPlot(BLData,i,plot=plot,t1,t2))
 
 
@@ -319,8 +328,9 @@ if(plot){
 
 	if(replacePlots){
 		
-		if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
+		if(fileType==".jpeg") jpeg(outfile,width=650,height=375,quality=100)
 		if (fileType==".pdf") pdf(outfile, width=13, height=6)	
+		if(fileType==".png") png(outfile,width=650,height=375)
 
 		outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 	
@@ -333,6 +343,7 @@ if(plot){
 		if(!file.exists(outfile)){
 			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
 			if (fileType==".pdf") pdf(outfile, width=13, height=6)
+			if(fileType==".png") png(outfile,width=1350,height=350)
 
 			outlierMetrics[i,]= outlierPlot(BLData,i,log=log,plot=plot)
 			dev.off()
@@ -359,6 +370,8 @@ if(plot){
 	if(replacePlots){
 			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
 			if (fileType==".pdf") pdf(outfile, width=13, height=6)
+			if(fileType==".png") png(outfile,width=1350,height=350)			
+		
 		gradientPlot(BLData,i,plot=plot)
 
 	
@@ -371,7 +384,8 @@ if(plot){
 		if(!file.exists(outfile)){
 			if(fileType==".jpeg") jpeg(outfile,width=1350,height=350,quality=100)
 			if (fileType==".pdf") pdf(outfile, width=13, height=6)
-			
+			if(fileType==".png") png(outfile,width=1350,height=350)
+
 			gradientPlot(BLData,i,plot=plot)
 
 			dev.off()
