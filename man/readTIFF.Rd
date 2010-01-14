@@ -1,11 +1,12 @@
 \name{readTIFF}
 \alias{readTIFF}
+\alias{openTIFF}
 \title{Read the Illumina tiff images}
 \description{
   Reads Illumina tiff images and produces a matrix of pixel values.
 }
 \usage{
-readTIFF(fileName, verbose = FALSE)
+  readTIFF(fileName, verbose = FALSE)
 }
 
 \arguments{
@@ -20,12 +21,18 @@ readTIFF(fileName, verbose = FALSE)
   images which are produced by the Illumina scanners.  It is not generic
   enough to read all tiff files, although this functionality may be added
   in the future.
+
+  Given that the raw images can be quite large, functionality has also
+  been included to read tiffs that have been compressed as either .bz2
+  or .gz files.  Identification is performed based on the file extension
+  and it is assumed that each tif is compressed individually.  Support
+  for zip files may be added in the future.
 }
 \value{
-Returns a matrix with the same dimensions as the number of pixels in the
+Returns a matrix with the same dimensions as the pixels in the
 tiff file to be read in.
 }
 
 \author{Mike Smith}
 
-\keyword{misc}
+\keyword{IO}
