@@ -9,7 +9,7 @@ HULK <- function(BLData, array, neighbours = NULL, invasions = 20) {
     
     if(is.null(neighbours)) {
         cat("Calculating Neighbourhood\n")
-        neighbours <- generateNeighbours(BLData, array)
+        neighbours <- generateNeighbours(BLData, i)
     }
     
     BLD@beadData[[arraynms[i]]]$G = 2^(log2.na(BLD@beadData[[arraynms[i]]]$G) - HULKResids(BLData, i, neighbours, invasions, what = "G"))
