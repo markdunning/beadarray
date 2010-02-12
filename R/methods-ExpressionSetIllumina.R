@@ -36,16 +36,17 @@ setMethod("initialize", "ExpressionSetIllumina",
           })
 
 
-setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
-          x<-callNextMethod() # x, i, j, ..., drop=drop)
-#        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
-          if (!missing(j)) {
-             for(k in 1:length(x@QC))
-                 x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
-          }
-          x
-})
+  setMethod("[", "ExpressionSetIllumina", function(x, i, j, ...,
+drop=FALSE) {
+  x <- callNextMethod()
+  if (!missing(j)) {
+    for (k in 1:length(x@QC))
+      if(all(dim(x@QC[[k]]) != c(0,0)))
+        x@QC[[k]] <- x@QC[[k]][, j,drop = drop]
+  }
 
+  x
+})
 
 setValidity("ExpressionSetIllumina", function(object) {
   assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "NoBeads"))
