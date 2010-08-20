@@ -100,7 +100,7 @@ if(!(is.null(qcFile))){
      warning("Number of arrays doesn't agree: ", ncol(exprs(BSData)), " in dataFile, versus ", ncol(QC$exprs), " in qcFile.  qcFile ignored.")
   }
   else {
-    reorder = grep(colnames(QC[[i]]), colnames(exprs(BSData)), extended=FALSE)
+    reorder = grep(colnames(QC[[i]]), colnames(exprs(BSData)), fixed=TRUE)
     notagree = colnames(QC$exprs)!=colnames(exprs(BSData))
     if(sum(notagree)==0) {
        BSData@QC = QC
@@ -108,7 +108,7 @@ if(!(is.null(qcFile))){
     else {
       if(length(reorder)!=0) {
           for(i in 1:length(BSData@QC)) {
-            reorder = sapply(colnames(QC[[i]]), FUN="grep",  colnames(exprs(BSData)), extended=FALSE)
+            reorder = sapply(colnames(QC[[i]]), FUN="grep",  colnames(exprs(BSData)), fixed=TRUE)
             if(length(reorder)>0) {
               QC[[i]] = QC[[i]][, reorder]
             }
@@ -123,7 +123,7 @@ if(!(is.null(qcFile))){
 }
 
 if(!(is.null(sampleSheet))){
-  colmatch = grep(colnames(exprs(BSData)), samples, extended=FALSE)
+  colmatch = grep(colnames(exprs(BSData)), samples, fixed=TRUE)
   ord = match(colnames(exprs(BSData)), samples[,colmatch])
   if(length(colmatch)==1 && sum(is.na(ord))==0) {
     samples = samples[ord,]
