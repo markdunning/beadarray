@@ -5,15 +5,17 @@
 Returns a score, which assesses the extent to which the background is changing across the array/strip.
 }
 \usage{
-BASHExtended(BLData, array, neighbours = NULL, E = NULL, E.BG = NULL)
+BASHExtended(BLData, array, transFun = logGreenChannelTransform, neighbours = NULL, useLocs = TRUE, E = NULL, E.BG = NULL)
 }
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
   \item{array}{integer specifying which strip/array to plot}
+  \item{transFun}{Function to use to transform data prior to running BASH.}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed, using default \code{\link{generateNeighbours}} settings.}
-  \item{E}{Numerical vector - The error image to use. Optional - if left blank, it will be computed, using \code{\link{generateE}} (with \code{bgfilter = "none"}, i.e. no background filter applied).}
-  \item{E.BG}{Numerical vector - The background error image to use. Optional - if left blank, it will be computed from \code{E}, using default \code{\link{BGFilter}} settings (i.e. \code{method = "median"}).}
+  \item{useLocs}{Logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
+  \item{E}{Numerical vector - The error image to use. Optional - if left blank, it will be computed, using \code{generateE} (with \code{bgfilter = "none"}, i.e. no background filter applied).}
+  \item{E.BG}{Numerical vector - The background error image to use. Optional - if left blank, it will be computed from \code{E}, using default \code{BGFilter} settings (i.e. \code{method = "median"}).}
 }
 
 \details{
@@ -28,14 +30,14 @@ Scalar (Extended defect score)
 
 \author{Jonathan Cairns}
 
-\seealso{\code{\link{BASH}}, \code{\link{generateE}}, \code{\link{BGFilter}}, \code{\link{generateNeighbours}}, }
+\seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}, }
 
 \examples{
 data(BLData)
-an <- arrayNames(BLData)
+sn <- sectionNames(BLData)
 extended <- NULL
 
-for(i in 1:length(an))
+for(i in 1:length(sn))
 {
 	extended[i] <- BASHExtended(BLData, i)
 }

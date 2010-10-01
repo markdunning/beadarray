@@ -1,38 +1,74 @@
 \name{poscontPlot}
 \alias{poscontPlot}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{Plot bead-level housekeeping and biotin controls}
+\title{
+Plot the positive controls 
+}
 \description{
-Function for retrieving and plotting the biotin and housekeeping controls for an expression array. We know these controls should show high signal and are therefore useful for QA purposes. The housekeeping control targets a bead-type believed to be universally expressed whereas the biotin control targets the biotin used for staining. By considering all bead observations (unlike the plots produced by BeadStudio) we get an detailed impression of array quality. 
+Function for retrieving and plotting the biotin and housekeeping controls for an expression array. We know these controls should show high signal and are therefore useful for QA purposes. The housekeeping control targets a bead-type believed to be universally expressed whereas the biotin control targets the biotin used for staining. 
 }
 \usage{
-poscontPlot(BLData, array = 1, plot = FALSE,t1,t2)
+poscontPlot(BLData, array = 1, transFun = logGreenChannelTransform, positiveControlTags = c("housekeeping", "biotin"), colList = c("red", "blue"), controlProfile = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{A BeadLevelList object for an Illumina expression array}
-  \item{array}{The number of the array of interest}
-  \item{plot}{if TRUE a diagnostic plot will be produced, otherwise only summary values are returned.}
-  \item{t1}{Pre-computed list of array intensities}
-  \item{t2}{List of ProbeIDs for all beads on the array}
+  \item{BLData}{
+a \code{beadLevelData} object
+}
+  \item{array}{
+The section to be plotted
+}
+  \item{transFun}{
+What transformation function to be applied prior to plotting
+}
+  \item{positiveControlTags}{
+What identifiers to be used as positive controls
+}
+  \item{colList}{
+vector of colours to be used to each positive control
+}
+  \item{controlProfile}{
+an optional data frame with columns defining the ArrayAddress IDs and control\-type for all controls on the platform.
+}
+  \item{\dots}{
+other arguments to plot
+}
 }
 \details{
 
-The IDs for the housekeeping and biotin controls are retrieved making use of the annotation information stored for the array. If this information is incorrect, or missing, then the function will not proceed correctly. Valid names for the annotation slot must match the names of the ExpressionControlData object provided with beadarray. Assuming the controls can be identified, we then perform a detection test for each bead observation by computing a p-value: of 1-R/N, where R is the relative rank of the bead intensity when compared to the N negative controls. Thus, if a particular bead has higher intensity than all the negative controls it will be assigned a value of 0. After these p-values have been calculated for all replicates of the bead type we report the percentage of beads with p-values lower than a set threshold of 0.05 (currently in favour in the Illumina literature). The percentage of beads that are detected at a set threshold is then reported for the housekeeping and biotin controls respecitvely.
-
-If plot is TRUE, the values of all bead observations are plotted for each bead-type respectively grouped together according to the type of control (housekeeping or biotin). Any beads with low intensity may be due to array defects and would be impossible to detect with summarized data only. If available, the intensities of any high stringency probes will also be plotted.
-
-An important point to note that the utility of these housekeeping controls is dependant on the probe sequences used targeting the intended genes. If a particular housekeeping control shows lower expression, then it is worth checking the probe sequence by a BLAT search of by checking pre-complied tables from \url{http://www.compbio.group.cam.ac.uk/Resources/Annotation/index.html}.
+Function for plotting the observed intensites for all replicates of the specified control probes on a given array\-section. The identity of the control probes can be specified by passing a ControlProfile data frame, with the first column being a vector of ArrayAddress IDs and the second column being a corresponding set of characters tags. The beads to be plotted are found by matching the \code{positiveControlTags} argument to these character tags. 
+Users with expression data can have the ControlProfile data frame defining automatically within the function, provided the annotation of the \code{beadLevelData} object has been defined by \code{readIllumina} or \code{setAnnotation}.
 
 }
-
 \value{
-\item{HkpDet}{\%age of housekeeping control beads that are detected compared to the negative controls.}
-\item{BioDet}{\%age of  biotin labelling control beads that are detected compared to the negative controls.}
-}
+Plot to current graphical device
 
+}
 \references{\url{www.illumina.com/downloads/GX\_QualityControl\_TechNote.pdf}}
 
-\author{Mark Dunning and Andy Lynch}
-\seealso{ \code{\link{calculateBeadLevelScores}}, \code{\link{setAnnotation}}}
+\author{
+Mark Dunning
+}
+
+%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\examples{
+
+###Load the example beadLevelData and associated controlProfile
+
+data(BLData)
+
+data(controlProfile)
+
+poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "biotin"))
+
+poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "negative"))
+
+poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "negative"), colList=c("purple", "salmon"))
+
+}
+
+
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ hplots}
 

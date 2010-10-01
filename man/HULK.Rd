@@ -6,15 +6,17 @@ Normalizes an probe intensities by calculating a weighted average
 residual based on the residuals of the surrounding probes.
 }
 \usage{
-HULK(BLData, array, neighbours = NULL, invasions = 20)
+HULK(BLData, array, neighbours = NULL, invasions = 20, useLocs = TRUE, weightName = "wts")
 }
 
 \arguments{
-  \item{BLData}{\code{\link{BeadLevelList}}}
-  \item{array}{integer specifying which strip/array to plot}
+  \item{BLData}{An object of class \code{\link{beadLevelData}}}
+  \item{array}{integer specifying which strip/array to process}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed.}
   \item{invasions}{Integer - Number of invasions used when identifying
     neighbouring beads.}
+  \item{useLocs}{If information from an associated locs is to be used}
+  \item{weightName}{Column name where bead weights are to be taken from}
 }
 
 \details{
@@ -26,29 +28,30 @@ HULK(BLData, array, neighbours = NULL, invasions = 20)
   residual is calculated as the sum of the residuals for each bead in
   the neighbourhood, divided by 1 plus the number of invasions it took to reach
   that bead.  This calculation is made by a call to
-  \code{\link{HULKResids}}.
+  \code{HULKResids}.
 
   The average residuals are then subtracted from each bead and the
-  resulting \code{\link{BeadLevelList}} object is returned.  If single channel
+  resulting \code{\link{beadLevelData}} object is returned.  If single channel
   data is used then the green channel is normalized, if it is two channel data
   then both channels are normalized.
 }
 
 \value{
-  An object of class \code{BeadLevelList}
+  An object of class \code{beadLevelData}
 }
 
 \author{Mike Smith}
 
-\seealso{\code{\link{HULKResids}}, \code{\link{BASH}}}
+\seealso{\code{\link{BASH}}}
 
 \examples{
 data(BLData)
 o <- HULK(BLData, 1)
 }
 \references{
-Cairns JM, Dunning MJ, Ritchie ME, Russell R, Lynch AG. (2008). BASH: a
-tool for managing BeadArray spatial artefacts. Bioinformatics, 24(24):2921-2.
+Lynch AG, Smith ML, Dunning MJ, Cairns JM, Barbosa-Morais NL, Tavare S. 
+beadarray, BASH and HULK - tools to increase the value of Illumina BeadArray experiments. 
+In A. Gusnato, K.V. Mardia, & C.J. Fallaize (eds), Statistical Tools for Challenges in Bioinformatics. 2009 pp. 33-37. Leeds, Leeds University Press.
 
 }
 \keyword{misc}

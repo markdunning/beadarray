@@ -32,7 +32,7 @@
 \begin{document}
 \title{\Rpackage{beadarray}: R classes and methods for Illumina bead-based data}
 
-\author{Mark Dunning and Matt Ritchie}
+\author{Mark Dunning, Mike Smith, Johnathan Cairns, Andy Lynch and Matt Ritchie}
 
 \maketitle
 

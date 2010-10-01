@@ -1,35 +1,36 @@
 \name{getAnnotation}
 \alias{getAnnotation}
-\alias{getControlAnno}
 \alias{setAnnotation}
-
-\title{Storage of annotation information for Illumina expression chips}
+\title{
+Storage of annotation information
+}
 \description{
-
-Illumina use several control types for QA purposes, however the IDs of these controls change between different organisms and annotation revisions. Therefore we need to store the annotation of a chip in order to perform QA on the bead-level data.
-The functions setAnnotation and getAnnotation are used to manage this annotation information.
-
+An interface to set or retrieve information about the annotation of a \code{beadLevelData} object. 
 }
 \usage{
 getAnnotation(BLData)
-setAnnotation(BLData, aName)
+setAnnotation(BLData, annoName)
+
 }
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{BeadLevelList for an Illumina expression array.}
-  \item{aName}{Character to define the annotation of the chip}
+  \item{BLData}{
+a \code{beadLevelData} object
+}
+\item{annoName}{character string to set annotation}
+
 }
 \details{
- We currently store the annotation as a slot in a BeadLevelList. The value in the slot should match one of entries in \code{ExpressionControlData} (see example).}
+A character string is used to specify the annotation with the currently supported values being; Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1 and Ratv1. This string is used within beadarray to retrieve control probe ids for each platform.
+}
 \value{
-setAnnotation returns a modified BeadLevelList with the new value for the annotation slot.
-}
-\author{Mark Dunning}
+setAnnotation returns a \code{beadLevelData} object with the annotation stored.
 
-\examples{
-data(BLData)
-data(ExpressionControlData)
-getAnnotation(BLData)
-names(ExpressionControlData)
+getAnnotation returns the name of the annotation that is currently being stored.
+
+}
+\author{
+Mark Dunning
 }
 
-\seealso{\code{\link{ExpressionControlData}}}
+

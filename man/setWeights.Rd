@@ -1,36 +1,48 @@
 \name{setWeights}
 \alias{setWeights}
-\title{Set BeadLevelList Weights}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Set weights from BASH
+}
 \description{
-Replaces the weights of a BeadLevelList with user-specified ones.
+Function for committing the weights calculated by BASH into the beadLevelData object
 }
 \usage{
-setWeights(BLData, wts, array, combine=FALSE)
+setWeights(BLData, wts, array, combine = FALSE, wtName = "wts")
 }
-
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{\code{BeadLevelList}}
-  \item{wts}{either a numerical vector of weights to use, or 0 or 1 to set all weights to 0 or 1.}
-  \item{array}{integer specifying the strip/array to use}
-  \item{combine}{logical.  If \code{TRUE}, the new weights specified by \code{wts} are combined
-    with the existing weights by storing the minimum of the two for each
-    bead.  If \code{FALSE} the new weights replace any existing weights.}
+  \item{BLData}{
+a \code{beadLevelData} object
 }
-
+  \item{wts}{
+the wts component of the BASH output
+}
+  \item{array}{
+a vector of arrays that we want to set the weights for
+}
+  \item{combine}{
+if TRUE combine the weights with existing weights (if they exist)
+}
+  \item{wtName}{
+name of column to assign weights to
+}
+}
 \details{
-This function replaces the weights column, \code{wts}, on the specified array, with user-specified values.
 
-Only rows with \code{wts != 1} are used in \code{createBeadSummaryData}.
+
 }
+
 
 \value{
-  \code{BeadLevelList} object, with updated \code{wts} values.
+Modified beadLevelData object
+
+}
+\author{
+Mark Dunning
 }
 
-\author{Mark Dunning}
 \examples{
-data(BLData)
-BLData <- setWeights(BLData,1,1) ##set all weights to 1
-BLData <- setWeights(BLData,0,1) ##set all weights to 0
+
 }
-\keyword{misc}
+

@@ -5,14 +5,16 @@
 Creates a list of probes marked as being in diffuse defects.
 }
 \usage{
-BASHDiffuse(BLData, array, neighbours = NULL, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE)
+BASHDiffuse(BLData, array, transFun = logGreenChannelTransform, neighbours = NULL, useLocs = TRUE, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE)
 }
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
   \item{array}{integer specifying which strip/array to plot}
+  \item{transFun}{Function to use to transform data prior to running BASH.}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed, using default \code{\link{generateNeighbours}} settings.}
-  \item{E}{Numerical vector - The error image to use. Optional - if left blank, it will be computed, using \code{\link{generateE}} using \code{bgfilter = "median"}.}
+  \item{useLocs}{Logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
+  \item{E}{Numerical vector - The error image to use. Optional - if left blank, it will be computed, using \code{generateE} using \code{bgfilter = "median"}.}
   \item{n}{Specify a cut-off for outliers as n median absolute deviations (MADs) from the median. The default value is 3}
   \item{compact}{Vector - Optional. BeadIDs of beads in compact defects to remove from the analysis.}
   \item{sig}{Numerical - Significance level of binomial test.}
@@ -40,7 +42,7 @@ A vector consisting of the BeadIDs of beads considered diffuse defects.
 
 \author{Jonathan Cairns}
 
-\seealso{\code{\link{BASHCompact}}, \code{\link{generateE}}, \code{\link{generateNeighbours}}, }
+\seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}, }
 
 \examples{
 data(BLData)

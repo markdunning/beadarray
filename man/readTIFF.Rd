@@ -6,11 +6,12 @@
   Reads Illumina tiff images and produces a matrix of pixel values.
 }
 \usage{
-  readTIFF(fileName, verbose = FALSE)
+  readTIFF(fileName, path = NULL, verbose = FALSE)
 }
 
 \arguments{
   \item{fileName}{String specifying the name of the tiff image to be read.}
+  \item{path}{String specifying the path to the desired image.  The default value of NULL means the current working directory will be used.}
   \item{verbose}{If TRUE then details from the header of the tiff are
   printed as it is read.  These include things like the byte order, the
   number of pixels in the image, the number of tags in the header etc.

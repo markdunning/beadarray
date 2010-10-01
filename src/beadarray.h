@@ -1,19 +1,9 @@
-#include <stdio.h>
-//Structure definition
-typedef struct
-{
- 		int *validInds;
-		int *outlierInds;
-}
-beadStatusStruct;
+#include <R.h>
+#include <Rinternals.h>
+#include <Rdefines.h>
 
-//Function prototypes
-void quicksort(int*, int, int);
-int number(int, char*);
-void sharpen(int**, int, int);
-void asf(int**, int, int);
-double matrixMean(int**, int, int);
-void calculateBackground(int**, double*, double*, int, int, int, double*, int, int);
-void HIPForeground(int**, double*, double*, int, int, int, double*);
-void IlluminaForeground(int**, double*, double*, int, int, int, double*);
-void getPixelIntensities(int**, FILE*, int, int, int, int);
+#if defined (_OPENMP)
+    #include <omp.h>
+#endif
+
+#define min(X, Y)  ((X) < (Y) ? (X) : (Y))

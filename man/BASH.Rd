@@ -1,23 +1,25 @@
 \name{BASH}
 \alias{BASH}
+
 \title{BASH - BeadArray Subversion of Harshlight}
 \description{
 BASH is an automatic detector of physical defects on an array. It is designed to detect three types of defect - COMPACT, DIFFUSE and EXTENDED.
 }
 \usage{
-BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE)
+BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
   \item{array}{integer specifying which strip/array to plot. Alternatively you can supply a vector of strip/array IDs, and BASH will analyse each in turn.}
+  \item{transFun}{function to use to transform data prior to running BASH}
   \item{compact}{Logical - Perform compact analysis?}
   \item{diffuse}{Logical - Perform diffuse analysis?}
   \item{extended}{Logical - Perform extended analysis?}
   \item{log}{Logical - Perform analyses on the log scale? (recommended)}
   \item{cinvasions}{Integer - number of invasions used whenever closing the image - see \code{\link{BASHCompact}}}
   \item{dinvasions}{Integer - number of invasions used in diffuse analysis, to find the kernel - see \code{\link{BASHDiffuse}}}
-  \item{einvasions}{Integer - number of invasions used when filtering the error image - see \code{\link{BGFilter}}.}
-  \item{bgcorr}{One of "none", "median", "medianMAD" - Used in diffuse analysis, this determines how we attempt to compensate for the background varying across an array. For example, on a SAM array this should be left at "median", or maybe even switched to "none", but if analysing a large beadchip then you might consider setting this to "medianMAD". (this code is passed to the \code{method} argument of \code{\link{BGFilter}}).}
+  \item{einvasions}{Integer - number of invasions used when filtering the error image - see \code{BGFilter}.}
+  \item{bgcorr}{One of "none", "median", "medianMAD" - Used in diffuse analysis, this determines how we attempt to compensate for the background varying across an array. For example, on a SAM array this should be left at "median", or maybe even switched to "none", but if analysing a large beadchip then you might consider setting this to "medianMAD". (this code is passed to the \code{method} argument of \code{BGFilter}).}
   \item{maxiter}{Integer - Used in compact analysis - the max number of iterations allowed. (Exceeding this results in a warning.)}
   \item{compcutoff}{Integer - the threshold used to determine whether a group of outliers is in a compact defect. In other words, if a group of at least this many connected outliers is found, then it is labelled as a compact defect.}
   \item{compdiscard}{Logical - should we discard compact defect beads before doing the diffuse analyis?}
@@ -25,6 +27,7 @@ BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE,
   \item{diffsig}{Probability - The significance level of the binomial test performed in the diffuse analysis.}
   \item{diffn}{Numerical - when finding outliers on the diffuse error image, how many MADs away from the median an intensity must be for it to be labelled an outlier.}
   \item{difftwotail}{Logical - If TRUE, then in the diffuse analysis, we consider the high outlier and low outlier images seperately.}
+  \item{useLocs}{Logical - If TRUE then a .locs file corresponding to the array is sought and, if found, used to identify the neighbouring beads.  If FALSE the neighbours are infered algorithmically.  See \code{\link{generateNeighbours}} for more details.}
 }
 \details{
 	The \code{BASH} pipeline function performs three types of defect analysis on an image.
@@ -54,11 +57,11 @@ BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE,
 
 \author{Jonathan Cairns}
 
-\seealso{\code{\link{BASHCompact}}, \code{\link{BASHDiffuse}}, \code{\link{BASHExtended}}, \code{\link{generateE}}, \code{\link{generateNeighbours}}, }
+%\seealso{\code{\link{BASHCompact}}, \code{\link{BASHDiffuse}}, \code{\link{BASHExtended}}, \code{\link{generateNeighbours}}, }
 
 \examples{
 	data(BLData)
-	output <- BASH(BLData,array=1:4)
+	output <- BASH(BLData,array=1:4,useLocs=FALSE)
 	boxplot(output$ext) #view spread of extended scores
 	for(i in 1:4)
 	{
@@ -66,16 +69,16 @@ BASH(BLData, array, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE,
 	}
 
 	#diffuse test is stricter
-	output <- BASH(BLData, diffsig = 0.00001,array=1)
+	output <- BASH(BLData, diffsig = 0.00001,array=1, useLocs=FALSE)
 
 	#more outliers on the error image are used in the diffuse analysis
-	output <- BASH(BLData, diffn = 2,array=1)
+	output <- BASH(BLData, diffn = 2,array=1, useLocs=FALSE)
 
 	#only perform compact & diffuse analyses (we will only get weights)
-	output <- BASH(BLData, extended = FALSE,array=1)
+	output <- BASH(BLData, extended = FALSE,array=1, useLocs=FALSE)
 
 	#attempt to correct for background.
-	output <- BASH(BLData, bgcorr = "median",array=1)
+	output <- BASH(BLData, bgcorr = "median",array=1, useLocs=FALSE)
 }
 \references{
 	J. M. Cairns, M. J. Dunning, M. E. Ritchie, R. Russell, and A. G. Lynch (2008). BASH: a tool for managing BeadArray spatial artefacts. Bioinformatics 15; 24(24)

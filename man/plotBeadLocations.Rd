@@ -1,50 +1,73 @@
 \name{plotBeadLocations}
 \alias{plotBeadLocations}
-\title{Plot bead locations}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Plot bead locations
+}
 \description{
-  Shows location of a set of beads on a strip/array. The beads can
-  either be defined to be all beads with particular ProbeIDs
-  or as rows in \code{BeadLevelList}.
+Can plot where specified beads, or bead types were located on the array surface
 }
 \usage{
-plotBeadLocations(BLData, ProbeIDs = NULL, BeadIDs = NULL, array = 1,
-                   SAM = FALSE, xlab = "x-coordinate",
-                   ylab = "y-coordinate",
-                   main = paste("Bead", ProbeIDs,"locations"), ...)
+plotBeadLocations(BLData, ProbeIDs = NULL, BeadIDs = NULL, array = 1, SAM = FALSE, xCol = "GrnX", yCol = "GrnY", xlab = "x-coordinate", ylab = "y-coordinate", horizontal = TRUE, main = paste("Bead", ProbeIDs, "locations"), ...)
 }
-
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{\code{BeadLevelList}}
-  \item{ProbeIDs}{a vector of ProbeIDs to plot}
-  \item{BeadIDs}{logical/integer vector specifying which rows of data from
-   \code{BeadLevelList}) to plot (used if \code{ProbeIDs} is \code{NULL})}
-  \item{array}{integer specifying the strip/array to plot}
-  \item{SAM}{if TRUE then the data is assumed to be
-    taken from a SAM array and therefore hexagonal}
-  \item{xlab}{character string specifying x-axis label}
-  \item{ylab}{character string specifying y-axis label}
-  \item{main}{character string specifying plot title}
-  \item{\dots}{further graphical parameters to \code{plot}}
+  \item{BLData}{
+a \code{beadLevelData} object
 }
-\details{
-  The outline of the hexagonal array is drawn and the
-  locations of the specified beads are overlayed. 
+  \item{ProbeIDs}{
+a list of ArrayAddress IDs to plot
+}
+  \item{BeadIDs}{
+a list of beads (rows in the beadLevelData object) to plot
+}
+  \item{array}{
+the number of the section to plot
+}
+  \item{SAM}{
+if TRUE the array is treated as a Sentrix Array Matrix (hexagonal)
+}
+  \item{xCol}{
+column name for the x coordinates
+}
+  \item{yCol}{
+column name for the x coordinates
+}
+  \item{xlab}{
+optional label for the x axis
+}
+  \item{ylab}{
+optional label for the y axis
+}
+  \item{horizontal}{
+if TRUE the longest edge of the array surface will be plotted on the x axis
+}
+  \item{main}{
+an optional title for the plot
+}
+  \item{\dots}{
+any arguments to be passed to plots
+}
 }
 \value{
-A plot is produced on the current graphical device.
+plot to current graphical device
+}
+\author{
+Mark Dunning
 }
 
 \examples{
 data(BLData)
 
-#plot all beads with ProbeID 2 on array 1
-plotBeadLocations(BLData, array=1, ProbeIDs=2, SAM=TRUE)
+##Plot location of first 100 beads as they are listed in beadLevelData object
 
-#find all outliers on the first array and plot their locations
-o=findAllOutliers(BLData, 1)
-plotBeadLocations(BLData, BeadIDs=o, array=1, SAM=TRUE)
+plotBeadLocations(BLData, BeadIDs = 1:100, array=1, horizontal = FALSE)
+
+
+
+
 }
-
-\author{Mark Dunning}
-
-\keyword{hplot}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{ ~kwd1 }
+\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,74 +1,92 @@
 \name{imageplot}
 \alias{imageplot}
-\title{imageplot for BeadLevelList object}
+\title{imageplot for beadLevelData object}
 \description{
-Generates an image plot for data from a \code{BeadLevelList} object.
+Generates an image plot for data from a \code{beadLevelData} object.
 }
+
+
 \usage{
-imageplot(BLData, array = 1, nrow = 100, ncol = 100, low= NULL,
-           high = NULL, ncolors = 123, whatToPlot ="G", log=TRUE,
-           zlim=NULL, main=whatToPlot, method="illumina", n = 3,
-           trim=0.05, legend=TRUE, SAM=FALSE, ...)
+imageplot(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim = NULL, legend = TRUE)
 }
-
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which strip/array to plot}
-  \item{nrow}{integer specifying the number of rows to divide the strip/array into}
-  \item{ncol}{integer specifying the number of columns to divide the strip/array into}
-  \item{low}{colour to use for lowest intensity}
-  \item{high}{colour to use for highest intensity}
-  \item{ncolors}{The number of colour graduations between high and low}
-  \item{whatToPlot}{character string specifying which intensities/values
-    to plot. See \code{getArrayData} for a list of possibilities}
-  \item{log}{if TRUE, log2 intensities are plotted}
-  \item{zlim}{numerical vector of length 2 giving the extreme values of 'z'
-    to associate with colours 'low' and 'high'.}
-  \item{main}{character string for plot title}
-  \item{method}{character string specifying the summarisation method to
-    use. Only applicable when \code{whatToPlot="residG"}, \code{"residR"}
-    or \code{"residM"}. Refer to the \code{createBeadSummaryData} help
-    page for further information.}
-  \item{n}{numeric value specifying the number of median absolute deviations (MADs)
-    from the median to use as a cut-off for outliers.  The default value is 3. 
-    Only applicable when \code{whatToPlot="residG"}, \code{"residR"} or \code{"residM"} 
-    and \code{method="illumina"}.  Refer to \code{createBeadSummaryData} help page 
-    for further information.}
-  \item{trim}{fraction of intensities to remove from the bead summary
-    calculations.  Only applicable when \code{whatToPlot="residG"},
-      \code{"residR"} or \code{"residM"}.  Refer to
-      \code{createBeadSummaryData} help page for further information.}
-  \item{legend}{logical, if \code{TRUE}, \code{zlim} and range of data
-    is added to plot.}
-  \item{SAM}{logical, if \code{TRUE}, x and y coordinates are transposed.}
-  \item{\dots}{other graphical parameters to plot that can be specified}
-      }
+  \item{BLData}{
+\code{beadLevelData}
+}
+  \item{array}{
+integer specifying what section to plot
+}
+  \item{transFun}{
+Function that defines how values from the BLData object are to be transformed prior to plotting. 
+}
+  \item{squareSize}{
+Numeric specifying how many pixels
+}
+  \item{useLocs}{
+If \code{TRUE} the function will read the locs file associated with the section in order to include the physical properties of the section in the plot
+}
+  \item{horizontal}{
+If \code{TRUE} the image will be plotted so that the longest edge of the section is on the x axis.
+
+}
+  \item{low}{
+colour to use for lowest intensity
+}
+  \item{high}{
+colour to use for highest intensity
+}
+  \item{ncolors}{
+The number of colour graduations between high and low
+}
+  \item{zlim}{
+numerical vector of length 2 giving the extreme values of 'z'
+    to associate with colours 'low' and 'high'.
+}
+  \item{legend}{
+logical, if \code{TRUE}, \code{zlim} and range of data
+    is added to plot.
+}
+}
 \details{
-  Because of the large number of beads on each strip/array, this function
-  works by mapping a grid of size specified by the \code{nrow} and \code{ncol}
-  arguments and averaging the intensities of the beads within each
-  section of the grid.
+Produces a standard imageplot for the specified section. The default, transformation \code{\link{logGreenChannelTransform}}, takes the log2 of the green channel. For two channel data, the red channel or log ratio can be plotted by \code{\link{logRedChannelTransform}} or \code{\link{logRatioTransform}} functions can be used. The user can also specify their own functions. 
 
-  The number of rows and columns may change the appearance of the
-  plots. If the array is divided into too many squares it will be difficult
-  to detect changes. We recommend using \code{nrow=20} and
-  \code{ncol=200} for the strips on a BeadChip, and \code{nrow=100}
-  \code{ncol=100} for arrays on a SAM.
+The default plotting orientation is such that the longest edge of the section is along the x axis. If \code{horizontal = FALSE}, the longest edge will by on the y axis and should match how the corresponding TIFF image from the BeadScan directory is orientated. 
 
-  An imageplot of the log base 2 foreground intensities is produced by default.
-  Other values can be plotted by changing the \code{whatToPlot} argument.
-  The default colour scheme ranges from white for low values to blue for high values.
-  
-  As a result of both having identical function names this function can conflict with the  \code{\link[limma]{imageplot}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' imageplot() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::imageplot()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
+If \code{locs = TRUE} and locs file were made available to \code{readIllumina}, the segments that the section is comprised of will be visible (For expression BeadChips, each section is made of nine physically separate segments).
+
+
+As a result of both having identical function names this function can conflict with the  \code{\link[limma]{imageplot}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' imageplot() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::imageplot()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
 }
 \value{
-
 A plot is produced on the current graphical device.
 }
+\author{
+Mike Smith and Mark Dunning
+}
 
-\author{Mike Smith, Mark Dunning}
+
 \examples{
 data(BLData)
-imageplot(BLData)
+
+##Be default the first array is plotted
+imageplot(BLData, horizontal = FALSE)
+
+##Can use the squaresize parameter
+
+imageplot(BLData, horizontal=FALSE, squareSize=10)
+
+imageplot(BLData, array=3, horizontal=FALSE, squareSize=10)
+
+##User can specifiy what colours to represent low and high intensity
+
+imageplot(BLData, array=3, horizontal=FALSE, squareSize=10, low="lightgreen", high="darkgreen")
+
+
 }
-\keyword{hplot}
+
+
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{hplots}
+

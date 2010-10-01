@@ -1,52 +1,45 @@
 
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
-                   assayData =
-                   assayDataNew(exprs=exprs, se.exprs=se.exprs, NoBeads=NoBeads,
-                                Detection=Detection, storage.mode="list"),
+                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
+
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
                    se.exprs=new("matrix"),
                    NoBeads=new("matrix"),
                    Detection=new("matrix"),
                    annotation = character(),
-                   protocolData = phenoData[,integer(0)],   
                    featureData = new("AnnotatedDataFrame"),
                    experimentData = new("MIAME"),
-                   .QCexprs = new("matrix"),
-                   .QCBeadStDev = new("matrix"),
-                   .QCNoBeads = new("matrix"),
-                   .controlType=new("matrix"),
-                   QC = assayDataNew(exprs=.QCexprs, se.exprs=.QCBeadStDev,
-                                     NoBeads=.QCNoBeads,
-                                     controlType=.controlType,
-                                     storage.mode="list"),
-                   BeadLevelQC = list())
+                   QCexprs = new("matrix"),
+                   QCBeadStDev = new("matrix"),
+                   QCNoBeads = new("matrix"),
+                   controlType=new("matrix"),
+                   QCData = assayDataNew(exprs = QCexprs,
+                   se.exprs=QCBeadStDev, NoBeads=QCNoBeads,controlType=controlType,storage.mode="list"))
  {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
                            phenoData = phenoData,
                            experimentData = experimentData,
                            annotation = annotation,
-                           featureData = featureData,
-		           protocolData = protocolData)
-            .Object@QC=QC
-            .Object@BeadLevelQC=BeadLevelQC
+                           featureData = featureData
+			   )
+            .Object@QC=QCData
             .Object
           })
 
 
-  setMethod("[", "ExpressionSetIllumina", function(x, i, j, ...,
-drop=FALSE) {
-  x <- callNextMethod()
-  if (!missing(j)) {
-    for (k in 1:length(x@QC))
-      if(all(dim(x@QC[[k]]) != c(0,0)))
-        x@QC[[k]] <- x@QC[[k]][, j,drop = drop]
-  }
-
-  x
+setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
+          x<-callNextMethod() # x, i, j, ..., drop=drop)
+#        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
+          if (!missing(j)) {
+             for(k in 1:length(x@QC))
+                 x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
+          }
+          x
 })
+
 
 setValidity("ExpressionSetIllumina", function(object) {
   assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "NoBeads"))

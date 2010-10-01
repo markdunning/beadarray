@@ -1,0 +1,68 @@
+\name{beadLevelData-class}
+\docType{class}
+\alias{beadLevelData-class}
+\alias{beadLevelData}
+\alias{show,beadLevelData-method}
+\alias{dim,beadLevelData-method}
+\alias{arrayNames,beadLevelData-method}
+\alias{numBeads,beadLevelData-method}
+\alias{[[,beadLevelData,ANY,missing-method}
+\alias{boxplot,beadLevelData-method}
+\alias{sectionNames,beadLevelData-method}
+\alias{getBeadData,beadLevelData-method}
+
+
+\title{Class "beadLevelData" }
+
+\description{
+    A class for storing red and green channel foreground and background intensities from an Illumina experiment.
+}
+
+%\usage{
+%getBeadData(BLData, what = "Grn", array=1)
+%}
+
+\section{Objects from the Class}{
+    Objects can be created by calls of the form \code{new("beadLevelData")}, but are usually created by \code{\link{readIllumina}}.
+}
+
+\section{Slots/List Components}{
+  Objects of this class contain the following slots
+  \tabular{ll}{
+  \code{beadData}:\tab A list of arrays, indexed by array name.  Each item in this list is itself a list, containing enviroments holding the data for that array.\cr
+  \code{sectionData}:\tab a list containing array information. Each item in the list is a data frame containing one row for each section\cr
+  \code{experimentData}:\tab an 'AnnotatedDataFrame' containing  
+  experimental information.\cr
+  \code{history}: \tab Character vector storing the operations performed on this object.
+  }
+}
+
+\section{Methods}{
+  \describe{
+    \item{show(beadLevelData)}{Printing method for BeadLevelList}
+    \item{\code{dim(object)}}{The dimension of the \code{BeadLevelList} object}
+    \item{\code{sectionNames(object,arrays=NULL)}}{Returns the strip/array names from a}
+    \item{\code{numBeads(object,arrays=NULL)}}{Returns the number of
+      beads on selected \code{arrays}}
+
+  }
+}
+
+\section{Accessing data from the class}{
+
+}
+
+\examples{
+
+data(BLData)
+
+sectionNames(BLData)
+
+head(BLData[[1]])
+
+getBeadData(BLData, array=1, what="Grn")[1:10]
+
+}
+\author{Mark Dunning, Mike Smith}
+\seealso{\code{\link{readIllumina}}}
+\keyword{classes}

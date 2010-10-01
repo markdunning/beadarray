@@ -1,44 +1,62 @@
-\name{plotBeadIntensities}
+\name{beadIntensityPlots}
 \alias{plotBeadIntensities}
-\title{Plot bead intensities}
+\alias{genericBeadIntensityPlot}
+
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Plotting the intensities of selected beads on a section
+}
 \description{
-  Function to plot the intensities of all beads of a particular
-  type on a strip/array.
+The function will plot the intensities of selected beads on a specified array
 }
 \usage{
-plotBeadIntensities(BLData, ProbeIDs, arrays, log = FALSE,
-          whatToPlot="G", ProbeCols=NULL, ylim=NULL,...)
+plotBeadIntensities(BLData, array = 1, BeadIDs, transFun = logGreenChannelTransform, cols = NULL, ...)
 }
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{\code{BeadLevelList}}
-  \item{ProbeIDs}{numeric value giving the ProbeID(s) for the bead
-    type(s) to plot}
-  \item{arrays}{integer (scalar or vector) specifying the strip(s)/array(s) to plot}
-  \item{log}{if TRUE log2 intensities are plotted}
-  \item{whatToPlot}{character string specifying which intensities to plot.
-    Possibilities are \code{"G"}, \code{"Gb"} for single channel data
-    and \code{"G"}, \code{"Gb"}, \code{"R"} and \code{"Rb"} for
-    two-colour data}
-  \item{ProbeCols}{vector of colour names to assign to each bead type}
-  \item{ylim}{vector providing the upper and lower bounds for the
-    y-axis in the plotting window}
-  \item{\dots}{further graphical parameters to \code{plot}}
+  \item{BLData}{
+a \code{beadLevelData} object
+}
+  \item{array}{
+numeric specifying which array to plot the intensities from
+}
+  \item{BeadIDs}{
+what ArrayAddress IDs to be plotted
+}
+  \item{transFun}{
+function specifying what transformation to be applied to the \code{beadLevelData} prior to plotting 
+}
+  \item{cols}{
+a vector of colours to be used to plot each ID
+
+}
+  \item{\dots}{
+other argument that may be passed along to plot.
+}
 }
 \details{
-Boxplots of the specified intensities on the original or log-scale for each bead type specified by \code{ProbeIDs} on selected \code{arrays} is produced.
+The function will take all data from the specified section, apply the transformation (the default is to do log2) and then find the subset of beads that have the specified ID. These IDs should match the numeric ArrayAddress IDs that are stored in the beadLevelData object. 
 
-A vertical line separates the intensities from different strips/arrays.
 }
-
 \value{
-A plot is displayed on the current graphical device.
-}
+Plot is produced on current graphical device.
 
-\author{Mark Dunning}
+}
+\author{
+Mark Dunning
+}
 
 \examples{
+
 data(BLData)
 
-plotBeadIntensities(BLData, arrays=1:4, ProbeIDs=c(2,1000), log=TRUE)
+randIDs = sample(getBeadData(BLData, array=1, what="ProbeID"),10)
+
+plotBeadIntensities(BLData, array=1, BeadIDs = randIDs)
+
+
 }
-\keyword{hplot}
+% Add one or more standard keywords, see file 'KEYWORDS' in the
+% R documentation directory.
+\keyword{hplots}
+

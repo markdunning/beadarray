@@ -1,23 +1,62 @@
-\name{outlierPlot}
-\alias{outlierPlot}
-
-\title{Locations of outliers on an Illumina chip}
+\name{outlierplot}
+\alias{outlierplot}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+Plot outlier locations}
 \description{
-Diagnostic function that reports how many outliers are found on a specific array on a chip. We take advantage of the segmental structure of the array and break-down the number of outliers into 9 sections.
+Function to plot where the outliers are located on a given array
+
 }
 \usage{
-outlierPlot(BLData, array = array, log = FALSE, plot = FALSE)
+outlierplot(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main = "")
 }
-
+%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{BLData}{A BeadLevelList object containing the bead-level data for an Illumina experiment}
-  \item{array}{The number of the array of interest}
-  \item{log}{if TRUE calculate outliers on the log2 scale.  If FALSE calculate outliers on the original scale}
-  \item{plot}{if TRUE a diagnostic plot will be produced, otherwise only the numbers of outliers will be returned.}
+  \item{BLData}{
+a \code{beadLevelData} object
+}
+  \item{array}{
+the number of the array to plot
+}
+  \item{transFun}{
+a function defining how to transform the data prior to calculating outliers
+}
+  \item{outlierFun}{
+function that will identify outliers
+}
+  \item{horizontal}{
+if TRUE the longest edge of the array section will be on the x axis
+}
+  \item{nSegments}{
+How many segments the section is divided into. If this argument is left as the default value (NULL) the code will attempt to extract this information from the relevant .sdf file.  If it can't be found then the segments will not be indicated on the final plot.
+}
+  \item{lowOutlierCol}{
+what colour to plot outliers below the median
+}
+  \item{highOutlierCol}{
+what colour to plot outliers above the median
+}
+  \item{outlierPch}{
+plotting character for the outliers
+}
+  \item{main}{
+an optional title for the plot
+}
 }
 \details{
-The number of outliers are computed for the whole array using the Illumina default method that specifies a cut-off of 3 MADs from the median on either the log2 or original scale. These outliers are then split into 9 different sections on the array (the separation between these sections can usually be seen in the plots).
+
+The function calls the specified outlier function to determine the outliers on the array and then plots their location. 
+
+}
+\value{
+plot produced on current graphical device
+}
+\author{
+Mark Dunning and Mike Smith
 }
 
-\author{Mark Dunning}
+\examples{
+data(BLData)
+outlierplot(BLData, array=1, horizontal = FALSE)
+}
 
