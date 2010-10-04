@@ -1,5 +1,5 @@
 ##function to add or modify arrayData in a BeadLevelList
-insertBeadLevelData <- function(BLData, array = 1, what, data) {
+insertBeadData <- function(BLData, array = 1, what, data) {
   
     if(array < 1)
         stop("'Array' arguments must be a positive integer");

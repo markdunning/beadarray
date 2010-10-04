@@ -4,23 +4,16 @@
 \alias{beadLevelData}
 \alias{show,beadLevelData-method}
 \alias{dim,beadLevelData-method}
-\alias{arrayNames,beadLevelData-method}
 \alias{numBeads,beadLevelData-method}
 \alias{[[,beadLevelData,ANY,missing-method}
 \alias{boxplot,beadLevelData-method}
 \alias{sectionNames,beadLevelData-method}
-\alias{getBeadData,beadLevelData-method}
-
 
 \title{Class "beadLevelData" }
 
 \description{
     A class for storing red and green channel foreground and background intensities from an Illumina experiment.
 }
-
-%\usage{
-%getBeadData(BLData, what = "Grn", array=1)
-%}
 
 \section{Objects from the Class}{
     Objects can be created by calls of the form \code{new("beadLevelData")}, but are usually created by \code{\link{readIllumina}}.
@@ -42,14 +35,15 @@
     \item{show(beadLevelData)}{Printing method for BeadLevelList}
     \item{\code{dim(object)}}{The dimension of the \code{BeadLevelList} object}
     \item{\code{sectionNames(object,arrays=NULL)}}{Returns the strip/array names from a}
-    \item{\code{numBeads(object,arrays=NULL)}}{Returns the number of
-      beads on selected \code{arrays}}
-
+    \item{\code{numBeads(object,arrays=NULL)}}{Returns the number of beads on selected \code{arrays}}
   }
 }
 
 \section{Accessing data from the class}{
-
+  \describe{
+    \item{\code{\link{getBeadData}}}{Add new data}
+    \item{\code{\link{insertBeadData}}}{Input or modify existing data}
+  }
 }
 
 \examples{

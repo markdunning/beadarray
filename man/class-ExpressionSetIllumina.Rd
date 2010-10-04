@@ -16,23 +16,6 @@
 }
 
 
-\section{Objects from the Class}{
-
-}
-
-\section{Slots/List Components}{
-
-}
-
-\section{Methods}{
-  \describe{
-  }
-}
-
-
-\examples{
-
-}
 \author{Mark Dunning}
 
 \keyword{classes}

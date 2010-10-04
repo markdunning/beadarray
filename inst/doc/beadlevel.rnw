@@ -82,7 +82,7 @@ beadarray is able to utilize some of Illumina's proprietary files during analysi
 
 Once imported, the bead-level data is stored in an object of class \Robject{beadLevelData}. This class can handle raw data from both single channel and two-colour BeadArrays. Due to the random nature of the technology, each array generally has a variable number of rows of intensity data, and we use an R environment variable to store this information in a memory efficient way.
 
-The beadLevelData class contains a number of slots useful for describing Illumina data. The data that have been extracted from the text files are found in the beadData slot. This can be thought of as a list, which can be indexed by name or a numeric value representing a particular array-section. A data frame holds the data for that array-section with the number of rows being the number of beads on the section. For convenience, the \Rfunction{getBeadData} is used to access data held in the beadData slot. The function \Rfunction{insertBeadLevelData} function can be used to assign new data to this slot.
+The beadLevelData class contains a number of slots useful for describing Illumina data. The data that have been extracted from the text files are found in the beadData slot. This can be thought of as a list, which can be indexed by name or a numeric value representing a particular array-section. A data frame holds the data for that array-section with the number of rows being the number of beads on the section. For convenience, the \Rfunction{getBeadData} is used to access data held in the beadData slot. The function \Rfunction{insertBeadData} function can be used to assign new data to this slot.
 
 
 
@@ -166,7 +166,7 @@ normExpPars[i,] = res[1,]
 for(i in 1:12){
 	corSignal = limma:::normexp.signal(x = BLData[[i]][,4], par = normExpPars[i,])
 
-	BLData = insertBeadLevelData(BLData, array=i, data=corSignal, what="Grn.normexp")
+	BLData = insertBeadData(BLData, array=i, data=corSignal, what="Grn.normexp")
 }
 
 head(BLData[[1]])

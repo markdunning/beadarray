@@ -40,9 +40,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL)
         data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]));
     
         ##record the ProbeIDs, X and Y coords
-	BLData <- insertBeadLevelData(BLData, array = i, what = "ProbeID", data = data[,1])
-        BLData <- insertBeadLevelData(BLData, array = i, what = "GrnX", data = data[,3])
-        BLData <- insertBeadLevelData(BLData, array = i, what = "GrnY", data = data[,4])
+	BLData <- insertBeadData(BLData, array = i, what = "ProbeID", data = data[,1])
+        BLData <- insertBeadData(BLData, array = i, what = "GrnX", data = data[,3])
+        BLData <- insertBeadData(BLData, array = i, what = "GrnY", data = data[,4])
 
         ## record the number of decoded beads
         nBeads[i] <- nrow(data);
@@ -57,21 +57,21 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL)
             fg <- .Call("illuminaForeground", greenImage, data[,3:4], PACKAGE = "beadarray");
             rm(greenImage);
             
-            BLData <- insertBeadLevelData(BLData, array = i, what = "Grn", data = fg - bg)
-            BLData <- insertBeadLevelData(BLData, array = i, what = "GrnF", data = fg)
-            BLData <- insertBeadLevelData(BLData, array = i, what = "GrnB", data = bg)
+            BLData <- insertBeadData(BLData, array = i, what = "Grn", data = fg - bg)
+            BLData <- insertBeadData(BLData, array = i, what = "GrnF", data = fg)
+            BLData <- insertBeadData(BLData, array = i, what = "GrnB", data = bg)
               
         }
         ## or extract the data from the .txt file
         else {
-            BLData <- insertBeadLevelData(BLData, array = i, what = "Grn", data = data[,2])
+            BLData <- insertBeadData(BLData, array = i, what = "Grn", data = data[,2])
         }
         
         ## if this is two channel, read the red data too
         if(nChannels == 2) {
         
-            BLData <- insertBeadLevelData(BLData, array = i, what = "RedX", data = data[,3])
-            BLData <- insertBeadLevelData(BLData, array = i, what = "RedY", data = data[,4])
+            BLData <- insertBeadData(BLData, array = i, what = "RedX", data = data[,3])
+            BLData <- insertBeadData(BLData, array = i, what = "RedY", data = data[,4])
             
             ## read the images
             if(useImages && !is.null(targets$redImage[i])) {
@@ -83,14 +83,14 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL)
                 fg <- .Call("illuminaForeground", image, data[,6:7], PACKAGE = "beadarray");
                 rm(image);
                 
-                BLData <- insertBeadLevelData(BLData, array = i, what = "Red", data = fg - bg)
-                BLData <- insertBeadLevelData(BLData, array = i, what = "RedF", data = fg)
-                BLData <- insertBeadLevelData(BLData, array = i, what = "RedB", data = bg)
+                BLData <- insertBeadData(BLData, array = i, what = "Red", data = fg - bg)
+                BLData <- insertBeadData(BLData, array = i, what = "RedF", data = fg)
+                BLData <- insertBeadData(BLData, array = i, what = "RedB", data = bg)
                 
             }
             ## or extract the data from the .txt file
             else {
-                BLData <- insertBeadLevelData(BLData, array = i, what = "Red", data = data[,5])
+                BLData <- insertBeadData(BLData, array = i, what = "Red", data = data[,5])
             }
         }
     }

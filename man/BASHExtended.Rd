@@ -33,14 +33,8 @@ Scalar (Extended defect score)
 \seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}, }
 
 \examples{
-data(BLData)
-sn <- sectionNames(BLData)
-extended <- NULL
-
-for(i in 1:length(sn))
-{
-	extended[i] <- BASHExtended(BLData, i)
-}
+ data(BLData)
+ extended <- BASHExtended(BLData, 1)
 }
 \references{
 	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/

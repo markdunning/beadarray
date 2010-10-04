@@ -6,7 +6,7 @@ import(graphics)
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs)
 
-export(insertBeadLevelData, getBeadData, plotChipLayout, createTargetsFile,  plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, quickSummary, getAnnotation, setAnnotation, sectionLevelSummary, illuminaOutlierMethod, beadStatusVector, insertSectionData, plotBeadLocations, calculateOutlierStats, controlProbeDetection, backgroundCorrectSingleSection)
+export(insertBeadData, getBeadData, plotChipLayout, createTargetsFile,  plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, quickSummary, getAnnotation, setAnnotation, sectionLevelSummary, illuminaOutlierMethod, beadStatusVector, insertSectionData, plotBeadLocations, calculateOutlierStats, controlProbeDetection, backgroundCorrectSingleSection)
 
 
 ## Data input

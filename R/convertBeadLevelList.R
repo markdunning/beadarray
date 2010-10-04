@@ -35,7 +35,7 @@ convertBeadLevelList <- function(BeadLevelList) {
                            Rb = "RedB",
                            colnames(arrayData)[j])                      
             ##add the data
-            beadLevelData <- insertBeadLevelData(beadLevelData, array = i, what = what, data = arrayData[,j]);       
+            beadLevelData <- insertBeadData(beadLevelData, array = i, what = what, data = arrayData[,j]);       
         }
     }
 

@@ -8,7 +8,7 @@ backgroundCorrectSingleSection = function(BLData, array=1 ,fg="Grn" , bg="GrnB" 
 
 	data = fgI - bgI
 
-	BLData = insertBeadLevelData(BLData, array=array, data = data, what = newName)
+	BLData = insertBeadData(BLData, array=array, data = data, what = newName)
 
 	
 

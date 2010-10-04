@@ -1,5 +1,5 @@
-\name{insertBeadLevelData}
-\alias{insertBeadLevelData}
+\name{insertBeadData}
+\alias{insertBeadData}
 \title{
     Add or modify data in a beadLevelData object
 }
@@ -7,7 +7,7 @@
     Add or modify data in a \code{\link{beadLevelData}} object.
 }
 \usage{
-    insertBeadLevelData(BLData, array = 1, what, data)
+    insertBeadData(BLData, array = 1, what, data)
 }
 
 \arguments{
