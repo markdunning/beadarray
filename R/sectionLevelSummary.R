@@ -1,5 +1,5 @@
 
-sectionLevelSummary = function(BLData, channelList, probeIDs=NULL, useMulticore = FALSE, weightNames = "wts", silent=FALSE){
+sectionLevelSummary = function(BLData, channelList, probeIDs=NULL, weightNames = "wts", silent=FALSE){
 
 an = sectionNames(BLData)
 
@@ -97,18 +97,14 @@ for(cNum in 1:length(channelList)){
 			pMap = match(names(tmp), probeIDs)
 	
 			if(!silent) cat("Using exprFun\n")
-			if(useMulticore) output[[ch]][["eMat"]][pMap,i] = unlist(mclapply(tmp, exprFun))
-			else output[[ch]][["eMat"]][pMap,i] = unlist(lapply(tmp, exprFun))
+			output[[ch]][["eMat"]][pMap,i] = unlist(lapply(tmp, exprFun))
 			
 			if(!silent) cat("Using varFun\n")		
 		
-			if(useMulticore) output[[ch]][["varMat"]][pMap,i] = unlist(mclapply(tmp, varFun))			
-			
-			else output[[ch]][["varMat"]][pMap,i] = unlist(lapply(tmp, varFun))
+			output[[ch]][["varMat"]][pMap,i] = unlist(lapply(tmp, varFun))
 
-			if(useMulticore) output[[ch]][["nObs"]][pMap,i] = unlist(mclapply(tmp, length))
-			
-			else output[[ch]][["nObs"]][pMap,i] = unlist(lapply(tmp, length))
+	
+			output[[ch]][["nObs"]][pMap,i] = unlist(lapply(tmp, length))
 
 		}
 

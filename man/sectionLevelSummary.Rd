@@ -9,7 +9,7 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
 
 
 \usage{
-    sectionLevelSummary(BLData, channelList, probeIDs = NULL, useMulticore = FALSE, weightNames ="wts", silent=FALSE)
+    sectionLevelSummary(BLData, channelList, probeIDs = NULL, weightNames ="wts", silent=FALSE)
 }
 
 \arguments{
@@ -21,12 +21,9 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
    }
 
    \item{probeIDs}{
-	Vector of probe IDs to be included in the summarized object
+	Vector of ArrayAddressIDs to be included in the summarized object
 	}
 
-   \item{useMulticore}{if available, use the multicore package to distribute the computation}
-	
-	
  	
    \item{weightNames}{
 	name of column in the \code{beadLevelData} to take extract weights 

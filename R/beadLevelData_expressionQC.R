@@ -1,4 +1,4 @@
-expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = T,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high")){
+expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative"){
 
 
 an = sectionNames(BLData)
@@ -20,7 +20,6 @@ dir.create(paste(qcDir, "/poscont",sep=""), showWarnings=F)
 dir.create(paste(qcDir, "/hyb",sep=""), showWarnings=F)
 dir.create(paste(qcDir, "/outliers",sep=""), showWarnings=F)
 dir.create(paste(qcDir, "/imageplot",sep=""), showWarnings=F)
-dir.create(paste(qcDir, "/combinedSpatial",sep=""), showWarnings=F)
 
 for(i in 1:length(an)){
 
@@ -157,7 +156,7 @@ for(i in 1:length(an)){
 
 	if(file.exists(fname.out)){
 		 if(overWrite){
-			outlierplot(BLData, array=i, nSegments = nSegments)
+			outlierplot(BLData, array=i, nSegments = nSegments, horizontal = horizontal, outlierFun=outlierFun)
 	
 		}
 
@@ -166,7 +165,7 @@ for(i in 1:length(an)){
 	}
 
 	else{
-		outlierplot(BLData, array=i, nSegments = nSegments)
+		outlierplot(BLData, array=i, nSegments = nSegments, horizontal = horizontal, outlierFun = outlierFun)
 	}
 
 	dev.off()
@@ -194,7 +193,7 @@ for(i in 1:length(an)){
 	if(file.exists(fname.im)){
 		if(overWrite){
 
-			imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim)	
+			imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
 
 		}
 
@@ -203,7 +202,7 @@ for(i in 1:length(an)){
 	}				
 	
 	else{
-		imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim)	
+		imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
 
 
 		
@@ -254,7 +253,7 @@ hwrite("Quality assessment summary", heading=1, outfile)
 
 hwrite("Scan Metrics", heading=2,outfile)
 
-hwrite(BLData@sectionData$Metrics, outfile)
+if("Metrics" %in% colnames(BLData@sectionData)) hwrite(BLData@sectionData$Metrics, outfile)
 
 hwrite("Bead-level control summary", heading=2, outfile)
 
@@ -262,14 +261,9 @@ if(is.null(beadLevelQC)){
 
 	cat("Creating probe metrics\n")
 
-	beadLevelQC = makeQCTable(BLData)
+	beadLevelQC = makeQCTable(BLData, transFun = transFun, controlProfile = controlProfile)
 
-	signalToNoise = beadLevelQC[,"Mean:housekeeping"] -  beadLevelQC[,"Mean:permuted_negative"]
-
-	beadLevelQC = cbind(beadLevelQC, signalToNoise)
-	
-	beadLevelQC = round(beadLevelQC, 2)
-	
+		
 }
 
 else{
@@ -314,7 +308,7 @@ if(is.null(detectionMetrics)){
 	colnames(detectionTable) = names(tagsToDetect)
 	rownames(detectionTable) = an
 	for(i in 1:length(an)){
-		detectionTable[i,] = controlProbeDetection(BLData, transFun = transFun, array=i, tagsToDetect = tagsToDetect)
+		detectionTable[i,] = controlProbeDetection(BLData, transFun = transFun, array=i, tagsToDetect = tagsToDetect, negativeTag = negativeTag, controlProfile=controlProfile)
 	}
 
 }
@@ -345,15 +339,14 @@ hwrite(getSectionData(BLData, what=bashMetrics))
 ##Write to csv
 
 
-write.csv(beadLevelQC, file="probeMetrics.csv", quote=FALSE, row.names=FALSE)
+write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 
-write.csv(BLData@sectionData$Metrics, file="scanMetrics.csv", quote=FALSE, row.names=FALSE)	
+write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "scanMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)	
 
-write.csv(outlierTable, file="outlierMetrics.csv", quote=FALSE, row.names=FALSE)
+write.csv(outlierTable, file=paste(qcDir, "outlierMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 
-write.csv(detectionTable, file="detectionMetrics.csv", quote=FALSE, row.names=FALSE)
+write.csv(detectionTable, file=paste(qcDir, "detectionMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 	
-##return user to directory they started in
 
 
 }
