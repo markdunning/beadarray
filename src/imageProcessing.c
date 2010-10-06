@@ -47,9 +47,9 @@ SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords) {
 
     SEXP background;
     int imageWidth, imageHeight, nbeads, i, j, k;
-    double x, y, newX, newY, *bg;
+    double *bg;
     int tmp, start, end; 
-    int tid, nthreads, numProcs;
+    int tid, nthreads;
         
     imageHeight = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[0];
     imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
@@ -61,8 +61,7 @@ SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords) {
     /* find the number of processors and set the number of threads 
     currently has a maximum value of 6 */
     #if defined (_OPENMP)
-    numProcs = omp_get_num_procs();
-    omp_set_num_threads(numProcs);
+    omp_set_num_threads( omp_get_num_procs() );
     #endif
     
     /* initialize the background vector with zeros, can probably be removed */
@@ -109,7 +108,7 @@ double matrixMean(SEXP pixelMatrix, int imageHeight, int x, int y) {
 SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
 
     SEXP foreground;
-    int imageWidth, imageHeight, nbeads, i, j,  col, row;
+    int imageWidth, imageHeight, nbeads, i;
     double x, y, xc, yc, av[4], w[4], *fg;
     
     /* dimensions of the image */
