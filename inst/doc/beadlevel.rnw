@@ -29,7 +29,9 @@
 \maketitle
 
 \section*{Introduction}
-beadarray is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data output by Illumina's scanning software. Data presented in this form are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to take cope with this flexibility. The BeadArray technology involves randomly-arranged arrays of beads, with beads having the same probe sequence attached being known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or array of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis.
+beadarray is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data output by Illumina's scanning software. Data presented in this form are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to take cope with this flexibility. 
+
+The BeadArray technology involves randomly-arranged arrays of beads, with beads having the same probe sequence attached collectively known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis.
 
 This vignette demonstrates the processing of bead-level data using beadarray. The example dataset is taken from an early expression study using a BeadArray platform that is no longer commercially available. 
 
@@ -46,9 +48,9 @@ Wherever possible, questions about \Rpackage{beadarray} should be sent to the Bi
 (bioconductor@stat.math.ethz.ch). Therefore all problems and solutions will be
 kept in a searchable archive. When posting to this mailing list, please state the version of \Rpackage{beadarray} and {\tt R} to help to diagnose the problem. This can be done by pasting the output of running the command {\tt sessionInfo()}.
 
-<<options, ech=FALSE, eval=FALSE>>==
+<<options, echo=FALSE, eval=TRUE>>==
 
-options(width = 50)
+options(width = 70)
 
 @
 
@@ -61,7 +63,11 @@ data(BLData)
 
 \subsection{File formats}
 
-The raw images and text files required to perform a bead-level analysis are produced by Illumina's BeadScan software. To modify BeadScan's default settings to obtain bead-level data, see {\tt http://www.compbio.group.cam.ac.uk/Resources/illumina/}. The command to read bead-level data from the current working directory is as follows. The \Rfunarg{dir} argument may be used to specifiy an alternative location.
+The raw images and text files required to perform a bead-level analysis are produced by Illumina's BeadScan software. To modify BeadScan's default settings to obtain bead-level data, see \newline
+
+{\tt http://www.compbio.group.cam.ac.uk/Resources/illumina/}. 
+
+The command to read bead-level data from the current working directory is as follows. The \Rfunarg{dir} argument may be used to specifiy an alternative location.
 
 <<readIllumina, echo=TRUE, eval=FALSE, cache=TRUE>>==
 
@@ -69,9 +75,9 @@ BLData = readIllumina(useImages=FALSE, illuminaAnnotation = "Humanv3")
 @
 
 
-The \Rfunarg{useImages} argument specifies whether beadarray will read foreground and background intensities from the TIFF images present in the directory, allowing users to experiment with strategies for image processing. In this example we set {\tt useImages=FALSE} (often a convenient choice), and locally-background corrected intensities will simply be extracted from the txt files. The background values that have been subtracted are taken from the "background" pixel intensities surrounding each bead, and are not be confused with background correction futher along the analysis pipeline which may involve negative control beads to account for non-specific binding.
+The \Rfunarg{useImages} argument specifies whether beadarray will read foreground and background intensities from the TIFF images present in the directory, allowing users to experiment with strategies for image processing. In this example we set {\tt useImages=FALSE} (often a convenient choice), and locally-background corrected intensities will simply be extracted from the txt files. The background values that have been subtracted are taken from the "background" pixel intensities surrounding each bead, and are not to be confused with background correction futher along the analysis pipeline which may involve negative control beads to account for non-specific binding.
 
-Note that is not compulsory to specify which type of Illumina assay was used to generate the data when using \Rfunction{readIllumina}. However, for expression data it is convenient to specify the annotation of the platform using one of the strings Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1.
+Note that is not compulsory to specify which type of Illumina assay was used to generate the data. However, for expression data it is convenient to specify the annotation of the platform using one of the strings Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1.
 
 
 beadarray is able to utilize some of Illumina's proprietary files during analysis. These include {\tt .locs} and {\tt .sdf} files that contain the locations of {\it all} beads on an array (not just those that were decoded) and data about the physical layout of the chip. In combination, using these files can result in  significant time improvements to the detection of spatial artefacts and add additional information to some QA plots. These files are not read automatically, but if present, the path to these files is stored by beadarray for future use. If the metrics file generated by BeadScan is present in the directory, it will be read unaltered and stored.
@@ -86,7 +92,7 @@ The beadLevelData class contains a number of slots useful for describing Illumin
 
 
 
-Data with one value per array-section are stored in the sectionData slot. For instance, any metrics information present in the directory used by \Rfunction{readIllumina} will be stored here. This is also a convenient place to store any QC information derived during the pre-processing of the data, as we will see.
+Data types with one value per array-section can stored in the sectionData slot. For instance, any metrics information present in the directory used by \Rfunction{readIllumina} will be stored here. This is also a convenient place to store any QC information derived during the pre-processing of the data, as we will see. 
 
 The numeric identifiers for the bead-types in the \Rclass{beadLevelData} are known as ArrayAddress IDs in Illumina's annotation files. For downstream analysis it is convenient to convert these into the form ILMN\_... used in most annotation packages. Mapping objects to convert these IDs are supplied with beadarray in the {\tt extdata} directory, but this conversion may be performed automatically if the annotation of the \Rclass{beadLevelData} object is known. 
 
@@ -99,8 +105,11 @@ is(BLData)
 class(BLData)
 slotNames(BLData)
 
+##Get the beadData for array-section 1
 
 BLData[[1]][1:10,]
+
+##Alternative using accessor function
 
 getBeadData(BLData, array=1, what="Grn")[1:10]
 
@@ -191,8 +200,9 @@ boxplot(BLData,las=2, transFun =getBackgroundCorrectionIntensities, outline=FALS
 @
 
 
-The imageplot can be configured in many ways (see manual page for more details). Sections from a BeadChip often have one edge that is much longer than the other, and it is important to recognise this when producing the plots. By default, \Rpackage{beadarray} makes imageplots with the longest edge on the x-axis (suitable for widescreen monitors). However, with {\tt horizontal = FALSE}, the imageplot will be displayed in the same orientation as the original TIFF image from the directory. With the \Rfunarg{squareSize} we can control how many pixels from the original image make up the pixels in the resulting imageplot. 
+The imageplot can be configured in many ways (see manual page for more details). Sections from a BeadChip often have one edge that is much longer than the other, and it is important to recognise this when producing the plots. By default, \Rpackage{beadarray} makes imageplots with the longest edge on the x-axis (suitable for widescreen monitors). However, with {\tt horizontal = FALSE}, the imageplot will be displayed in the same orientation as the original TIFF image from the directory. With the \Rfunarg{squareSize} we can control how many pixels from the original image make up the pixels in the resulting imageplot. The following code produces imageplots for the first three array-section in the example dataset. Note that we also change the colour scheme to represent low and high intensities by light and dark green respectively.
 
+If {\tt .locs} information is available to \Rpackage{beadarray}, it will be able to determine the optimal \Rfunarg{squareSize} parameter. If not (as with our example dataset), the user may have to experiment with different values for \Rfunarg{squareSize}. 
 <<Imageplots, fig=TRUE, echo=TRUE, eval=TRUE, width=6, height=2>>==
 
 par(mfrow=c(1,3), mar = c(2,2,2,2))
@@ -209,18 +219,25 @@ imageplot(BLData, array=3, low="lightgreen", high="darkgreen", horizontal = FALS
 
 \section{BASH}
 
-BASH is a method for managing the spatial artefacts that may be found on an array. Three types of defect...
+BASH is a method for managing the spatial artefacts that may be found on an array as described in Cairns et al (2008). BASH uses the methodology developed for the Harshlight package, but altered to exploit the availability of replicated observations on the same array. The algorithm first identifies Extended defects, where an array has gradual but significant shifts across the surface. BASH also seeks to find more localized
+artifacts on arrays by classifying features that have unusual intensities as outliers and then finding
+outliers close to each other on the array. Two separate algorithms then search for areas with a larger
+numbers of outliers than would be expected by chance (Diffuse Defects) and large connected clusters
+of outliers (Compact defects). The random nature (both in position and numbers of each feature type)
+of Illumina arrays mean that the Harshlight algorithm must proceed in a different way to the original
+Harshlight implementation. Whereas Affymetrix probes have replicates on other arrays, Illumina beads
+are replicated on the same array. We can therefore generate an error image based on how much each
+bead differs from the median of its replicates’ intensities, instead of replicates on other arrays. Having
+performed manipulations to the error image, we can then find outliers on this image by bead type,
+determining which beads are more than 3 Median Absolute Devations, or MADs, from the median.
 
-Extended is only a quality score, may use extended = FALSE to make it quicker.
-
-Does not automatically remove beads. 
+Finally, since Illumina arrays are randomly arranged and use a hexagonal grid rather than rectangular,
+BASH has it’s own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
 
 <<BASH, echo=TRUE, eval=TRUE, results=hide>>==
 
-##Here's how to use BASH
 
 bsh = BASH(BLData, array=1:10)
-
 
 @
 
@@ -237,9 +254,8 @@ barplot(bsh$QC[,2], main="Extended Score")
 
 @
 
-\subsection{Saving the output of BASH}
 
-The weights themselves can be stored using setWeights. The QC can be appended to the sectionData slot of BLData
+The weights themselves can be stored using setWeights. These will be taken into when summarizing the bead-level data. The QC tables themselves can be appended to the {\tt sectionData} slot of \Robject{BLData}.
 
 <<savingBASH, echo=TRUE, eval=TRUE>>==
 
@@ -267,7 +283,7 @@ table(controlProfile[,2])
 
 @
 
-Two particular controls on expression arrays are housekeeping and biotin controls. With the \Rfunction{poscontPlot} function, we can plot the intensities of any ArrayAddressIDs that are annotated as housekeeping or Biotin in the corresponding entry in \Robject{ExpressionControlData} or \Robject{controlProfile}. The \Rfunction{poscontPlot} is flexible in allowing other "tags" in the \Robject{controlProfile}, in the example below we configure the plot to show both housekeeping and negative controls in the same plot. 
+Two particular controls on expression arrays are housekeeping and biotin controls. With the \Rfunction{poscontPlot} function, we can plot the intensities of any ArrayAddressIDs that are annotated as belonging to the Housekeeping or Biotin group in the \Robject{ExpressionControlData} object or \Robject{controlProfile}. The \Rfunction{poscontPlot} is flexible in allowing other "tags" in the \Robject{controlProfile}, in the example below we configure the plot to show both housekeeping and negative controls in the same plot. 
 
 <<positiveControls, eval=TRUE, echo=TRUE,fig=TRUE>>==
 
@@ -290,6 +306,8 @@ With knowledge of which ArrayAddressIDs match control types, we can easily provi
 
 The \Rfunction{makeQCTable} function extends this functionality to produce a table of summaries for all sections in the \Rclass{beadLevelData} object. These data can be stored in the sectionData slot for future reference.
 
+It is also informative to compare the expression level of various control types to the background level of the array. This is done by the \Rfunction{controlProbeDetection} function that returns the percentage of each control type that are significantly expressed above background level. Obivously for positive controls we would expect this percentage to be 100 on a good quality array.
+
 <<qaSummary, echo=TRUE, eval=TRUE>>==
 
 quickSummary(BLData, array=1, reporterIDs=controlProfile[,1], reporterTags=controlProfile[,2])
@@ -303,7 +321,10 @@ BLData = insertSectionData(BLData, what="BeadLevelQC", data=qcReport)
 
 names(BLData@sectionData)
 
-##Example of controlProbeDetection?
+for(i in 1:10){
+print(controlProbeDetection(BLData, array = i, controlProfile=controlProfile, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
+}
+
 
 @ 
 
@@ -315,6 +336,9 @@ The generation of QA plots for all sections in the beadLevelData object is provi
 <<qcPipeline, echo=FALSE, eval=FALSE, cache=TRUE>>==
 
 expressionQCPipeline(BLData, qcDir="QC")
+
+expressionQCPipeline(BLData, controlProfile=controlProfile, positiveControlTags=c("housekeeping", "biotin"), hybridisationTags = c("cy3_hyb", "high_stringency_hyb"), zlim=c(10,12), horizontal=F, negativeTag = "negative", tagsToDetect=list(Housekeeping = "housekeeping", Biotin = "biotin", hybridisation = "cy3_hyb"))
+
 
 @
 
@@ -339,7 +363,10 @@ outlierplot(BLData, array=3, horizontal = FALSE)
 
 \section{Summarization}
 
-The summarization procedure
+The summarization procedure takes the \Robject{BLData} object, where each bead-type is represented by differing numbers of observations on each array, and produces a summarized object to make comparisons between arrays. For each array section represented in the \Robject{BLData} object, all observations are extracted, transformed, and then grouped together according to their ArrayAddressID. Outliers are removed and the mean and standard deviation of the remaining beads are calculated. 
+
+The \Rclass{illuminaChannel} class is used to define how summarization proceeds with specification of a transformation function, a function to remove outliers and function to calculate the means and standard deviation. The code below creates two different summarized objects; one which uses mean and standard deviations, and one which uses median and standard errors.
+
 <<createBeadSummaryData, echo=TRUE,eval=TRUE>>=
 
 myMean = function(x) mean(x,na.rm=TRUE)
@@ -347,10 +374,25 @@ mySd = function(x) sd(x,na.rm=TRUE)
 
 greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
 
-
 system.time(BSData <- sectionLevelSummary(BLData, list(greenChannel), silent=TRUE))
 
 BSData
+
+head(exprs(BSData)[,1:4])
+head(se.exprs(BSData)[,1:4])
+
+myMedian = function(x) median(x, na.rm=TRUE)
+mySe = function(x) sd(x, na.rm=TRUE)/sqrt(length(x))
+
+
+greenChannel2 = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMedian, mySe,"G")
+
+system.time(BSData2 <- sectionLevelSummary(BLData, list(greenChannel2), silent=TRUE))
+
+BSData2
+
+head(exprs(BSData2)[,1:4])
+head(se.exprs(BSData2)[,1:4])
 
 @ 
 

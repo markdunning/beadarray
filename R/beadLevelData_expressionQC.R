@@ -1,4 +1,4 @@
-expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative"){
+expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
 
 
 an = sectionNames(BLData)
@@ -251,6 +251,18 @@ outfile = openPage(filename = paste(qcDir, "/Summary.htm", sep=""))
 hwrite("Quality assessment summary", heading=1, outfile)
 
 
+##Create boxplot using defined functions
+
+if(plotType == ".jpeg") jpeg(paste(qcDir, "/Boxplot.jpeg",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.jpeg", outfile)
+if(plotType == ".png") png(paste(qcDir, "/Boxplot.jpeg",sep=""), width = 1200, height = 300);hwriteImage("Boxplot.png", outfile)
+if(plotType == ".pdf") pdf(paste(qcDir, "/Boxplot.pdf",sep=""), width = 12, height = 3);
+
+boxplot(BLData, transFun = boxplotFun, outline=FALSE)
+
+dev.off()
+
+
+
 hwrite("Scan Metrics", heading=2,outfile)
 
 if("Metrics" %in% colnames(BLData@sectionData)) hwrite(BLData@sectionData$Metrics, outfile)
@@ -341,11 +353,11 @@ hwrite(getSectionData(BLData, what=bashMetrics))
 
 write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 
-write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "scanMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)	
+write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)	
 
-write.csv(outlierTable, file=paste(qcDir, "outlierMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
+write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 
-write.csv(detectionTable, file=paste(qcDir, "detectionMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
+write.csv(detectionTable, file=paste(qcDir, "/detectionMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
 	
 
 

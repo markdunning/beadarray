@@ -8,7 +8,7 @@ Flexible bead-level QC pipeline
 Function to produce various QC plots and HTML summary pages for bead-level data.
 }
 \usage{
-expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative")
+expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -68,6 +68,10 @@ character strings defining which positive controls to plot
 }
   \item{hybridisationTags}{
 additional control types to be plotted 
+}
+
+  \item{negativeTag}{
+character string to identify which control type in the control profile corresponds to negative controls
 }
   \item{\dots}{
 other plot arguments
