@@ -33,11 +33,6 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
 
 }
 
-\details{
-
-
-
-}
 
 \value{
     Returns an object of class ExpressionSetIllumina

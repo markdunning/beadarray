@@ -28,11 +28,6 @@ if TRUE combine the weights with existing weights (if they exist)
 name of column to assign weights to
 }
 }
-\details{
-
-
-}
-
 
 \value{
 Modified beadLevelData object
@@ -42,7 +37,4 @@ Modified beadLevelData object
 Mark Dunning
 }
 
-\examples{
-
-}
 

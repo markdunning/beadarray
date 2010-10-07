@@ -41,10 +41,8 @@ Details of the controls on the array-section can be inferred from the annotation
 
 The ArrayAddressIDs that correspond to the specified tags are matching to the ArrayAddressIDs for the chosen array and intensities for all beads are extracted. The percentage reported is the percentage of beads of each control type that are detected at the defined threshold.
 
+}
 
-}
-\value{
-}
 \author{
 Mark Dunning
 }

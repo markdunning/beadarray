@@ -34,8 +34,6 @@ a function used to summarize each category
 The function can be used to calculate summarized values for particular control types on a section. The IDs for all controls are supplied in the \code{reporterIDs} argument along with which control type they belong to in the \code{reporterTags} argument. A summarized value for each control type is then calculated with the specified function (default is mean).
 
 }
-\value{
-}
 
 \examples{
 
@@ -48,7 +46,6 @@ head(controlProfile)
 table(controlProfile[,2])
 
 quickSummary(BLData, array=1,reporterIDs = controlProfile[,1], reporterTags = as.character(controlProfile[,2]))
-
 
 }
 

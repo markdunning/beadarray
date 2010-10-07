@@ -87,11 +87,6 @@ The function should be able to run automatically for expression data that has it
 
 }
 
-\value{
-
-}
-\references{
-}
 \author{
 Mark Dunning
 }

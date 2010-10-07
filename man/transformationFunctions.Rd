@@ -8,8 +8,7 @@
 Functions for transforming the data store in a \code{beadLevelData} object for easier visualisation or summarisation.
 }
 \description{
-
-
+Functions for transforming the data store in a \code{beadLevelData} object for easier visualisation or summarisation.
 }
 \usage{
 logGreenChannelTransform(BLData, array)
