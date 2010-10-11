@@ -338,7 +338,7 @@ hwrite(round(detectionTable, 2),outfile)
 
 closePage(outfile)
 
-if(is.null(bashMetrics)) hwrite("BASH metrics unavailable. Re-run pipeline after BASH\n")
+if(is.null(bashMetrics)) hwrite("BASH metrics unavailable. Re-run pipeline after BASH\n", outfile)
 
 else{
 
