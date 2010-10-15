@@ -128,6 +128,9 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
             if(length(temp[filetype[temp]==txtsuff])==1){
 
                 sectionName[i] <- strsplit(filelist[temp[filetype[temp]==txtsuff]], "\\.")[[1]][1];
+		####In order to make iScan files available
+		sectionName[i] = gsub("_perBeadFile", "", sectionName[i])	
+
 
                 sectiontext[i]<-filelist[temp[filetype[temp]==txtsuff]]
             }
@@ -194,7 +197,8 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
     }
 
 
-
+                metrow<-rep(NA,length(keys))
+	
     ##match up metrics
     if(length(fmet)>0){
 
@@ -207,7 +211,9 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
             if(!all(colnames(storemet)!=metricchip)){
                 if(verbose){cat("Found chip column.\n")}
 
-                metrow<-rep(NA,length(keys))
+
+		keys = gsub("_perBeadFile", "", keys)		
+
                 for(i in 1:(dim(storemet)[1])){
 
                     matchsect<-grep(paste(storemet[[metricsection]][i], "$", sep = ""), keys)

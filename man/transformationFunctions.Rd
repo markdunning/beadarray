@@ -2,7 +2,8 @@
 \alias{logRedChannelTransform}
 \alias{logGreenChannelTransform}
 \alias{logRatioTransform}
-
+\alias{greenChannelTransform}
+\alias{redChannelTransform}
 
 \title{
 Functions for transforming the data store in a \code{beadLevelData} object for easier visualisation or summarisation.

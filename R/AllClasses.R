@@ -24,6 +24,6 @@ setClass("illuminaNChannelSet",representation(channelFac = "vector"), contains="
 
 
 setClass("ExpressionSetIllumina",
-         representation(QC ="list",BeadLevelQC="list", channelData="list"),
+         representation(QC = "AnnotatedDataFrame", channelData="list"),
          contains="eSet"
 )

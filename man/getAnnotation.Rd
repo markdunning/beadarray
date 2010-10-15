@@ -21,8 +21,7 @@ a \code{beadLevelData} object
 
 }
 \details{
-A character string is used to specify the annotation with the currently supported values being; Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1 and Ratv1. This string is used within beadarray to retrieve control probe ids for each platform.
-}
+A character string is used to specify the annotation with the currently supported values being; Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1 and Ratv1. This string is used within beadarray to retrieve control probe IDs within particular QC functions.}
 \value{
 setAnnotation returns a \code{beadLevelData} object with the annotation stored.
 

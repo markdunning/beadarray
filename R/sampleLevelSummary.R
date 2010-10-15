@@ -1,5 +1,22 @@
+uniqueProbeList = function(BLData){
 
-sampleLevelSummary = function(BLData, channelList, probeIDs=NULL, sampleFac= NULL,useMulticore = FALSE, weightNames = "wts"){
+secNames = sectionNames(BLData)
+
+uIDs = NULL
+
+##Probably only need to look at one sample?
+
+for(i in 1:length(secNames)){
+
+	uIDs = c(uIDs, unique(BLData[[i]][,1]))
+
+}
+
+unique(uIDs)
+
+}
+
+sampleLevelSummary = function(BLData, channelList, probeIDs=NULL, useSampleFac = TRUE, sampleFac= NULL,useMulticore = FALSE, weightNames = "wts"){
 
 arraynms = sectionNames(BLData)
 
@@ -99,7 +116,7 @@ for(cNum in 1:length(channelList)){
 			
 				###Transform to get the values we are interested in summarizing one value per bead
 					
-				newVals = transFun(tmp)					
+				newVals = transFun(BLData, array=i)					
 				
 				####Check correct number of values were returned
 

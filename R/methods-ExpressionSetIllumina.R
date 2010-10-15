@@ -1,22 +1,17 @@
 
 setMethod("initialize", "ExpressionSetIllumina",
           function(.Object,
-                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, NoBeads=NoBeads, Detection=Detection, storage.mode="list"),
+                   assayData = assayDataNew(exprs=exprs,se.exprs=se.exprs, nObservations=nObservations, Detection=Detection, storage.mode="list"),
 
                    phenoData = new("AnnotatedDataFrame"),
                    exprs=new("matrix"),
                    se.exprs=new("matrix"),
-                   NoBeads=new("matrix"),
+                   nObservations=new("matrix"),
                    Detection=new("matrix"),
                    annotation = character(),
                    featureData = new("AnnotatedDataFrame"),
-                   experimentData = new("MIAME"),
-                   QCexprs = new("matrix"),
-                   QCBeadStDev = new("matrix"),
-                   QCNoBeads = new("matrix"),
-                   controlType=new("matrix"),
-                   QCData = assayDataNew(exprs = QCexprs,
-                   se.exprs=QCBeadStDev, NoBeads=QCNoBeads,controlType=controlType,storage.mode="list"))
+                   experimentData = new("MIAME")
+  )
  {
             .Object<-callNextMethod(.Object,
                            assayData = assayData,
@@ -25,24 +20,27 @@ setMethod("initialize", "ExpressionSetIllumina",
                            annotation = annotation,
                            featureData = featureData
 			   )
-            .Object@QC=QCData
+            
             .Object
           })
 
 
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
           x<-callNextMethod() # x, i, j, ..., drop=drop)
-#        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
-          if (!missing(j)) {
-             for(k in 1:length(x@QC))
-                 x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
-          }
+
+        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
+	if(!is.null(x@QC) && !missing(j)) x@QC<-x@QC[j,, ..., drop = drop]
+	
+          #if (!missing(j)) {
+           #  for(k in 1:length(x@QC))
+            #     x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
+          #}
           x
 })
 
 
 setValidity("ExpressionSetIllumina", function(object) {
-  assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "NoBeads"))
+  assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "nObservations"))
 })
 
 
@@ -62,14 +60,14 @@ setReplaceMethod("se.exprs", signature(object="ExpressionSetIllumina",value="mat
 	assayDataElementReplace(object, "se.exprs", value)
 })
 
-setGeneric("NoBeads", function(object) standardGeneric("NoBeads"))
+setGeneric("nObservations", function(object) standardGeneric("nObservations"))
 
-setMethod("NoBeads", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "NoBeads"))
+setMethod("nObservations", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "nObservations"))
 
-setGeneric("NoBeads<-", function(object, value) standardGeneric("NoBeads<-"))
+setGeneric("nObservations<-", function(object, value) standardGeneric("nObservations<-"))
 
-setReplaceMethod("NoBeads", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
-	assayDataElementReplace(object, "NoBeads", value)
+setReplaceMethod("nObservations", signature(object="ExpressionSetIllumina",value="matrix"), function(object, value){
+	assayDataElementReplace(object, "nObservations", value)
 })
 
 setGeneric("Detection", function(object) standardGeneric("Detection"))
@@ -106,9 +104,6 @@ setReplaceMethod("QCInfo", signature(object="ExpressionSetIllumina", value="list
 	object
 })
 
-setGeneric("getVariance", function(object, offset=0) standardGeneric("getVariance"))
-
-setMethod("getVariance", "ExpressionSetIllumina", function(object, offset=0) assayDataElement(object, "se.exprs")^2*assayDataElement(object, "NoBeads") + offset)
 
 #setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
 
@@ -130,6 +125,9 @@ setMethod("getVariance", "ExpressionSetIllumina", function(object, offset=0) ass
   # - allows different number of reporters/features
   # - will merge data from identical column names into 1 column ie rbind()) 
   # - only works on 2-dimensional assayData elements
+
+
+
   combineElement <- function(x, y) {
     outarr<-array(NA,dim=c(length(newdimnames[[1]]),length(newdimnames[[2]])),newdimnames)
     mode(outarr)<-mode(x)
@@ -137,6 +135,8 @@ setMethod("getVariance", "ExpressionSetIllumina", function(object, offset=0) ass
     outarr[rownames(x),colnames(x)]<-x
     outarr
   }
+
+
   storage.mode <- storageMode(x)
   nmfunc <- assayDataElementNames
 

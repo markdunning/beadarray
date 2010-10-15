@@ -9,10 +9,13 @@ setMethod("channel",
 	selArray = which(object@channelData[[1]] == name)	
 		
 	BSData = new("ExpressionSetIllumina")
-	assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],NoBeads=NoBeads(object)[,selArray],storage.mode="list")
+	assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],storage.mode="list")
 	
+	#assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],storage.mode="list")
+
 	BSData@channelData = object@channelData
-	BSData@phenoData = object@phenoData[selArray,]	
+	BSData@phenoData = object@phenoData
+	BSData@featureData = object@featureData	
 	BSData
 
 	}

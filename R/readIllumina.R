@@ -130,6 +130,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL)
  	if(!is.null(illuminaAnnotation)){
 		BLData = setAnnotation(BLData, illuminaAnnotation)
 	}   	
+	else warning("No Illumina annotation was specified. Try setting manually using setAnnotation..\n")
 
 
     return(BLData);

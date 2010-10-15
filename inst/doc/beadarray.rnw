@@ -59,7 +59,6 @@ These documents may be accessed using the following commands:
 library(beadarray)
 beadarrayUsersGuide(topic="beadlevel")
 beadarrayUsersGuide(topic="beadsummary")
-beadarrayUsersGuide(topic="BASH")
 @
 
 \section{Citing \Rpackage{beadarray}}
@@ -88,12 +87,12 @@ variance-stabilizing transformation}. BMC Research Notes, 2008, 1:18.\newline
 
 If you use BASH to detect spatial artefacts, please cite\newline
 
-Cairns JM, Dunning MJ, Ritchie ME, Russell R, Lynch AG. \emph{BASH: A tool for managing BeadArray spatial artefacts}. (submitted).\newline
+Cairns JM, Dunning MJ, Ritchie ME, Russell R, Lynch AG. \emph{BASH: A tool for managing BeadArray spatial artefacts}. Bioinformatics, 2008, 15:24(24).\newline
 
 If you use the probe reannotation for Illumina expression arrays (used in the current Bioconductor annotation packages named \Rpackage{illuminaXXXXX.db}) 
 please cite\newline
 
-Barbosa-Morais NL, Dunning MJ, Ritchie ME, Lynch AG, Tavar\'e S. \emph{Reannotation of Illumina BeadArray probes improves the interpretation of gene expression data}. (in preparation).\newline
+Barbosa-Morais NL, Dunning MJ, Samarajiwa SA, Darot JF, Ritchie ME, Lynch AG, Tavar\'e S. \emph{A re-annotation pipeline for Illumina BeadArrays: improving the interpretation of gene expression data.}. Nucleic Acids Research 2010 Jan;38(3)e17.Epub 2009 Nov 18.\newline
 
 Supplementary tables and supporting information for this annotation are available at\newline
 

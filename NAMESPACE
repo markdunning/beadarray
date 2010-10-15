@@ -3,10 +3,12 @@ useDynLib(beadarray)
 import(Biobase)
 import(graphics)
 
-exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel)
-exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs)
+importFrom(limma, normalizeQuantiles, neqc)
 
-export(insertBeadData, getBeadData, plotChipLayout, createTargetsFile,  plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, quickSummary, getAnnotation, setAnnotation, sectionLevelSummary, illuminaOutlierMethod, beadStatusVector, insertSectionData, plotBeadLocations, calculateOutlierStats, controlProbeDetection, backgroundCorrectSingleSection)
+exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel)
+exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, "se.exprs<-","exprs<-", "nObservations<-", "Detection<-")
+
+export(insertBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide)
 
 
 ## Data input
@@ -16,13 +18,17 @@ export(readIllumina, readLocsFile, convertBeadLevelList)
 export(readTIFF, plotTIFF)
 
 ## Transformations
-export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform)
+export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform)
 
 ## QC
-export(outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline)
+export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection,plotBeadLocations)
 
 ## BASH etc.
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights)
+
+## Summary Data
+
+export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calculateDetection)
 
 ## Deprecated functions.  Included so arrayQualityMetrics doesn't break
 exportClasses(BeadLevelList)

@@ -8,21 +8,23 @@ setMethod("show", "beadLevelData", function(object) {
 
 	show(object@experimentData)	
 
+	nArrays = length(sectionNames(object))
+
 	ncols = 4
 	nrows = 5
 	for(i in 1:length(object@sectionData)){
 
 		cat(names(object@sectionData)[i], "\n\n")
 
-		if(is.matrix(object@sectionData[[1]])){
+		if(is.data.frame(object@sectionData[[1]])){
 			if(ncol(object@sectionData[[i]]) < ncols){
 
 				show(object@sectionData[[i]][1:nrows,])
-				cat(paste("\n...", numBeads(object)[1]-nrows, "more rows of data\n\n"))
+				cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
 			}
 			else{
 				show(object@sectionData[[i]][1:nrows,1:ncols])
-				cat(paste("\n...", numBeads(object)[1]-nrows, "more rows of data\n\n"))
+				cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
 				cat("\n..", ncol(object@sectionData[[i]]) - ncols, "more columns of data\n\n")
 			}
 		}

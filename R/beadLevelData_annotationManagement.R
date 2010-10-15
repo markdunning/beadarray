@@ -10,7 +10,7 @@ setAnnotation = function(BLData, annoName){
 
 data(ExpressionControlData)
 
-if(!annoName %in% names(ExpressionControlData)) stop("Supplied annotation name must be one of:" , names(ExpressionControlData))
+if(!annoName %in% names(ExpressionControlData)) stop("Supplied annotation name must be one of:" , paste(names(ExpressionControlData), collapse=" "))
 
 BLData@experimentData$annotation = annoName
 

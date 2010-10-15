@@ -5,6 +5,13 @@ logGreenChannelTransform = function(BLData, array){
         log2.na(x)
 }
 
+greenChannelTransform = function(BLData, array){
+
+	x = getBeadData(BLData, array=array,what="Grn")
+
+}
+
+
 
 logRedChannelTransform = function(BLData,array){
 
@@ -12,6 +19,13 @@ logRedChannelTransform = function(BLData,array){
 
         log2.na(x)
 
+
+}
+
+
+redChannelTransform = function(BLData,array){
+
+	x = getBeadData(BLData, array=array,what="Red")
 
 }
 
@@ -28,8 +42,6 @@ logRatioTransform = function(BLData, array=array){
 
 
 
-myMean = function(x) mean(x,na.rm=TRUE)
-mySd = function(x) sd(x,na.rm=TRUE)
 
 illuminaOutlierMethod= function(inten, probeList,n= 3)
  {
@@ -49,10 +61,6 @@ illuminaOutlierMethod= function(inten, probeList,n= 3)
     sel = which((probeList > 0) & (foo$binStatus == 0))
     which(!nasinf)[sel]
 }
-
-greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
-redChannel = new("illuminaChannel", logRedChannelTransform, illuminaOutlierMethod, myMean, mySd, "R")
-logRatio = new("illuminaChannel", logRatioTransform, illuminaOutlierMethod, myMean, mySd, "M")
 
 
 
