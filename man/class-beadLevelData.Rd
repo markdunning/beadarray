@@ -23,9 +23,8 @@
   Objects of this class contain the following slots
   \tabular{ll}{
   \code{beadData}:\tab A list of arrays, indexed by array name.  Each item in this list is itself a list, containing enviroments holding the data for that array.\cr
-  \code{sectionData}:\tab a list containing array information. Each item in the list is a data frame containing one row for each section\cr
-  \code{experimentData}:\tab an 'AnnotatedDataFrame' containing  
-  experimental information.\cr
+  \code{sectionData}:\tab a list containing information. Each item in the list is a data frame containing one row for each section\cr
+  \code{experimentData}:\tab a list containing the annotation of the platform, link to the sdf file and type of data (slide or Sentrix Array Matrix) \cr
   \code{history}: \tab Character vector storing the operations performed on this object.
   }
 }
@@ -41,7 +40,7 @@
 
 \section{Accessing data from the class}{
   \describe{
-    \item{\code{\link{getBeadData}}}{Add new data}
+    \item{\code{\link{getBeadData}}}{retrieve data}
     \item{\code{\link{insertBeadData}}}{Input or modify existing data}
   }
 }

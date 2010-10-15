@@ -22,6 +22,13 @@ the IDs corresponding to each intensity value
 number of MADs cutoff used
 }
 }
+
+\details{
+This function is called within the summarisation routine of beadarray to exclude outliers from an array-section prior to summary. The intensities are not assumed to be on any particular scale and can result from any user-defined transformation function. 
+
+}
+
+
 \value{
 the positions in the original vector that were determined to be outliers
 
@@ -39,5 +46,4 @@ oList = illuminaOutlierMethod(logGreenChannelTransform(BLData, 1), getBeadData(B
  
 
 }
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+

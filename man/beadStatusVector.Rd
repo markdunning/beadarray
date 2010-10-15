@@ -23,7 +23,7 @@ an optional control profile data frame
 }
 }
 \details{
-The function requires a control profile data frame which must be specified or created using the annotation of the \code{beadLevelData} object. 
+The function requires a control profile data frame which must be specified or can be created automatically using the annotation of the \code{beadLevelData} object. 
 }
 \value{
 a vector of character strings giving the status of each bead

@@ -39,7 +39,10 @@ numeric value for threshold for detection
 \details{
 Details of the controls on the array-section can be inferred from the annotation of the \code{beadLevelData} object or supplied as a data frame. The first column of the data frame should contain ArrayAddressIDs, with the control type of the each ID in the second column. The strings supplied in the \code{tagsToDetect} and \code{negativeTag} parameters should be present in this column. 
 
-The ArrayAddressIDs that correspond to the specified tags are matching to the ArrayAddressIDs for the chosen array and intensities for all beads are extracted. The percentage reported is the percentage of beads of each control type that are detected at the defined threshold.
+The ArrayAddressIDs that correspond to the specified tags are matching to the ArrayAddressIDs for the chosen array and intensities for all beads are extracted. The function implements Illumina's method for calculating the detection scores for all bead types on a given array. Within an array, Illumina discard negative control bead-types whose summary values are more than three MADs from the median for the negative controls. Illumina then rank the summarized intensity for each other bead-type against the summarized values for the remaining negative control bead-types and calculate a detection p-value  1-R/N, where R is the relative rank of the bead intensity when compared to the $N$ remaining negative controls. Thus, if a particular bead has higher intensity than all the negative controls it will be assigned a value of 0. This calculation is repeated for all arrays. 
+
+
+The percentage reported is the percentage of beads of each control type that are detected at the defined threshold.
 
 }
 

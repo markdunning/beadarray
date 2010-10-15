@@ -36,7 +36,7 @@ If the annotation of the \code{beadLevelData} has been set by \code{\link{readIl
 }
 
 \value{
-A matrix with one row per section and one column for each combination control type and summary function.
+A matrix with one row per section and one column for each combination of control type and summary function.
 }
 
 \examples{

@@ -21,7 +21,7 @@ integer specifying what section to plot
 Function that defines how values from the BLData object are to be transformed prior to plotting. 
 }
   \item{squareSize}{
-Numeric specifying how many pixels
+Numeric specifying how many pixels in the original image make up each square in the imageplot. If NULL, the function will guess a suitable value from the data. 
 }
   \item{useLocs}{
 If \code{TRUE} the function will read the locs file associated with the section in order to include the physical properties of the section in the plot
@@ -53,7 +53,7 @@ Produces a standard imageplot for the specified section. The default, transforma
 
 The default plotting orientation is such that the longest edge of the section is along the x axis. If \code{horizontal = FALSE}, the longest edge will by on the y axis and should match how the corresponding TIFF image from the BeadScan directory is orientated. 
 
-If \code{locs = TRUE} and locs file were made available to \code{readIllumina}, the segments that the section is comprised of will be visible (For expression BeadChips, each section is made of nine physically separate segments).
+If \code{locs = TRUE} and locs file were made available to \code{readIllumina}, the segments that the section is comprised of will be visible (For expression BeadChips, each section is made of nine physically separate segments). The squareSize parameter will also be set appropriately.
 
 
 As a result of both having identical function names this function can conflict with the  \code{\link[limma]{imageplot}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' imageplot() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::imageplot()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.

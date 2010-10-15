@@ -36,6 +36,13 @@ Mark Dunning
 \examples{
 data(BLData)
 
+data(controlProfile)
+
+
+qct = makeQCTable(BLData, controlProfile=controlProfile)
+
+BLData = insertSectionData(BLData, what="ProbeQC", data = qct)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

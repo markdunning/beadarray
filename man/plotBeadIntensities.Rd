@@ -27,7 +27,7 @@ what ArrayAddress IDs to be plotted
 function specifying what transformation to be applied to the \code{beadLevelData} prior to plotting 
 }
   \item{cols}{
-a vector of colours to be used to plot each ID
+a vector of colours to be used to plot each ID. If NULL the \code{rainbow} function is used to generate colours.
 
 }
   \item{\dots}{

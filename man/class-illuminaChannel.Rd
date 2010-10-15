@@ -12,67 +12,38 @@
 \section{Slots/List Components}{
   Objects of this class contain the following slots
   \tabular{ll}{
-  \code{transFun}:\tab A function that defines how to obtain a split list indexed by bead-type, containing all observations on a given array.\cr
-  \code{outlierFun}:\tab A function that defines how.\cr
+  \code{transFun}:\tab function to transform the data from each array-section.\cr
+  \code{outlierFun}:\tab A function for identifying outliers from a list of bead intensiites and associated ArrayAddressIDs .\cr
   \code{exprFun}:\tab A function for producing a single summary of expression level from a vector of bead-type intensities. e.g. mean .\cr
   \code{varFun}:\tab A function for producing a single summary of variability from a vector of bead-type intensities. e.g. sd \cr
   \code{name}: \tab Character vector that defines a name for the channel
   }
 }
 
+\details{
+
+From beadarray version 2.0 onwards, users are allowed more flexibility in how to create summarized data from bead-level data. The \code{illuminaChannel} is a means of allowing this flexibility by definining how summarization will be performed on each array section in the bead-level data object. The three keys steps applied to each section are; 1) use a transform function to get the quantities to be summarized (one value per bead). The most common use-case would be to extract the Green channel intensities and possibly perform a log2 transformation. 2) remove any outliers from this list of values 3) split the values according to ArrayAddressIDs and apply the definied \code{exprFun} and \code{varFun} to the quantities belonging to each ArrayAddress.
+
+
+}
+
 \author{Mark Dunning}
 
 \examples{
 
-greenChannelTransform = function(x){
-	probeIDcol = which(colnames(x) == "ProbeID")
-	gCol = which(colnames(x) == "G")
-
-	split(x[,gCol], x[,probeIDcol])
-}
-
-redChannelTransform = function(x){
-	probeIDcol = which(colnames(x) == "ProbeID")
-	gCol = which(colnames(x) == "R")
-
-	split(x[,gCol], x[,probeIDcol])
-}
-
-illuminaOutlierMethod = function(x){
-
-M = median(x)
-
-md = mad(x)
-
-x[x < M+3*md & x > M-3*md]
-
-}
-
-
-
 greenChannel = new("illuminaChannel", greenChannelTransform, illuminaOutlierMethod, mean, sd, "G")
 redChannel = new("illuminaChannel", redChannelTransform, illuminaOutlierMethod, mean, sd, "R")
 
-
-###Example if we have two-channel data
-
-logRatioTransform = function(x){
-	probeIDcol = which(colnames(x) == "ProbeID")
-	gCol = which(colnames(x) == "G")
-	rCol = which(colnames(x) == "R")
-	
-	lr = x[,gCol]  - x[,rCol]
-	
-	split(x[,gCol],lr)
-}
-
-
 logRatio = new("illuminaChannel", logRatioTransform, illuminaOutlierMethod, mean, sd, "M")
 
+data(BLData)
+
+BSData = summarize(BLData, channelList = list(greenChannel))
+
 }
 
 
 
 
-\seealso{\code{\link{readIllumina}}}
+\seealso{\code{\link{summarize}}}
 \keyword{classes}

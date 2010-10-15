@@ -8,7 +8,7 @@ Flexible bead-level QC pipeline
 Function to produce various QC plots and HTML summary pages for bead-level data.
 }
 \usage{
-expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform)
+expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE, controlProfile = NULL, overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,28 +28,17 @@ desired file extension for plots (jpeg or png)
 if TRUE imageplots and outlier plots are produced with longest edge on x axis
 }
   \item{controlProfile}{
-a data frame defining all control types 
+a data frame defining all control types. not required if annotation information is stored in the bead-level object
 }
-  \item{beadLevelQC}{
-(optinal) a character string giving the name under which bead-level qc is stored in sectionData
-}
-  \item{bashMetrics}{
-(optinal) a character string giving the name under which BASH qc is stored in sectionData
-}
-  \item{outlierMetrics}{
-(optinal) a character string giving the name under which outlier qc is stored in sectionData
-}
-  \item{detectionMetrics}{
-(optinal) a character string giving the name under which detection qc is stored in sectionData
-}
-  \item{overWrite}{
+
+ \item{overWrite}{
 if FALSE any plots that exist in the directory will not be recreated
 }
   \item{nSegments}{
 how many segments each section is divided into
 }
   \item{outlierFun}{
-a function to removed outlier
+a function to removed outliers
 }
   \item{tagsToDetect}{
 which control types to used in the detection metrics
@@ -105,6 +94,7 @@ Mark Dunning
 data(BLData)
 data(controlProfile)
 
+#Not Run
 #expressionQCPipeline(BLData, controlProfile=controlProfile, positiveControlTags=c("housekeeping", "biotin"), hybridisationTags = c("cy3_hyb", "high_stringency_hyb"), zlim=c(10,12), horizontal=F, negativeTag = "negative", tagsToDetect=list(Housekeeping = "housekeeping", Biotin = "biotin", hybridisation = "cy3_hyb"))
 
 

@@ -11,7 +11,7 @@ Function that determines the outlier beads on an array and how they are distribu
 \usage{
 calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, useLocs = TRUE, nSegments = 9)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{BLData}{
 a \code{\link{beadLevelData}} object
@@ -34,7 +34,7 @@ manually set how many segments the section is divided into
 }
 \details{
 
-A section of an expression BeadChip (e.g. the Humanv3 or HumanHT-12) is made up of 9 physcially-separate segments. A useful QA check is to see how the outliers are distributed among these segments. Outliers are beads that have outlying intensities according to some rule that the user can specify. The default (as used by Illumina) is to exclude beads that are more than 3 median absolute deviations from the median.
+A section of an expression BeadChip (e.g. the Humanv3 or HumanHT-12) is made up of 9 physcially-separate segments. A useful QA check is to see how the outliers are distributed among these segments. Outliers are beads that have outlying intensities according to some rule that the user can specify. The default (as used by Illumina) is to exclude beads that are more than 3 median absolute deviations from the median. Once outliers are determined, the coordinates for these outliers are binned into segments by assuming that the segments are evenly spaced across the section surface.
 
 Note that sections from Sentrix Array Matrix do not have segments, so the results may not be informative
 
@@ -56,7 +56,7 @@ Mark Dunning
 
 data(BLData)
 
-##Artificical example, there are no segments on this type of BeadArray
+##Artificial example, there are no segments on this type of BeadArray
 
 calculateOutlierStats(BLData, array=1, nSegments=10, useLocs=FALSE)
 

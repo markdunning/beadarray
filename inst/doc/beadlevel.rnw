@@ -155,33 +155,6 @@ head(BLData[[1]])
 
 @
 
-<<normExp, echo=FALSE, eval=FALSE>>==
-
-normExpPars = matrix(nrow=10, ncol=3)
-
-##Estimate parameters from normexp
-
- for(i in 1:10){
- 
- fooMat = cbind(getBeadData(BLData, array=i, what="Grn"), getBeadData(BLData, array=i, what="Grn"))
- res = limma:::normexp.fit.control(x=fooMat, status = beadStatusVector(BLData, array=i,controlProfile=controlProfile), negctrl = "negative")
-
-normExpPars[i,] = res[1,]
-
- }
-
-##Could optionally store these in sectionData?
-
-
-for(i in 1:10){
-	corSignal = limma:::normexp.signal(x = getBeadData(BLData, array=i, what="Grn"), par = normExpPars[i,])
-
-	BLData = insertBeadData(BLData, array=i, data=corSignal, what="Grn.normexp")
-}
-
-head(BLData[[1]])
-
-@
 
 \section{Boxplots and imageplots}
 Two standard quality assessment plot supported by \Rfunction{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artefacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualisation is not possible when using the summarised BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinising the original tiffs, as multiple arrays can be visualised on the one page. By default, the array surface is plotting with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a log2 transformation on the green channel. In the code we show how to extract the background-corrected intensities that we have just calculated and display them on the boxplot.
@@ -404,20 +377,44 @@ head(se.exprs(BSData2)[,1:4])
 
 @
 
+The \Robject{BSData} object is very similar to the \Rclass{ExpressionSet} class in Biobase. However, to accomodate the unique features of Illumina data we have added an {\tt nObservations} slot, which gives the number of beads that we used to create the summary values for each bead-type on each array after outlier removal.
 
-<multipleChannel,echo=TRUE,eval=TRUE>>==
+It is possible to have multiple channels, each of which is summarized in a different manner, in the same \Robject{ExpressionSetIllumina} object. This is achieved by passing a list of illuminaChannel objects to \Rfunction{summarize}. This would be especially useful for two-channel data, where the Red and Green channels, and some combination of the two would be of interest in the analysis. In the example code below we summarize both the non background-corrected and background-corrected intensities in the same object. The \Rfunction{channel} function is used to select the data for one of these channels, which returns an of object of type \Rclass{ExpressionSetIllumina}
 
-
+<<multipleChannel,echo=TRUE,eval=TRUE>>==
 
 
 greenBackgroundCorrected = new("illuminaChannel", getBackgroundCorrectionIntensities, illuminaOutlierMethod, myMean, mySd, "G.bc")
 
 BSData.multChannel = summarize(BLData, channelList = list(greenChannel, greenBackgroundCorrected))
 
+channelNames(BSData.multChannel)
+
+G = channel(BSData.multChannel, "G")
+
+G.bc = channel(BSData.multChannel, "G.bc")
+
 
 @
 
+The detection score is a standard measure for Illumina expression experiments, and can be viewed as an empirical estimate of the p-value for the null hypothesis that there is no expression. These can be calculated for summarized data provided that the identity of the negative controls on the array is known. 
 
+
+<<calculateDetection, echo=TRUE, eval=TRUE>>==
+
+
+status = rep("regular", as.numeric(dim(BSData.multChannel)[1]))
+
+negIDs = controlProfile[which(controlProfile[,2] == "negative"),1]
+
+status[match(negIDs, featureNames(BSData.multChannel))] = "negative"
+
+det = calculateDetection(G, status=status)
+
+Detection(G) = det
+
+
+@
 
 
 <<sessionInfo>>=

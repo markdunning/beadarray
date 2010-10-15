@@ -1,4 +1,4 @@
-expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,beadLevelQC = NULL, bashMetrics = NULL, outlierMetrics = NULL, detectionMetrics=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
+expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
 
 
 an = sectionNames(BLData)
@@ -269,24 +269,13 @@ if("Metrics" %in% colnames(BLData@sectionData)) hwrite(BLData@sectionData$Metric
 
 hwrite("Bead-level control summary", heading=2, outfile)
 
-if(is.null(beadLevelQC)){
 
-	cat("Creating probe metrics\n")
+cat("Creating probe metrics\n")
 
-	beadLevelQC = makeQCTable(BLData, transFun = transFun, controlProfile = controlProfile)
+beadLevelQC = makeQCTable(BLData, transFun = transFun, controlProfile = controlProfile)
 
-		
-}
-
-else{
-
-	beadLevelQC = getSectionData(BLData, what=beadLevelQC)
-
-}
 
 hwrite(beadLevelQC, outfile)
-
-if(is.null(outlierMetrics)){
 
 	cat("Calculating outlier Metrics\n")
 
@@ -301,20 +290,12 @@ if(is.null(outlierMetrics)){
 
 	}
 	
-}
-
-else{
-
-	outlierTable = getSectionData(BLData, what=outlierMetrics)
-
-}
 
 hwrite("Outlier Metrics", outfile,heading=2)
 
 
 hwrite(round(outlierTable,2), outfile)
 
-if(is.null(detectionMetrics)){
 
 	detectionTable = matrix(nrow = length(an), ncol=length(tagsToDetect))
 	colnames(detectionTable) = names(tagsToDetect)
@@ -323,11 +304,7 @@ if(is.null(detectionMetrics)){
 		detectionTable[i,] = controlProbeDetection(BLData, transFun = transFun, array=i, tagsToDetect = tagsToDetect, negativeTag = negativeTag, controlProfile=controlProfile)
 	}
 
-}
 		
-else{
-	detectionTable = getSectionData(BLData, what=detectionMetrics)
-}
 
 hwrite("Detection Metrics", outfile,heading=2)
 
@@ -338,26 +315,19 @@ hwrite(round(detectionTable, 2),outfile)
 
 closePage(outfile)
 
-if(is.null(bashMetrics)) hwrite("BASH metrics unavailable. Re-run pipeline after BASH\n", outfile)
-
-else{
-
-hwrite(getSectionData(BLData, what=bashMetrics))
-
-}
 
 
 
 ##Write to csv
 
 
-write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
+write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE)
 
-write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)	
+write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE)	
 
-write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
+write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE)
 
-write.csv(detectionTable, file=paste(qcDir, "/detectionMetrics.csv",sep=""), quote=FALSE, row.names=FALSE)
+write.csv(detectionTable, file=paste(qcDir, "/detectionMetrics.csv",sep=""), quote=FALSE)
 	
 
 

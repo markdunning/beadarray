@@ -45,7 +45,7 @@ an optional title for the plot
 }
 \details{
 
-The function calls the specified outlier function to determine the outliers on the array and then plots their location. 
+The function calls the specified outlier function to determine the outliers on the array and then plots their location. Points are coloured according the intensity of the bead is above or below the median for that bead-type. 
 
 }
 \value{
