@@ -28,13 +28,8 @@ setMethod("initialize", "ExpressionSetIllumina",
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
           x<-callNextMethod() # x, i, j, ..., drop=drop)
 
-        if(!is.null(fData(x)) && !missing(i)) fData(x)<-fData(x)[i,, ..., drop = drop]
 	if(!is.null(x@QC) && !missing(j)) x@QC<-x@QC
 	
-          #if (!missing(j)) {
-           #  for(k in 1:length(x@QC))
-            #     x@QC[[k]] <- x@QC[[k]][,j, drop=drop]
-          #}
           x
 })
 
@@ -42,6 +37,16 @@ setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
 setValidity("ExpressionSetIllumina", function(object) {
   assayDataValidMembers(assayData(object), c("exprs", "se.exprs", "nObservations"))
 })
+
+setMethod("dim", "ExpressionSetIllumina", function(x) {
+
+	nFeatures = nrow(fData(x))
+	nSamps = length(sampleNames(x))
+	nChannels = length(channelNames(x))
+
+    c("Features"=nFeatures, "Samples"=nSamps, "Channels"=nChannels)
+ } )
+
 
 
 setMethod("exprs", signature(object="ExpressionSetIllumina"), function(object) assayDataElement(object, "exprs"))
@@ -86,23 +91,18 @@ setMethod("show", signature(object="ExpressionSetIllumina"), function(object) {
   cat("QC Information\n")
   cat(" Available Slots:  ")
   cat(names(object@QC))
-  nms=selectSome(featureNames(object@QC))
-  cat("\n  featureNames:", paste(nms, collapse=", "))
+  nms=selectSome(colnames(object@QC@data))
+  cat("\n  QC Items:", paste(nms, collapse=", "))
   nms=selectSome(sampleNames(object@QC))
   cat("\n  sampleNames:", paste(nms, collapse=", "))
   cat("\n")
 })
 
-setGeneric("QCInfo", function(object) standardGeneric("QCInfo"))
 
-setMethod("QCInfo", signature(object="ExpressionSetIllumina"), function(object) object@QC)
+setGeneric("qcData", function(object) standardGeneric("qcData"))
 
-setGeneric("QCInfo<-", function(object, value) standardGeneric("QCInfo<-"))
+setMethod("qcData", signature(object="ExpressionSetIllumina"), function(object) object@QC@data)
 
-setReplaceMethod("QCInfo", signature(object="ExpressionSetIllumina", value="list"), function(object, value){
-	object@QC <- value
-	object
-})
 
 
 #setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
@@ -173,16 +173,25 @@ setReplaceMethod("QCInfo", signature(object="ExpressionSetIllumina", value="list
 }
 
 
-setMethod("combine", c("ExpressionSetIllumina", "ExpressionSetIllumina"), function(x, y, ...) {
+setMethod("combine", signature(x="ExpressionSetIllumina",y="ExpressionSetIllumina"), function(x, y, ...) {
+
+
+
   if (class(x) != class(y))
     stop(paste("objects must be the same class, but are ",
                class(x), ", ", class(y), sep=""))
-  ## we need a kind of merge functionality in order to combine OPA panels
-  newdimnames<-list(union(featureNames(x),featureNames(y)),union(sampleNames(x),sampleNames(y)))
+  newdimnames<-list(union(featureNames(x),featureNames(y)),union(colnames(exprs(x)),colnames(exprs(y))))
   x <- .mergeAssayData(x, y, newdimnames)
   # a bit of a hack to only keep the union, and discard double entries
-  phenoData(x) <- .mergePhenodata(x, y, newdimnames[[2]])
+
+  newsamplenames = union(sampleNames(x), sampleNames(y))
+ 	
+  phenoData(x) <- .mergePhenodata(x, y, newsamplenames)
+
   experimentData(x) <- combine(experimentData(x),experimentData(y))
+
+
+
     
   ## annotation -- constant
   if (any(annotation(x) != annotation(y))) {
@@ -190,5 +199,15 @@ setMethod("combine", c("ExpressionSetIllumina", "ExpressionSetIllumina"), functi
          annotation(x), ", ", annotation(y))
     annotation(x)<-unique(c(annotation(x),annotation(y)))
   }
+
+
+  ##Preserve the channel names of the resulting object
+
+  x@channelData[[1]] = c(x@channelData[[1]],y@channelData[[1]])
+
+  x@QC = combine(x@QC,y@QC)
+  
   x
+
 })
+
