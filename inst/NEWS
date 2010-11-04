@@ -1,4 +1,14 @@
-BUG FIXES
+BUG FIXES in 2.1.2
+
+    o   BSData now displays corrected when created from BeadStudio output
+
+    o   setWeights behaves properly when given single array argument
+
+    o   showArrayMask re-instated in package
+
+    o   HULK manual page gives correct definition of funtion output
+
+BUG FIXES in 2.1.1
 
     o   readBeadSummaryData error when qcFile is missing (FIXED)
 
