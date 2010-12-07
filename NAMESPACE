@@ -17,6 +17,9 @@ export(readIllumina, readLocsFile, convertBeadLevelList)
 ## Raw image manipulation
 export(readTIFF, plotTIFF)
 
+## Image processing
+export(illuminaForeground, illuminaBackground, illuminaSharpen, medianBackground)
+
 ## Transformations
 export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform)
 
@@ -27,7 +30,6 @@ export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, 
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights,showArrayMask)
 
 ## Summary Data
-
 export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calculateDetection)
 
 ## Deprecated functions.  Included so arrayQualityMetrics doesn't break

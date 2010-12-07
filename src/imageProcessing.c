@@ -30,7 +30,7 @@ void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHei
 
         /* catch cases where we're too close to the edge of the image */
         if( (start1 < 0) || (start2 < 0) || (end1 > (imageWidth - 1)) || (y > (imageHeight - 1)) ) {
-            Rprintf("Coordinate out of bounds\n");
+            //Rprintf("Coordinate out of bounds\n");
             bg[i] = R_NaReal;
         }
         else {
@@ -182,7 +182,7 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
         
         /* catch cases where coordinates are outside the image dimensions */
         if( (x < 1) || (y < 1) || (x > (imageWidth - 1)) || (y > (imageHeight - 1)) ) {
-            Rprintf("Coordinate out of bounds\n");
+            //Rprintf("Coordinate out of bounds\n");
             fg[i] = R_NaReal;
         }
         else {
