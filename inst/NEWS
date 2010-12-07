@@ -1,6 +1,14 @@
+BUG FIXES in 2.1.3
+
+    o   Corrected method names in .Call access to image processing functions
+
+	o   HULK() returns values on the scale specified by the user
+
+	o   HULK() accepts transformation argument
+
 BUG FIXES in 2.1.2
 
-    o   BSData now displays corrected when created from BeadStudio output
+    o   BSData now displays correctly when created from BeadStudio output
 
     o   setWeights behaves properly when given single array argument
 

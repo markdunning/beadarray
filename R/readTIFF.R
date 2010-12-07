@@ -11,7 +11,7 @@ openTIFF <- function(fileName, fileExt)
     return(con)
 }
 
-readTIFF <- function(fileName, path = NULL, verbose = FALSE) {
+readTIFF <- function(fileName, path = NULL, verbose = FALSE, xlim = NULL, ylim = NULL) {
 
     # determine the file extension
     fileExt <- unlist(strsplit(fileName, "\\."))
@@ -66,9 +66,18 @@ readTIFF <- function(fileName, path = NULL, verbose = FALSE) {
     }
     
     # read the rest of the image in one go, it's much faster that way!
-    data <- readBin(con, integer(), n = ImageWidth * ImageHeight, size = 2, signed = FALSE);
-    # rearrange the data into the matrix
-    data <- t(matrix(data, ncol = ImageHeight, nrow = ImageWidth));
+    if(is.null(ylim)) {
+        data <- readBin(con, integer(), n = ImageWidth * ImageHeight, size = 2, signed = FALSE);
+        data <- t(matrix(data, ncol = ImageHeight, nrow = ImageWidth));
+    }
+    else {
+        seek(con, where = (ImageWidth * (ylim[1] + 1) * 2), origin = "current");
+        data <- readBin(con, integer(), n = ImageWidth * (ylim[2] - ylim[1]), size = 2, signed = FALSE);
+        data <- t(matrix(data, ncol = ylim[2] - ylim[1], nrow = ImageWidth));
+    }
+    ## if we specified column limits, select them here (this can be improved by only reading the columns, rather than 
+    ## removing them post transforming into the matrix)
+    if(!is.null(xlim)) data <- data[,(xlim[1]+2):(xlim[2]+1)]
     close(con);
     return(data);
 }
