@@ -6,7 +6,7 @@
   Reads Illumina tiff images and produces a matrix of pixel values.
 }
 \usage{
-  readTIFF(fileName, path = NULL, verbose = FALSE)
+  readTIFF(fileName, path = NULL, verbose = FALSE, xlim = NULL, ylim = NULL)
 }
 
 \arguments{
@@ -16,6 +16,8 @@
   printed as it is read.  These include things like the byte order, the
   number of pixels in the image, the number of tags in the header etc.
   Defaults to FALSE as this is generally not of interest.}
+  \item(xlim}{Used to specify a subsection of the image to read in.  Takes a two entry vector e.g c(m,n) specifying that only pixels with x-coordinates between m and n (inclusive) should be read in.}
+  \item{ylim}{Same a xlim, but for the y-cordinates.}
 }
 \details{
   This function has been specifically written to read the grayscale tiff
