@@ -1,3 +1,7 @@
+BUG FIXES in 2.1.4
+
+    o   Fixed problem with imageplot when a small value for the squareSize argument resulted in a crash (thanks to Ying Wu for supply the patch) 
+
 BUG FIXES in 2.1.3
 
     o   Corrected method names in .Call access to image processing functions

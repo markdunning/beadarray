@@ -7,7 +7,7 @@
 \title{Image processing functions}
 
 \description{
-Functions for obtaining bead intensity values from raw tiff images.  The three commands with the "illumina" prefix attempt to emulate the image processing implemented by Illumina.  The "medianBackground" function implements a more robust background calculation recommended by Smith et al.
+Functions for obtaining bead intensity values from raw tiff images.  The three commands with the illumina prefix attempt to emulate the image processing implemented by Illumina.  The medianBackground function implements a more robust background calculation recommended by Smith et al.
 }
 
 \usage{
@@ -32,7 +32,7 @@ illuminaSharpen returns a matrix with the same dimensions as the pixelMatrix arg
 \author{Mike Smith}
 
 \references{
-Smith ML, Dunning MJ, Tavare S, Lynch AG. Identification and correction of previously unreported spatial phenomena using raw Illumina BeadArray data. BMC Bioinformatics (2010) 11:208   
+Smith ML, Dunning MJ, Tavare S, Lynch AG. Identification and correction of previously unreported spatial phenomena using raw Illumina BeadArray data. \emph{BMC Bioinformatics} (2010) 11:208   
 }
 
 \keyword{manip}
