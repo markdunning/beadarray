@@ -1,5 +1,7 @@
 BUG FIXES in 2.1.5
 
+	o	Metrics read automatically when section names are specified in readIllumina()
+
 	o	Correct section names are retained when summarizing multiple chips.
 
 BUG FIXES in 2.1.4

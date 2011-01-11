@@ -1,4 +1,4 @@
-readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = NULL,...) 
+readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt",...) 
 {
 	
     dir <- normalizePath(dir);
@@ -24,19 +24,31 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 		##Try to read the metrics file
 			
 		if(!is.null(metricsFile)){
-			metrics = read.table(metricsFile, sep="\t", header=TRUE)
+                    
+                        if(metricsFile %in% dirFiles){
+                    
+                            metrics = read.table(paste(dir, metricsFile,sep=.Platform$file.sep), sep="\t", header=TRUE)
 
-			###Try and match up the metrics to those we have read in 
+                            ###Try and match up the metrics to those we have read in 
 
-			metricsNames = paste(metrics[,2], metrics[,3], sep="_")
+                            metricsNames = paste(metrics[,2], metrics[,3], sep="_")
 
-			if(any(sectionNames %in% metricsNames)){
-				metMat = match(sectionNames, metricsNames)
-				metMat[!is.na(metMat)]
-				metrics = metrics[metMat,]
-			}
+                            if(any(sectionNames %in% metricsNames)){
+                                    metMat = match(sectionNames, metricsNames)
+                                    metMat[!is.na(metMat)]
+                                    metrics = metrics[metMat,]
+                            }
+                            else {
+                                metrics = NULL
+                            }
+                        }
+                        else {
+                            warning(paste("Could not file Metrics file ", metricsFile, " in directory ", dir, "\n",sep=""))
+                            metrics = NULL
+                        }
 
 		}
+		
 		else metrics = NULL
 	}
 

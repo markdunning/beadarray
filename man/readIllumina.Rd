@@ -5,7 +5,7 @@
   Reads bead-level ouput by Illumina's BeadScan software. 
 }
 \usage{
-  readIllumina(dir = ".", useImages = FALSE, illuminaAnnotation = NULL, sectionNames = NULL, metricsFile = NULL, ...)
+  readIllumina(dir = ".", useImages = FALSE, illuminaAnnotation = NULL, sectionNames = NULL, metricsFile = "Metrics.txt", ...)
 }
 
 \arguments{
@@ -14,7 +14,7 @@
   \item{illuminaAnnotation}{Character string specifiying the Illumina platform on which the data were generated. This is optional and will help to automate some analyses on expression data. Currently the choices for this argument are Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1, Ratv1.}
   \item{sectionNames}{Optional vector of character strings corresponding to section names to be read in. Typically these are the 10 digit numeric ID of Illumina chip followed by an underscore and capital letter 
 }
-  \item{metricsFile}{optional name of a metrics file to be read in from the directory. Usually called Metrics.txt}
+  \item{metricsFile}{optional name of a metrics file to be read in from the directory. Defaults to Metrics.txt}
   \item{\dots}{
 other arguments to pass when reading bead-level text files
 }

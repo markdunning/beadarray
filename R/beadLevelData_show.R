@@ -3,7 +3,7 @@
 
 setMethod("show", "beadLevelData", function(object) {
    
-	cat("Experiment information\n\n")
+	cat("\n-----------------\nExperiment information (@experimentData)\n-----------------\n")
 
 
 	show(object@experimentData)	
@@ -13,15 +13,20 @@ setMethod("show", "beadLevelData", function(object) {
 	ncols = 4
 	nrows = 5
 
+        cat("\n-----------------\nPer-section data (@sectionData)\n-----------------\n")        
+
+
 	for(i in 1:length(object@sectionData)){
 
 		cat(names(object@sectionData)[i], "\n\n")
 
 		if(is.data.frame(object@sectionData[[i]])){
-			if(ncol(object@sectionData[[i]]) < ncols){
-				displayrows = min(nrows, nArrays)
-				show(object@sectionData[[i]][1:displayrows,])
-				if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
+			#if(ncol(object@sectionData[[i]]) < ncols){
+                        if(ncol(object@sectionData[[i]]) == 1){
+				displayrows = nArrays
+				show(as.vector(object@sectionData[[i]][1:displayrows,1]))
+				cat("\n");
+				#if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
 			}
 			else{
 				displayrows = min(nrows, nArrays)
@@ -32,16 +37,20 @@ setMethod("show", "beadLevelData", function(object) {
 			}
 		}
 
-		else show(object@sectionData[[i]])
+		else {
+                    
+                    show(object@sectionData[[i]])
+
+                }
 
 	}
 
-	cat("Array information\n\n")	
-
+	cat("\n-----------------\nPer-bead data (@beadData)\n-----------------\n")	
+	
 	arraynms = sectionNames(object)
 	cat(paste("Raw data from section", arraynms[1], "\n\n")) 
 	show(object[[1]][1:nrows,])
 	cat(paste("\n...", numBeads(object)[1]-nrows, "more rows of data\n\n"))
-	cat(paste("... data for", length(arraynms)-1, "more array/s\n\n"))
+	cat(paste("... data for", length(arraynms)-1, "more section/s\n\n"))
 
  })
