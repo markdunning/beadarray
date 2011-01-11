@@ -51,8 +51,13 @@ if(useSampleFac){
 			sampleFac = BLData@sectionData$"SampleGroup"[,1]
 
 			sList = unique(sampleFac)
+			dupList = which(duplicated(sampleFac))
 
-			newNames = paste(unique(strtrim(arraynms, 10)), sList, sep="_")		
+			##newNames = paste(unique(strtrim(arraynms, 10)), sList, sep="_")
+			if(any(dupList))
+                            newNames = strtrim(arraynms[-dupList],12)
+                        else
+                            newNames = strtrim(arraynms,12)
 		
 		}
 	}
@@ -69,7 +74,12 @@ if(useSampleFac){
 
 		else{
 			sList = unique(sampleFac)
-			newNames=paste(unique(strtrim(arraynms, 10)), sList, sep="_")	
+			dupList = which(duplicated(sampleFac))
+
+                        if(any(dupList))
+                            newNames = strtrim(arraynms[-dupList],12)
+                        else
+                            newNames = strtrim(arraynms,12)
 		}
 	}
 

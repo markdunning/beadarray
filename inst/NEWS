@@ -1,3 +1,7 @@
+BUG FIXES in 2.1.5
+
+	o	Correct section names are retained when summarizing multiple chips.
+
 BUG FIXES in 2.1.4
 
     o   Fixed problem with imageplot when a small value for the squareSize argument resulted in a crash (thanks to Ying Wu for supply the patch) 
