@@ -2,14 +2,22 @@
 
 illuminaForeground <- function(pixelMatrix, beadCoords) {
     ## if a single coordinate pair is passed, it needs to be coerced into a matrix
-    beadCoords <- matrix(beadCoords, ncol = 2)
+    if(length(as.matrix(beadCoords)) == 2)
+        beadCoords <- matrix(beadCoords, ncol = 2)
+    else
+        beadCoords <- as.matrix(beadCoords)
+
     fg <- .Call("illuminaForeground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
     return(fg);
 }
 
 illuminaBackground <- function(pixelMatrix, beadCoords) {
     ## if a single coordinate pair is passed, it needs to be coerced into a matrix
-    beadCoords <- matrix(beadCoords, ncol = 2)
+    if(length(as.matrix(beadCoords)) == 2)
+        beadCoords <- matrix(beadCoords, ncol = 2)
+    else
+        beadCoords <- as.matrix(beadCoords)
+
     bg <- .Call("illuminaBackground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
     return(bg);
 }
@@ -21,7 +29,11 @@ illuminaSharpen <- function(pixelMatrix) {
 
 medianBackground <- function(pixelMatrix, beadCoords) {
     ## if a single coordinate pair is passed, it needs to be coerced into a matrix
-    beadCoords <- matrix(beadCoords, ncol = 2)
+    if(length(as.matrix(beadCoords)) == 2)
+        beadCoords <- matrix(beadCoords, ncol = 2)
+    else
+        beadCoords <- as.matrix(beadCoords)
+
     bg <- .Call("medianBackground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
     return(bg);
 }
