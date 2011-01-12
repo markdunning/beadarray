@@ -172,6 +172,7 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
     imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
     /* number of beads we have centres for */
     nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
+
     PROTECT(foreground = allocVector(REALSXP, nbeads));
     fg = REAL(foreground);
     
@@ -214,28 +215,20 @@ SEXP illuminaSharpen(SEXP pixelMatrix) {
 
   SEXP sharpened;
   int imageWidth, imageHeight, i, j, sum;
-  //int tid, nthreads, chunk = 10000;
-  
-  #if defined (_OPENMP)
-  omp_set_num_threads(2);
-  #endif
-  
+
   imageHeight = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[0];
   imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
 
   PROTECT(sharpened = allocMatrix(REALSXP, imageHeight, imageWidth));
 
-
-  #pragma omp parallel shared(nthreads,chunk) private(i, j, sum) 
-  {
-    #pragma omp for schedule(dynamic,chunk)
+    #pragma omp parallel for private(i, j) shared(sharpened) num_threads(2)
     for(i = 0; i < imageHeight; i++) {
         for(j = 0; j < imageWidth; j++) {
             REAL(sharpened)[i + (imageHeight * j)] = INTEGER(pixelMatrix)[i + (imageHeight * j)];
         }
     }
   
-    #pragma omp for schedule(dynamic,chunk)
+    #pragma omp parallel for private(i, j, sum) shared(sharpened) num_threads(2)
     for(i = 1; i < imageHeight - 1; i++) {
         for(j = 1; j < imageWidth - 1; j++) {     
             sum = INTEGER(pixelMatrix)[i + (imageHeight * (j - 1))] + INTEGER(pixelMatrix)[i + (imageHeight * j) - 1] + INTEGER(pixelMatrix)[i + (imageHeight * (j + 1))] + INTEGER(pixelMatrix)[i + (imageHeight * j) + 1];
@@ -244,7 +237,6 @@ SEXP illuminaSharpen(SEXP pixelMatrix) {
       
         }
     }
-  }
    
   UNPROTECT(1);
   return(sharpened);
