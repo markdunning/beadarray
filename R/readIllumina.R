@@ -155,38 +155,24 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
     ## number of beads
    		
 ## sample groupings
-    sampleGroup <- vector(length = nrow(targets))
+    sampleGroup <- 1:nrow(targets)
 
-  	if(!is.null(sdf)){	
-    		tmp <- sapply(sdf$SampleLabels$string[[1]], grep, x = targets$sectionName)
+    if(!is.null(sdf)){	
+        tmp <- lapply(sdf$SampleLabels$string[[1]], grep, x = targets$sectionName)
+        for(i in 1:length(tmp)) {
+            for(j in seq(along = tmp[[i]])) {
+                sampleGroup[ tmp[[i]][j] ] <- sdf$SampleLabels$string[[1]][i]
+            }
+        }
+    }
+    
+    BLData = insertSectionData(BLData, what="SampleGroup", data = data.frame(SampleGroup = sampleGroup))
+    BLData = insertSectionData(BLData, what="numBeads", data=data.frame(numBeads = nBeads))
 
-
-    	if(is.matrix(tmp)){
-		###Each sample is one more than one section
-    		for(i in 1:ncol(tmp)){
-        		sampleGroup[tmp[,i]] <- colnames(tmp)[i]
-		}
-
-    	}
-
-		else{
-		##One sample per section
-			for(i in 1:length(tmp)){
-				sampleGroup[as.numeric(tmp[i])] <- names(tmp)[i] 
-    			    
-			}
-		}
-
-	
-	}
-
-	BLData = insertSectionData(BLData, what="SampleGroup", data = data.frame(SampleGroup = sampleGroup))
-	BLData = insertSectionData(BLData, what="numBeads", data=data.frame(numBeads = nBeads))
-
- 	if(!is.null(illuminaAnnotation)){
-		BLData = setAnnotation(BLData, illuminaAnnotation)
-	}   	
-	else warning("No Illumina annotation was specified. Try setting manually using setAnnotation..\n")
+    if(!is.null(illuminaAnnotation)){
+            BLData = setAnnotation(BLData, illuminaAnnotation)
+    }   	
+    else warning("No Illumina annotation was specified. Try setting manually using setAnnotation..\n")
 
 
     return(BLData);
