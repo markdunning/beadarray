@@ -33,8 +33,11 @@
 
 \section*{Introduction}
 beadarray is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data output by Illumina's scanning software. Data presented in this form are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to take cope with this flexibility. 
+% FIXME previous sentence needs more grammar
 
-The BeadArray technology involves randomly-arranged arrays of beads, with beads having the same probe sequence attached collectively known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
+The BeadArray technology involves randomly arranged arrays of beads, with beads having the same probe sequence attached collectively 
+% FIXME do you mean 'colloquially' ?
+known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or a matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
 
 This vignette demonstrates the processing of bead-level data using beadarray. The example dataset is taken from an early expression study using a BeadArray platform that is no longer commercially available. 
 
@@ -50,7 +53,10 @@ Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S, \textbf{beadarray: R classes and
 Wherever possible, questions about \Rpackage{beadarray} should be sent to the Bioconductor mailing list
 (bioconductor@stat.math.ethz.ch). Therefore all problems and solutions will be
 kept in a searchable archive. When posting to this mailing list, please state the version of \Rpackage{beadarray} and {\tt R} to help to diagnose the problem. This can be done by pasting the output of running the command {\tt sessionInfo()}.
+% FIXME In addition (for more complete instructions), you could refer to the 'posting guide'. Also, giving the URL of the mailing lists registration page is probably more useful than just the email address, since posting to the list requires registration.
 
+
+% FIXME The second '=' in the code chunk headers is superfluous
 <<options, echo=FALSE, eval=TRUE>>==
 
 options(width = 70)
@@ -67,6 +73,7 @@ data(BLData)
 \subsection{File formats}
 
 The raw images and text files required to perform a bead-level analysis are produced by Illumina's BeadScan software. To modify BeadScan's default settings to obtain bead-level data, see \newline
+% FIXME the text here could be more explicit that this modification is *required*
 
 {\tt http://www.compbio.group.cam.ac.uk/Resources/illumina/}. 
 
@@ -78,9 +85,11 @@ BLData = readIllumina(useImages=FALSE, illuminaAnnotation = "Humanv3")
 @
 
 
-The \Rfunarg{useImages} argument specifies whether beadarray will read foreground and background intensities from the TIFF images present in the directory, allowing users to experiment with strategies for image processing. In this example we set {\tt useImages=FALSE} (often a convenient choice), and locally-background corrected intensities will simply be extracted from the txt files. The background values that have been subtracted are taken from the "background" pixel intensities surrounding each bead, and are not to be confused with background correction futher along the analysis pipeline which may involve negative control beads to account for non-specific binding.
+The \Rfunarg{useImages} argument specifies whether beadarray will read foreground and background intensities from the TIFF images present in the directory, allowing users to experiment with strategies for image processing. In this example we set {\tt useImages=FALSE} (often a convenient choice), and locally-background corrected intensities will simply be extracted from the txt files. The background values that have been subtracted are taken 
+% FIXME I think the tenses in this sentences need better alignment
+from the "background" pixel intensities surrounding each bead, and are not to be confused with background correction further along the analysis pipeline, which may involve negative control beads to account for non-specific binding.
 
-Note that is not compulsory to specify which type of Illumina assay was used to generate the data. However, for expression data it is convenient to specify the annotation of the platform using one of the strings Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1.
+Note that it is not compulsory to specify which type of Illumina assay was used to generate the data. However, for expression data it is convenient to specify the name of the platform using one of the strings Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1.
 
 
 beadarray is able to utilize some of Illumina's files during analysis. These include {\tt .locs}  that contain the locations of {\it all} beads on an array (not just those that were decoded) and {\tt .sdf} files that contains information about the physical layout of the chip. In combination, using these files can result in  significant time improvements to the detection of spatial artefacts and add additional information to some QA plots. These files are not read automatically, but if present, the path to these files is stored by beadarray for future use. If the metrics file generated by BeadScan is present in the directory, it will be read unaltered and stored.
