@@ -1,30 +1,67 @@
 numberOfChannels <- function(file, sep = "\t") {
- 
+
     ## Determine the number of channels in a text file based on 
     ## the number of columns
- 
+
     lines <- read.table(file, sep = sep, nrows = 2);
-    if(ncol(lines) == 4) ##one channel
+    if(ncol(lines) %in% c(4,5)) ##one channel
         return(1)
-    else if(ncol(lines) == 7) ##two channel 
+    else if(ncol(lines) %in% c(7,8)) ##two channel 
         return(2)
     else ##unexpected number of columns
         return(0)
 }
 
+numberOfColumns <- function(file, sep = "\t") {
+ 
+    ## Determine the number of channels in a text file based on 
+    ## the number of columns
+    ## 20-01-11 This should allow the use of weights from Swath data
+ 
+    lines <- read.table(file, sep = sep, nrows = 2);
+    ## depending upon whether weights have been included there should be 4/5 cols for single channel
+    ## and 7/8 for two channel data
+    if(ncol(lines) %in% c(4,5,7,8)) 
+        return(ncol(lines))
+    else ##unexpected number of columns
+        return(0)
+}
+
 readBeadLevelTextFile <- function(file, sep = "\t") {
-    
+     
     ## Read a bead level text file and return a list containing
     ## the contents of the file and how many channels are present
-    
-    channels <- numberOfChannels(file, sep = sep);
-    
-    if(channels == 1) 
+    ## 20-01-11 Now modified to read a weights column for swath data
+     
+    columns <- numberOfColumns(file, sep = sep);
+     
+    if(columns == 4) 
         data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
-    else if (channels == 2)
+    else if(columns == 5) 
+        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 5)
+    else if(columns == 7) 
         data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
+    else if (columns == 8)
+        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 8)
     else
-        stop("Unknown input format!\nExpected 4 columns for single channel data or 7 columns for two channel data\n");
+        stop("Unknown input format!\nExpected 4/5 columns for single channel data or 7/8 columns for two channel data\n");
     
     return(data);
 }
+
+# readBeadLevelTextFile <- function(file, sep = "\t") {
+#     
+#     ## Read a bead level text file and return a list containing
+#     ## the contents of the file and how many channels are present
+#     
+#     channels <- numberOfChannels(file, sep = sep);
+#     
+#     if(channels == 1) 
+#         data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
+#     else if (channels == 2)
+#         data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
+#     else
+#         stop("Unknown input format!\nExpected 4 columns for single channel data or 7 columns for two channel data\n");
+#     
+#     return(data);
+# }
