@@ -80,7 +80,7 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 
 	##Remove any duplicated IDs
 
-	controlProfile = controlProfile[-which(duplicated(controlProfile[,1])),]
+	if(any(duplicated(controlProfile[,1]))) controlProfile = controlProfile[-which(duplicated(controlProfile[,1])),]
 
 	negIDs = controlProfile[which(controlProfile[,2] == negativeTag),1]
 
@@ -107,8 +107,12 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 	}
 
 	else{
-		selIDs = controlProfile[which(controlProfile[,2] %in% unlist(tagsToDetect)),1]
-		
+
+
+		selIDs = controlProfile[which(controlProfile[,2] %in% unlist(tagsToDetect)),1]		
+	
+		if(length(selIDs) == 0) stop("None of the specified control tags where found in the control profile\n")
+
 		transInten = transInten[which(pIDs %in% selIDs)]
 			
 		transIDs = pIDs[which(pIDs %in% selIDs)]
