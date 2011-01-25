@@ -111,7 +111,7 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 
 		selIDs = controlProfile[which(controlProfile[,2] %in% unlist(tagsToDetect)),1]		
 	
-		if(length(selIDs) == 0) stop("None of the specified control tags where found in the control profile\n")
+		if(length(selIDs) == 0) stop("None of the specified control tags were found in the control profile\n")
 
 		transInten = transInten[which(pIDs %in% selIDs)]
 			
