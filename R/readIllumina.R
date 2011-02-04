@@ -2,6 +2,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 {
 	
     dir <- normalizePath(dir);
+
+    ## before doing anything lets check if there are unprocessed Swath files
+    checkSwathStatus(dir = dir);
     
 	if(!is.null(sectionNames)){
 	###User has specified which section names to read
@@ -25,9 +28,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 			
 		if(!is.null(metricsFile)){
                     
-                        if(metricsFile %in% dirFiles){
+            if(metricsFile %in% dirFiles){
                     
-                            metrics = read.table(paste(dir, metricsFile,sep=.Platform$file.sep), sep="\t", header=TRUE)
+                metrics = read.table(paste(dir, metricsFile,sep=.Platform$file.sep), sep="\t", header=TRUE)
 
                             ###Try and match up the metrics to those we have read in 
 
