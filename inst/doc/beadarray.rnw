@@ -1,15 +1,10 @@
-%
-% NOTE -- ONLY EDIT beadarray.rnw!!!
-% beadarray.tex file will get overwritten.
-%
-%\VignetteIndexEntry{beadarray Vignette}
+%\VignetteIndexEntry{R classes and methods for Illumina bead-based data}
 %\VignetteDepends{}
-%\VignetteKeywords{beadarray expression Analysis}
+%\VignetteKeywords{beadarray expression analysis}
 %\VignettePackage{beadarray}
 \documentclass{article}
-
 \usepackage{hyperref}
-\usepackage{Sweave}
+
 \textwidth=6.2in
 \textheight=8.5in
 %\parskip=.3cm
@@ -24,16 +19,9 @@
 \newcommand{\Rfunarg}[1]{{\texttt{#1}}}
 \newcommand{\Rclass}[1]{{\textit{#1}}}
 
-
-
-\newcommand{\classdef}[1]{
-  {\em #1}
-}
 \begin{document}
 \title{\Rpackage{beadarray}: R classes and methods for Illumina bead-based data}
-
 \author{Mark Dunning, Mike Smith, Johnathan Cairns, Andy Lynch and Matt Ritchie}
-
 \maketitle
 
 
@@ -55,22 +43,22 @@ BASH (\textbf{b}ead\textbf{a}rray \textbf{S}ubversion of \textbf{H}arshlight) me
 spatial artefacts. 
 These documents may be accessed using the following commands:
 
+<<Help, eval=FALSE>>=
+library("beadarray")
+beadarrayUsersGuide(topic="beadlevel")
+beadarrayUsersGuide(topic="beadsummary")
+@
+
 \section*{Changes since Bioconductor 2.6}
 
-There has been a major overhaul of beadarray since Bioconductor 2.6 with the intention of creating a more flexible package. Users now have more flexibility in the way quality assessment is performed at the bead-level and are allowed to modify the raw bead-level object. Summarisation is also more flexible. See the pacakge vignettes for details and the package news for updates.
+There has been a major overhaul of \Rpackage{beadarray} since Bioconductor 2.6 with the intention of creating a more flexible package. Users now have more flexibility in the way quality assessment is performed at the bead-level and are allowed to modify the raw bead-level object. Summarisation is also more flexible. See the package vignettes for details and the package news for updates.
 
 <<NEWS, eval=FALSE, echo=TRUE>>=
 news(package="beadarray")
 @
 
 
-<<Help, eval=FALSE>>=
-library(beadarray)
-beadarrayUsersGuide(topic="beadlevel")
-beadarrayUsersGuide(topic="beadsummary")
-@
-
-\section{Citing \Rpackage{beadarray}}
+\section*{Citing \Rpackage{beadarray}}
 
 \begin{flushleft}
 If you use \Rpackage{beadarray} for the analysis or pre-processing of
@@ -105,7 +93,7 @@ Barbosa-Morais NL, Dunning MJ, Samarajiwa SA, Darot JF, Ritchie ME, Lynch AG, Ta
 
 Supplementary tables and supporting information for this annotation are available at\newline
 
-{\tt http://www.compbio.group.cam.ac.uk/Resources/Annotation/}.
+{\tt http://www.compbio.group.cam.ac.uk/Resources/Annotation}.
 
 \end{flushleft}
 

@@ -16,7 +16,6 @@
 \newcommand{\Rmethod}[1]{{\texttt{#1}}}
 \newcommand{\Rfunarg}[1]{{\texttt{#1}}}
 \newcommand{\Rclass}[1]{{\textit{#1}}}
-\newcommand{\classdef}[1]{{\em #1}}
 
 \begin{document}
 \title{Analysis of Bead-level Data using beadarray}
@@ -24,7 +23,7 @@
 \maketitle
 
 \section*{Introduction}
-beadarray is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data output by Illumina's scanning software. Data presented in this form are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to cope with this flexibility. 
+\Rpackage{beadarray} is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data output by Illumina's scanning software. Data presented in this form are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to cope with this flexibility. 
 
 The BeadArray technology involves randomly arranged arrays of beads, with beads having the same probe sequence attached colloquially known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or a matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
 
