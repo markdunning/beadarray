@@ -6,4 +6,4 @@
     #include <omp.h>
 #endif
 
-#define min(X, Y)  ((X) < (Y) ? (X) : (Y))
+#define min(X, Y) ((X) < (Y) ? (X) : (Y))
