@@ -2,14 +2,25 @@ numberOfChannels <- function(file, sep = "\t") {
 
     ## Determine the number of channels in a text file based on 
     ## the number of columns
-
-    lines <- read.table(file, sep = sep, nrows = 2);
-    if(ncol(lines) %in% c(4,5)) ##one channel
-        return(1)
-    else if(ncol(lines) %in% c(7,8)) ##two channel 
-        return(2)
-    else ##unexpected number of columns
-        return(0)
+    
+    if(grepl(".bab$", file)) {
+        con <- file(file, "rb");
+        twoChannel <- (BeadDataPackR:::readHeader( con ))$twoChannel;
+        close(con);
+        if(twoChannel)
+            return(2)
+        else
+            return(1)
+    }
+    else {
+        lines <- read.table(file, sep = sep, nrows = 2);
+        if(ncol(lines) %in% c(4,5)) ##one channel
+            return(1)
+        else if(ncol(lines) %in% c(7,8)) ##two channel 
+            return(2)
+        else ##unexpected number of columns
+            return(0)
+    }
 }
 
 numberOfColumns <- function(file, sep = "\t") {

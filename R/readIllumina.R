@@ -2,14 +2,10 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 {
 	
     dir <- normalizePath(dir);
-
-    ## before doing anything lets check if there are unprocessed Swath files
-    checkSwathStatus(dir = dir);
-    
+   
 	if(!is.null(sectionNames)){
 	###User has specified which section names to read
-		dirFiles = dir(dir)	
-		
+		dirFiles = dir(dir)		
 		
 		txtNames = paste(sectionNames, ".txt", sep="")
 		locsNames = paste(sectionNames,"_Grn.locs", sep="")
@@ -59,9 +55,11 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 	else{
 		##infer targets from contents of directory
 
-    		targets <- createTargetsFile(dir, nochannels = NULL)
+    		#targets <- createTargetsFile(dir, nochannels = NULL)
+    		targets <- analyseDirectory(dir)
     		metrics = targets$metrics 	
     		targets = targets$targets
+    		
     
 	}
   
@@ -96,7 +94,15 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         
         message(paste("Processing section ", targets$sectionName[i], sep = ""));
         
-        data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
+        ## check if we've got a .txt or a .bab file here
+        if(grepl(".bab", targets$textFile[i])) {
+            data <- BeadDataPackR::readCompressedData(inputFile = targets$textFile[i], path = targets$directory[i]);
+            ## this will have nondecoded beads, so remove them
+            data <- data[-which(data[,1] == 0),];
+        }
+        else {       
+            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
+        }
     
         ##record the ProbeIDs, X and Y coords
 	BLData <- insertBeadData(BLData, array = i, what = "ProbeID", data = data[,1])

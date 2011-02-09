@@ -5,7 +5,7 @@
 void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHeight, SEXP pixelMatrix, SEXP coords, double *bg, int tid, int median) {
     
     double x, y, newX, newY;
-    int i, j, k, count, tmp, M[289];
+    int i, j, k, count, tmp, M[289]; 
     
     for(i = start; i < end; i++) {
     

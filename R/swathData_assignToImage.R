@@ -1,4 +1,4 @@
-assignToImage <- function(txt, sectionName, twocolour = TRUE, locslist, GrnTiffSuffix1 = "-Swath1_Grn.tif", GrnTiffSuffix2 = "-Swath2_Grn.tif", verbose = TRUE) {
+assignToImage <- function(txt, sectionName, twocolour = TRUE, locslist, GrnTiffSuffix1 = "-Swath1_Grn.tif", GrnTiffSuffix2 = "-Swath2_Grn.tif", verbose = FALSE) {
     
     ## Function to determine which swath each bead in the .txt came from
     ##

@@ -24,8 +24,8 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
         S1<-S1[,-(ncol(S1)-1)]
         S2<-S2[,-(ncol(S2)-1)]
 
-        write.table(S1,row.names=F,sep="\t",file=paste(an, "_Swath1",textstring, sep = ""), quote = FALSE)
-        write.table(S2,row.names=F,sep="\t",file=paste(an, "_Swath2",textstring, sep = ""), quote = FALSE)
+        write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
+        write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
 
     }
 
@@ -36,8 +36,8 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
         S2<-S2[which(S2[,dim(S2)[2]]==0),]
         S2<-S2[order(S2[,1]),1:(dim(S2)[2]-1)]
 
-        write.table(S1,row.names=F,sep="\t",file=paste(an, "_Swath1",textstring, sep = ""), quote = FALSE)
-        write.table(S2,row.names=F,sep="\t",file=paste(an, "_Swath2",textstring, sep = ""), quote = FALSE)
+        write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
+        write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
 
     }
 

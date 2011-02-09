@@ -97,9 +97,9 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
     filetype[i]<-temp[length(temp)]}
 
     if(verbose){
-    for(j in unique(filetype)){
-    cat("found",sum(filetype==j,na.rm=T),"files of type",j,"\n")
-    }
+        for(j in unique(filetype)){
+            cat("found",sum(filetype==j,na.rm=T),"files of type",j,"\n")
+        }
     }
 
 
@@ -147,13 +147,8 @@ function(dir=NULL, nochannels=1, channel1="Grn", channel2="Red", txtsuff="txt", 
         targets<-cbind(rep(dir,length(keys)),sectionName, sectiontext,greenimage,greenlocs,greenxml)
         colnames(targets)<-c("directory","sectionName", "textFile","greenImage","locs","xml")
     }
-
-
-
-
-    ## twochannel 
-
-    if(nochannels==2){
+        ## twochannel 
+    else if(nochannels==2){
 
         sectionName <- rep(NA, length(keys) );
         sectiontext<-rep(NA,length(keys))
