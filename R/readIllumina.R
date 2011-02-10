@@ -3,65 +3,65 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 	
     dir <- normalizePath(dir);
    
-	if(!is.null(sectionNames)){
-	###User has specified which section names to read
-		dirFiles = dir(dir)		
-		
-		txtNames = paste(sectionNames, ".txt", sep="")
-		locsNames = paste(sectionNames,"_Grn.locs", sep="")
-		xmlNames = paste(sectionNames, "_Grn.xml", sep="")
-		tifNames = paste(sectionNames, "_Grn.tif", sep="")
-
-		txtNames[which(!txtNames %in% dirFiles)] = NA
-		locsNames[which(!locsNames %in% dirFiles)] = NA
-		xmlNames[which(!xmlNames %in% dirFiles)] = NA
-		tifNames[which(!tifNames %in% dirFiles)] = NA
-			
-		validNames = which(!is.na(txtNames))
-
-		targets = data.frame(directory = dir, sectionName = sectionNames[validNames], textFile =txtNames[validNames], greenImage = tifNames[validNames], locs = locsNames[validNames], xmlNames = xmlNames[validNames])
-		##Try to read the metrics file
-			
-		if(!is.null(metricsFile)){
-                    
-            if(metricsFile %in% dirFiles){
-                    
-                metrics = read.table(paste(dir, metricsFile,sep=.Platform$file.sep), sep="\t", header=TRUE)
-
-                            ###Try and match up the metrics to those we have read in 
-
-                            metricsNames = paste(metrics[,2], metrics[,3], sep="_")
-
-                            if(any(sectionNames %in% metricsNames)){
-                                    metMat = match(sectionNames, metricsNames)
-                                    metMat[!is.na(metMat)]
-                                    metrics = metrics[metMat,]
-                            }
-                            else {
-                                metrics = NULL
-                            }
-                        }
-                        else {
-                            warning(paste("Could not file Metrics file ", metricsFile, " in directory ", dir, "\n",sep=""))
-                            metrics = NULL
-                        }
-
-		}
-		
-		else metrics = NULL
-	}
-
-
-	else{
+# 	if(!is.null(sectionNames)){
+# 	###User has specified which section names to read
+# 		dirFiles = dir(dir)		
+# 		
+# 		txtNames = paste(sectionNames, ".txt", sep="")
+# 		locsNames = paste(sectionNames,"_Grn.locs", sep="")
+# 		xmlNames = paste(sectionNames, "_Grn.xml", sep="")
+# 		tifNames = paste(sectionNames, "_Grn.tif", sep="")
+# 
+# 		txtNames[which(!txtNames %in% dirFiles)] = NA
+# 		locsNames[which(!locsNames %in% dirFiles)] = NA
+# 		xmlNames[which(!xmlNames %in% dirFiles)] = NA
+# 		tifNames[which(!tifNames %in% dirFiles)] = NA
+# 			
+# 		validNames = which(!is.na(txtNames))
+# 
+# 		targets = data.frame(directory = dir, sectionName = sectionNames[validNames], textFile =txtNames[validNames], greenImage = tifNames[validNames], locs = locsNames[validNames], xmlNames = xmlNames[validNames])
+# 		##Try to read the metrics file
+# 			
+# 		if(!is.null(metricsFile)){
+#                     
+#             if(metricsFile %in% dirFiles){
+#                     
+#                 metrics = read.table(paste(dir, metricsFile,sep=.Platform$file.sep), sep="\t", header=TRUE)
+# 
+#                             ###Try and match up the metrics to those we have read in 
+# 
+#                             metricsNames = paste(metrics[,2], metrics[,3], sep="_")
+# 
+#                             if(any(sectionNames %in% metricsNames)){
+#                                     metMat = match(sectionNames, metricsNames)
+#                                     metMat[!is.na(metMat)]
+#                                     metrics = metrics[metMat,]
+#                             }
+#                             else {
+#                                 metrics = NULL
+#                             }
+#                         }
+#                         else {
+#                             warning(paste("Could not file Metrics file ", metricsFile, " in directory ", dir, "\n",sep=""))
+#                             metrics = NULL
+#                         }
+# 
+# 		}
+# 		
+# 		else metrics = NULL
+# 	}
+# 
+# 
+# 	else{
 		##infer targets from contents of directory
 
     		#targets <- createTargetsFile(dir, nochannels = NULL)
-    		targets <- analyseDirectory(dir)
+    		targets <- analyseDirectory(dir = dir, sectionNames = sectionNames)
     		metrics = targets$metrics 	
     		targets = targets$targets
     		
-    
-	}
+#     
+# 	}
   
     ## if there's an .sdf file, read it 
 	sdf = NULL
@@ -105,7 +105,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         }
     
         ##record the ProbeIDs, X and Y coords
-	BLData <- insertBeadData(BLData, array = i, what = "ProbeID", data = data[,1])
+        BLData <- insertBeadData(BLData, array = i, what = "ProbeID", data = data[,1])
         BLData <- insertBeadData(BLData, array = i, what = "GrnX", data = data[,3])
         BLData <- insertBeadData(BLData, array = i, what = "GrnY", data = data[,4])
 

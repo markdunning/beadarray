@@ -1,4 +1,4 @@
-analyseDirectory <- function(dir = NULL, twoChannel = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFlag = "Metrics", ignore = c(".sdf", "fiducial"), verbose = FALSE) {
+analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFlag = "Metrics", ignore = c(".sdf", "fiducial"), verbose = FALSE) {
 
     ## has a directory been specified?
     ## if not, assume working directory
@@ -70,12 +70,10 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, channel1 = "Grn", ch
     if(verbose){cat("Two Channel:", twoChannel, "\n")}
     
     ## we'll get section names from the .txt file, so see if they exist or are infact .bab
-    ## first find the text file
-    idx <- grep(txtSuff, fileList)
-    ## if there aren't any, try and find a bab file instead
-    if(!length(idx)) {
-        idx <- grep(".bab", fileList);
-        if(length(idx)) {
+    ## first find the text file   
+    if(!length( grep(txtSuff, fileList) )) {
+        ## if there aren't any, try and find a bab file instead
+        if(length( grep(".bab", fileList) )) { 
             txtSuff = ".bab";
         }
         else { ## stop if we still can't find anything
@@ -83,7 +81,10 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, channel1 = "Grn", ch
         }
     }
     
-    sectionNames <- unlist(strsplit(fileList[grep(txtSuff, fileList)], txtSuff));
+    ## if no section names were specified, try to find them all
+    if(is.null(sectionNames)) {
+        sectionNames <- unlist(strsplit(fileList[grep(txtSuff, fileList)], txtSuff));
+    }
     
     ## create something to store the results in
     info <- matrix(ncol = 5 + (4^twoChannel), nrow = length(sectionNames));
@@ -96,6 +97,11 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, channel1 = "Grn", ch
         sectionFiles <- fileList[grep(paste(sectionNames[i], "[_.]", sep = ""), fileList)];
 
         idx <- grep(txtSuff, sectionFiles)
+        ## if we cant find a text file for this section, skip it
+        if(!length(idx)) {
+            message("Data for section ", sectionNames[i], " not found");
+            next;
+        }
         info[i,3] <- sectionFiles[idx];
             
         ## green images
@@ -133,6 +139,11 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, channel1 = "Grn", ch
                 
         }
     }
+
+    ## keep only sections where data was found
+    info <- info[which( !is.na(info[,3]) ), ,drop = FALSE]
+    if(nrow(info) == 0)
+        stop("No data found for the specified sections");
     
     ##match up metrics
     metricsection = "Section"
