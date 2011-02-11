@@ -5,7 +5,7 @@
   Reads bead-level ouput by Illumina's BeadScan software. 
 }
 \usage{
-  readIllumina(dir = ".", useImages = FALSE, illuminaAnnotation = NULL, sectionNames = NULL, metricsFile = "Metrics.txt", ...)
+  readIllumina(dir = ".", useImages = FALSE, illuminaAnnotation = NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, ...)
 }
 
 \arguments{
@@ -15,6 +15,7 @@
   \item{sectionNames}{Optional vector of character strings corresponding to section names to be read in. Typically these are the 10 digit numeric ID of Illumina chip followed by an underscore and capital letter 
 }
   \item{metricsFile}{optional name of a metrics file to be read in from the directory. Defaults to Metrics.txt}
+  \item{forceIScan}{Only necessary for data from iScan machines.  When TRUE, this argument forces beadarray to read data from files withe the "perBeadFile.txt" extension, rather than seeking a file per swath.  Use this if you are receiving the error "iScan data detected. This must first be processed with the function processSwathData()", but don't have access to .locs and .tif files for the array.}
   \item{\dots}{
 other arguments to pass when reading bead-level text files
 }
