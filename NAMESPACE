@@ -14,6 +14,9 @@ export(insertBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSum
 ## Data input
 export(readIllumina, readLocsFile, convertBeadLevelList)
 
+## Dealign with Swath data
+export(processSwathData)
+
 ## Raw image manipulation
 export(readTIFF, plotTIFF)
 
@@ -34,7 +37,7 @@ export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calcula
 
 ## Deprecated functions.  Included so arrayQualityMetrics doesn't break
 exportClasses(BeadLevelList)
-exportMethods(arrayNames, getArrayData)
-export(createBeadSummaryData)
+#exportMethods(arrayNames, getArrayData)
+#export(createBeadSummaryData)
 
 

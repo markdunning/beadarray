@@ -1,4 +1,4 @@
-analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFlag = "Metrics", ignore = c(".sdf", "fiducial"), verbose = FALSE) {
+analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFlag = "Metrics", ignore = c(".sdf", "fiducial"), forceIScan = FALSE, verbose = FALSE) {
 
     ## has a directory been specified?
     ## if not, assume working directory
@@ -44,7 +44,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     if(iScan) {
         twoSwaths <- any(grepl("Swath2", fileList));
         ## if there aren't two swath files, we can (probably) use the _perBeadFile.txt
-        if(!twoSwaths) {
+        if(!twoSwaths || forceIScan) {
             txtSuff <- "_perBeadFile.txt";
         }
         else {
@@ -134,7 +134,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
                     info[i,9] <- sectionFiles[idx]
             }
             else {
-                info <- info[,1:8]
+                info <- info[,1:8, drop = FALSE]
             }
                 
         }
@@ -147,7 +147,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     
     ##match up metrics
     metricsection = "Section"
-    metricchip = "Matrix"    
+    metricchip = "Beadchip"    
     metrow<-rep(NA,length(sectionNames))      
     if(length(fmet)>0){
 
@@ -162,22 +162,32 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
 
                 #keys = gsub("_perBeadFile", "", keys)           
 
-                for(i in 1:(dim(storemet)[1])){
+                for(i in 1:nrow(storemet)[1]){
 
-                    matchsect<-grep(paste(storemet[[metricsection]][i], "$", sep = ""), sectionNames)
+                    matchsect<-grep(paste(storemet[[metricsection]][i], "[$-]", sep = ""), sectionNames)
                     matchchip<-grep(storemet[[metricchip]][i],sectionNames)
 
-                    if(sum(duplicated(c(matchchip,matchsect)))==1){
-
-                        mymatch<-c(matchchip,matchsect)[duplicated(c(matchchip,matchsect))]
-
-                        metrow[mymatch]<-i
-                    }
+#                     if(sum(duplicated(c(matchchip,matchsect)))==1){
+# 
+#                         mymatch<-c(matchchip,matchsect)[duplicated(c(matchchip,matchsect))]
+# 
+#                         metrow[mymatch]<-i
+#                     }
+                    ## this should allow a line in a metrics file to match multiple sections for swath data
+                    mymatch<-c(matchchip,matchsect)[duplicated(c(matchchip,matchsect))]
+                    print(c(matchchip,matchsect))
+                    for(j in mymatch)
+                        metrow[j] <- i   
                 }
 
             }
+            
         }
-        info <- info[order(metrow),]
+        print(metrow)
+        if(length(metrow)) {
+            storemet <- storemet[metrow,,drop = FALSE]
+            info <- info[order(metrow), ,drop = FALSE]
+        }
         return(list(targets=as.data.frame(info), metrics = as.data.frame(storemet)))
     }
     else {

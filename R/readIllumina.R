@@ -1,4 +1,4 @@
-readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt",...) 
+readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, ...) 
 {
 	
     dir <- normalizePath(dir);
