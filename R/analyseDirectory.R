@@ -165,7 +165,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
 
                 for(i in 1:nrow(storemet)[1]){
 
-                    matchsect<-grep(paste(storemet[[metricsection]][i], "[$-]", sep = ""), sectionNames)
+                    matchsect<-grep(paste(storemet[[metricsection]][i], "-?_?", sep = ""), sectionNames)
                     matchchip<-grep(storemet[i,chipIdx],sectionNames)
 
 #                     if(sum(duplicated(c(matchchip,matchsect)))==1){
