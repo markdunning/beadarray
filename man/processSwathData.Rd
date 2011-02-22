@@ -21,7 +21,6 @@ processSwathData(twocolour=TRUE, textstring="_perBeadFile.txt", section_height =
 \item{verbose}{Boolean value that, if TRUE, directs the function to print progress to the screen.}
 }
 
-}
 \details{
 Data from the iScan system comes with two images of each array section (along with two .locs files), which are labelled Swath1 and Swath2.  These two images are of the two halve of the array section, with an overlapping region in the middle.  However, there is only one bead-level text file, with no indication as to which of the two images each entry comes from.  Given this, simply reading the bead-level text file will result in any function that uses bead locations to perform undesirably.
 
