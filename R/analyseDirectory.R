@@ -147,7 +147,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     
     ##match up metrics
     metricsection = "Section"
-    metricchip = "Beadchip"    
+    metricChip = c("Beadchip", "Matrix");    
     metrow<-rep(NA,length(sectionNames))      
     if(length(fmet)>0){
 
@@ -157,7 +157,8 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
         if(!all(colnames(storemet)!=metricsection)){
             if(verbose){cat("Found section column.\n")}
 
-            if(!all(colnames(storemet)!=metricchip)){
+            if(any(colnames(storemet) %in% metricChip)){
+                chipIdx <- which(colnames(storemet) %in% metricChip);
                 if(verbose){cat("Found chip column.\n")}
 
                 #keys = gsub("_perBeadFile", "", keys)           
@@ -165,7 +166,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
                 for(i in 1:nrow(storemet)[1]){
 
                     matchsect<-grep(paste(storemet[[metricsection]][i], "[$-]", sep = ""), sectionNames)
-                    matchchip<-grep(storemet[[metricchip]][i],sectionNames)
+                    matchchip<-grep(storemet[i,chipIdx],sectionNames)
 
 #                     if(sum(duplicated(c(matchchip,matchsect)))==1){
 # 
