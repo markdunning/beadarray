@@ -1,4 +1,4 @@
-processSwathData <- function(twoColour=TRUE, textstring="_perBeadFile.txt", section_height = 326, section_width = 397, swath_overlap = 81, fullOutput = TRUE, newTextString=".txt", verbose = TRUE){
+processSwathData <- function(twoColour=TRUE, textstring="_perBeadFile.txt", segmentHeight = 326, segmentWidth = 397, swathOverlap = 81, fullOutput = TRUE, newTextString=".txt", verbose = TRUE){
 
     ## Hardcode the expected tif and locs file names
     ## if these change we'll need to make them arguments instead
@@ -47,7 +47,7 @@ processSwathData <- function(twoColour=TRUE, textstring="_perBeadFile.txt", sect
     t2 <- assignToImage(t1, an, twocolour = twoColour, locs=locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
 
     
-    Swaths <- genSwaths(t2, an, twocolour = twoColour, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, section_height = section_height, section_width = section_width, swath_overlap = swath_overlap, locs=locslist,verbose = verbose)
+    Swaths <- genSwaths(t2, an, twocolour = twoColour, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, section_height = segmentHeight, section_width = segmentWidth, swath_overlap = swathOverlap, locs = locslist, verbose = verbose)
 
     ## assign each bead to a swath
     writeOutFiles(Swaths, an, newTextString, fullOutput = fullOutput, twocolour = twoColour)

@@ -22,7 +22,7 @@ setMethod("show", "beadLevelData", function(object) {
 
 		if(is.data.frame(object@sectionData[[i]])){
 			#if(ncol(object@sectionData[[i]]) < ncols){
-                        if(ncol(object@sectionData[[i]]) == 1){
+            if(ncol(object@sectionData[[i]]) == 1){
 				displayrows = nArrays
 				show(as.vector(object@sectionData[[i]][1:displayrows,1]))
 				cat("\n");
@@ -30,10 +30,10 @@ setMethod("show", "beadLevelData", function(object) {
 			}
 			else{
 				displayrows = min(nrows, nArrays)
-				show(object@sectionData[[i]][1:displayrows,1:ncols])
+				show(object@sectionData[[i]][1:displayrows,])
 
 				if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
-				cat("\n..", ncol(object@sectionData[[i]]) - ncols, "more columns of data\n\n")
+				#cat("\n..", ncol(object@sectionData[[i]]) - ncols, "more columns of data\n\n")
 			}
 		}
 
