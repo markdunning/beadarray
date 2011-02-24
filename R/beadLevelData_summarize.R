@@ -306,6 +306,13 @@ for(cNum in 1:length(channelList)){
 			pIDs2 = pIDs2[-oList]
 			wts2 = wts2[-oList]
 
+			##check if any beads masked completely
+
+			if(any(wts2 ==0)){
+				values2 = values2[-which(wts2 ==0)]
+				pIDs2 = pIDs2[-which(wts2 ==0)]
+				wts2 = wts2[-which(wts2 ==0)]
+			}
 
 			###Create list of values, split by ProbeID. Multiply by probe weights
 
@@ -314,6 +321,8 @@ for(cNum in 1:length(channelList)){
 			###Find out the mapping between the list and probeIDs
 
 			pMap = match(names(tmp), probeIDs)
+
+			
 	
 			cat("Using exprFun\n")
 			output[[ch]][["eMat"]][pMap,s] = unlist(lapply(tmp, exprFun))
