@@ -159,24 +159,15 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
 
             if(any(colnames(storemet) %in% metricChip)){
                 chipIdx <- which(colnames(storemet) %in% metricChip);
-                if(verbose){cat("Found chip column.\n")}
-
-                #keys = gsub("_perBeadFile", "", keys)           
+                if(verbose){cat("Found chip column.\n")}     
 
                 for(i in 1:nrow(storemet)[1]){
 
                     matchsect<-grep(paste(storemet[[metricsection]][i], "-?_?", sep = ""), sectionNames)
                     matchchip<-grep(storemet[i,chipIdx],sectionNames)
 
-#                     if(sum(duplicated(c(matchchip,matchsect)))==1){
-# 
-#                         mymatch<-c(matchchip,matchsect)[duplicated(c(matchchip,matchsect))]
-# 
-#                         metrow[mymatch]<-i
-#                     }
                     ## this should allow a line in a metrics file to match multiple sections for swath data
                     mymatch<-c(matchchip,matchsect)[duplicated(c(matchchip,matchsect))]
-                    print(c(matchchip,matchsect))
                     for(j in mymatch)
                         metrow[j] <- i   
                 }
@@ -184,7 +175,6 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
             }
             
         }
-        print(metrow)
         if(length(metrow)) {
             storemet <- storemet[metrow,,drop = FALSE]
             info <- info[order(metrow), ,drop = FALSE]

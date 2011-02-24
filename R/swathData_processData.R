@@ -1,8 +1,7 @@
-processSwathData <- function(twoColour=TRUE, textstring="_perBeadFile.txt", segmentHeight = 326, segmentWidth = 397, swathOverlap = 81, fullOutput = TRUE, newTextString=".txt", verbose = TRUE){
+processSwathData <- function(twoColour = NULL, textstring="_perBeadFile.txt", segmentHeight = 326, segmentWidth = 397, swathOverlap = 81, fullOutput = TRUE, newTextString=".txt", verbose = TRUE){
 
     ## Hardcode the expected tif and locs file names
     ## if these change we'll need to make them arguments instead
-
     Glocsstring1 = "-Swath1_Grn.locs";
     Glocsstring2 = "-Swath2_Grn.locs"; 
     Rlocsstring1 = "-Swath1_Red.locs";
@@ -10,6 +9,10 @@ processSwathData <- function(twoColour=TRUE, textstring="_perBeadFile.txt", segm
     GrnTiffSuffix1 = "-Swath1_Grn.tif";
     GrnTiffSuffix2 = "-Swath2_Grn.tif";
     RedTiffSuffix2 = "-Swath2_Red.tif"; 
+    
+    ## try and guess the number of colurs by looking for files with "Red" in the name
+    if(is.null(twoColour))
+        twoColour <- ifelse(any(grepl("Red", list.files())), TRUE, FALSE);
 
     files <- list.files(pattern = textstring)
     arrayNames <- unlist(strsplit(files, textstring))

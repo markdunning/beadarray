@@ -1,7 +1,22 @@
 writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = TRUE, twocolour = FALSE){
+    
+    ##################################################
+    ## Function to write new "bead-level" text files
+    ##
+    ## Arguments: Swaths - List containing two, 6-column, matrices (one for each swath)
+    ##                  Columns: 1-4 Standard bead-level, 5 is an index of overlapped beads
+    ##                  bead pairs in the two images have the same value 
+    
+    ## Output:  FULL - beads in both images are writen to a bead-level text file, with a 5th column
+    ##          indicating a weight.  Beads that appear in both swaths have weight 0.5, otherwise weight 1
+    ##          BASIC - overlapping beads are removed from Swath2 and no weights are output
+    ###################################################
 
     S1<-Swaths[[1]]
     S2<-Swaths[[2]]
+    
+    S1<-S1[order(S1[,1],S1[,ncol(S1)]),]
+    S2<-S2[order(S2[,1],S2[,ncol(S2)]),]
 
     ## round coordinates so they match Illumina's format
     S1[,3:4] <- .Call("roundLocsFileValues", S1[,3:4], PACKAGE = "BeadDataPackR");
@@ -12,34 +27,23 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
     }
 
     if(fullOutput){
-
-        S1<-S1[order(S1[,1],S1[,ncol(S1)]),]
-        S2<-S2[order(S2[,1],S2[,ncol(S2)]),]
-
-        S1[S1[,ncol(S1)] > 0, ncol(S1)]<-0.5
-        S1[S1[,ncol(S1)] == 0, ncol(S1)]<-1
-        S2[S2[,ncol(S2)] > 0, ncol(S2)]<-0.5
-        S2[S2[,ncol(S2)] == 0, ncol(S2)]<-1
-
-        S1<-S1[,-(ncol(S1)-1)]
-        S2<-S2[,-(ncol(S2)-1)]
-
-        write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
-        write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
-
+        S1[S1[,ncol(S1)] > 0, ncol(S1)] <- 0.5
+        S1[S1[,ncol(S1)] == 0, ncol(S1)] <- 1
+        colnames(S1)[ncol(S1)] <- "Weight"
+        
+        S2[S2[,ncol(S2)] > 0, ncol(S2)] <- 0.5
+        S2[S2[,ncol(S2)] == 0, ncol(S2)] <- 1
+        colnames(S2)[ncol(S2)] <- "Weight"
     }
-
     else {
-
-        S1<-S1[order(S1[,1]),1:(dim(S1)[2]-1)]
-
-        S2<-S2[which(S2[,dim(S2)[2]]==0),]
-        S2<-S2[order(S2[,1]),1:(dim(S2)[2]-1)]
-
-        write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
-        write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
-
+        ## if we don't want full output remove the weights
+        ## and the overlapping beads from the second swath
+        S1 <- S1[ ,1:(ncol(S1) - 1)]
+        S2 <- S2[which(S2[,ncol(S2)] == 0),1:(ncol(S2) - 1)]
     }
+    
+    write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
+    write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
 
 }
 
