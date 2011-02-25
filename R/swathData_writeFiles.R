@@ -1,4 +1,4 @@
-writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = TRUE, twocolour = FALSE){
+writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = TRUE, twocolour = FALSE, outputDir = NULL){
     
     ##################################################
     ## Function to write new "bead-level" text files
@@ -42,8 +42,8 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
         S2 <- S2[which(S2[,ncol(S2)] == 0),1:(ncol(S2) - 1)]
     }
     
-    write.table(S1,row.names=F,sep="\t",file=paste(an, "-Swath1",textstring, sep = ""), quote = FALSE)
-    write.table(S2,row.names=F,sep="\t",file=paste(an, "-Swath2",textstring, sep = ""), quote = FALSE)
+    write.table(S1, file=file.path(outputDir, paste(an, "-Swath1",textstring, sep = "")), row.names=FALSE, sep="\t", quote = FALSE)
+    write.table(S2, file=file.path(outputDir, paste(an, "-Swath2",textstring, sep = "")), row.names=FALSE, sep="\t", quote = FALSE)
 
 }
 

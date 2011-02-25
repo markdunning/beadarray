@@ -61,9 +61,9 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 
 \examples{
 	data(BLData)
-	output <- BASH(BLData,array=1:4,useLocs=FALSE)
+	output <- BASH(BLData,array=1:2,useLocs=FALSE)
 	boxplot(output$ext) #view spread of extended scores
-	for(i in 1:4)
+	for(i in 1:2)
 	{
 		BLData <- setWeights(BLData, output$wts[[i]], i) #apply BASH weights to BLData
 	}

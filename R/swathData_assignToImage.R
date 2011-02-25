@@ -1,4 +1,4 @@
-assignToImage <- function(txt, sectionName, twocolour = TRUE, locslist, GrnTiffSuffix1 = "-Swath1_Grn.tif", GrnTiffSuffix2 = "-Swath2_Grn.tif", verbose = FALSE) {
+assignToImage <- function(txt, sectionName, inputDir = NULL, twocolour = TRUE, locslist, GrnTiffSuffix1 = "-Swath1_Grn.tif", GrnTiffSuffix2 = "-Swath2_Grn.tif", verbose = FALSE) {
     
     ## Function to determine which swath each bead in the .txt came from
     ##
@@ -45,23 +45,31 @@ assignToImage <- function(txt, sectionName, twocolour = TRUE, locslist, GrnTiffS
     ## if the result is smaller than the original .txt we must have some duplicates.
     ## find which they are and try using intensities to determine which image they're from
     unassigned <- NULL;
-    if(nrow(tmp) < nrow(txt)) {
+    if( nrow(tmp) < nrow(txt) ) {
+
         if(verbose) cat("Matching duplicate spots... ")
-        roundedX <- .Call("roundLocsFileValues", tmp[,3], PACKAGE = "BeadDataPackR");
-        roundedY <- .Call("roundLocsFileValues", tmp[,4], PACKAGE = "BeadDataPackR");
-        txtDups <- which(!paste(txt[,3], txt[,4]) %in% paste(roundedX, roundedY));
-        ## create a data.frame for these unassigned beads
-        unassigned <- cbind(txt[txtDups,], vector(length = length(txtDups)))
-        for(i in 1:length(txtDups)) {
-            tiffFile1 <- paste(sectionName, "-Swath1_Grn.tif", sep = "")
-            g1 <- singleBeadIntensity(tiffFile1, txt[txtDups[i],3:4])
-            tiffFile2 <- paste(sectionName, "-Swath2_Grn.tif", sep = "")
-            g2 <- singleBeadIntensity(tiffFile2, txt[txtDups[i],3:4])
-            ## assign the bead to the image which gives the closest intensity
-            
-            unassigned[i,dim(unassigned)[2]] <- which.min( abs( diff( c(txt[txtDups[i],2], g1, g2) ) ) )
+
+        ## if the tiff files exist we can calculate intesities from both images and compare to the txt file
+        tiffFile1 <- file.path(inputDir, paste(sectionName, "-Swath1_Grn.tif", sep = ""))
+        tiffFile2 <- file.path(inputDir, paste(sectionName, "-Swath2_Grn.tif", sep = ""))
+        if( file.exists(tiffFile1) & file.exists(tiffFile2) ) {
+
+            roundedX <- .Call("roundLocsFileValues", tmp[,3], PACKAGE = "BeadDataPackR");
+            roundedY <- .Call("roundLocsFileValues", tmp[,4], PACKAGE = "BeadDataPackR");
+            txtDups <- which(!paste(txt[,3], txt[,4]) %in% paste(roundedX, roundedY));
+            ## create a data.frame for these unassigned beads
+            unassigned <- cbind(txt[txtDups,], vector(length = length(txtDups)))
+            for(i in 1:length(txtDups)) {
+                g1 <- singleBeadIntensity(tiffFile1, txt[txtDups[i],3:4])
+                g2 <- singleBeadIntensity(tiffFile2, txt[txtDups[i],3:4])
+                ## assign the bead to the image which gives the closest intensity
+                unassigned[i,ncol(unassigned)] <- which.min( abs( diff( c(txt[txtDups[i],2], g1, g2) ) ) )
+            }
+            message("Done");
         }
-        cat("Done\n")
+        else {
+            message("Unable to find TIFF images; ", nrow(txt) - nrow(tmp), " beads cannot be assigned to a swath and will be ignored");
+        }
     }
             
     tmp <- rbind(tmp, unassigned)
