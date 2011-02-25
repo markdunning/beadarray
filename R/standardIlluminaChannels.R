@@ -2,12 +2,13 @@ logGreenChannelTransform = function(BLData, array){
 
 	x = getBeadData(BLData, array=array,what="Grn")
 
-        log2.na(x)
+    return(log2.na(x))
 }
 
 greenChannelTransform = function(BLData, array){
 
 	x = getBeadData(BLData, array=array,what="Grn")
+    return(x)
 
 }
 
@@ -17,15 +18,14 @@ logRedChannelTransform = function(BLData,array){
 
 	x = getBeadData(BLData, array=array,what="Red")
 
-        log2.na(x)
-
-
+    return(log2.na(x))
 }
 
 
 redChannelTransform = function(BLData,array){
 
 	x = getBeadData(BLData, array=array,what="Red")
+    return(x)
 
 }
 
@@ -33,11 +33,10 @@ redChannelTransform = function(BLData,array){
 logRatioTransform = function(BLData, array=array){
 
 	x = getBeadData(BLData, array=array,what="Grn")
-	
+
 	y = getBeadData(BLData, array=array,what="Red")	
 
-        log2.na(x) - log2.na(y)
-	
+    return( log2.na(x) - log2.na(y) )	
 }
 
 
