@@ -63,7 +63,6 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
         ## remove non-decoded beads
         s1idx<-s1idx[-which(is.na(overlap[,1]))]
         s2idx<-s2idx[-which(is.na(overlap[,1]))]
-
         overlap <- overlap[-which(is.na(overlap[,1])),]
         
         ## now we need to compute intensities for both swaths 
@@ -97,18 +96,21 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
                 overlap <- overlap[-which(is.na(overlap[,5])),]
             }
         }
+        else {
+            overlap <- overlap[,-5];
+        }
     
         overlap<-cbind(overlap,rep(2,dim(overlap)[1]))
-        colnames(overlap) <- colnames(swath2)
+        #colnames(overlap) <- colnames(swath2)
 
         overlap<-cbind(overlap,(1:(dim(overlap)[1])))
         swath2<-cbind(swath2,rep(0,dim(swath2)[1]))
 
         swath2<-rbind(swath2,overlap)
-        colnames(swath2)[dim(swath2)[2]]<-"Overlap"
+        colnames(swath2)[ncol(swath2)]<-"Overlap"
 
         swath1<-cbind(swath1,rep(0,dim(swath1)[1]))
-        colnames(swath1)[dim(swath1)[2]]<-"Overlap"
+        colnames(swath1)[ncol(swath1)]<-"Overlap"
 
         swath1[locsInTxt1[s1idx],dim(swath1)[2]]<-(1:(dim(overlap)[1]))
     }
