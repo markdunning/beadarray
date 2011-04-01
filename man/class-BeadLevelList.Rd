@@ -1,7 +1,7 @@
 \name{BeadLevelList-class}
 \docType{class}
 \alias{BeadLevelList-class}
-\alias{BeadLevelList}
+%\alias{BeadLevelList}
 \alias{arrayNames,BeadLevelList-method}
 \alias{getArrayData,BeadLevelList-method}
 

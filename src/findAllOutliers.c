@@ -85,7 +85,7 @@ double median(double *arr, int length){
 	double j;
 	double *tempArr;
 
-	tempArr = (double *)malloc(sizeof(double) * length);
+	tempArr = (double *) R_alloc(length, sizeof(double));
 
 	for(i = 0; i < length; i++){
 		  tempArr[i] = arr[i];
@@ -101,32 +101,26 @@ double median(double *arr, int length){
 		j = tempArr[i];
 	}
 
-	free(tempArr);
 	return j;
 }
 
 double mad(double *arr, int length){
 	int i;
-	double temp, med;
-	double *arr2;
-
-	med = median(arr, length);
-
-	arr2 = (double *)malloc(sizeof(double) * length);
+	double temp;
+	double med = median(arr, length);
+	double *arr2 = (double *) R_alloc(length, sizeof(double));
 
 	for(i = 0;i < length; i++){
 		  temp = (arr[i] - med);
 		  arr2[i] = fabs(temp);
 	}
 	temp = 1.4826*(median(arr2, length));
-	free(arr2);
 	return(temp);
 }
 
 int* getProbeIndices(int *probeList, int probeID, int *start, int numBeads){
 	int i , j, ind;
-	int *indices;
-	indices = (int *)malloc(sizeof(int) * 2);
+	int *indices = (int *) R_alloc(2, sizeof(int));
 	/* find the location of the one probe of the correct ID */
 	ind = binarySearch(probeID, probeList, 0, numBeads);
 	/*check if that probe ID was found */
@@ -166,7 +160,7 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 
 	*start = (indices[1]+1);  //set the next start position
 	*count = (indices[1] - indices[0] + 1);  //calculate how many beads there are of this type
-	inten = (double *)malloc(sizeof(double) * (*count));
+	inten = (double *) R_alloc(*count, sizeof(double));
 
 	i = indices[0];
 	j = indices[1];
@@ -224,8 +218,6 @@ beadStatusStruct* findBeadStatus(double *intensities, int *probeList, int probeI
 	status->validInds = validInds;
 	status->outlierInds = outlierInds;
 
-	free(inten);
-	free(indices);
 	return(status);
 }
 
@@ -235,7 +227,7 @@ void findAllOutliers(double *finten, int *binaryStatus, int *probeList, int *pro
 	int *valids, *count;
 	int k, i, probeID, temp;
 
-	count = (int *)malloc(sizeof(int));
+	count = (int *) R_alloc(1, sizeof(int));
 	*count = 0; //initialise counter to record how many beads there are of this type
 
 	for(k = 0; k < (*numProbes); k++){
@@ -243,16 +235,14 @@ void findAllOutliers(double *finten, int *binaryStatus, int *probeList, int *pro
 		  probeID = probeIDs[k];
 		  status = findBeadStatus(finten, probeList, probeID, *numBeads, count, nextStart, nmads);
 		  valids = status->validInds;
-//		  outliers = status->outlierInds;
 
 		  i = 0;
-		  while(valids[i] != -1){
-		  		temp = valids[i];
-		  		binaryStatus[temp] = 1;
-				i++;
-				}
+		  while(valids[i] != -1) {
+	  		temp = valids[i];
+	  		binaryStatus[temp] = 1;
+			i++;
 		}
-	free(count);
+	}
 	free(status->validInds);
 	free(status->outlierInds);
 	free(status);

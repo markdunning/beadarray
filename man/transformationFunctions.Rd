@@ -49,8 +49,6 @@ Mark Dunning
 
 data(BLData)
 
-BLData[[1]]
-
 head(BLData[[1]])
 
 log2(getBeadData(BLData, array=1,what="Grn")[1:10])

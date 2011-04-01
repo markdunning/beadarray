@@ -1,5 +1,9 @@
 CHANGES IN VERSION 2.1
 
+BUG FIXES in 2.1.16
+
+	o	Fixed problem in BASH that could cause a segfault.
+
 BUG FIXES in 2.1.12
 
     o   Modified show method for beadLevelData class, so it doesn't fail when 
@@ -41,7 +45,7 @@ BUG FIXES in 2.1.1
     o   readIllumina, imageplot, boxplot accept '...' arguments
 
 
-NEw METHODS
+NEW METHODS
 
     o   combine methods added for beadLevelData and ExpressionSetIllumina
 

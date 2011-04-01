@@ -14,7 +14,7 @@ calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform
 
 \arguments{
   \item{BLData}{
-a \code{\link{beadLevelData}} object
+a \code{\link{beadLevelData-class}} object
 }
   \item{array}{
 the number of the array of interest
@@ -50,7 +50,6 @@ vector with the percentage of beads found in each segment that were determined t
 \author{
 Mark Dunning
 }
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
 

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <R.h>
+#include "beadarray.h"
 
 void kth(double arr[], int low, int high, int k)
 {
@@ -78,9 +78,8 @@ void Neighbours(double* x, double* y, int* no, int* neighbours, double* thresh, 
 	double left, right, top, bottom;
 	double xdiff, ydiff;
 
-	int *windowed, *margined;
-	margined = malloc(*no * sizeof(int));
-	windowed = malloc(*no * sizeof(int));
+        int *margined = (int *) R_alloc(*no, sizeof(int));
+	int *windowed = (int *) R_alloc(*no, sizeof(int));
 
 	for(wrow = 1; wrow <= *wrows; wrow++)
 	{
@@ -200,14 +199,11 @@ void BGFilter(double* E, double* Etilde, int* neighbours, int* nbeads, int* inva
 	int nextslot, firstinv, lastinv;
 	double median, mad;
 
-	int *invaded = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 
-	double *invadedE = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(double) );
-	int *done = malloc(*nbeads * sizeof(int));
+	int *invaded = (int *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 
+	double *invadedE = (double *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(double));
+	int *done = (int *) R_alloc(*nbeads, sizeof(int));
 	//initialise done matrix to 0
-	for(i = 0; i < *nbeads; i++)
-	{
-		done[i] = 0;
-	}
+        memset(done, 0, sizeof(int) * *nbeads);
 
 	//for each node...
 	for(i = 0; i < *nbeads; i++) // was i <= nbeads - 1
@@ -233,11 +229,11 @@ void BGFilter(double* E, double* Etilde, int* neighbours, int* nbeads, int* inva
 				for(k = 0; k <=5; k++)
 				{
 					//did we invade? if not, let's do it (remembering to avoid 0 slots)
-					temp2 = neighbours[temp]-1; //vector form for neighbour to invade
-					if(!done[temp2])
-					{
-						if(neighbours[temp] != 0)
-						{
+                                        if(neighbours[temp] != 0)
+                                        {
+                                                temp2 = neighbours[temp] - 1;
+                                                if(!done[temp2])
+                                                {        
 							invaded[nextslot] = temp2;
 							invadedE[nextslot] = E[temp2];
 							done[temp2] = 1;
@@ -307,16 +303,13 @@ void BGFilterWeighted(double* E, double* Etilde, int* neighbours, double* weight
 	int nextslot, firstinv, lastinv;
 	double wtotal = 0;
 
-	int *invaded = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 
-	double *invadedE = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(double) );
-	double *invadedW = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(double) );
+	int *invaded = (int *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(int) ); //must be big enough to contain IDs of all invaded nodes 
+	double *invadedE = (double *) R_alloc(10 * (*invasions) * (*invasions + 1),  sizeof(double) );
+	double *invadedW = (double *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(double) );
 
-	int *done = malloc(*nbeads * sizeof(int));
+	int *done = (int *) R_alloc(*nbeads, sizeof(int));
 	//initialise done matrix to 0
-	for(i = 0; i < *nbeads; i++)
-	{
-		done[i] = 0;
-	}
+        memset(done, 0, *nbeads * sizeof(int));
 
 	//for each node...
 	for(i = 0; i < *nbeads; i++) // was i <= nbeads - 1
@@ -343,18 +336,17 @@ void BGFilterWeighted(double* E, double* Etilde, int* neighbours, double* weight
 				for(k = 0; k <=5; k++)
 				{
 					//did we invade? if not, let's do it (remembering to avoid 0 slots)
-					temp2 = neighbours[temp]-1; //vector form for neighbour to invade
-					if(!done[temp2])
-					{
-						if(neighbours[temp] != 0)
-						{
-							invaded[nextslot] = temp2;
-							invadedE[nextslot] = E[temp2];
-							invadedW[nextslot] = weights[temp2]/l;
-							done[temp2] = 1;
-							nextslot++;
-						}
-					}
+                                        if(neighbours[temp] != 0)
+                                        {
+                                                temp2 = neighbours[temp] - 1;
+                                                if(!done[temp2])
+                                                {        
+                                                        invaded[nextslot] = temp2;
+                                                        invadedE[nextslot] = E[temp2];
+                                                        done[temp2] = 1;
+                                                        nextslot++;
+                                                }
+                                        }
 					temp++;
 				}
 			}
@@ -446,15 +438,12 @@ void DiffuseDefects(int* neighbours, int* IDs, int* nbeads, int* nIDs, int* ncom
 	double p = ((double)*nIDs)/(double)(*nbeads - *ncompacts);
 
 	//initialise done matrix to 0
-	int *done = malloc(*nbeads * sizeof(int));
-	for(i = 0; i < *nbeads; i++)
-	{
-		done[i] = 0;
-	}
+	int *done = (int *) R_alloc(*nbeads, sizeof(int));
+        memset(done, 0, *nbeads * sizeof(int));
 
 	//calculate threshold vals for binomial distribution
-	double *choose = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(double) );
-	int *thresh = malloc(10 * (*invasions) * (*invasions + 1) * sizeof(int) );
+	double *choose = (double *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(double) );
+	int *thresh = (int *) R_alloc(10 * (*invasions) * (*invasions + 1), sizeof(int) );
 
 	choose[0] = 1.0;
 	choose[1] = 0.0;
@@ -478,8 +467,7 @@ void DiffuseDefects(int* neighbours, int* IDs, int* nbeads, int* nIDs, int* ncom
 	}
 
 	//initialise outlier matrix
-	int *outlier;
-	outlier = malloc(*nbeads * sizeof(int));
+	int *outlier = (int *) R_alloc(*nbeads, sizeof(int));
 	for(i = 0; i < *nbeads; i++)
 	{
 		outlier[i] = 0;
@@ -536,9 +524,6 @@ void DiffuseDefects(int* neighbours, int* IDs, int* nbeads, int* nIDs, int* ncom
 		//clear done flags
 		for(j = 0; j < nextslot ; j++) {done[invaded[j]] = 0;}
 	}
-
-	free(outlier);
-	free(done);
 	return;
 }
 
@@ -594,15 +579,12 @@ void Close(int* IDs, int* nIDs, int* neighbours, int* nbeads, int* invasions)
 {
 	int i, j, k, l, temp;
 	int nextslot, firstinv, lastinv;
-	int *done = malloc(*nbeads * sizeof(int));
-	int *marker = malloc((*invasions + 1) * sizeof(int));
+	int *done = (int *) R_alloc(*nbeads, sizeof(int));
+	int *marker = (int *) R_alloc((*invasions + 1), sizeof(int));
 
 	marker[0] = 0;
 	//initialise done matrix
-	for(i = 0; i < *nbeads; i++)
-	{
-		done[i] = 0;
-	}
+        memset(done, 0, *nbeads * sizeof(int));
 	for(i = 0; i < *nIDs; i++)
 	{
 		done[IDs[i]-1] = 1;

@@ -38,7 +38,7 @@ Separate functionality exists to read and manipulate TIFF images that may be fou
 }
 
 \value{
-Returns an object of class \code{\link{beadLevelData}}
+Returns an object of class \code{\link{beadLevelData-class}}
 }
 
 \author{Mike Smith, Mark Dunning, Andy Lynch}

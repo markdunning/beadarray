@@ -4,7 +4,7 @@
     Add or modify data in a beadLevelData object
 }
 \description{
-    Add or modify data in a \code{\link{beadLevelData}} object.
+    Add or modify data in a \code{\link{beadLevelData-class}} object.
 }
 \usage{
     insertBeadData(BLData, array = 1, what, data)
@@ -12,7 +12,7 @@
 
 \arguments{
     \item{BLData}{
-        An object of class \code{\link{beadLevelData}}.
+        An object of class \code{\link{beadLevelData-class}}.
     }
     \item{array}{
         Positive integer specifying what section should be modified.
@@ -26,12 +26,12 @@
 }
 
 \details{
-This function allows the \code{beadData} slot of the \code{\link{beadLevelData}} object to be modified for a given array. 
+This function allows the \code{beadData} slot of the \code{\link{beadLevelData-class}} object to be modified for a given array. 
 
 }
 
 \value{
-    Returns an object of class \code{\link{beadLevelData}}.
+    Returns an object of class \code{\link{beadLevelData-class}}.
 }
 
 \author{

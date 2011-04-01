@@ -1,14 +1,10 @@
 \name{beadLevelData-class}
 \docType{class}
 \alias{beadLevelData-class}
-\alias{beadLevelData}
-\alias{show,beadLevelData-method}
-\alias{dim,beadLevelData-method}
 \alias{numBeads,beadLevelData-method}
 \alias{[[,beadLevelData,ANY,missing-method}
 \alias{boxplot,beadLevelData-method}
 \alias{sectionNames,beadLevelData-method}
-\alias{combine,beadLevelData,beadLevelData-method}
 
 \title{Class "beadLevelData" }
 
@@ -33,7 +29,7 @@
 \section{Methods}{
   \describe{
     \item{show(beadLevelData)}{Printing method for BeadLevelList}
-    \item{\code{dim(object)}}{The dimension of the \code{BeadLevelList} object}
+    %\item{\code{dim(object)}}{The dimension of the \code{BeadLevelList} object}
     \item{\code{sectionNames(object,arrays=NULL)}}{Returns the strip/array names from a}
     \item{\code{numBeads(object,arrays=NULL)}}{Returns the number of beads on selected \code{arrays}}
   }

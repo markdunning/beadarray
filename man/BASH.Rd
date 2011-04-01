@@ -60,6 +60,8 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 %\seealso{\code{\link{BASHCompact}}, \code{\link{BASHDiffuse}}, \code{\link{BASHExtended}}, \code{\link{generateNeighbours}}, }
 
 \examples{
+
+\dontrun{
 	data(BLData)
 	output <- BASH(BLData,array=1:2,useLocs=FALSE)
 	boxplot(output$ext) #view spread of extended scores
@@ -80,6 +82,8 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 	#attempt to correct for background.
 	output <- BASH(BLData, bgcorr = "median",array=1, useLocs=FALSE)
 }
+}
+
 \references{
 	J. M. Cairns, M. J. Dunning, M. E. Ritchie, R. Russell, and A. G. Lynch (2008). BASH: a tool for managing BeadArray spatial artefacts. Bioinformatics 15; 24(24)
 

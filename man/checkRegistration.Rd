@@ -11,7 +11,7 @@ Occasionally arrays the registration of an array can go wrong, with the bead cen
 }
 
 \arguments{
-    \item{BLData}{An object of class \code{\link{beadLevelData}}.}
+    \item{BLData}{An object of class \code{\link{beadLevelData-class}}.}
     \item{array}{Integer specifying the index of the arrays to be checked.  Can be a vector to process multiple arrays e.g. \code{1:12}.}
 }
 

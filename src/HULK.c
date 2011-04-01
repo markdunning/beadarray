@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <R.h>
+#include "beadarray.h"
 
 void HULK(double* residuals, int* neighbours, int* nbeads, int* invasions, double *results) {
 
@@ -11,7 +11,8 @@ void HULK(double* residuals, int* neighbours, int* nbeads, int* invasions, doubl
   int invaded[50000];
   double divide, weight;
 
-  int *done = calloc(*nbeads, sizeof(int));
+  int *done = (int *) R_alloc(*nbeads, sizeof(int));
+  memset(done, 0, *nbeads * sizeof(int));
 
   //for each node...
   for(i = 0; i < *nbeads; i++) {
@@ -61,7 +62,5 @@ void HULK(double* residuals, int* neighbours, int* nbeads, int* invasions, doubl
     	done[invaded[j]] = 0;
     }
   }
-  
-  free(done);
   return;
 }

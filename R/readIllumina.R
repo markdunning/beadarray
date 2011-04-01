@@ -45,7 +45,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             data <- data[-which(data[,1] == 0),];
         }
         else {       
-            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
+            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]), ...);
         }
     
         ##record the ProbeIDs, X and Y coords
@@ -79,8 +79,8 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         ## if this is two channel, read the red data too
         if(nChannels == 2) {
         
-            BLData <- insertBeadData(BLData, array = i, what = "RedX", data = data[,3])
-            BLData <- insertBeadData(BLData, array = i, what = "RedY", data = data[,4])
+            BLData <- insertBeadData(BLData, array = i, what = "RedX", data = data[,6])
+            BLData <- insertBeadData(BLData, array = i, what = "RedY", data = data[,7])
             
             ## read the images
             if(useImages && !is.null(targets$redImage[i])) {

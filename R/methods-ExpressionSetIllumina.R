@@ -173,8 +173,8 @@ setMethod("qcData", signature(object="ExpressionSetIllumina"), function(object) 
 }
 
 
-setMethod("combine", signature(x="ExpressionSetIllumina",y="ExpressionSetIllumina"), function(x, y, ...) {
-
+#setMethod("combine", signature(x="ExpressionSetIllumina",y="ExpressionSetIllumina"), function(x, y, ...) {
+setMethod("combine", signature(x="ExpressionSetIllumina",y="ExpressionSetIllumina"), function(x, y) {
 
 
   if (class(x) != class(y))

@@ -38,7 +38,7 @@ numberOfColumns <- function(file, sep = "\t") {
         return(0)
 }
 
-readBeadLevelTextFile <- function(file, sep = "\t") {
+readBeadLevelTextFile <- function(file, sep = "\t", ...) {
      
     ## Read a bead level text file and return a list containing
     ## the contents of the file and how many channels are present

@@ -2,21 +2,16 @@
 \docType{class}
 \alias{ExpressionSetIllumina-class}
 \alias{[,ExpressionSetIllumina-method}
-\alias{dim,ExpressionSetIllumina-method}
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{se.exprs,ExpressionSetIllumina-method}
 
-\alias{dim,ExpressionSetIllumina-method}
-\alias{exprs<-}
 \alias{exprs<-,ExpressionSetIllumina,matrix-method}
 
-\alias{se.exprs<-}
 \alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
 
 \alias{qcData}
 \alias{qcData,ExpressionSetIllumina-method}
 
-\alias{show,ExpressionSetIllumina-method}
 \alias{nObservations}
 \alias{nObservations,ExpressionSetIllumina-method}
 \alias{nObservations<-}
@@ -28,7 +23,7 @@
 \alias{Detection<-,ExpressionSetIllumina,matrix-method}
 
 
-\alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
+%\alias{combine,ExpressionSetIllumina,ExpressionSetIllumina-method}
 
 \title{Class "ExpressionSetIllumina"}
 

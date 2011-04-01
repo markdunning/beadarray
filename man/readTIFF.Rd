@@ -1,6 +1,5 @@
 \name{readTIFF}
 \alias{readTIFF}
-\alias{openTIFF}
 \title{Read the Illumina tiff images}
 \description{
   Reads Illumina tiff images and produces a matrix of pixel values.
