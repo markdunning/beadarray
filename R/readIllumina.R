@@ -45,7 +45,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             data <- data[-which(data[,1] == 0),];
         }
         else {       
-            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]), ...);
+            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
         }
     
         ##record the ProbeIDs, X and Y coords
