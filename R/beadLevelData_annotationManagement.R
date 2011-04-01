@@ -42,7 +42,7 @@ beadStatusVector = function(BLData, array=1, controlProfile = NULL){
 
 	for(i in 1:length(cIDs)){
 
-		statusVector[match(cIDs[[i]], pIDs)] = names(cIDs)[i]
+		statusVector[which(pIDs %in% cIDs[[i]])] = names(cIDs)[i]
 	}
 
 	statusVector		
