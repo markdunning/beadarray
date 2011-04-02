@@ -188,7 +188,7 @@ performed manipulations to the error image, we can then find outliers on this im
 determining which beads are more than 3 Median Absolute Devations, or MADs, from the median.
 
 Finally, since Illumina arrays are randomly arranged and use a hexagonal grid rather than rectangular,
-BASH has it’s own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
+BASH has it's own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
 
 <<BASH, echo=TRUE, eval=TRUE, results=hide>>=
 
