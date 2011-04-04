@@ -183,7 +183,7 @@ of outliers (Compact defects). The random nature (both in position and numbers o
 of Illumina arrays mean that the Harshlight algorithm must proceed in a different way to the original
 Harshlight implementation. Whereas Affymetrix probes have replicates on other arrays, Illumina beads
 are replicated on the same array. We can therefore generate an error image based on how much each
-bead differs from the median of its replicates’ intensities, instead of replicates on other arrays. Having
+bead differs from the median of its replicates' intensities, instead of replicates on other arrays. Having
 performed manipulations to the error image, we can then find outliers on this image by bead type,
 determining which beads are more than 3 Median Absolute Devations, or MADs, from the median.
 

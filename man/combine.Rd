@@ -28,6 +28,12 @@ The \code{combine} function allows two objects of the same class that have been 
 
 }
 
+\examples{
+
+data(BLData)
+
+combine(BLData, BLData)
+}
 
 \author{Mark Dunning, Mike Smith}
 
