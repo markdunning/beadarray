@@ -13,7 +13,7 @@ setMethod("show", "beadLevelData", function(object) {
 	ncols = 4
 	nrows = 5
 
-        cat("\n-----------------\nPer-section data (@sectionData)\n-----------------\n")        
+    cat("\n-----------------\nPer-section data (@sectionData)\n-----------------\n")        
 
 
 	for(i in 1:length(object@sectionData)){
@@ -32,16 +32,13 @@ setMethod("show", "beadLevelData", function(object) {
 				displayrows = min(nrows, nArrays)
 				show(object@sectionData[[i]][1:displayrows,])
 
-				if(displayrows > nrows) cat(paste("\n...", nArrays-nrows, "more rows of data\n\n"))
-				#cat("\n..", ncol(object@sectionData[[i]]) - ncols, "more columns of data\n\n")
+				if(nArrays > displayrows) cat(paste("\n...", nArrays-displayrows, "more rows of data\n\n"))
 			}
 		}
 
-		else {
-                    
-                    show(object@sectionData[[i]])
-
-                }
+		else {          
+        	show(object@sectionData[[i]])
+        }
 
 	}
 

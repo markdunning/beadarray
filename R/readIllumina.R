@@ -112,18 +112,23 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
     ## incorporate things into sectionData slot
     ## number of beads
    		
-## sample groupings
+	## sample groupings
+	## if we don't have an sdf default to each section being seperate
     sampleGroup <- 1:nrow(targets)
 
-    if(!is.null(sdf)){	
+    if(!is.null(sdf)){
+		## we need the chip names for the case when multiple chips are being read in one go
+		splitSectionNames <- sapply(as.character(BLData@sectionData$Targets$sectionName), strsplit, "_");
+		chipNames <- matrix(unlist(splitSectionNames), ncol = length(splitSectionNames[[1]]), byrow = TRUE)[,1]
+		## search for the sample group identifiers taken from the sdf
         tmp <- lapply(sdf$SampleLabels$string[[1]], grep, x = targets$sectionName)
         for(i in 1:length(tmp)) {
             for(j in seq(along = tmp[[i]])) {
-                sampleGroup[ tmp[[i]][j] ] <- sdf$SampleLabels$string[[1]][i]
+                sampleGroup[ tmp[[i]][j] ] <- paste(chipNames[ tmp[[i]][j] ], sdf$SampleLabels$string[[1]][i], sep = "_");
             }
         }
     }
-    
+
     BLData = insertSectionData(BLData, what="SampleGroup", data = data.frame(SampleGroup = sampleGroup))
     BLData = insertSectionData(BLData, what="numBeads", data=data.frame(numBeads = nBeads))
 
@@ -131,7 +136,6 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             BLData = setAnnotation(BLData, illuminaAnnotation)
     }   	
     else warning("No Illumina annotation was specified. Try setting manually using setAnnotation..\n")
-
 
     return(BLData);
 

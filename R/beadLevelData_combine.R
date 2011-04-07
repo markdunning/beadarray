@@ -10,12 +10,12 @@ setMethod("combine", c(x = "beadLevelData", y = "beadLevelData"), function(x, y)
     for(i in union(names(x@sectionData), names(y@sectionData))) {
         
         if(i == "SampleGroup") {
-            if(any(y@sectionData$SampleGroup[,1] %in% x@sectionData$SampleGroup[,1])) {
-                ySampleGroup <- paste(y@sectionData$SampleGroup[,1], 1, sep = ".")
-            }
-            else { 
+          #  if(any(y@sectionData$SampleGroup[,1] %in% x@sectionData$SampleGroup[,1])) {
+          #      ySampleGroup <- paste(y@sectionData$SampleGroup[,1], 1, sep = ".")
+          #  }
+          #  else { 
                 ySampleGroup <- y@sectionData$SampleGroup[,1] 
-            }
+          #  }
             beadLevelData <- insertSectionData(beadLevelData, what = i, 
                                    data = c(as.character(x@sectionData$SampleGroup[,1]), as.character(ySampleGroup)) )
         }

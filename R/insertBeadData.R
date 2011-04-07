@@ -2,7 +2,7 @@
 insertBeadData <- function(BLData, array = 1, what, data) {
   
     if(array < 1)
-        stop("'Array' arguments must be a positive integer");
+        stop("'Array' argument must be a positive integer");
 
 	secNames = sectionNames(BLData)
 	
@@ -36,11 +36,17 @@ insertBeadData <- function(BLData, array = 1, what, data) {
 }
 
 
-insertSectionData <- function(BLData, what, data) {
+removeBeadData <- function(BLData, array = 1, what) {
+
+	if(array < 1)
+        stop("'Array' argument must be a positive integer");
 
 
-	BLData@sectionData[[what]] <- data.frame(data)
-    	return(BLData)
+	secName <- sectionNames(BLData)[array]
+	if( what %in% names(BLData@beadData[[secName]]) )
+		BLData@beadData[[secName]][[what]] <- NULL
+	else 
+		message(paste("Column \"", what, "\" not found.  No data removed", sep = ""))
 
-
+	return(BLData);
 }
