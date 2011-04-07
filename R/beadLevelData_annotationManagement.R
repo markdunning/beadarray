@@ -18,6 +18,24 @@ BLData
 
 } 
 
+
+
+checkPlatform <- function(BLData){
+
+	sigsPath = system.file(package="beadarray", "extdata")	
+	load(paste(sigsPath, "/platformSigs.Rda",sep=""))
+
+
+	ids = getBeadData(BLData, array=1, what="ProbeID")
+
+	names(sort(sapply(platformSigs,function(x) (sum(ids %in% x$V1)/length(ids))*100),decreasing=T))[1]
+
+
+}
+
+
+
+
 beadStatusVector = function(BLData, array=1, controlProfile = NULL){
 
 	if(is.null(controlProfile)){
