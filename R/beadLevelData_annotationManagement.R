@@ -20,7 +20,7 @@ BLData
 
 
 
-checkPlatform <- function(BLData){
+checkPlatform <- function(BLData,verbose=FALSE){
 
 	sigsPath = system.file(package="beadarray", "extdata")	
 	load(paste(sigsPath, "/platformSigs.Rda",sep=""))
@@ -28,7 +28,19 @@ checkPlatform <- function(BLData){
 
 	ids = getBeadData(BLData, array=1, what="ProbeID")
 
-	names(sort(sapply(platformSigs,function(x) (sum(ids %in% x$V1)/length(ids))*100),decreasing=T))[1]
+	rks = sapply(platformSigs,function(x) (sum(ids %in% x$V1)/length(ids))*100)
+
+
+	if(verbose){
+	 cat("Percentage of overlap with IDs on this array and know expression platforms\n")
+	 show(rks)
+	
+	}
+
+
+	if(all(rks < 90)) warning("Choice of platform may not be accurate\n")
+
+	names(sort(rks,decreasing=TRUE)[1])
 
 
 }
