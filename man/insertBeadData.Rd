@@ -1,13 +1,15 @@
 \name{insertBeadData}
 \alias{insertBeadData}
+\alias{removeBeadData}
 \title{
-    Add or modify data in a beadLevelData object
+    Add, modify or remove data in a beadLevelData object
 }
 \description{
-    Add or modify data in a \code{\link{beadLevelData-class}} object.
+    Add, modify or remove data in a \code{\link[=beadLevelData-class]{beadLevelData}} object.
 }
 \usage{
     insertBeadData(BLData, array = 1, what, data)
+    removeBeadData(BLData, array = 1, what)
 }
 
 \arguments{
@@ -18,7 +20,7 @@
         Positive integer specifying what section should be modified.
     }
     \item{what}{
-        Name of the data that is being modified.  It `what' doesn't exist then a new entry is created using the name specified in this argument.
+        Name of the data that is being modified.  If `what' doesn't exist then a new entry is created using the name specified in this argument.
     }
     \item{data}{
         A numeric vector to be stored, the same length as the number of beads in the section specified by the array argument.
@@ -26,8 +28,7 @@
 }
 
 \details{
-This function allows the \code{beadData} slot of the \code{\link{beadLevelData-class}} object to be modified for a given array. 
-
+These functions allow the \code{beadData} slot of the \code{\link{beadLevelData-class}} object to be modified for a given array. 
 }
 
 \value{
