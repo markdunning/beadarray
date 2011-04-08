@@ -15,11 +15,10 @@ Works out which platform the bead level data represents given the probe IDs and 
 }
 
 \arguments{
-    \item{BLData}{An object of class \code{\link{beadLevelData-class}}.
+    \item{BLData}{An object of class \code{\link{beadLevelData-class}}}.
     \item{verbose}{If TRUE, report overlaps with known platforms}	
 }
     
-}
 
 \value{
 Character string of the best guess of what chip BLData is
