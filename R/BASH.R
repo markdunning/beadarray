@@ -428,7 +428,7 @@ BASHExtended <- function(BLData, array, transFun = logGreenChannelTransform, nei
 ## *** BASH FUNCTION ***
 ## Entire pipeline analysis
 
-BASH <- function(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
+BASH <- function(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
 {
 	##checks
 	bgcorr = match.arg(bgcorr, c("none", "median", "medianMAD"))
