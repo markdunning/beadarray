@@ -6,7 +6,7 @@
 BASH is an automatic detector of physical defects on an array. It is designed to detect three types of defect - COMPACT, DIFFUSE and EXTENDED.
 }
 \usage{
-BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, log = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
+BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
@@ -15,7 +15,6 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
   \item{compact}{Logical - Perform compact analysis?}
   \item{diffuse}{Logical - Perform diffuse analysis?}
   \item{extended}{Logical - Perform extended analysis?}
-  \item{log}{Logical - Perform analyses on the log scale? (recommended)}
   \item{cinvasions}{Integer - number of invasions used whenever closing the image - see \code{\link{BASHCompact}}}
   \item{dinvasions}{Integer - number of invasions used in diffuse analysis, to find the kernel - see \code{\link{BASHDiffuse}}}
   \item{einvasions}{Integer - number of invasions used when filtering the error image - see \code{BGFilter}.}
