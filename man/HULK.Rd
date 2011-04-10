@@ -11,7 +11,7 @@ HULK(BLData, array = 1, neighbours = NULL, invasions = 20, useLocs = TRUE, weigh
 
 \arguments{
   \item{BLData}{An object of class \code{\link{beadLevelData-class}}}
-  \item{array}{integer specifying which strip/array to process}
+  \item{array}{integer specifying which section/array to process}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed.}
   \item{invasions}{Integer - Number of invasions used when identifying
     neighbouring beads.}

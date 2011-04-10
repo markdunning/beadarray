@@ -10,7 +10,7 @@ BASHExtended(BLData, array, transFun = logGreenChannelTransform, neighbours = NU
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which strip/array to plot}
+  \item{array}{integer specifying which section/array to analyse}
   \item{transFun}{Function to use to transform data prior to running BASH.}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed, using default \code{\link{generateNeighbours}} settings.}
   \item{useLocs}{Logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}

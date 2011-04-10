@@ -10,7 +10,7 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which strip/array to plot. Alternatively you can supply a vector of strip/array IDs, and BASH will analyse each in turn.}
+  \item{array}{integer specifying which section/array to plot. Alternatively you can supply a vector of section/array IDs, and BASH will analyse each in turn.}
   \item{transFun}{function to use to transform data prior to running BASH}
   \item{compact}{Logical - Perform compact analysis?}
   \item{diffuse}{Logical - Perform diffuse analysis?}
@@ -18,7 +18,7 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
   \item{cinvasions}{Integer - number of invasions used whenever closing the image - see \code{\link{BASHCompact}}}
   \item{dinvasions}{Integer - number of invasions used in diffuse analysis, to find the kernel - see \code{\link{BASHDiffuse}}}
   \item{einvasions}{Integer - number of invasions used when filtering the error image - see \code{BGFilter}.}
-  \item{bgcorr}{One of "none", "median", "medianMAD" - Used in diffuse analysis, this determines how we attempt to compensate for the background varying across an array. For example, on a SAM array this should be left at "median", or maybe even switched to "none", but if analysing a large beadchip then you might consider setting this to "medianMAD". (this code is passed to the \code{method} argument of \code{BGFilter}).}
+  \item{bgcorr}{One of "none", "median", "medianMAD" - Used in diffuse analysis, this determines how we attempt to compensate for the background varying across an array. For example, on a SAM array this should be left at "median", or maybe even switched to "none", but if analysing a large beadchip then you might consider setting this to "medianMAD". (this code is passed to the \code{method} argument of \code{BGFilter}). Note that "none" may be the correct setting if \code{HULK} has already been applied.}
   \item{maxiter}{Integer - Used in compact analysis - the max number of iterations allowed. (Exceeding this results in a warning.)}
   \item{compcutoff}{Integer - the threshold used to determine whether a group of outliers is in a compact defect. In other words, if a group of at least this many connected outliers is found, then it is labelled as a compact defect.}
   \item{compdiscard}{Logical - should we discard compact defect beads before doing the diffuse analyis?}
@@ -49,14 +49,14 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 	
 	wts: A list, where the ith object in the list corresponds to the weights for array i.
 
-	ext: A vector of extended scores (null if the extended analysis was disabled)
+	ext: A vector of extended scores (null if the extended analysis was disabled).
 
 	call: The function you used to call BASH.
 }
 
 \author{Jonathan Cairns}
 
-%\seealso{\code{\link{BASHCompact}}, \code{\link{BASHDiffuse}}, \code{\link{BASHExtended}}, \code{\link{generateNeighbours}}, }
+\seealso{\code{\link{BASHCompact}}, \code{\link{BASHDiffuse}}, \code{\link{BASHExtended}}, \code{\link{generateNeighbours}}, \code{\link{HULK}} }
 
 \examples{
 

@@ -10,7 +10,7 @@ generateNeighbours(BLData, array = 1, useLocs = TRUE, window = 30, margin = 10, 
 
 \arguments{
   \item{BLData}{An object of class \code{\link{beadLevelData-class}}}
-  \item{array}{integer specifying which strip/array to process}
+  \item{array}{integer specifying which section/array to process}
   \item{useLocs}{logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
   \item{window}{numeric value, specifying window size (see below)}
   \item{margin}{numeric value, specifying size of window margin (see below)}
@@ -30,7 +30,7 @@ To ease computation, the algorithm only computes neighbours of beads in a square
 }
 
 \value{
-A matrix with 6 columns.  Each row corresponds to a bead in the passed \code{\link{beadLevelData-class}} and the six entries are the indices of the 6 neighbouring beads.  Values of NA indicate that the neighbouring bead is missing, either due to failing Illumina's decoding or being at the edge of the array.
+A matrix with 6 columns.  Each row corresponds to a bead in the passed \code{\link{beadLevelData-class}} and the six entries are the indices of the 6 neighbouring beads.  Values of NA indicate that the neighbouring bead appears to be missing, either due to failing Illumina's decoding or being at the edge of the array.
 }
 
 \author{Jonathan Cairns, Mike Smith}

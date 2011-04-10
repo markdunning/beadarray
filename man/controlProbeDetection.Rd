@@ -5,7 +5,7 @@
 Percentage of beads detected
 }
 \description{
-Function to calculate the percentage of beads matching a defined set of control types that are detected above background level on an array-section.
+Function to calculate the percentage of beads matching a defined set of control types that are detected as having intensity above background level on an array-section.
 }
 
 
@@ -49,6 +49,8 @@ The percentage reported is the percentage of beads of each control type that are
 \author{
 Mark Dunning
 }
+
+\seealso{\code{\link{beadStatusVector}},\code{\link{calculateDetection}}}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

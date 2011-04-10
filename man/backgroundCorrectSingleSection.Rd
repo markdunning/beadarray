@@ -5,7 +5,7 @@
 Background correct an array-section 
 }
 \description{
-Function to perform background correction using a defined set of foreground and background intensities.
+Function to perform a basic bead-level background correction using a defined set of foreground and background intensities.
 }
 \usage{
 backgroundCorrectSingleSection(BLData, array = 1, fg="Grn", bg="GrnB", newName = "Grn.bc")
@@ -30,7 +30,9 @@ Name to store the corrected intensities
 }
 \details{
 
-After the foreground and background intensities are retrieved, the function calculates foreground - background
+This function takes two attributes of a bead-level object and returns that bead-level object with an additional attribute consisting of the difference of the other two. We anticipate this being used as a simple background correction step, returning the difference between foreground and background intensities to be used as the specific intensity associated with a bead. 
+
+Functions to perform more advanced background correction steps can easily be constructed after consideration of this function.
 
 }
 \value{
@@ -44,7 +46,7 @@ Mark Dunning
 
 \examples{
 
-##This will take the "Grn" and "GrnB" data for each section and save the corrected intensities in "Grn.bc"
+##This will take the "Grn" and "GrnB" data for each of the 10 arrays in our example data object and save the corrected intensities in "Grn.bc"
 
 data(BLData)
 

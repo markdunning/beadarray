@@ -10,8 +10,8 @@ BASHDiffuse(BLData, array, transFun = logGreenChannelTransform, neighbours = NUL
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which strip/array to plot}
-  \item{transFun}{Function to use to transform data prior to running BASH.}
+  \item{array}{integer specifying which section/array to analyse}
+  \item{transFun}{Function to use to transform data prior to running BASHDiffuse.}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed, using default \code{\link{generateNeighbours}} settings.}
   \item{useLocs}{Logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
   \item{E}{Numerical vector - The error image to use. Optional - if left blank, it will be computed, using \code{generateE} using \code{bgfilter = "median"}.}

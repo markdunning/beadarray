@@ -5,7 +5,7 @@
 Classify each bead according to its control status
 }
 \description{
-Using the control annotation specified for the array, the function will classify each bead as belonging to a control group, or being a regular probe.
+Using the control annotation specified for the array, the function will classify each bead as belonging to a control group, or as being a regular probe.
 }
 \usage{
 beadStatusVector(BLData, array = 1, controlProfile = NULL)
@@ -16,18 +16,17 @@ beadStatusVector(BLData, array = 1, controlProfile = NULL)
 a \code{beadLevelData} object
 }
   \item{array}{
-the numeric id of the section
+the numeric id of the array section
 }
   \item{controlProfile}{
 an optional control profile data frame
 }
 }
 \details{
-The function requires a control profile data frame which must be specified or can be created automatically using the annotation of the \code{beadLevelData} object. 
+The function requires either that a control profile data frame is specified (This associates probe IDs with their control status - see the example), or that the annotation of the \code{beadLevelData} object be set to an array that the package recognises (see \code{\link{getAnnotation}}). Note that some positive control bead-types may also be functioning 'regular' probes.
 }
 \value{
 a vector of character strings giving the status of each bead
-
 }
 \author{
 Mark Dunning

@@ -10,20 +10,20 @@ BASHCompact(BLData, array, neighbours = NULL, useLocs = TRUE, transFun = logGree
 
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which strip/array to plot}
-  \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed.}
+  \item{array}{integer specifying which section/array to analyse}
+  \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed by \code{\link{generateNeighbours}}.}
   \item{useLocs}{logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
-  \item{transFun}{function to use to transform data prior to running BASH.}
+  \item{transFun}{function to use to transform data prior to running BASHCompact.}
   \item{maxiter}{Integer - Maximum number of iterations.}
   \item{cutoff}{Integer - Size a cluster must be to be labelled a compact defect.}
   \item{cinvasions}{Integer - Number of invasions used when closing the image.}
-  \item{...}{Additional arguments to be passed to \code{findAllOutliers}.}
+  \item{...}{Additional arguments to be passed to \code{findAllOutliersIgnore}.}
 }
 
 \details{
 	\code{BASHCompact} finds "compact defects" on an array. A compact defect is defined as a large connected cluster of outliers.
 
-	This function first finds the outliers on an array. This is done via the function \code{findAllOutliers}.
+	This function first finds the outliers on an array. This is done via the (non-exported) function \code{findAllOutliersIgnore}.
 
 	Next, using the Neighbours matrix and a Flood Fill algorithm, it determines which beads are in large connected clusters of outliers (of size larger than \code{cutoff}). These beads are then temporarily removed and the process repeated with the remaining beads. The repetition continues until either no large clusters of outliers remain, or until we have repeated the process \code{maxiter} times (and in this case, a warning will be given). In this way, we obtain a list of defective probes.
 

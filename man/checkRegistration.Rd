@@ -4,7 +4,9 @@
 Perform check for misregistered array segments.
 }
 \description{
-Occasionally arrays the registration of an array can go wrong, with the bead centres found in the wrong place in an image.  The effective result of this is a scrambling of the bead IDs.  In order to check for this we can examine the within bead-type variance across the array.  In cases where registration has failed we would expect to see a large jump in this value compared to correctly registered arrays.  This function computes this statistic for each array segment (since each segment is registered independently) and returns them to the user for inspection.
+Occasionally the registration of an array can go wrong, with the bead centres found in the wrong place in an image.  The effective result of this is a scrambling of the bead IDs.  In order to check for this we can examine the within bead-type variance across the array.  In cases where registration has failed we would expect to see a large jump in this value compared to correctly registered arrays.  This function computes this statistic for each array segment (since each segment is registered independently) and returns them to the user for inspection.
+
+Note that the function requires that the sdf file and locs file are present, and has particular expectations towards their file names and locations.
 }
 \usage{
     checkRegistration(BLData, array = 1)
