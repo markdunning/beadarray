@@ -32,13 +32,13 @@ checkPlatform <- function(BLData,verbose=FALSE){
 
 
 	if(verbose){
-	 cat("Percentage of overlap with IDs on this array and know expression platforms\n")
+	 cat("Percentage of overlap with IDs on this array and known expression platforms\n")
 	 show(rks)
 	
 	}
 
 
-	if(all(rks < 90)) warning("Choice of platform may not be accurate\n")
+	if(all(rks < 90)) warning("Choice of platform may not be accurate. Consider re-running checkPlatform with verbose = TRUE option\n")
 
 	names(sort(rks,decreasing=TRUE)[1])
 
