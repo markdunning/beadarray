@@ -14,7 +14,7 @@ export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTarget
 ## Data input
 export(readIllumina, readLocsFile, convertBeadLevelList)
 
-## Dealign with Swath data
+## Dealing with Swath data
 export(processSwathData)
 
 ## Raw image manipulation
