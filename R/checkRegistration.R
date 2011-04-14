@@ -58,10 +58,14 @@ testGridShift <- function(seg, xShift, yShift, nRows, nCols) {
         tmpSeg <- seg
     }
     if(!is.null(tmpSeg))    {
-        tmpSeg[which(tmpSeg[,2] <= 0),2] <- 0.001
-        s <- split(log2(tmpSeg[,2]), tmpSeg[,1])
+        #tmpSeg[which(tmpSeg[,2] <= 0),2] <- 0.001
+        s <- split(log2.na(tmpSeg[,2]), tmpSeg[,1])
         v <- unlist(lapply(s, var, na.rm = TRUE))
-        return(mean(v, na.rm = T));
+        
+        s2 <- split(log2.na(tmpSeg[sample(1:nrow(tmpSeg), size = nrow(tmpSeg)),2]), tmpSeg[,1])
+        v2 <- unlist(lapply(s2, var, na.rm = TRUE))
+        #return(mean(v, na.rm = T));
+        return(v2 - v)
     }
     else { return(NA) }
 }
@@ -89,13 +93,13 @@ checkRegistration <- function(BLData, array = 1) {
         
         ## make sure they've specified an array that exists
         if( (i < 0) || (i > nrow(BLData@sectionData$Targets)) ) {
-            message(paste("Cannot find array", i, "\n"))
+            message(paste("Cannot find array", i))
             next;
         }
         
         sectionName <- as.character(BLData@sectionData$Targets[i,"sectionName"]);
         cat(sectionName, "\n");
-        res[[sectionName]] <- list("Grn" = NULL);
+        res[[sectionName]] <- list("Grn" = list());
         
         locs <- readLocsFile(file.path(BLData@sectionData$Targets[i,1], paste(sectionName, "_Grn.locs", sep = "")));
         
@@ -106,12 +110,13 @@ checkRegistration <- function(BLData, array = 1) {
         for(j in 1:nSegs) {
             seg <- comb[(((j-1) * beadsPerSeg) + 1):(j * beadsPerSeg),];
             meanVar <- testGridShift(seg, 0, 0, nRows = nRows, nCols = nCols);
-            res[[sectionName]][["Grn"]] <- c(res[[sectionName]][["Grn"]], meanVar);
+            #res[[sectionName]][["Grn"]][[j]] <- c(res[[sectionName]][["Grn"]], meanVar);
+            res[[sectionName]][["Grn"]][[j]] <- meanVar;
         }
         
         ## detect red channel and check registration if appropriate
         if("Red" %in% colnames(BLData[[1]])) {
-            res[[sectionName]][["Red"]] <- NULL
+            res[[sectionName]][["Red"]] <- list()
             
             locs <- readLocsFile(file.path(BLData@sectionData$Targets[i,1], paste(sectionName, "_Red.locs", sep = "")));
             ## remove reliance on BDPR later
@@ -121,10 +126,40 @@ checkRegistration <- function(BLData, array = 1) {
             for(j in 1:nSegs) {
                 seg <- comb[(((j-1) * beadsPerSeg) + 1):(j * beadsPerSeg),];
                 meanVar <- testGridShift(seg, 0, 0, nRows = nRows, nCols = nCols);
-                res[[sectionName]][["Red"]] <- c(res[[sectionName]][["Red"]], meanVar);
+                #res[[sectionName]][["Red"]] <- c(res[[sectionName]][["Red"]], meanVar);
+                res[[sectionName]][["Red"]][[j]] <- meanVar;
             }
         }
         
     }
     return(res);
 }
+
+plotRegistration <- function(regScores) {
+    
+    twoColor <- ifelse(length(regScores[[1]]) == 2, TRUE, FALSE)
+    
+    greenCols <- colorRampPalette(c("green", "darkgreen"))(length(regScores))
+    if(twoColor)
+        redCols <- colorRampPalette(c("red", "darkred"))(length(regScores))
+
+    resList <- cols <- list()
+    pos = 1
+    for(i in 1:length(regScores)) {
+        for(j in 1:(2^twoColor)) {
+            for(k in 1:length(regScores[[i]][[j]]) ) {
+                resList[[pos]] <- regScores[[i]][[j]][[k]];
+                cols[[pos]] <- ifelse(j == 1, greenCols[i], redCols[i]);
+                pos <- pos + 1;
+            }
+        }
+    }
+        
+    boxplot(resList, ylim = c(0,10), outline = FALSE, col = unlist(cols))
+}
+
+            
+            
+            
+            
+            
