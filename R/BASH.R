@@ -1,4 +1,4 @@
-## BASH functions, and other image manipulation functions:
+### BASH functions, and other image manipulation functions:
 
 ## *** GENERATE E ***
 ##this function returns an E value for each bead - it finds the set of all beads on the array with the same probeID, takes the median of their intensities, and subtracts this off.
@@ -123,7 +123,7 @@ BGFilter <- function(E = NULL, neighbours, invasions = 20, method = "median")
 
 	##C code here to apply the median filter
 	Etilde <- rep(0, length(E))
-	output <- .C("BGFilter", as.double(E), as.double(Etilde), as.integer(t(neighbours)), as.integer(nrow(neighbours)), as.integer(invasions), as.integer(method))
+	output <- .C("BGFilter", as.double(E), as.double(Etilde), as.integer(t(neighbours)), as.integer(nrow(neighbours)), as.integer(invasions), as.integer(method), PACKAGE = "beadarray")
 	Etilde <- output[[2]]
 
 	##Variance: Singleton causes NAs (singletons are insignificant so no harm done)
@@ -141,7 +141,7 @@ BGFilterWeighted <- function(E = NULL, neighbours, invasions = 20, weights = NUL
 
 	##C code here to apply the filter
 	Etilde <- rep(0, length(E))
-	output <- .C("BGFilterWeighted", as.double(E), as.double(Etilde), as.integer(t(neighbours)), as.double(weights), as.integer(nrow(neighbours)), as.integer(invasions))
+	output <- .C("BGFilterWeighted", as.double(E), as.double(Etilde), as.integer(t(neighbours)), as.double(weights), as.integer(nrow(neighbours)), as.integer(invasions), PACKAGE = "beadarray")
 	Etilde <- output[[2]]
 
 	Etilde
@@ -159,7 +159,7 @@ chooseClusters <- function(IDs, neighbours, cutoff = 8)
 	clusterID <- rep(0, nrow(neighbours))
 	clustersize <- rep(0, nrow(neighbours))
 	nIDs <- length(IDs)
-	Coutput <- .C("FloodFill", as.integer(t(neighbours2)), as.integer(IDs), as.integer(nIDs), as.integer(clusterID), as.integer(clustersize))
+	Coutput <- .C("FloodFill", as.integer(t(neighbours2)), as.integer(IDs), as.integer(nIDs), as.integer(clusterID), as.integer(clustersize), PACKAGE = "beadarray")
 
 	##only return beads in large enough clusters
 	size <- Coutput[[5]]
@@ -177,7 +177,7 @@ closeImage <- function(IDs, neighbours, cinvasions = 10)
 	nIDs <- length(IDs)
 	nbeads <- nrow(neighbours)
 	IDs <- c(IDs, rep(0, nbeads - nIDs))
-	output <- .C("Close", as.integer(IDs), as.integer(nIDs), as.integer(t(neighbours)), as.integer(nbeads), as.integer(cinvasions))
+	output <- .C("Close", as.integer(IDs), as.integer(nIDs), as.integer(t(neighbours)), as.integer(nbeads), as.integer(cinvasions), PACKAGE = "beadarray")
 	sort(output[[1]][which(output[[1]] > 0)])
 }
 
@@ -204,7 +204,7 @@ denseRegions <- function (IDs, neighbours, ignore = NULL, sig = 0.0001, invasion
 	nbeads <- nrow(neighbours)
 
 	##call C function
-	Coutput <- .C("DiffuseDefects", as.integer(t(neighbours)), as.integer(IDs), as.integer(nbeads), as.integer(nIDs), as.integer(nignore), as.integer(invasions), output = as.double(rep(0, nbeads)), as.double(sig))
+	Coutput <- .C("DiffuseDefects", as.integer(t(neighbours)), as.integer(IDs), as.integer(nbeads), as.integer(nIDs), as.integer(nignore), as.integer(invasions), output = as.double(rep(0, nbeads)), as.double(sig), PACKAGE = "beadarray")
 
 	return(which(Coutput$output == 1))
 }
@@ -422,7 +422,7 @@ BASHExtended <- function(BLData, array, transFun = logGreenChannelTransform, nei
 		E.BG <- E - BGFilter(E = E, neighbours = neighbours, invasions = 20, method = "median")
 	}
 
-	return(var(E.BG)/var(E))
+    return(var(E.BG)/var(E))
 }
 
 ## *** BASH FUNCTION ***
