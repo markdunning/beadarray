@@ -17,7 +17,7 @@ annoCols = match(annoCols, colnames(r))
 
 annoCols = annoCols[!is.na(annoCols)]
 
-annoMat = r[,annoCols]
+annoMat = r[,annoCols,drop=FALSE]
 
 
 if(length(index)!=0){
@@ -36,7 +36,7 @@ if(length(ProbeID) != length(unique(ProbeID))){
       ProbeID = ProbeID[notdup]
       r = r[notdup,]
 
-      if(!is.na(annoCols)) annoMat = r[notdup,annoCols]
+      if(!is.na(annoCols)) annoMat = r[notdup,annoCols,drop=FALSE]
 
 #    warning("ProbeIDs non-unique: consider setting 'ProbeID' to another column containing unique values.  Adding extension '.repX' to Xth replicate ID to enforce uniqueness.\n")
 #    dups = unique(ProbeID[duplicated(ProbeID)])
