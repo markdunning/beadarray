@@ -2,7 +2,7 @@
 
 /* background */
  
-void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHeight, SEXP pixelMatrix, SEXP coords, double *bg, int tid, int median) {
+void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHeight, SEXP pixelMatrix, SEXP coords, double *bg, int tid, int median, int intBool) {
     
     double x, y, newX, newY;
     int i, j, k, count, tmp, M[289]; 
@@ -37,7 +37,10 @@ void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHei
             for(j = start1; j <= end1; j++) {
                 tmp = j * imageHeight;
                 for(k = start2; k <= end2; k++ ) {
-                    M[count++] = INTEGER(pixelMatrix)[tmp + k];
+                    if(intBool)
+                        M[count++] = INTEGER(pixelMatrix)[tmp + k];
+                    else
+                        M[count++] = REAL(pixelMatrix)[tmp + k];
                 }
             } 
 
@@ -55,10 +58,10 @@ void backgroundCalc(int start, int end, int nbeads, int imageWidth, int imageHei
     }
 } 
 
-SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords) {
+SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
 
     SEXP background;
-    int imageWidth, imageHeight, nbeads, i;
+    int imageWidth, imageHeight, nbeads, i, intBool;
     double *bg;
     int start, end; 
     int tid, nthreads;
@@ -69,6 +72,9 @@ SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords) {
     nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
     PROTECT(background = allocVector(REALSXP, nbeads));
     bg = REAL(background);
+
+    /* is this an integer or numeric matrix */
+    intBool = INTEGER(integerBool)[0];
 
     /* find the number of processors and set the number of threads 
     currently has a maximum value of 6 */
@@ -93,17 +99,17 @@ SEXP illuminaBackground(SEXP pixelMatrix, SEXP coords) {
         start = (int) floor(tid * ((double)nbeads / (double)nthreads));
         end = (int) floor((tid + 1) * ((double)nbeads / (double)nthreads));
         
-        backgroundCalc(start, end, nbeads, imageWidth, imageHeight, pixelMatrix, coords, bg, tid, 0);
+        backgroundCalc(start, end, nbeads, imageWidth, imageHeight, pixelMatrix, coords, bg, tid, 0, intBool);
 
     }
     UNPROTECT(1);
     return(background);
 } 
 
-SEXP medianBackground(SEXP pixelMatrix, SEXP coords) {
+SEXP medianBackground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
 
     SEXP background;
-    int imageWidth, imageHeight, nbeads, i;
+    int imageWidth, imageHeight, nbeads, i, intBool;
     double *bg;
     int start, end; 
     int tid, nthreads;
@@ -114,6 +120,9 @@ SEXP medianBackground(SEXP pixelMatrix, SEXP coords) {
     nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
     PROTECT(background = allocVector(REALSXP, nbeads));
     bg = REAL(background);
+
+    /* is this an integer or numeric matrix */
+    intBool = INTEGER(integerBool)[0];
 
     /* find the number of processors and set the number of threads  */
     #if defined (_OPENMP)
@@ -137,7 +146,7 @@ SEXP medianBackground(SEXP pixelMatrix, SEXP coords) {
         start = (int) floor(tid * ((double)nbeads / (double)nthreads));
         end = (int) floor((tid + 1) * ((double)nbeads / (double)nthreads));
         
-        backgroundCalc(start, end, nbeads, imageWidth, imageHeight, pixelMatrix, coords, bg, tid, 1);
+        backgroundCalc(start, end, nbeads, imageWidth, imageHeight, pixelMatrix, coords, bg, tid, 1, intBool);
 
     }
     UNPROTECT(1);
@@ -147,24 +156,27 @@ SEXP medianBackground(SEXP pixelMatrix, SEXP coords) {
 
 /* foreground */
 
-double matrixMean(SEXP pixelMatrix, int imageHeight, int x, int y) {
+double matrixMean(SEXP pixelMatrix, int imageHeight, int x, int y, int intBool) {
 
   int i, j;
   double result = 0.0;
 
   for(i = x-1; i <= x+1; i++ ) {
     for(j = y-1; j <= y+1; j++ ) {
-      result += REAL(pixelMatrix)[(i * imageHeight) + j];
+        if(intBool)
+            result += INTEGER(pixelMatrix)[(i * imageHeight) + j];
+        else
+            result += REAL(pixelMatrix)[(i * imageHeight) + j];
     }
   }
   return(result / 9.0);
 }
 
 
-SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
+SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
 
     SEXP foreground;
-    int imageWidth, imageHeight, nbeads, i;
+    int imageWidth, imageHeight, nbeads, i, intBool;
     double x, y, xc, yc, av[4], w[4], *fg;
     
     /* dimensions of the image */
@@ -172,6 +184,8 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
     imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
     /* number of beads we have centres for */
     nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
+    /* is this an integer or numeric matrix */
+    intBool = INTEGER(integerBool)[0];
 
     PROTECT(foreground = allocVector(REALSXP, nbeads));
     fg = REAL(foreground);
@@ -190,10 +204,10 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords) {
             xc = x - floor(x);
             yc = y - floor(y);
 
-            av[0] = (matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y)));
-            av[1] = (matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y+1)));
-            av[2] = (matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y+1)));
-            av[3] = (matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y)));
+            av[0] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y), intBool);
+            av[1] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y+1), intBool);
+            av[2] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y+1), intBool);
+            av[3] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y), intBool);
             
             w[0] = ((1 - xc) * (1 - yc));
             w[1] = ((1 - xc) * yc);

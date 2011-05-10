@@ -7,3 +7,6 @@
 #endif
 
 #define min(X, Y) ((X) < (Y) ? (X) : (Y))
+
+#define TRUE 1
+#define FALSE 0

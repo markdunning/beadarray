@@ -7,7 +7,10 @@ illuminaForeground <- function(pixelMatrix, beadCoords) {
     else
         beadCoords <- as.matrix(beadCoords)
 
-    fg <- .Call("illuminaForeground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
+    ## we need to see if this is an integer or numeric matrix
+    integerBool <- ifelse(class(pixelMatrix[1,1]) == "integer", 1L, 0L)
+
+    fg <- .Call("illuminaForeground", pixelMatrix, beadCoords, integerBool, PACKAGE = "beadarray");
     return(fg);
 }
 
@@ -18,7 +21,10 @@ illuminaBackground <- function(pixelMatrix, beadCoords) {
     else
         beadCoords <- as.matrix(beadCoords)
 
-    bg <- .Call("illuminaBackground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
+    ## we need to see if this is an integer or numeric matrix
+    integerBool <- ifelse(class(pixelMatrix[1,1]) == "integer", 1L, 0L)
+
+    bg <- .Call("illuminaBackground", pixelMatrix, beadCoords, integerBool, PACKAGE = "beadarray");
     return(bg);
 }
 

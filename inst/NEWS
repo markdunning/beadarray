@@ -1,3 +1,12 @@
+CHANGES IN VERSION 2.3
+
+BUG FIXES in 2.3.1
+
+    o   Image processing functions can now be passed matrices containing either
+    integer or numeric values.
+
+    o   Passed forceIScan argument to functions called by readIllumina()
+
 CHANGES IN VERSION 2.1
 
 BUG FIXES in 2.1.16
