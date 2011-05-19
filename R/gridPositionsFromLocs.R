@@ -6,11 +6,11 @@
 ## the dimensions of a segment, hopeully taken from the SDF and the size of the gap to insert
 ## between segments
 
-neighboursFromLocs <- function(txtFileCoords, locsFileName, nrowPerSegment, ncolPerSegment) {
+neighboursFromLocs <- function(txtFileCoords, locsName, locsPath, nrowPerSegment, ncolPerSegment) {
     
     ## read the locs file 
     ## we can move the reading of the locs file outside this function if required
-    locsFileCoords <- readLocsFile(locsFileName)
+    locsFileCoords <- obtainLocs(locsName, locsPath);
     
 #     grid <- .Call("locsIndicesToGrid", as.integer(1:(nrowPerSegment * ncolPerSegment)), as.integer(c(nrowPerSegment, ncolPerSegment, 1)), PACKAGE = "beadarray");
 #     
@@ -48,7 +48,7 @@ neighboursFromLocs <- function(txtFileCoords, locsFileName, nrowPerSegment, ncol
     }
 
     ## round the values so they match those in the txt file
-    locsFileCoords <- .Call("roundLocsFileValues", locsFileCoords, PACKAGE = "beadarray");
+    locsFileCoords <- matrix(.Call("roundLocsFileValues", locsFileCoords, PACKAGE = "BeadDataPackR"), ncol = 2);
     ## add an indexing column to both sets of coords so we can reorder later
     locsFileCoords <- cbind(1:nrow(locsFileCoords), locsFileCoords);
     txtFileCoords <- cbind(1:nrow(txtFileCoords), txtFileCoords);

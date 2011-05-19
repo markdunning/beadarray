@@ -5,7 +5,7 @@ import(graphics)
 
 importFrom(limma, normalizeQuantiles, neqc)
 
-exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel)
+exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, "se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
 export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, checkPlatform)
@@ -27,7 +27,7 @@ export(illuminaForeground, illuminaBackground, illuminaSharpen, medianBackground
 export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform)
 
 ## QC
-export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection,plotBeadLocations)
+export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations)
 
 ## BASH etc.
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights,showArrayMask)

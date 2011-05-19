@@ -2,7 +2,6 @@
 setClass("beadLevelData",
           representation(beadData = "list",
             sectionData = "list",
-            phenoData = "AnnotatedDataFrame",
             experimentData = "list",
             history = "character"))
             
@@ -23,3 +22,15 @@ setClass("ExpressionSetIllumina",
          representation(QC = "AnnotatedDataFrame", channelData="list"),
          contains="eSet"
 )
+
+
+setClass("beadRegistrationData",
+          representation(
+                        layout = "list",                                                
+                        registrationData = "list",
+                        coordinateData = "list",
+                        cornerData = "list",
+                        p95 = "numeric",
+                        imageLocations = "character", 
+                        metrics = "data.frame")
+)  

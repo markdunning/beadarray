@@ -19,30 +19,7 @@ generateE <- function(BLData, array, neighbours = NULL, transFun = logGreenChann
 
 	new = data - unlist(beadTypeMedians)[as.character(probeIDs)]
 
-	#separately calculate resids for 0 probes (discarded in the createBeadSummary step within getArrayData)
-	##if(what %in% c("residG", "residR", "residM"))
-	##{
-		##sel <- which(BLData[[an[array]]]$ProbeID == 0)
-		##if(length(sel) > 0)
-		##{
-			##residwhat <- switch(EXPR = what, residG = "G", residR = "R", residM = "M")
-			##vals = getArrayData(BLData, array = array, log=log, what = residwhat)
-			##if(method == "median")
-			##{
-				##med = median(vals[which(!is.na(vals[sel]))])
-				##new <- c(vals[sel] - med, data[-sel])
-			##}
-			##else if(method == "mean")
-			##{
-				##valmean = mean(vals[which(!is.na(vals[sel]))])
-				##new <- c(vals[sel] - valmean, data[-sel])
-			##}
-		##}
-		##else {new <- data}
-	##}
-	##else {new <- data}
-
-	#deal with negative or NA vals
+#deal with negative or NA vals
 	minG <- min(new[which(!is.na(new) & is.finite(new) )])
 	new <- ifelse( (is.na(new) | !is.finite(new)), minG, new)
 	E <- new
@@ -72,7 +49,7 @@ generateNeighbours <- function(BLData, array = 1, useLocs = TRUE, window = 30, m
     ycol = grep("GrnY", colnames(data))
     
     ## see if we can find the .locs file and use that
-    locsFileName <- file.path(BLData@sectionData$Targets$directory[array], paste(BLData@sectionData$Targets$sectionName[array], "_Grn.locs", sep = ""))
+    locsFileName <- file.path(BLData@sectionData$Targets$directory[array], BLData@sectionData$Targets$greenLocs[array])
     
     ## Can we ID the platform and if so is this a BeadChip or SAM
     if( is.null(BLData@experimentData$platformClass) || grepl("Matrix", BLData@experimentData$platformClass) ) 
@@ -85,7 +62,7 @@ generateNeighbours <- function(BLData, array = 1, useLocs = TRUE, window = 30, m
         ## hacky code until we have somewhere to store grid sizes
         sdf <- simpleXMLparse(readLines(file.path(BLData@sectionData$Targets$directory[array], list.files(as.character(BLData@sectionData$Targets$directory[array]), pattern = ".sdf")[1]), warn = FALSE))
         
-        neighbours <- neighboursFromLocs(data[,c(xcol,ycol)], locsFileName, nrowPerSegment = as.integer(sdf$RegistrationParameters$SizeGridX[[1]]), ncolPerSegment = as.integer(sdf$RegistrationParameters$SizeGridY[[1]]) )
+        neighbours <- neighboursFromLocs(data[,c(xcol,ycol)], locsName = BLData@sectionData$Targets$greenLocs[array], locsPath = BLData@sectionData$Targets$directory[array], nrowPerSegment = as.integer(sdf$RegistrationParameters$SizeGridX[[1]]), ncolPerSegment = as.integer(sdf$RegistrationParameters$SizeGridY[[1]]) )
         
         ## remove NAs for now
         neighbours[which(is.na(neighbours))] <- 0;

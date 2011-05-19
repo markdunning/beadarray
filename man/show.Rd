@@ -2,6 +2,7 @@
 \docType{methods}
 \alias{show,beadLevelData-method}
 \alias{show,ExpressionSetIllumina-method}
+\alias{show,beadRegistrationData-method}
 \title{Display object summary}
 \description{
 	Prints a summary of an objects contents.

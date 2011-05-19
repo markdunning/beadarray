@@ -1,5 +1,19 @@
 CHANGES IN VERSION 2.3
 
+NEW FEATURES
+	
+	o	checkRegistration() has been completely re-written to provide a far more
+	meaningful result in a new class, beadRegistrationData
+
+	o	beadRegistrationData output can be passed to boxplot.
+
+BUG FIXES in 2.3.2
+
+	o	readBeadLevelTextFile will now take (and use) a seperator argument.
+
+	o	locs information correctly taken from a bab file if required.  This effects
+	functions such as generateNeighbours(), BASH(), HULK(), imageplot()
+
 BUG FIXES in 2.3.1
 
     o   Image processing functions can now be passed matrices containing either
@@ -7,7 +21,12 @@ BUG FIXES in 2.3.1
 
     o   Passed forceIScan argument to functions called by readIllumina()
 
+
 CHANGES IN VERSION 2.1
+
+NEW FEATURES
+
+    o   combine methods added for beadLevelData and ExpressionSetIllumina
 
 BUG FIXES in 2.1.16
 
@@ -52,11 +71,6 @@ BUG FIXES in 2.1.1
     o   readBeadSummaryData error when qcFile is missing (FIXED)
 
     o   readIllumina, imageplot, boxplot accept '...' arguments
-
-
-NEW METHODS
-
-    o   combine methods added for beadLevelData and ExpressionSetIllumina
 
 
 CHANGES IN VERSION 2.0

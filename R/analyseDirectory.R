@@ -110,8 +110,11 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
             info[i,4] <- sectionFiles[idx]
         ## green locs    
         idx <- which( grepl(locsSuff, sectionFiles) & grepl(channel1, sectionFiles) )
-        if(length(idx))
+        if(length(idx)) 
             info[i,5] <- sectionFiles[idx]
+        else if (txtSuff == ".bab")
+            info[i,5] <- sectionFiles[grep(txtSuff, sectionFiles)]
+            
         ## xml file
         if(iScan)
             idx <- grep(xmlSuff, sectionFiles)
@@ -124,9 +127,12 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
             idx <- which( grepl(imgSuff, sectionFiles) & grepl(channel2, sectionFiles) )
             if(length(idx))
                 info[i,7] <- sectionFiles[idx]
-            idx <- which( grepl(locsSuff, sectionFiles) & grepl(channel2, sectionFiles) )
+            idx <- which( grepl(locsSuff, sectionFiles) & grepl(channel2, sectionFiles) )            
             if(length(idx))
                 info[i,8] <- sectionFiles[idx]
+            else if (txtSuff == ".bab")
+                info[i,5] <- sectionFiles[grep(txtSuff, sectionFiles)]
+                
             ## they seem to only have 1 xml file with iScan, but 2 with BeadScan 
             if(!iScan) {
                 idx <- which( grepl(xmlSuff, sectionFiles) & grepl(channel2, sectionFiles) )

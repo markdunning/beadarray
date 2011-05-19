@@ -47,13 +47,13 @@ readBeadLevelTextFile <- function(file, sep = "\t", ...) {
     columns <- numberOfColumns(file, sep = sep);
      
     if(columns == 4) 
-        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
     else if(columns == 5) 
-        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 5)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 5)
     else if(columns == 7) 
-        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
     else if (columns == 8)
-        data <- matrix(unlist(scan(file, sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 8)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 8)
     else
         stop("Unknown input format!\nExpected 4/5 columns for single channel data or 7/8 columns for two channel data\n");
     

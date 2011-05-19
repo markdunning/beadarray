@@ -1,7 +1,7 @@
 #include "beadarray.h"
 
 /* function to round the values from the .locs file into the truncated versions that 
-are found in the .txt file */
+are found in the .txt file 
 SEXP roundLocsFileValues(SEXP inputVector) {
     
     int i, vecLength, digits;
@@ -9,7 +9,7 @@ SEXP roundLocsFileValues(SEXP inputVector) {
     
     for(i = 0; i < length(inputVector); i++) {
         x = REAL(inputVector)[i];
-        /* the precison of the rounding is determined by the integer part of the value */
+        // the precison of the rounding is determined by the integer part of the value 
         if(x >= 10000)
             digits = 2;
         else if (x >= 1000)
@@ -20,11 +20,11 @@ SEXP roundLocsFileValues(SEXP inputVector) {
             digits = 5;
         else
             digits = 6;
-        /* perform the rounding to the required precision */
+        // perform the rounding to the required precision 
         REAL(inputVector)[i] = round(REAL(inputVector)[i]*(pow(10,digits)))/pow(10,digits);
     }
     return(inputVector);
-}
+} */
 
 /* takes the list of indicies within the locs file and returns a two column matrix,
 with each row the x&y positions within the array grid

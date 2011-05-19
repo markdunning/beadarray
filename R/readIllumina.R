@@ -8,10 +8,10 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
     targets = targets$targets
 
     ## if there's an .sdf file, read it 
-	sdf = NULL
-	sdfName = list.files(dir, pattern=".sdf")	
+    sdf = NULL
+    sdfName = list.files(dir, pattern=".sdf")	
     if(length(sdfName)){ 
-        sdf <- simpleXMLparse(readLines(paste(dir, sdfName, sep = .Platform$file.sep), warn = FALSE))	
+        sdf <- simpleXMLparse(readLines(paste(dir, sdfName[1], sep = .Platform$file.sep), warn = FALSE))	
     }
     nSections <- nrow(targets);
 
@@ -41,7 +41,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         ## check if we've got a .txt or a .bab file here
         if(grepl(".bab", targets$textFile[i])) {
             data <- BeadDataPackR::readCompressedData(inputFile = targets$textFile[i], path = targets$directory[i]);
-            ## this will have nondecoded beads, so remove them
+            ## this will have nondecoded beads so remove them
             data <- data[-which(data[,1] == 0),];
         }
         else {       

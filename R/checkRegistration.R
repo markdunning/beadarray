@@ -70,6 +70,21 @@ testGridShift <- function(seg, xShift, yShift, nRows, nCols) {
     else { return(NA) }
 }
 
+## calculate the within bead-type variances and 
+## compare with randomised IDs
+scoreRegistration <- function(seg) {  
+
+    if(!is.null(seg))    {
+        s <- split(log2.na(seg[,2]), seg[,1])
+        v <- unlist(lapply(s, var, na.rm = TRUE))
+        
+        s2 <- split(log2.na(seg[sample(1:nrow(seg), size = nrow(seg)),2]), seg[,1])
+        v2 <- unlist(lapply(s2, var, na.rm = TRUE))
+        return(v2 - v)
+    }
+    else { return(NA) }
+}
+
 
 
 checkRegistration <- function(BLData, array = 1) {
@@ -88,6 +103,11 @@ checkRegistration <- function(BLData, array = 1) {
     beadsPerSeg <- nRows * nCols;
     
     res <- list();
+    coords <- list();
+    corners <- list();
+    p95 <- NULL;
+    tiffs <- NULL;
+    metrics <- NULL;
     
     for(i in array) {
         
@@ -99,67 +119,95 @@ checkRegistration <- function(BLData, array = 1) {
         
         sectionName <- as.character(BLData@sectionData$Targets[i,"sectionName"]);
         cat(sectionName, "\n");
-        res[[sectionName]] <- list("Grn" = list());
         
-        locs <- readLocsFile(file.path(BLData@sectionData$Targets[i,1], paste(sectionName, "_Grn.locs", sep = "")));
-        
-        ## remove reliance on BDPR later
+        locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
+
         comb <- BeadDataPackR:::combineFiles(BLData[[i]][,c("ProbeID", "Grn", "GrnX", "GrnY")], locs)
         comb <- comb[order(comb[,5]),]
         
         for(j in 1:nSegs) {
             seg <- comb[(((j-1) * beadsPerSeg) + 1):(j * beadsPerSeg),];
-            meanVar <- testGridShift(seg, 0, 0, nRows = nRows, nCols = nCols);
-            #res[[sectionName]][["Grn"]][[j]] <- c(res[[sectionName]][["Grn"]], meanVar);
-            res[[sectionName]][["Grn"]][[j]] <- meanVar;
+            meanVar <- scoreRegistration(seg);
+            res[[paste(sectionName, "Segment", j, "Grn", sep = "_")]] <- meanVar;
+			## records the entire segment from the locs
+			coords[[paste(sectionName, "Segment", j, "Grn", sep = "_")]] <- seg[, 3:4];
+            ## records the corner coordinates of the segment
+            corners[[paste(sectionName, "Segment", j, "Grn", sep = "_")]] <- seg[c(beadsPerSeg, nRows, beadsPerSeg - nRows + 1, 1), 3:4]
+            ## p95 value
+            p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE))
+            tiffs <- c(tiffs, file.path(BLData@sectionData$Targets[i,"directory"], BLData@sectionData$Targets[i,"greenImage"]))
+			metrics <- rbind(metrics, BLData@sectionData$Metrics[i,])
         }
         
         ## detect red channel and check registration if appropriate
         if("Red" %in% colnames(BLData[[1]])) {
-            res[[sectionName]][["Red"]] <- list()
             
-            locs <- readLocsFile(file.path(BLData@sectionData$Targets[i,1], paste(sectionName, "_Red.locs", sep = "")));
-            ## remove reliance on BDPR later
+            locs <- obtainLocs(fileName = BLData@sectionData$Targets$redLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
             comb <- BeadDataPackR:::combineFiles(BLData[[i]][,c("ProbeID", "Red", "RedX", "RedY")], locs)
             comb <- comb[order(comb[,5]),]
             
             for(j in 1:nSegs) {
                 seg <- comb[(((j-1) * beadsPerSeg) + 1):(j * beadsPerSeg),];
-                meanVar <- testGridShift(seg, 0, 0, nRows = nRows, nCols = nCols);
-                #res[[sectionName]][["Red"]] <- c(res[[sectionName]][["Red"]], meanVar);
-                res[[sectionName]][["Red"]][[j]] <- meanVar;
+                meanVar <- scoreRegistration(seg);
+                res[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- meanVar;
+				coords[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- seg[, 3:4];
+                corners[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- seg[c(beadsPerSeg, nRows, beadsPerSeg - nRows + 1, 1), 3:4]
+                p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE))
+                tiffs <- c(tiffs, file.path(BLData@sectionData$Targets[i,"directory"], BLData@sectionData$Targets[i,"redImage"]))
             }
         }
         
     }
-    return(res);
+    regScores <- new(Class = "beadRegistrationData");
+    regScores@layout$twoColor <- any(grepl("Red", colnames(BLData[[1]])))
+    regScores@layout$nSections <- length(array);
+    regScores@layout$nSegs <- nSegs;
+    regScores@registrationData <- res;
+    regScores@coordinateData <- coords;
+    regScores@cornerData <- corners;
+    regScores@p95 <- p95;
+    regScores@imageLocations <- tiffs;
+    regScores@metrics <- metrics;
+    return(regScores);
 }
 
-plotRegistration <- function(regScores) {
-    
-    twoColor <- ifelse(length(regScores[[1]]) == 2, TRUE, FALSE)
-    
-    greenCols <- colorRampPalette(c("green", "darkgreen"))(length(regScores))
-    if(twoColor)
-        redCols <- colorRampPalette(c("red", "darkred"))(length(regScores))
 
-    resList <- cols <- list()
-    pos = 1
-    for(i in 1:length(regScores)) {
-        for(j in 1:(2^twoColor)) {
-            for(k in 1:length(regScores[[i]][[j]]) ) {
-                resList[[pos]] <- regScores[[i]][[j]][[k]];
-                cols[[pos]] <- ifelse(j == 1, greenCols[i], redCols[i]);
-                pos <- pos + 1;
-            }
-        }
-    }
-        
-    boxplot(resList, ylim = c(0,10), outline = FALSE, col = unlist(cols))
-}
 
-            
-            
-            
+# checkCorners <- function(regScores, selection = NULL) {
+# 
+#     if(is.null(selection))
+#         selection <- menu(names(regScores@registrationData), graphics = FALSE, "Selection")
+# 
+#     tiff <- readTIFF(regScores@imageLocations[selection]);
+# 
+#     idx <- strsplit(regScores@imageLocations[selection], .Platform$file.sep)[[1]]
+#     idx <- idx[length(idx)]
+#     col <- ifelse(grepl("Grn", idx), "green", "red")
+# 
+#     par(mfrow = c(2,2), mar = c(2,2,2,2))
+# 
+#     plotTIFF(tiff, 
+#     xrange = c(max(regScores@cornerData[[selection]][1,1] - 50, 0), max(regScores@cornerData[[selection]][1,1] - 50, 0) + 300),
+#     yrange = c(min(abs(regScores@cornerData[[selection]][1,2] - 250), nrow(tiff) - 301), min(abs(regScores@cornerData[[selection]][1,2] + 50), nrow(tiff) - 1)) )
+#     points(regScores@coordinateData[[selection]][,1:2], pch = 19, col = col, cex = 0.3)
+# 
+#     plotTIFF(tiff, 
+#     xrange = c(min(abs(regScores@cornerData[[selection]][2,1] + 50), ncol(tiff) - 1) - 300, min(abs(regScores@cornerData[[selection]][2,1] + 50), ncol(tiff) - 1)), 
+#     yrange = c(min(abs(regScores@cornerData[[selection]][1,2] - 250), nrow(tiff) - 301), min(abs(regScores@cornerData[[selection]][1,2] + 50), nrow(tiff) - 1)) )
+#     points(regScores@coordinateData[[selection]][,1:2], pch = 19, col = col, cex = 0.3)
+# 
+# 
+#     plotTIFF(tiff, 
+#     xrange = c(max(regScores@cornerData[[selection]][3,1] - 50, 0), max(regScores@cornerData[[selection]][3,1] - 50, 0) + 300), 
+#     yrange = c(max(regScores@cornerData[[selection]][3,2] - 50, 0), max(regScores@cornerData[[selection]][3,2] - 50, 0) + 300) )
+#     points(regScores@coordinateData[[selection]][,1:2], pch = 19, col = col, cex = 0.3)
+# 
+#     plotTIFF(tiff, 
+#     xrange = c(min(abs(regScores@cornerData[[selection]][4,1] + 50), ncol(tiff) - 1) - 300, min(abs(regScores@cornerData[[selection]][4,1] + 50), ncol(tiff) - 1)), 
+#     yrange = c(max(regScores@cornerData[[selection]][4,2] - 50, 0), max(regScores@cornerData[[selection]][4,2] - 50, 0) + 300) )
+#     points(regScores@coordinateData[[selection]][,1:2], pch = 19, col = col, cex = 0.3)
+# 
+# }
+
             
             

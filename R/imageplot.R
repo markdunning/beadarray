@@ -6,10 +6,10 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
         stop("\nIt appears you are trying to use the imageplot() function on a Limma object, but imageplot() is currently masked by beadarray\n\nIf you wish to use the Limma function, you can either call it directly using:\n\t\"limma::imageplot()\"\nor detach the beadarray package using:\n\t\"detach(package:beadarray)\"\n")
 
     ## see if we can find the .locs file and use that
-    locsFileName <- file.path(BLData@sectionData$Targets$directory[array], paste(BLData@sectionData$Targets$sectionName[array], "_Grn.locs", sep = ""))
+    locsFileName <- file.path(BLData@sectionData$Targets$directory[array], BLData@sectionData$Targets$greenLocs[array])
        
     ## now see if this is a Matrix or BeadChip.  Locs should only be used on chips;
-    if( (!is.null(BLData@experimentData$platformClass)) && (useLocs) ) {
+    if( (!is.null(BLData@experimentData$platformClass)) && (useLocs) && file.exists(locsFileName) ) {
         useLocs <- ifelse(grepl("Matrix", BLData@experimentData$platformClass), FALSE, TRUE);
     }
     else { ## don't use locs if we have no information about platform type
@@ -27,7 +27,7 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
     
     if( (file.exists(locsFileName)) && (useLocs == TRUE) ) {
         
-        locs <- readLocsFile(locsFileName);
+        locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array])
 
         sdf <- beadarray:::simpleXMLparse(readLines(file.path(BLData@sectionData$Targets$directory[1], list.files(as.character(BLData@sectionData$Targets$directory[1]), pattern = ".sdf")[1]), warn = FALSE))
         
