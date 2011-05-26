@@ -71,15 +71,27 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     
     ## we'll get section names from the .txt file, so see if they exist or are infact .bab
     ## first find the text file   
-    if(!length( grep(txtSuff, fileList) )) {
-        ## if there aren't any, try and find a bab file instead
-        if(length( grep(".bab", fileList) )) { 
-            txtSuff = ".bab";
-        }
-        else { ## stop if we still can't find anything
-            stop(paste("Cannot find a files with extension either", txtSuff, "or .bab"));
-        }
-    }
+    #if(!length( grep(txtSuff, fileList) )) {
+    #    ## if there aren't any, try and find a bab file instead
+    #    if(length( grep(".bab", fileList) )) { 
+    #        txtSuff = ".bab";
+    #    }
+    #    else { ## stop if we still can't find anything
+    #        stop(paste("Cannot find a files with extension either", txtSuff, "or .bab"));
+    #    }
+    #}
+
+	## if there are .bab files, default to those
+	## save confusion of targets.txt files etc
+	if(length( grep(".bab", fileList) )) {
+		txtSuff = ".bab";
+	}
+	else {
+		if(!length( grep(txtSuff, fileList) )) {
+			stop(paste("Cannot find a files with extension either", txtSuff, "or .bab"));
+		}
+	}
+	
     
     ## if no section names were specified, try to find them all
     if(is.null(sectionNames)) {

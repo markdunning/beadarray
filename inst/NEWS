@@ -7,6 +7,11 @@ NEW FEATURES
 
 	o	beadRegistrationData output can be passed to boxplot.
 
+BUG FIXES in 2.3.3
+
+	o	Stopped the presence of any other .txt files in a directory resulting 
+	in undesirable behaviour of readIllumina()
+
 BUG FIXES in 2.3.2
 
 	o	readBeadLevelTextFile will now take (and use) a seperator argument.

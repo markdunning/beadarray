@@ -39,7 +39,10 @@ medianBackground <- function(pixelMatrix, beadCoords) {
         beadCoords <- matrix(beadCoords, ncol = 2)
     else
         beadCoords <- as.matrix(beadCoords)
+        
+    ## we need to see if this is an integer or numeric matrix
+    integerBool <- ifelse(class(pixelMatrix[1,1]) == "integer", 1L, 0L)
 
-    bg <- .Call("medianBackground", pixelMatrix, beadCoords, PACKAGE = "beadarray");
+    bg <- .Call("medianBackground", pixelMatrix, beadCoords, integerBool, PACKAGE = "beadarray");
     return(bg);
 }

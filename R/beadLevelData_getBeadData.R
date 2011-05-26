@@ -6,7 +6,7 @@ getBeadData <- function(BLData, what = "Grn", array = 1){
     m = match(what, colnames(tmp))
 
     if(is.na(m)) 
-		stop("Could not find bead data of type ", what, "\nThe available choices are: ", colnames(tmp), "\n")
+		stop("Could not find bead data of type ", what, "\n The available choices are: ", colnames(tmp), "\n")
         
     return(tmp[,m])
 }

@@ -30,6 +30,8 @@ numberOfColumns <- function(file, sep = "\t") {
     ## 20-01-11 This should allow the use of weights from Swath data
  
     lines <- read.table(file, sep = sep, nrows = 2);
+	if(!all(lines[1,1:4] == c("Code", "Grn", "GrnX", "GrnY"))) 
+		return(0)
     ## depending upon whether weights have been included there should be 4/5 cols for single channel
     ## and 7/8 for two channel data
     if(ncol(lines) %in% c(4,5,7,8)) 
@@ -54,8 +56,10 @@ readBeadLevelTextFile <- function(file, sep = "\t", ...) {
         data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
     else if (columns == 8)
         data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 8)
-    else
-        stop("Unknown input format!\nExpected 4/5 columns for single channel data or 7/8 columns for two channel data\n");
+    else {
+        warning("Unknown input format in file", file, "\n  This is probably not a bead-level text file and was ignored\n", call. = FALSE);
+		data <- NULL;
+	}
     
     return(data);
 }

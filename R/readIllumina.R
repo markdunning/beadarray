@@ -46,6 +46,14 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         }
         else {       
             data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
+			## if the result is NULL this wasn't a read bead-level text file
+			## we may need to do some clean up of Metric, sectionData etc
+			if(is.null(data)) {
+				BLData@sectionData[["Targets"]] <- BLData@sectionData[["Targets"]][-i,];
+				if(!is.null(BLData@sectionData[["Metrics"]])) 
+					BLData@sectionData[["Metrics"]] <- BLData@sectionData[["Metrics"]][-i,];
+				next;
+			}
         }
     
         ##record the ProbeIDs, X and Y coords
