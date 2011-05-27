@@ -5,7 +5,12 @@ NEW FEATURES
 	o	checkRegistration() has been completely re-written to provide a far more
 	meaningful result in a new class, beadRegistrationData
 
-	o	beadRegistrationData output can be passed to boxplot.
+	o	beadRegistrationData objects can be passed to boxplot.
+
+BUG FIXES in 2.3.4
+
+	o	Fixed issues when using a combination of iScan data and a locs file 
+	to generate neighbours, manifesting as problems with imageplot and BASH.
 
 BUG FIXES in 2.3.3
 

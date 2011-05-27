@@ -62,7 +62,10 @@ generateNeighbours <- function(BLData, array = 1, useLocs = TRUE, window = 30, m
         ## hacky code until we have somewhere to store grid sizes
         sdf <- simpleXMLparse(readLines(file.path(BLData@sectionData$Targets$directory[array], list.files(as.character(BLData@sectionData$Targets$directory[array]), pattern = ".sdf")[1]), warn = FALSE))
         
-        neighbours <- neighboursFromLocs(data[,c(xcol,ycol)], locsName = BLData@sectionData$Targets$greenLocs[array], locsPath = BLData@sectionData$Targets$directory[array], nrowPerSegment = as.integer(sdf$RegistrationParameters$SizeGridX[[1]]), ncolPerSegment = as.integer(sdf$RegistrationParameters$SizeGridY[[1]]) )
+        nSegs <- as.integer(sdf$RegistrationParameters$SizeBlockY[[1]]);
+        nRows <- as.integer(sdf$RegistrationParameters$SizeGridX[[1]]);
+        
+        neighbours <- neighboursFromLocs(data[,c(xcol,ycol)], locsName = BLData@sectionData$Targets$greenLocs[array], locsPath = BLData@sectionData$Targets$directory[array], nrowPerSegment = nRows, nSegs = nSegs)
         
         ## remove NAs for now
         neighbours[which(is.na(neighbours))] <- 0;

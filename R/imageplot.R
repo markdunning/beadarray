@@ -33,7 +33,9 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
         
         nSegs <- as.integer(sdf$RegistrationParameters$SizeBlockY[[1]]);
         nRows <- as.integer(sdf$RegistrationParameters$SizeGridX[[1]]);
-        nCols <- as.integer(sdf$RegistrationParameters$SizeGridY[[1]]);
+        #nCols <- as.integer(sdf$RegistrationParameters$SizeGridY[[1]]);
+        ## if we've got swath data you can't use the number of cols from the sdf.  So we'll try to calcualte it instead
+        nCols <- nrow(locs) / (nSegs * nRows);
         beadsPerSeg <- nRows * nCols;
 
         comb <- BeadDataPackR:::combineFiles(cbind(BLData[[array]][,"ProbeID"], data, BLData[[array]][,c("GrnX", "GrnY")]), locs)

@@ -6,7 +6,7 @@
 ## the dimensions of a segment, hopeully taken from the SDF and the size of the gap to insert
 ## between segments
 
-neighboursFromLocs <- function(txtFileCoords, locsName, locsPath, nrowPerSegment, ncolPerSegment) {
+neighboursFromLocs <- function(txtFileCoords, locsName, locsPath, nrowPerSegment, nSegs) {
     
     ## read the locs file 
     ## we can move the reading of the locs file outside this function if required
@@ -38,9 +38,11 @@ neighboursFromLocs <- function(txtFileCoords, locsName, locsPath, nrowPerSegment
 #                     return(tmp2)                           
 #     }, nrow = nrowPerSegment, ncol = ncolPerSegment)) )
 
+    ncolPerSegment <- nrow(locsFileCoords) / (nrowPerSegment * nSegs);
+
     segmentNeighbours <- .Call("neighboursFromLocs", as.integer(c(nrowPerSegment, ncolPerSegment)), PACKAGE = "beadarray")
 
-    nSegs <- nrow(locsFileCoords) / (nrowPerSegment * ncolPerSegment)
+    #nSegs <- nrow(locsFileCoords) / (nrowPerSegment * ncolPerSegment)
 
     locsNeighbours <- matrix(nrow = nSegs * nrowPerSegment * ncolPerSegment, ncol = 7)
     for(i in 1:nSegs) {
