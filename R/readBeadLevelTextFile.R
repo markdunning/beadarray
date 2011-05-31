@@ -40,7 +40,7 @@ numberOfColumns <- function(file, sep = "\t") {
         return(0)
 }
 
-readBeadLevelTextFile <- function(file, sep = "\t", ...) {
+readBeadLevelTextFile <- function(file, sep = "\t", dec = ".") {
      
     ## Read a bead level text file and return a list containing
     ## the contents of the file and how many channels are present
@@ -49,13 +49,13 @@ readBeadLevelTextFile <- function(file, sep = "\t", ...) {
     columns <- numberOfColumns(file, sep = sep);
      
     if(columns == 4) 
-        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric()), dec = dec, skip = 1, quiet = TRUE)), ncol = 4)
     else if(columns == 5) 
-        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 5)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), numeric()), dec = dec, skip = 1, quiet = TRUE)), ncol = 5)
     else if(columns == 7) 
-        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), dec = dec, skip = 1, quiet = TRUE)), ncol = 7)
     else if (columns == 8)
-        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 8)
+        data <- matrix(unlist(scan(file, sep = sep, what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric(), numeric()), dec = dec, skip = 1, quiet = TRUE)), ncol = 8)
     else {
         warning("Unknown input format in file", file, "\n  This is probably not a bead-level text file and was ignored\n", call. = FALSE);
 		data <- NULL;

@@ -7,6 +7,11 @@ NEW FEATURES
 
 	o	beadRegistrationData objects can be passed to boxplot.
 
+BUG FIXES in 2.3.5
+
+	o	Added support to readIllumina() for files that use something other than
+	a period as the decimal point character.
+
 BUG FIXES in 2.3.4
 
 	o	Fixed issues when using a combination of iScan data and a locs file 

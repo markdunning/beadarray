@@ -1,4 +1,4 @@
-readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, ...) 
+readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, dec = ".", ...) 
 {
 	
     dir <- normalizePath(dir);
@@ -45,7 +45,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             data <- data[-which(data[,1] == 0),];
         }
         else {       
-            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]),...);
+            data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]), dec = dec);
 			## if the result is NULL this wasn't a read bead-level text file
 			## we may need to do some clean up of Metric, sectionData etc
 			if(is.null(data)) {
