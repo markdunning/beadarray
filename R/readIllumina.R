@@ -3,7 +3,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 	
     dir <- normalizePath(dir);
    
-    targets <- analyseDirectory(dir = dir, sectionNames = sectionNames, forceIScan = forceIScan)
+    targets <- analyseDirectory(dir = dir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)
     metrics = targets$metrics 	
     targets = targets$targets
 

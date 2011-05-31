@@ -1,4 +1,4 @@
-analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFlag = "Metrics", ignore = c(".sdf", "fiducial"), forceIScan = FALSE, verbose = FALSE) {
+analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL, channel1 = "Grn", channel2 = "Red", txtSuff = ".txt", imgSuff=".tif", locsSuff=".locs", xmlSuff=".xml", metricsFile = "Metrics.txt", ignore = c(".sdf", "fiducial"), forceIScan = FALSE, verbose = FALSE) {
 
     ## has a directory been specified?
     ## if not, assume working directory
@@ -25,7 +25,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     }
     
     ## look for a metrics file and read it
-    fmet <- grep(metricsFlag,fileList)
+    fmet <- grep(metricsFile,fileList)
     if(verbose){ cat("Found",length(fmet),"metrics files in the directory.\n") }
 
     storemet<-NULL
