@@ -69,9 +69,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             greenImage <- readTIFF(fileName = as.character(targets$greenImage[i]), path = as.character(targets$directory[i]));
             ## there are wrapper functions for these, but using .Call doesn't require
             ## copying the data in the function call
-            bg <- .Call("illuminaBackground", greenImage, data[,3:4], PACKAGE = "beadarray")
+            bg <- .Call("illuminaBackground", greenImage, data[,3:4], 1L, PACKAGE = "beadarray")
             greenImage <- .Call("illuminaSharpen", greenImage, PACKAGE = "beadarray");
-            fg <- .Call("illuminaForeground", greenImage, data[,3:4], PACKAGE = "beadarray");
+            fg <- .Call("illuminaForeground", greenImage, data[,3:4], 0L, PACKAGE = "beadarray");
             rm(greenImage);
             
             BLData <- insertBeadData(BLData, array = i, what = "Grn", data = fg - bg)
@@ -95,9 +95,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
                 image <- readTIFF(fileName = as.character(targets$redImage[i]), path = as.character(targets$directory[i]));
                 ## there are wrapper functions for these, but using .Call doesn't require
                 ## copying the data in the function call
-                bg <- .Call("illuminaBackground", image, data[,6:7], PACKAGE = "beadarray")
+                bg <- .Call("illuminaBackground", image, data[,6:7], 1L, PACKAGE = "beadarray")
                 image <- .Call("illuminaSharpen", image, PACKAGE = "beadarray");
-                fg <- .Call("illuminaForeground", image, data[,6:7], PACKAGE = "beadarray");
+                fg <- .Call("illuminaForeground", image, data[,6:7], 0L, PACKAGE = "beadarray");
                 rm(image);
                 
                 BLData <- insertBeadData(BLData, array = i, what = "Red", data = fg - bg)

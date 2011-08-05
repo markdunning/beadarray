@@ -120,7 +120,7 @@ checkRegistration <- function(BLData, array = 1) {
         sectionName <- as.character(BLData@sectionData$Targets[i,"sectionName"]);
         cat(sectionName, "\n");
         
-        locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
+        locs <- obtainLocs(fileName = BLData@sectionData$Targets$greenLocs[i], filePath = BLData@sectionData$Targets$directory[i]);
 
         comb <- BeadDataPackR:::combineFiles(BLData[[i]][,c("ProbeID", "Grn", "GrnX", "GrnY")], locs)
         comb <- comb[order(comb[,5]),]
@@ -134,7 +134,7 @@ checkRegistration <- function(BLData, array = 1) {
             ## records the corner coordinates of the segment
             corners[[paste(sectionName, "Segment", j, "Grn", sep = "_")]] <- seg[c(beadsPerSeg, nRows, beadsPerSeg - nRows + 1, 1), 3:4]
             ## p95 value
-            p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE))
+            p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE, na.rm = TRUE))
             tiffs <- c(tiffs, file.path(BLData@sectionData$Targets[i,"directory"], BLData@sectionData$Targets[i,"greenImage"]))
 			metrics <- rbind(metrics, BLData@sectionData$Metrics[i,])
         }
@@ -142,7 +142,7 @@ checkRegistration <- function(BLData, array = 1) {
         ## detect red channel and check registration if appropriate
         if("Red" %in% colnames(BLData[[1]])) {
             
-            locs <- obtainLocs(fileName = BLData@sectionData$Targets$redLocs[array], filePath = BLData@sectionData$Targets$directory[array]);
+            locs <- obtainLocs(fileName = BLData@sectionData$Targets$redLocs[i], filePath = BLData@sectionData$Targets$directory[i]);
             comb <- BeadDataPackR:::combineFiles(BLData[[i]][,c("ProbeID", "Red", "RedX", "RedY")], locs)
             comb <- comb[order(comb[,5]),]
             
@@ -152,7 +152,7 @@ checkRegistration <- function(BLData, array = 1) {
                 res[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- meanVar;
 				coords[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- seg[, 3:4];
                 corners[[paste(sectionName, "Segment", j, "Red", sep = "_")]] <- seg[c(beadsPerSeg, nRows, beadsPerSeg - nRows + 1, 1), 3:4]
-                p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE))
+                p95 <- c(p95, quantile(seg[,2], probs = 0.95, names = FALSE, na.rm = TRUE))
                 tiffs <- c(tiffs, file.path(BLData@sectionData$Targets[i,"directory"], BLData@sectionData$Targets[i,"redImage"]))
             }
         }
@@ -167,7 +167,8 @@ checkRegistration <- function(BLData, array = 1) {
     regScores@cornerData <- corners;
     regScores@p95 <- p95;
     regScores@imageLocations <- tiffs;
-    regScores@metrics <- metrics;
+	if(!is.null(metrics))
+	    regScores@metrics <- metrics;
     return(regScores);
 }
 

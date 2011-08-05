@@ -31,8 +31,9 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     storemet<-NULL
     for(i in fmet){
         storemet <- rbind(storemet,read.table(file.path(dir,fileList[i],fsep = .Platform$file.sep),header=T,as.is=T,sep="\t"))
-        fileList <- fileList[-i];
+        #fileList <- fileList[-i];
     }
+	fileList <- fileList[-fmet];
 
     ## First lets see if this is BeadScan or iScan data.  
     ## We'll look for the presence of files with "Swath" in them.
