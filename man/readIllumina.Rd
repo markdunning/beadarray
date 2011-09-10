@@ -14,7 +14,7 @@
   \item{illuminaAnnotation}{Character string specifiying the Illumina platform on which the data were generated. This is optional and will help to automate some analyses on expression data. Currently the choices for this argument are Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1, Ratv1.}
   \item{sectionNames}{Optional vector of character strings corresponding to section names to be read in. Typically these are the 10 digit numeric ID of Illumina chip followed by an underscore and capital letter 
 }
-  \item{metricsFile}{Optional name of a metrics file to be read in from the directory. Defaults to Metrics.txt}
+  \item{metricsFile}{Optional name of a metrics file to be read in from the directory. Defaults to Metrics.txt.  See details below for more information.}
   \item{forceIScan}{Only necessary for data from iScan machines.  When TRUE, this argument forces beadarray to read data from files withe the "perBeadFile.txt" extension, rather than seeking a file per swath.  Use this if you are receiving the error "iScan data detected. This must first be processed with the function processSwathData()", but don't have access to .locs and .tif files for the array.}
   \item{dec}{Decimal point character.  This should be a character string containing just one single-byte character.}
   \item{\dots}{Other arguments to pass when reading bead-level text files.} 
@@ -30,7 +30,7 @@ If present, the function will automatically read the following files from the di
 
 .locs Locations of all beads on the array (i.e. including all those that could not be decoded)
 
-Metrics.txt Illumina\'s metrics that are produced at the time of scanning.
+Metrics.txt Illumina\'s metrics that are produced at the time of scanning.  Identification of the Metrics file is defined by the \code{metricsFile} argument. Internally, this argument is passed to grep.  The default will thus find other items such as "Metrics.txt2" or "OtherMetrics.txt".  To avoid these being read you can use a more specific regex such as "^Metrics.txt$".
 
 Separate functionality exists to read and manipulate TIFF images that may be found in the same directory. See \code{\link{readTIFF}}.
 
