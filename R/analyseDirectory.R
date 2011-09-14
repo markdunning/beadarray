@@ -31,7 +31,6 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     storemet<-NULL
     for(i in fmet){
         storemet <- rbind(storemet,read.table(file.path(dir,fileList[i],fsep = .Platform$file.sep),header=T,as.is=T,sep="\t"))
-        #fileList <- fileList[-i];
     } 
 	if(length(fmet)) ## patch from Juerg Straubhaar (BioC-list 2-Aug-2011)
 		fileList <- fileList[-fmet];
