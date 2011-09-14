@@ -9,7 +9,7 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
 
 
 \usage{
-    summarize(BLData, channelList, probeIDs=NULL, useSampleFac = TRUE, sampleFac= NULL, weightNames = "wts", removeUnMappedProbes = TRUE)
+    summarize(BLData, channelList = list(greenChannel), probeIDs=NULL, useSampleFac = FALSE, sampleFac= NULL, weightNames = "wts", removeUnMappedProbes = TRUE)
 }
 
 \arguments{
@@ -17,14 +17,14 @@ Function to summarize the data in a \code{beadLevelData} object into a form more
         An object of class beadLevelData
     }
     \item{channelList}{
-	List of objects of class illuminaChannel
+	List of objects of class illuminaChannel that defines the summarisation to be performed. The default is to do a log2 transformation and report the mean and standard deviation of each bead type after outlier removal.
    }
 
    \item{probeIDs}{
-	Vector of ArrayAddressIDs to be included in the summarized object
+	Vector of ArrayAddressIDs to be included in the summarized object. The default is to summarize all probes.
 	}
   \item{useSampleFac}{
-	if TRUE sections belonging to the same biological sample will be combined
+	if TRUE sections belonging to the same biological sample will be combined. The default is to summarize each section separately.
 }
 
   \item{sampleFac}{

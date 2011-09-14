@@ -1,6 +1,7 @@
 \name{illuminaChannel-class}
 \docType{class}
 \alias{illuminaChannel-class}
+\alias{greenChannel}
 
 \title{Class "illuminaChannel" }
 
@@ -31,14 +32,11 @@ From beadarray version 2.0 onwards, users are allowed more flexibility in how to
 
 \examples{
 
-greenChannel = new("illuminaChannel", greenChannelTransform, illuminaOutlierMethod, mean, sd, "G")
+greenChannel
+
 redChannel = new("illuminaChannel", redChannelTransform, illuminaOutlierMethod, mean, sd, "R")
 
 logRatio = new("illuminaChannel", logRatioTransform, illuminaOutlierMethod, mean, sd, "M")
-
-data(BLData)
-
-BSData = summarize(BLData, channelList = list(greenChannel))
 
 }
 

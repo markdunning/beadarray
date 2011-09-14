@@ -7,6 +7,17 @@ NEW FEATURES
 
 	o	beadRegistrationData objects can be passed to boxplot.
 
+	o	The summarize function now has a default channel parameter and useSampleFac = FALSE
+
+
+BUG FIXES in 2.3.6
+
+	o	Fixed problem when providing arrays argument to checkRegistration()
+
+	o	Fixed problem in readIllumina when useImages = TRUE
+
+	o	Patched error with analyseDirectory() (thanks to Juerg Straubhaar for this)
+
 BUG FIXES in 2.3.6
 
 	o	Fixed problem when providing arrays argument to checkRegistration()

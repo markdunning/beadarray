@@ -37,7 +37,7 @@ Users with two channel data (e.g. data from methylation and SNP assays) can use 
 
 \value{
 
-A numeric vector with the same length as he number of beads recorded for the section
+Transformation functions return a numeric vector with the same length as the number of beads for the particular section.
 
 }
 
@@ -54,6 +54,7 @@ head(BLData[[1]])
 log2(getBeadData(BLData, array=1,what="Grn")[1:10])
 
 logGreenChannelTransform(BLData, array=1)[1:10]
+
 
 }
 
