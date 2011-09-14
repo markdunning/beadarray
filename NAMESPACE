@@ -24,7 +24,7 @@ export(readTIFF, plotTIFF)
 export(illuminaForeground, illuminaBackground, illuminaSharpen, medianBackground)
 
 ## Transformations
-export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform)
+export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform,mean.na, sd.na,greenChannel)
 
 ## QC
 export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations)
