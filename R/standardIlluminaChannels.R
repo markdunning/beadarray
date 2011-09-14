@@ -62,4 +62,8 @@ illuminaOutlierMethod= function(inten, probeList,n= 3)
 }
 
 
+mean.na <- function(x,...) mean(x, na.rm=TRUE,...)
+sd.na <- function(x) sd(x, na.rm=TRUE)
+
+greenChannel <- new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, mean.na, sd.na,  "G")
 

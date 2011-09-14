@@ -20,7 +20,7 @@ unique(uIDs)
 
 
 
-summarize = function(BLData, channelList, probeIDs=NULL, useSampleFac = TRUE, sampleFac= NULL, weightNames = "wts", removeUnMappedProbes = TRUE){
+summarize = function(BLData, channelList=list(greenChannel), probeIDs=NULL, useSampleFac = FALSE, sampleFac= NULL, weightNames = "wts", removeUnMappedProbes = TRUE){
 
 arraynms = sectionNames(BLData)
 
