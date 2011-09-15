@@ -415,6 +415,8 @@ if(!is.null(annoName)){
 	
 	featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ArrayAddressID=probeIDs,IlluminaID  = IlluminaIDs, Status = status, row.names=IlluminaIDs))
 
+	BSData@annotation = annoName
+
 }
 
 else{
