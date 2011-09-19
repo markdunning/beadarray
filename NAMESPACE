@@ -27,7 +27,7 @@ export(illuminaForeground, illuminaBackground, illuminaSharpen, medianBackground
 export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform,greenChannel)
 
 ## QC
-export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations)
+export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations, getControlProfile)
 
 ## BASH etc.
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights,showArrayMask)

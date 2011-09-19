@@ -1,6 +1,7 @@
 \name{getAnnotation}
 \alias{getAnnotation}
 \alias{setAnnotation}
+\alias{getControlProfile}
 \title{
 Storage of annotation information
 }
