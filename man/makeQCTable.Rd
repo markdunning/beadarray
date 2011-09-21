@@ -1,5 +1,6 @@
 \name{makeQCTable}
 \alias{makeQCTable}
+\alias{makeControlProfile}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Tabulate QC scores

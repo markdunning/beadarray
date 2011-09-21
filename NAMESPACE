@@ -5,10 +5,12 @@ import(graphics)
 
 importFrom(limma, normalizeQuantiles, neqc)
 
+importFrom(reshape, melt)
+
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, "se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
-export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, checkPlatform)
+export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, checkPlatform, addFeatureData, plotByProbeFactor)
 
 
 ## Data input
@@ -27,7 +29,7 @@ export(illuminaForeground, illuminaBackground, illuminaSharpen, medianBackground
 export(logGreenChannelTransform, logRedChannelTransform, logRatioTransform, greenChannelTransform, redChannelTransform,greenChannel)
 
 ## QC
-export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations, getControlProfile)
+export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, imageplot, checkRegistration, makeQCTable, expressionQCPipeline, calculateOutlierStats, controlProbeDetection, plotBeadLocations, makeControlProfile)
 
 ## BASH etc.
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights,showArrayMask)

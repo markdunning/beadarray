@@ -1,12 +1,12 @@
 Package: beadarray
 Title: Quality assessment and low-level analysis for Illumina BeadArray data
-Version: 2.3.7
-Date: 2011-09-14
+Version: 2.3.8
+Date: 2011-09-21
 Author: Mark Dunning, Mike Smith, Jonathan Cairns, Andy Lynch, Matt Ritchie
 Maintainer: Mark Dunning <Mark.Dunning@cancer.org.uk>
 Description: The package is able to read bead-level data (raw TIFFs and text files) output by BeadScan as well as bead-summary data from BeadStudio.  Methods for quality assessment and low-level analysis are provided.
 Depends: R (>= 2.13.0), Biobase (>= 2.5.5), methods
-Imports: BeadDataPackR, limma
-Suggests: lumi, vsn, affy, hwriter
+Imports: BeadDataPackR, limma, reshape
+Suggests: lumi, vsn, affy, hwriter, ggplot2
 License: GPL-2
 biocViews: Microarray, OneChannel, QualityControl, Preprocessing
