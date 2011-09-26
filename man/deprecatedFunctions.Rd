@@ -2,6 +2,8 @@
 \alias{createBeadSummaryData}
 \alias{arrayNames}
 \alias{getArrayData}
+\alias{checkPlatform}
+
 \title{Deprecated Functions}
 
 \description{

@@ -1,5 +1,5 @@
-\name{checkPlatform}
-\alias{checkPlatform}
+\name{checkAnnotation}
+\alias{checkAnnotation}
 \title{
 Determine expression chip annotation
 }
@@ -10,17 +10,17 @@ Works out which platform the bead level data represents given the probe IDs and 
 
 
 \usage{
-    checkPlatform(BLData,verbose=FALSE)
+    checkAnnotation(data,verbose=FALSE)
 }
 
 \arguments{
-    \item{BLData}{An object of class \code{\link{beadLevelData-class}}}.
+    \item{data}{An object of class \code{\link{beadLevelData-class}}}.
     \item{verbose}{If TRUE, report overlaps with known platforms}	
 
 } 
 
 \value{
-Character string of the best guess of what expression platform BLData is. Bear in mind that this is just a best guess. 
+Character string of the best guess of what expression platform the beadLevelData object is. Bear in mind that this is just a best guess. 
 }
 
 \author{
