@@ -1,6 +1,5 @@
 plotByProbeFactor <- function(data, probeFactor = "PROBEQUALITY"){
 
-	require("reshape")
 	require("ggplot2")
 
 	if(is.character(probeFactor)){
@@ -13,7 +12,6 @@ plotByProbeFactor <- function(data, probeFactor = "PROBEQUALITY"){
 
 	newDf <- melt(data.frame(exprs(data), ProbeFactor = probeFactor), id.vars ="ProbeFactor")
 
-	#	newDf <- newDf[-which(is.na(newDf$mostGs)),]
 	
 	p<- ggplot(newDf, aes(x=factor(ProbeFactor),y=value,fill=factor(ProbeFactor))) + geom_boxplot() + facet_wrap(~variable,ncol=min(dim(data)[2], 6))
 
