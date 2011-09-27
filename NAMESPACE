@@ -39,4 +39,5 @@ export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calcula
 
 ## Deprecated functions.  Included so arrayQualityMetrics doesn't break
 exportClasses(BeadLevelList)
-export(checkPlatform}
+export(checkPlatform)
+
