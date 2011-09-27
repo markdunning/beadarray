@@ -1,6 +1,11 @@
 \name{getAnnotation}
 \alias{getAnnotation}
 \alias{setAnnotation}
+\alias{annotation,beadLevelData-method}
+\alias{annotation,ExpressionSetIllumina-method}
+\alias{annotation<-,beadLevelData,character-method}
+\alias{annotation<-,ExpressionSetIllumina,character-method}
+
 \alias{getControlProfile}
 \title{
 Storage of annotation information

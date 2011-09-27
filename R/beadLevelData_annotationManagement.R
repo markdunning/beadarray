@@ -19,6 +19,30 @@ BLData
 } 
 
 
+setMethod("annotation", signature(object = "ExpressionSetIllumina"), function(object) object@annotation)
+setMethod("annotation", signature(object = "beadLevelData"), function(object) object@experimentData$annotation)
+
+setReplaceMethod("annotation",
+                 signature=signature(
+                   object="beadLevelData",
+                   value="character"),
+                 function(object, value) {
+                     object@experimentData$annotation <- value
+                     object
+                 })
+
+setReplaceMethod("annotation",
+                 signature=signature(
+                   object="ExpressionSetIllumina",
+                   value="character"),
+                 function(object, value) {
+                     object@annotation <- value
+                     object
+                 })
+
+ 
+ 
+
 
 checkPlatform <- function(BLData,verbose=FALSE){
 
