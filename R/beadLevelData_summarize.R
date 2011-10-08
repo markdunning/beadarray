@@ -110,34 +110,32 @@ if(is.null(probeIDs)) {
 
 
 
-###Remove any probes that cannot be mapped to ILMN_ IDs or are not control probes
+###Remove any probes that cannot be mapped to ILMN_ IDs
 
 if(removeUnMappedProbes){
 
-	annoName = getAnnotation(BLData)
+	annoName = annotation(BLData)
 
 	if(!is.null(annoName)){
-		mapPath = system.file(package="beadarray", "extdata")	
-		mapTable <- paste(tolower(annoName), "BeadLevelMapping", sep="")
-		load(paste(mapPath, "/",mapTable,".rda",sep=""))
 
-		##Try and retrieve control information?
 
-		data(ExpressionControlData)	
+	    annoLoaded <- require(paste("illumina", annoName, ".db",sep=""), character.only=TRUE)
 
-		controlInfo = ExpressionControlData[[annoName]]
+	    if(annoLoaded){
+  
+    
+	    mapEnv <-  as.name(paste("illumina", annoName, "ARRAYADDRESS",sep=""))
 
-		isControl = probeIDs %in% controlInfo[,1]
+	    allMapped <- mappedkeys(revmap(eval(mapEnv)))
 
-		##Find out which probes can be mapped
+	   
+	      isMapped = which(probeIDs %in% allMapped)
 
-		mapTable = eval(as.name(mapTable))	
+	      cat("Number of unmapped probes removed: ", length(probeIDs) - length(isMapped), "\n")
 
-		isMapped = which(probeIDs %in% mapTable[,1] | isControl)	
+	      probeIDs = probeIDs[isMapped]
 
-		cat("Number of unmapped probes removed: ", length(probeIDs) - length(isMapped), "\n")
-
-		probeIDs = probeIDs[isMapped]
+	  }
 
 	}
 
@@ -377,45 +375,39 @@ if(length(output) > 1){
 BSData = new("ExpressionSetIllumina")
 
 
-annoName = getAnnotation(BLData)
+annoName = annotation(BLData)
 
 if(!is.null(annoName)){
-	mapPath = system.file(package="beadarray", "extdata")	
-	mapTable <- paste(tolower(annoName), "BeadLevelMapping", sep="")
-	load(paste(mapPath, "/",mapTable,".rda",sep=""))
-
-	###Must be a way of doing this
-
-	mapTable = eval(as.name(mapTable))	
-	
-	convertArrayAddressID = function(arrayAddressID, mapTable){
-		mapTable[match(arrayAddressID, mapTable[,1]),2]
-	}
-	
-	IlluminaIDs = as.character(probeIDs)
-
-	canMap = which(probeIDs %in% mapTable[,1])
-
-	cat(length(canMap), " ArrayAddressIDs mapped to IlluminaIDs\n")
-
-	IlluminaIDs[canMap] = as.character(convertArrayAddressID(probeIDs[canMap], mapTable))
 
 
-	rownames(eMat) = rownames(varMat) = rownames(nObs) = as.character(IlluminaIDs)
+	 
+	  annoLoaded <- require(paste("illumina", annoName, ".db",sep=""), character.only=TRUE)
+
+	  if(annoLoaded){
+  
+    
+	    mapEnv <-  as.name(paste("illumina", annoName, "ARRAYADDRESS",sep=""))
+ 
+	    IlluminaIDs = mget(probeIDs, revmap(eval(mapEnv)),ifnotfound=NA)
+
+	   
+	    rownames(eMat) = rownames(varMat) = rownames(nObs) = as.character(IlluminaIDs)
 
 
-	status = rep("Unknown", length(probeIDs))
-	status[canMap] = "Gene"	
+	  status = rep("Unknown", length(probeIDs))
 
-	controlInfo = ExpressionControlData[[annoName]]
 
-	isControl = probeIDs %in% controlInfo[,1]
+	  mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
 
-	status[isControl] = as.character(controlInfo[match(probeIDs[isControl], controlInfo[,1]),2])
+	    
+	  status[which(!is.na(IlluminaIDs))] = mget(IlluminaIDs, eval(mapEnv))	
+
 	
 	featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ArrayAddressID=probeIDs,IlluminaID  = IlluminaIDs, Status = status, row.names=IlluminaIDs))
 
 	BSData@annotation = annoName
+
+	}
 
 }
 

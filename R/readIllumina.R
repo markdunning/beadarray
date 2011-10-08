@@ -141,9 +141,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
     BLData = insertSectionData(BLData, what="numBeads", data=data.frame(numBeads = nBeads))
 
     if(!is.null(illuminaAnnotation)){
-            BLData = setAnnotation(BLData, illuminaAnnotation)
+            annotation(BLData) <- illuminaAnnotation
     }   	
-    else warning("No Illumina annotation was specified. Try setting manually using setAnnotation..\n")
+    else warning("No Illumina annotation was specified and some functionality within the package will not work. Try using the suggestAnnotation function to determine what value to use if you are not sure\n")
 
     return(BLData);
 

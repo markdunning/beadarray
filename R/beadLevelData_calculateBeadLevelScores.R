@@ -72,7 +72,7 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 ##If control profile is not specified we will try and use the annotation of the beadLevelData object
 
 	if(is.null(controlProfile)){
-		anno = getAnnotation(BLData)
+		anno = annotation(BLData)
 
 		controlProfile = makeControlProfile(anno)
 
@@ -152,7 +152,7 @@ poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, pos
 
 	if(is.null(controlProfile)){
 			
-		controlInfo = ExpressionControlData[[getAnnotation(BLData)]]
+		controlInfo = ExpressionControlData[[annotation(BLData)]]
 
 	}	
 	
@@ -199,7 +199,7 @@ poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, pos
 quickSummary = function(BLData, array=1, transFun = logGreenChannelTransform, reporterIDs = NULL, reporterTags = NULL,reporterFun = function(x) mean(x, na.rm=TRUE)){
 
 	if(is.null(reporterIDs)){
-		controlInfo = ExpressionControlData[["Humanv3"]]
+		controlInfo = makeControlProfile(annotation(BLData))
 
 		reporterIDs = controlInfo[,1]
 		reporterTags = controlInfo[,3]
@@ -227,26 +227,12 @@ quickSummary = function(BLData, array=1, transFun = logGreenChannelTransform, re
 
 
 
-makeControlProfile = function(annoName){
-
-	if(annoName %in% names(ExpressionControlData)){
-
-		controlProfile = data.frame(ArrayAddress = ExpressionControlData[[as.character(annoName)]][,1], Tag = 	ExpressionControlData[[as.character(annoName)]][,3])
-		controlProfile
-	}
-
-	else cat("Could not make control profile for annotation:", annoName, "\n")
-
-
-
-}
-
 
 makeQCTable = function(BLData, transFun = logGreenChannelTransform, controlProfile = NULL, summaryFns = list(Mean = function(x) mean(x, na.rm=TRUE), Sd = function(x) sd(x, na.rm=TRUE)), channelSuffix = NULL){
 
 	##If no profile was specified, use the annotation of the BLData object
 	if(is.null(controlProfile)){
-		anno = getAnnotation(BLData)
+		anno = annotation(BLData)
 		
 		controlProfile = makeControlProfile(anno)
 	

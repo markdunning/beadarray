@@ -1,4 +1,4 @@
-readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, sep="\t", skip=8, ProbeID="ProbeID", columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", nObservations = "Avg_NBEADS", Detection="Detection Pval"), qc.sep="\t", qc.skip=8, controlID="ProbeID", qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", nObservations="Avg_NBEADS", Detection="Detection Pval"), annoPkg=NULL, dec=".", quote="", annoCols = c("TargetID", "PROBE_ID","SYMBOL"))
+readBeadSummaryData = function(dataFile, qcFile=NULL, sampleSheet=NULL, sep="\t", skip=8, ProbeID="ProbeID", columns = list(exprs = "AVG_Signal", se.exprs="BEAD_STDERR", nObservations = "Avg_NBEADS", Detection="Detection Pval"), qc.sep="\t", qc.skip=8, controlID="ProbeID", qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", nObservations="Avg_NBEADS", Detection="Detection Pval"), illuminaAnnotation=NULL, dec=".", quote="", annoCols = c("TargetID", "PROBE_ID","SYMBOL"))
 {
 
 if(!(is.null(sampleSheet))){ 
@@ -93,8 +93,8 @@ names(data) = names(columns) #foundColumns
 
 BSData = new("ExpressionSetIllumina")
 
-if(!is.null(annoPkg) && is.character(annoPkg))
-  BSData@annotation = annoPkg
+if(!is.null(illuminaAnnotation) && is.character(illuminaAnnotation))
+  BSData@annotation = illuminaAnnotation
 
 for(i in 1:length(data)){
   index = which(names(assayData(BSData))== names(data)[i])

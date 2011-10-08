@@ -7,9 +7,7 @@ an = sectionNames(BLData)
 
 if(is.null(controlProfile)){
 
-	data(ExpressionControlData)
-
-	controlProfile = makeControlProfile(getAnnotation(BLData))
+	controlProfile = makeControlProfile(annotation(BLData))
 
 }
 
