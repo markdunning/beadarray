@@ -19,8 +19,14 @@ A vector containing the number of beads on individual array sections.
 }
 \author{Matt Ritchie}
 \examples{
-data(BLData)
-numBeads(BLData)
-numBeads(BLData, arrays=2)
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+numBeads(exampleBLdata)
+numBeads(exampleBLdata, arrays=2)
+
+}
+
 }
 \keyword{manip}

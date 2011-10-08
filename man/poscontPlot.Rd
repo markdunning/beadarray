@@ -55,15 +55,16 @@ Mark Dunning
 
 ###Load the example beadLevelData and associated controlProfile
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-data(controlProfile)
 
-poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "biotin"))
+data(exampleBLdata)
 
-poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "negative"))
+poscontPlot(exampleBLdata, array=1)
 
-poscontPlot(BLData, array=2,controlProfile=controlProfile, positiveControlTags = c("housekeeping", "negative"), colList=c("purple", "salmon"))
+poscontPlot(exampleBLdata, array=2)
+
+}
 
 }
 

@@ -12,7 +12,7 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
                     qc.sep="\t", qc.skip=8, controlID="ProbeID", 
                     qc.columns = list(exprs="AVG_Signal", se.exprs="BEAD_STDERR", 
 			nObservations="Avg_NBEADS", Detection="Detection Pval"), 
-		    annoPkg=NULL, dec=".", quote="", annoCols = c("TargetID", "PROBE_ID","SYMBOL"))
+		    illuminaAnnotation=NULL, dec=".", quote="", annoCols = c("TargetID", "PROBE_ID","SYMBOL"))
 
 }
 \arguments{
@@ -39,7 +39,7 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
   \item{qc.columns}{list defining the column headings in \code{qcFile} which 
      correspond to the matrices stored in the \code{QCInfo} slot of
      the final \code{ExpressionSetIllumina} object}
-  \item{annoPkg}{character string specifying the name of the annotation package 
+  \item{illuminaAnnotation}{character string specifying the name of the annotation package 
      (only available for certain expression arrays at present)}
   \item{dec}{the character used in the \code{dataFile} and \code{qcFile} for decimal points}
   \item{quote}{the set of quoting characters (disabled by default)}
@@ -110,12 +110,15 @@ readBeadSummaryData(dataFile, qcFile=NULL, sampleSheet=NULL,
 ##http://www.switchtoi.com/datasets/asuragenmadqc/AsuragenMAQC_BeadStudioOutput.zip
 ##To follow this example, download the zip file 
 
-##dataFile = "AsuragenMAQC-probe-raw.txt"
 
-##qcFile = "AsuragenMAQC-controls.txt"
+\dontrun{
+dataFile = "AsuragenMAQC-probe-raw.txt"
 
-##BSData = readBeadSummaryData(dataFile=dataFile, qcFile=qcFile, controlID="ProbeID",skip=0,qc.skip=0, qc.columns=list(exprs = "AVG_Signal"))
+qcFile = "AsuragenMAQC-controls.txt"
 
+BSData = readBeadSummaryData(dataFile=dataFile, qcFile=qcFile, controlID="ProbeID",skip=0,qc.skip=0, qc.columns=list(exprs = "AVG_Signal"))
+
+}
 
 }
 \keyword{IO}

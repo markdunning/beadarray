@@ -3,11 +3,14 @@
 \alias{arrayNames}
 \alias{getArrayData}
 \alias{checkPlatform}
+\alias{getAnnotation}
+\alias{setAnnotation}
 
 \title{Deprecated Functions}
 
 \description{
-Deprecated functions kept so they package ArrayQualityMetrics can still be installed.  All have been replaced and will be removed in future updates.
+Functions that have been renamed in the latest version of beadarray, but kept in for backwards compatibility.
+
 }
 
 

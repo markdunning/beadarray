@@ -45,13 +45,24 @@ A vector consisting of the BeadIDs of beads considered diffuse defects.
 \seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}, }
 
 \examples{
-data(BLData)
-o <- BASHDiffuse(BLData, 1)
-o <- BASHDiffuse(BLData, 1, sig = 0.00001) ##stricter significance value, perhaps more useful on a BeadChip.
-o <- BASHDiffuse(BLData, 1, cutoff = 12) ##only larger defects will be found with this setting
+
+\dontrun{
+
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+o <- BASHDiffuse(exampleBLdata, 1)
+o <- BASHDiffuse(exampleBLdata, 1, sig = 0.00001) ##stricter significance value, perhaps more useful on a BeadChip.
+o <- BASHDiffuse(exampleBLdata, 1, cutoff = 12) ##only larger defects will be found with this setting
+
+}
+
+}
+
 }
 \references{
-	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
+	J. M. Cairns, M. J. Dunning, M. E. Ritchie, R. Russell, and A. G. Lynch (2008). BASH: a tool for managing BeadArray spatial artefacts. Bioinformatics 15; 24(24)
 
 }
 \keyword{misc}

@@ -72,17 +72,24 @@ The user can specify a vector of ArrayAddressIDs to be summarized using the \cod
 
 \examples{
 
-	data(BLData)
+if(require(beadarrayExampleData)){
+
+	data(exampleBLdata)
+
+	bsd = summarize(exampleBLdata)
+
 
 	myMean = function(x) mean(x,na.rm=TRUE)
 	mySd = function(x) sd(x,na.rm=TRUE)
 
 	greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
 
-	bsd = summarize(BLData, channelList = list(greenChannel))
+	bsd = summarize(exampleBLdata, channelList = list(greenChannel))
 
 	bsd
 
+
+}
 
 }
 	

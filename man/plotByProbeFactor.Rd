@@ -33,6 +33,22 @@ The vector is then merged with the expression matrix of the ExpressionSetIllumin
 A ggplot object
 
 }
+
+\examples{
+
+if(require(beadarrayExampleData)){
+
+data(exampleSummaryData)
+
+subset <- exampleSummaryData[,c(1,2)]
+
+plotByProbeFactor(subset)
+
+
+}
+
+}
+
 \author{
 Mark Dunning
 }

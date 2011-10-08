@@ -30,7 +30,13 @@ medianNormalise(exprs, log=TRUE)
 \author{Mark Dunning}
 
 \examples{
-data(BSData)
-BSData.med = assayDataElementReplace(BSData, "exprs", medianNormalise(exprs(BSData)))
+
+if(require(beadarrayExampleData)){
+
+data(exampleSummaryData)
+exampleSummaryData.med = assayDataElementReplace(exampleSummaryData, "exprs", medianNormalise(exprs(exampleSummaryData)))
+
+}
+
 }
 \keyword{methods}

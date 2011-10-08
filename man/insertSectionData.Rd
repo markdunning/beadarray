@@ -34,14 +34,18 @@ a modified \code{beadLevelData} object with the new data attached to sectionData
 Mark Dunning
 }
 \examples{
-data(BLData)
 
-data(controlProfile)
+if(require(beadarrayExampleData)){
 
+data(exampleBLdata)
 
-qct = makeQCTable(BLData, controlProfile=controlProfile)
+qct = makeQCTable(exampleBLdata)
 
-BLData = insertSectionData(BLData, what="ProbeQC", data = qct)
+exampleBLdata = insertSectionData(exampleBLdata, what="ProbeQC", data = qct)
+
+exampleBLdata@sectionData
+
+}
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

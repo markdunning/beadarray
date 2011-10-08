@@ -37,13 +37,16 @@ the positions in the original vector that were determined to be outliers
 Mark Dunning
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-data(BLData)
 
-oList = illuminaOutlierMethod(logGreenChannelTransform(BLData, 1), getBeadData(BLData, array=1, what="ProbeID"))
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+
+oList = illuminaOutlierMethod(logGreenChannelTransform(exampleBLdata, 1), getBeadData(exampleBLdata, array=1, what="ProbeID"))
  
+}
 
 }
 

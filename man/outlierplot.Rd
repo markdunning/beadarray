@@ -56,7 +56,14 @@ Mark Dunning and Mike Smith
 }
 
 \examples{
-data(BLData)
-outlierplot(BLData, array=1, horizontal = FALSE)
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+outlierplot(exampleBLdata, array=1, horizontal = FALSE)
+
+
+}
+
 }
 

@@ -37,16 +37,20 @@ These functions allow the \code{beadData} slot of the \code{\link{beadLevelData-
 
 \examples{
 
-	data(BLData)
-	logIntensity <- log2(getBeadData(BLData, what = "Grn", array = 1))
+      if(require(beadarrayExampleData)){
+
+	data(exampleBLdata)
+	logIntensity <- log2(getBeadData(exampleBLdata, what = "Grn", array = 1))
 
 	## This will add a new entry called "LogGrn" to BLData
-	BLData <- insertBeadData(BLData, array = 1, what = "LogGrn", data = logIntensity)
-	head(BLData[[1]])
+	exampleBLdata <- insertBeadData(exampleBLdata, array = 1, what = "LogGrn", data = logIntensity)
+	head(exampleBLdata[[1]])
 
 	## Supplying an existing entry to "what" will overwrite the current data
-    BLData <- insertBeadData(BLData, array = 1, what = "Grn", data = logIntensity)
-	head(BLData[[1]])
+    exampleBLdata <- insertBeadData(exampleBLdata, array = 1, what = "Grn", data = logIntensity)
+	head(exampleBLdata[[1]])
+
+    }
 
 }
 

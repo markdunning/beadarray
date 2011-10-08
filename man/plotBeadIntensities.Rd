@@ -48,11 +48,16 @@ Mark Dunning
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-randIDs = sample(getBeadData(BLData, array=1, what="ProbeID"),10)
 
-plotBeadIntensities(BLData, array=1, BeadIDs = randIDs)
+data(exampleBLdata)
+
+randIDs = sample(getBeadData(exampleBLdata, array=1, what="ProbeID"),10)
+
+plotBeadIntensities(exampleBLdata, array=1, BeadIDs = randIDs)
+
+}
 
 
 }

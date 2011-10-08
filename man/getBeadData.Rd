@@ -18,8 +18,17 @@ getBeadData(BLData, what="Grn", array=1)
 A vector containing the specified bead data for the particular array.
 }
 \author{Mark Dunning}
+
 \examples{
-data(BLData)
-summary(getBeadData(BLData))
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+
+summary(getBeadData(exampleBLdata))
+
+}
+
+
 }
 \keyword{manip}

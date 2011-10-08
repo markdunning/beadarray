@@ -84,12 +84,15 @@ character vector giving regular probes (used in neqc normalisation only)
 \author{Matt Ritchie and Mark Dunning}
 
 \examples{
-data(BSData)
-BSData.norm = normaliseIllumina(BSData, method="quantile", transform="none")
 
-BSData.rsn = normaliseIllumina(BSData, method="rsn", transform="none")
+if(require(beadarrayExampleData)){
 
+data(exampleSummaryData)
+exampleSummaryData.norm = normaliseIllumina(exampleSummaryData, method="quantile", transform="none")
 
+exampleSummaryData.rsn = normaliseIllumina(exampleSummaryData, method="rsn", transform="none")
+
+}
 
 }
 

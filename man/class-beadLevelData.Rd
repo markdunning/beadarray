@@ -44,13 +44,19 @@
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-sectionNames(BLData)
 
-head(BLData[[1]])
+data(exampleBLdata)
 
-getBeadData(BLData, array=1, what="Grn")[1:10]
+sectionNames(exampleBLdata)
+
+head(exampleBLdata[[1]])
+
+getBeadData(exampleBLdata, array=1, what="Grn")[1:10]
+
+
+}
 
 }
 \author{Mark Dunning, Mike Smith}

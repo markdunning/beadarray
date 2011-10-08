@@ -91,12 +91,15 @@ Mark Dunning
 }
 \examples{
 
-data(BLData)
-data(controlProfile)
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
 
 #Not Run
-#expressionQCPipeline(BLData, controlProfile=controlProfile, positiveControlTags=c("housekeeping", "biotin"), hybridisationTags = c("cy3_hyb", "high_stringency_hyb"), zlim=c(10,12), horizontal=F, negativeTag = "negative", tagsToDetect=list(Housekeeping = "housekeeping", Biotin = "biotin", hybridisation = "cy3_hyb"))
+#expressionQCPipeline(exampleBLdata, horizontal=T)
 
+
+}
 
 }
 

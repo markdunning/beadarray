@@ -56,14 +56,17 @@ Mark Dunning
 
 \examples{
 
-data(BLData)
-data(controlProfile)
+if(require(beadarrayExampleData)){
 
-for(i in 1:10){
-print(controlProbeDetection(BLData, array = i, controlProfile=controlProfile, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
+data(exampleBLdata)
+
+for(i in 1:2){
+
+print(controlProbeDetection(exampleBLdata, array = i, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
+
 }
 
-
+}
   
 }
 

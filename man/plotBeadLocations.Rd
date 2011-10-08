@@ -57,13 +57,18 @@ Mark Dunning
 }
 
 \examples{
-data(BLData)
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
 
 ##Plot location of first 100 beads as they are listed in beadLevelData object
 
-plotBeadLocations(BLData, BeadIDs = 1:100, array=1, horizontal = FALSE)
+plotBeadLocations(exampleBLdata, BeadIDs = 1:100, array=1, horizontal = FALSE)
 
 
+
+}
 
 
 }

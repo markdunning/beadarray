@@ -44,9 +44,16 @@ List where each entry is either a vector of corrected intensities or NULL, depen
 \seealso{\code{\link{BASH}}}
 
 \examples{
-data(BLData)
-o <- HULK(BLData, 1)
+\dontrun{
 
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+o <- HULK(exampleBLdata, 1)
+
+}
+
+}
 
 }
 \references{

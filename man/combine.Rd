@@ -30,9 +30,28 @@ The \code{combine} function allows two objects of the same class that have been 
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-combine(BLData, BLData)
+data(exampleBLdata)
+
+sectionNames(exampleBLdata)
+
+data2 <- combine(exampleBLdata, exampleBLdata)
+
+sectionNames(data2)
+
+data(exampleSummaryData)
+
+d1 <- exampleSummaryData[,c(1:4)]
+d2 <- exampleSummaryData[,c(5:8)]
+
+d3 <- combine(d1, d2)
+
+d3
+
+
+}
+
 }
 
 \author{Mark Dunning, Mike Smith}

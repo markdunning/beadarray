@@ -19,7 +19,14 @@ A character vector containing the names of the individual sections.
 }
 \author{Mark Dunning}
 \examples{
-data(BLData)
-sectionNames(BLData)
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+sectionNames(exampleBLdata)
+
+
+}
+
 }
 \keyword{manip}

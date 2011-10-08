@@ -37,15 +37,14 @@ The function can be used to calculate summarized values for particular control t
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-data(controlProfile)
+data(exampleBLdata)
 
-head(controlProfile)
+quickSummary(exampleBLdata, array=1)
+quickSummary(exampleBLdata, array=2)
 
-table(controlProfile[,2])
-
-quickSummary(BLData, array=1,reporterIDs = controlProfile[,1], reporterTags = as.character(controlProfile[,2]))
+}
 
 }
 

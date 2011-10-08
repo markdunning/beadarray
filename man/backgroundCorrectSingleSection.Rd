@@ -46,23 +46,30 @@ Mark Dunning
 
 \examples{
 
-##This will take the "Grn" and "GrnB" data for each of the 10 arrays in our example data object and save the corrected intensities in "Grn.bc"
 
-data(BLData)
+\dontrun{
 
-head(BLData[[1]])
+if(require(beadarrayExampleData)){
 
-for(i in 1:10){
-	 BLData = backgroundCorrectSingleSection(BLData, array=i)
+  data(exampleBLdata)
+
+  head(exampleBLdata[[1]])
+
+  for(i in 1:2){
+	  exampleBLdata = backgroundCorrectSingleSection(exampleBLdata, array=i)
+  }
+
+
+  head(exampleBLdata[[1]])
+
+  } else {
+  
+  stop("You will need the beadarrayExampleData package to run this example")
 }
 
-
-head(BLData[[1]])
-
 }
 
+}
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

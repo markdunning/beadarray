@@ -42,16 +42,17 @@ A matrix with one row per section and one column for each combination of control
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-data(controlProfile)
+data(exampleBLdata)
 
-table(controlProfile[,2])
 
-qct = makeQCTable(BLData, controlProfile=controlProfile)
+qct = makeQCTable(exampleBLdata)
 
 barplot(qct[,1])
 
+
+}
 
 }
 

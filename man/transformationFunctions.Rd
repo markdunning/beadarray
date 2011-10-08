@@ -47,13 +47,17 @@ Mark Dunning
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-head(BLData[[1]])
+data(exampleBLdata)
 
-log2(getBeadData(BLData, array=1,what="Grn")[1:10])
+head(exampleBLdata[[1]])
 
-logGreenChannelTransform(BLData, array=1)[1:10]
+log2(getBeadData(exampleBLdata, array=1,what="Grn")[1:10])
+
+logGreenChannelTransform(exampleBLdata, array=1)[1:10]
+
+}
 
 
 }

@@ -71,21 +71,26 @@ Mike Smith and Mark Dunning
 
 
 \examples{
-data(BLData)
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
 
 ##Be default the first array is plotted
-imageplot(BLData, horizontal = FALSE)
+imageplot(exampleBLdata)
 
-##Can use the squaresize parameter
 
-imageplot(BLData, horizontal=FALSE, squareSize=10)
+##horizontal parameter changes the orientation so that the longest edge goes down the screen
 
-imageplot(BLData, array=3, horizontal=FALSE, squareSize=10)
+imageplot(exampleBLdata, array=2, horizontal=FALSE)
+
 
 ##User can specifiy what colours to represent low and high intensity
 
-imageplot(BLData, array=3, horizontal=FALSE, squareSize=10, low="lightgreen", high="darkgreen")
+imageplot(exampleBLdata, array=2, low="lightgreen", high="darkgreen")
 
+
+}
 
 }
 

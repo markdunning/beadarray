@@ -39,14 +39,14 @@ showArrayMask(BLData,array = 0, override = FALSE, wtsName = "wts", transFun = lo
 \author{Jonathan Cairns and Mark Dunning}
 
 \examples{
-data(BLData)
 
-bsh = BASH(BLData, array=1)
+if(require(beadarrayExampleData)){
 
-BLData = setWeights(BLData, wts=bsh$wts[[1]], array=1)
+  data(exampleBLdata)
 
-showArrayMask(BLData,1)
+  showArrayMask(exampleBLdata,2)
 
+}
 
 }
 

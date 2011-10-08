@@ -35,7 +35,14 @@ In the lower-left section of the plot we see XY plots of the intensities for all
 \author{Mark Dunning}
 
 \examples{
-#data(BSData)
-#plotMAXY(exprs(BSData), arrays=1:3)
+
+if(require(beadarrayExampleData)){
+
+data(exampleSummaryData)
+
+plotMAXY(exprs(exampleSummaryData), arrays=1:3)
+
+}
+
 }
 \keyword{hplot}

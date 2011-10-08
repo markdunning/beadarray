@@ -38,3 +38,14 @@ Alternatively, rather than querying from an annotation pacakge, a pre-prepared d
 \value{
 An ExpressionSetIllumina object with modified featureData
 }
+\examples{
+
+if(require(beadarrayExampleData)){
+
+data(exampleSummaryData)
+
+exampleSummaryData <- addFeatureData(exampleSummaryData)
+
+}
+
+}

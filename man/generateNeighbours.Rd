@@ -38,9 +38,18 @@ A matrix with 6 columns.  Each row corresponds to a bead in the passed \code{\li
 \seealso{\code{\link{HULK}}, \code{\link{BASH}}}
 
 \examples{
-data(BLData);
-neighbours <- generateNeighbours(BLData, array = 1, useLocs = FALSE);
+
+\dontrun{
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata);
+neighbours <- generateNeighbours(exampleBLdata, array = 1, useLocs = FALSE);
 }
+
+}
+
+}
+
 \references{
 Lynch AG, Smith ML, Dunning MJ, Cairns JM, Barbosa-Morais NL, Tavare S. 
 beadarray, BASH and HULK - tools to increase the value of Illumina BeadArray experiments. 

@@ -35,13 +35,18 @@ Mark Dunning
 
 \examples{
 
-data(BLData)
+if(require(beadarrayExampleData)){
 
-data(controlProfile)
+data(exampleBLdata)
 
-statVec = beadStatusVector(BLData, controlProfile=controlProfile)
+###Replace this with call to annotation packages
+
+statVec = beadStatusVector(exampleBLdata)
 
 table(statVec)
+
+
+}
 
 }
 

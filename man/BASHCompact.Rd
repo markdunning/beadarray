@@ -9,7 +9,7 @@ BASHCompact(BLData, array, neighbours = NULL, useLocs = TRUE, transFun = logGree
 }
 
 \arguments{
-  \item{BLData}{\code{BeadLevelList}}
+  \item{BLData}{\code{BeadLevelData}}
   \item{array}{integer specifying which section/array to analyse}
   \item{neighbours}{A Neighbours matrix. Optional - if left NULL, it will be computed by \code{\link{generateNeighbours}}.}
   \item{useLocs}{logical value, specifiying whether the .locs file (if present) should be used to determine neighbours.}
@@ -39,13 +39,23 @@ A vector consisting of the BeadIDs of beads labelled as compact defects.
 \seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}} }
 
 \examples{
-data(BLData)
-o <- BASHCompact(BLData, 1)
-o <- BASHCompact(BLData, 1, cinvasions = 10) ##increased no of closure invasions
-o <- BASHCompact(BLData, 1, cutoff = 12) ##only larger defects will be found with this setting
+
+\dontrun{
+
+if(require(beadarrayExampleData)){
+
+data(exampleBLdata)
+o <- BASHCompact(exampleBLdata, 1)
+o <- BASHCompact(exampleBLdata, 1, cinvasions = 10) ##increased no of closure invasions
+o <- BASHCompact(exampleBLdata, 1, cutoff = 12) ##only larger defects will be found with this setting
+
 }
+
+}
+}
+
 \references{
-	Mayte Suarez-Farinas, Maurizio Pellegrino, Knut M. Wittkwosky and Marcelo O. Magnasco (2007). Harshlight: A "corrective make-up" program for microarray chips. R package version 1.8.0. http://asterion.rockefeller.edu/Harshlight/
+	J. M. Cairns, M. J. Dunning, M. E. Ritchie, R. Russell, and A. G. Lynch (2008). BASH: a tool for managing BeadArray spatial artefacts. Bioinformatics 15; 24(24)
 
 }
 \keyword{misc}
