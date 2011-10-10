@@ -388,24 +388,25 @@ if(!is.null(annoName)){
     
 	    mapEnv <-  as.name(paste("illumina", annoName, "ARRAYADDRESS",sep=""))
  
-	    IlluminaIDs = mget(probeIDs, revmap(eval(mapEnv)),ifnotfound=NA)
+	    IlluminaIDs = as.character(unlist(mget(as.character(probeIDs), revmap(eval(mapEnv)),ifnotfound=NA)))
 
 	   
 	    rownames(eMat) = rownames(varMat) = rownames(nObs) = as.character(IlluminaIDs)
 
 
-	  status = rep("Unknown", length(probeIDs))
+	    status = rep("Unknown", length(probeIDs))
 
 
-	  mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
+	    mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
 
 	    
-	  status[which(!is.na(IlluminaIDs))] = mget(IlluminaIDs, eval(mapEnv))	
-
+	    status[which(!is.na(IlluminaIDs))] = unlist(mget(IlluminaIDs[which(!is.na(IlluminaIDs))], eval(mapEnv), ifnotfound=NA))	
+  
+	    status[which(status == "")] = "regular"
 	
-	featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ArrayAddressID=probeIDs,IlluminaID  = IlluminaIDs, Status = status, row.names=IlluminaIDs))
+	  featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ArrayAddressID=probeIDs,IlluminaID  = IlluminaIDs, Status = status, row.names=IlluminaIDs))
 
-	BSData@annotation = annoName
+	  BSData@annotation = annoName
 
 	}
 

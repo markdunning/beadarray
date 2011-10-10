@@ -202,7 +202,7 @@ quickSummary = function(BLData, array=1, transFun = logGreenChannelTransform, re
 		controlInfo = makeControlProfile(annotation(BLData))
 
 		reporterIDs = controlInfo[,1]
-		reporterTags = controlInfo[,3]
+		reporterTags = controlInfo[,2]
 	}
 
 	tmp = BLData[[array]]
