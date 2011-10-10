@@ -17,6 +17,11 @@
 \newcommand{\Rfunarg}[1]{{\texttt{#1}}}
 \newcommand{\Rclass}[1]{{\textit{#1}}}
 
+%%Setting eval=FALSE until beadarrayExampleData becomes available
+
+
+\SweaveOpts{eval=FALSE, keep.source=FALSE, results=hide}
+
 \begin{document}
 \title{Analysis of Bead-level Data using beadarray}
 \author{Mark Dunning}
