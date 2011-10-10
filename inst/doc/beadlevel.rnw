@@ -54,7 +54,7 @@ and try to provide a reproducible example of your problem. This will help us to 
 options(width = 80)
 @
 
-<<prelim, echo=FALSE, eval=TRUE>>=
+<<prelim, echo=FALSE>>=
 library("beadarray")
 
 require(beadarrayExampleData)
@@ -97,7 +97,7 @@ Data types with one value per array-section can be stored in the sectionData slo
 The numeric identifiers for the bead-types in the \Rclass{beadLevelData} are known as ArrayAddress IDs in Illumina's annotation files. For downstream analysis it is convenient to convert these into the form ILMN\_... used in most annotation packages. Mapping objects to convert these IDs are supplied with beadarray in the {\tt extdata} directory, but this conversion may be performed automatically if the annotation of the \Rclass{beadLevelData} object is known. For this example dataset, beads that could not be decoded are assigned a special ArrayAddress ID of 0. For two-channel data, the intensities from the Red channel and associated coordinates are also stored in the object. 
 
 
-<<BLData,eval=TRUE>>=
+<<BLData>>=
 
 class(exampleBLdata)
 slotNames(exampleBLdata)
@@ -120,7 +120,7 @@ uIDs[1:10]
 A more flexible way to obtain per-bead data from a beadLevelData object is to define a transformation function that takes as arguments the beadLevelData object and an array index. The function then manipulates the data in the desired manner and returns a vector the same length as the number of beads on the array. The \Rfunction{logGreenChannelTransform} is the default transformation in many plotting / QA functions within beadarray. Users with two-channel data may also wish to experiment with the similarly defined \Rfunction{logRedChannelTransform} or \Rfunction{logRatioTransform} when plotting.
 
 
-<<transform, echo=TRUE,eval=TRUE>>=
+<<transform, echo=TRUE>>=
 
 log2(exampleBLdata[[1]][1:10,2])
 
@@ -135,7 +135,7 @@ logRedChannelTransform
 \section{Boxplots and imageplots}
 Two standard quality assessment plots supported by \Rpackage{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artefacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualisation is not possible when using the summarised BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinising the original tiffs, as multiple arrays can be visualised on the one page. By default, the array surface is plotted with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a $\log_2$ transformation on the green channel. 
 
-<<BeadLevelBoxplots, fig=TRUE,echo=TRUE,eval=TRUE>>=
+<<BeadLevelBoxplots, fig=TRUE,echo=TRUE>>=
 par(mfrow=c(1,2))
 boxplot(exampleBLdata, las=2, outline=FALSE, ylim=c(4,12))
 @
@@ -145,7 +145,7 @@ The imageplot can be configured in many ways (see manual page for more details).
 
 If {\tt .locs} information is available to \Rpackage{beadarray}, it will be able to determine the optimal \Rfunarg{squareSize} parameter. If not (as with our example dataset), the user may have to experiment with different values for \Rfunarg{squareSize}. 
 
-<<Imageplots, fig=TRUE, echo=TRUE, eval=TRUE, width=6, height=2>>=
+<<Imageplots, fig=TRUE, echo=TRUE, width=6, height=2>>=
 
 par(mfrow=c(1,2), mar = c(2,2,2,2))
 
@@ -173,7 +173,7 @@ determining which beads are more than 3 Median Absolute Devations, or MADs, from
 Finally, since Illumina arrays are randomly arranged and use a hexagonal grid rather than rectangular,
 BASH has it's own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
 
-<<BASH, echo=TRUE, eval=FALSE, results=hide>>=
+<<BASH, echo=TRUE, results=hide>>=
 
 
 bsh = BASH(exampleBLdata, array=1:2)
@@ -213,7 +213,7 @@ BLData <- insertSectionData(exampleBLdata, what="BASHQC", data = bsh$QC)
 
 Illumina have designed a number of control probes for each expression platform. For expression arrays, we store the ArrayAddressIDs of the control probes for in the ExpressionControlData object. Otherwise a data frame may be used to define these ids. As the example data described in this vignette were derived using an obsolete technology, we have stored the control information with the package in the \Robject{controlProfile} object. ArrayAddressIDs are listed in the first column, and the type of control in the second column. Objects of this form can be used in various quality assessment functions in beadarray.
 
-<<Controls, eval=TRUE, echo=TRUE>>=
+<<Controls, echo=TRUE>>=
 
 controlProfile <- makeControlProfile("Humanv3")
 
@@ -225,7 +225,7 @@ table(controlProfile[,2])
 Two particular controls on expression arrays are housekeeping and biotin controls. With the \Rfunction{poscontPlot} function, we can plot the intensities of any ArrayAddressIDs that are annotated as belonging to the Housekeeping or Biotin group in the \Robject{ExpressionControlData} object or \Robject{controlProfile}. The \Rfunction{poscontPlot} is flexible in allowing other "tags" in the \Robject{controlProfile}, in the example below we configure the plot to show both housekeeping and negative controls in the same plot. 
 
 
-<<positiveControls, eval=TRUE, echo=TRUE,fig=TRUE>>=
+<<positiveControls, echo=TRUE,fig=TRUE>>=
 
 par(mfrow=c(1,2), mar = c(2,2,2,2))
 
@@ -241,7 +241,7 @@ The \Rfunction{makeQCTable} function extends this functionality to produce a tab
 
 It is also informative to compare the expression level of various control types to the background level of the array. This is done by the \Rfunction{controlProbeDetection} function that returns the percentage of each control type that are significantly expressed above background level. Obivously for positive controls we would prefer this percentage to be near 100 on a good quality array.
 
-<<qaSummary, echo=TRUE, eval=TRUE>>=
+<<qaSummary, echo=TRUE>>=
 
 quickSummary(exampleBLdata, array=1)
 
@@ -280,7 +280,7 @@ Before combining the observations for each bead-type on an array, Illumina remov
 
 Users are able to define their own functions to identify outliers. Such functions must take a list of intensities and corresponding ArrayAddressIDs and return indices of which observations are found to be outliers.
 
-<<outlierPlots, echo=TRUE, eval=TRUE, fig=TRUE, width=6, height=2>>=
+<<outlierPlots, echo=TRUE, fig=TRUE, width=6, height=2>>=
 
 par(mfrow=c(1,2), mar = c(2,2,2,2))
 
@@ -296,7 +296,7 @@ The summarization procedure takes the \Robject{BLData} object, where each bead-t
 
 The \Rclass{illuminaChannel} class is used to define how summarization proceeds with specification of a transformation function, a function to remove outliers and function to calculate the means and standard deviation. The code below creates two different summarized objects; one which uses mean and standard deviations, and one which uses median and standard errors.
 
-<<createBeadSummaryData, echo=TRUE,eval=TRUE, results=hide>>=
+<<createBeadSummaryData, echo=TRUE, results=hide>>=
 
 BSData <- summarize(exampleBLdata)
 
@@ -312,7 +312,7 @@ BSData2 <- summarize(exampleBLdata, list(greenChannel2))
 
 @
 
-<<showBSData, echo=TRUE, eval=TRUE, results=hide>>=
+<<showBSData, echo=TRUE, esults=hide>>=
 BSData
 
 @
@@ -326,7 +326,7 @@ It is possible to have multiple channels, each of which is summarized in a diffe
 The detection score is a standard measure for Illumina expression experiments, and can be viewed as an empirical estimate of the p-value for the null hypothesis that there is no expression. These can be calculated for summarized data provided that the identity of the negative controls on the array is known. For further analysis of the summarized object, see the separate beadsummary vignette {\tt beadsummary.pdf}.
 
 
-<<calculateDetection, echo=TRUE, eval=TRUE>>=
+<<calculateDetection, echo=TRUE>>=
 
 
 det = calculateDetection(BSData)
