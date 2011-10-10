@@ -52,7 +52,6 @@ Mark Dunning
 
 \seealso{\code{\link{beadStatusVector}},\code{\link{calculateDetection}}}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
 

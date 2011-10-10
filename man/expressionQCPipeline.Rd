@@ -93,11 +93,13 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
+\dontrun{
+
 data(exampleBLdata)
 
-#Not Run
-#expressionQCPipeline(exampleBLdata, horizontal=T)
+expressionQCPipeline(exampleBLdata, horizontal=T)
 
+}
 
 }
 

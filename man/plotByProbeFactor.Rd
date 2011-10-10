@@ -40,9 +40,15 @@ if(require(beadarrayExampleData)){
 
 data(exampleSummaryData)
 
+exampleSummaryData <- addFeatureData(exampleSummaryData)
+
+colnames(fData(exampleSummaryData))
+
 subset <- exampleSummaryData[,c(1,2)]
 
-plotByProbeFactor(subset)
+p <- plotByProbeFactor(subset, probeFactor = "PROBEQUALITY")
+
+p
 
 
 }

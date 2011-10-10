@@ -39,8 +39,6 @@ if(require(beadarrayExampleData)){
 
 data(exampleBLdata)
 
-###Replace this with call to annotation packages
-
 statVec = beadStatusVector(exampleBLdata)
 
 table(statVec)
