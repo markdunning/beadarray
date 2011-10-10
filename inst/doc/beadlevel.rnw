@@ -27,9 +27,9 @@
 
 The BeadArray technology involves randomly arranged arrays of beads, with beads having the same probe sequence attached colloquially known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or a matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
 
-This vignette demonstrates the processing of bead-level data using beadarray. The example dataset is taken from an early expression study using a BeadArray platform that is no longer commercially available. 
+This vignette demonstrates the processing of bead-level data using beadarray. The data used are a subset of the data presented in the \Rpackage{BeadArrayUseCases} package and can be downloaded in the \Rpackage{beadarrayExampleData} package. A more comprehensive commentary on the analysis of Illumina BeadArray package is given in the vignette of \Rpackage{BeadArrayUseCases}, including other analysis tools that are not part of \Rpackage{beadarray}. 
 
-\section*{Citing beadarray}
+\section*{Citing beadarray} 
 
 If you use \Rpackage{beadarray} for the analysis or pre-processing of BeadArray data please cite:
 
@@ -51,7 +51,10 @@ options(width = 80)
 
 <<prelim, echo=FALSE, eval=TRUE>>=
 library("beadarray")
-data("BLData")
+
+require(beadarrayExampleData)
+data(exampleBLdata)
+
 @
 
 \section{Reading bead-level data into beadarray}
@@ -91,18 +94,17 @@ The numeric identifiers for the bead-types in the \Rclass{beadLevelData} are kno
 
 <<BLData,eval=TRUE>>=
 
-data("BLData")
-class(BLData)
-slotNames(BLData)
+class(exampleBLdata)
+slotNames(exampleBLdata)
 
 ##Get the beadData for array-section 1
-BLData[[1]][1:10,]
+exampleBLdata[[1]][1:10,]
 
 ##Alternative using accessor function
-getBeadData(BLData, array=1, what="Grn")[1:10]
+getBeadData(exampleBLdata, array=1, what="Grn")[1:10]
 
 ##Get unique ProbeIDs. These are the ArrayAddressIDs
-uIDs = unique(getBeadData(BLData, array=1, what="ProbeID"))
+uIDs = unique(getBeadData(exampleBLdata, array=1, what="ProbeID"))
 uIDs[1:10]
 @
 
@@ -115,60 +117,36 @@ A more flexible way to obtain per-bead data from a beadLevelData object is to de
 
 <<transform, echo=TRUE,eval=TRUE>>=
 
-log2(BLData[[1]][1:10,2])
+log2(exampleBLdata[[1]][1:10,2])
 
 logGreenChannelTransform
 
-logGreenChannelTransform(BLData, array=1)[1:10]
+logGreenChannelTransform(exampleBLdata, array=1)[1:10]
 
 logRedChannelTransform
 
 @
 
-
-In this example dataset, the local background-corrected intensities were not read from text files and separate foreground and background intensities were calculated for each bead (option {\tt useImages = TRUE}). The simple background correction that subtracts background from foreground is implemented in the \Rfunction{backgroundCorrectSingleSection} function, and creates a {\tt Grn.bc} column in the {\tt beadData} slot for each section. 
-<<backgroundCorrection, echo=TRUE, eval=TRUE, cache=TRUE>>=
-
-for(i in seq_len(dim(BLData)["nArrays"])) {
-  BLData = backgroundCorrectSingleSection(BLData, array=i)
-}
-
-head(BLData[[1]])
-
-
-@
-
-
 \section{Boxplots and imageplots}
-Two standard quality assessment plots supported by \Rpackage{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artefacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualisation is not possible when using the summarised BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinising the original tiffs, as multiple arrays can be visualised on the one page. By default, the array surface is plotted with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a $\log_2$ transformation on the green channel. In the code we show how to extract the background-corrected intensities that we have just calculated and display them on the boxplot.
+Two standard quality assessment plots supported by \Rpackage{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artefacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualisation is not possible when using the summarised BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinising the original tiffs, as multiple arrays can be visualised on the one page. By default, the array surface is plotted with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a $\log_2$ transformation on the green channel. 
 
 <<BeadLevelBoxplots, fig=TRUE,echo=TRUE,eval=TRUE>>=
-
-getBackgroundCorrectionIntensities = function(BLData, array){
-
-	log2(getBeadData(BLData, array=array, what="Grn.bc"))
-
-}
-
 par(mfrow=c(1,2))
-boxplot(BLData, las=2, outline=FALSE, ylim=c(4,12), main="Green Foreground\nwithout background correction", col="darkolivegreen")
-boxplot(BLData, las=2, transFun=getBackgroundCorrectionIntensities, outline=FALSE, ylim=c(4,12), main="Green Foreground\nafter background correction", col="darkseagreen")
+boxplot(exampleBLdata, las=2, outline=FALSE, ylim=c(4,12))
 @
 
 
 The imageplot can be configured in many ways (see manual page for more details). Sections from a BeadChip often have one edge that is much longer than the other, and it is important to recognise this when producing the plots. By default, \Rpackage{beadarray} makes imageplots with the longest edge on the x-axis (suitable for widescreen monitors). However, with {\tt horizontal = FALSE}, the imageplot will be displayed in the same orientation as the original TIFF image from the directory. With the \Rfunarg{squareSize} we can control how many pixels from the original image make up the pixels in the resulting imageplot. The following code produces imageplots for the first three array-sections in the example dataset. Note that we also change the colour scheme to represent low and high intensities by light and dark green respectively.
 
 If {\tt .locs} information is available to \Rpackage{beadarray}, it will be able to determine the optimal \Rfunarg{squareSize} parameter. If not (as with our example dataset), the user may have to experiment with different values for \Rfunarg{squareSize}. 
+
 <<Imageplots, fig=TRUE, echo=TRUE, eval=TRUE, width=6, height=2>>=
 
-par(mfrow=c(1,3), mar = c(2,2,2,2))
+par(mfrow=c(1,2), mar = c(2,2,2,2))
 
-imageplot(BLData, array=1, low="lightgreen", high="darkgreen", horizontal = FALSE ,squareSize=25)
+imageplot(exampleBLdata, array=1, low="lightgreen", high="darkgreen")
 
-imageplot(BLData, array=2, low="lightgreen", high="darkgreen", horizontal = FALSE ,squareSize=25)
-
-imageplot(BLData, array=3, low="lightgreen", high="darkgreen", horizontal = FALSE ,squareSize=25)
-
+imageplot(exampleBLdata, array=2, low="lightgreen", high="darkgreen")
 
 @
 
@@ -190,16 +168,16 @@ determining which beads are more than 3 Median Absolute Devations, or MADs, from
 Finally, since Illumina arrays are randomly arranged and use a hexagonal grid rather than rectangular,
 BASH has it's own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
 
-<<BASH, echo=TRUE, eval=TRUE, results=hide>>=
+<<BASH, echo=TRUE, eval=FALSE, results=hide>>=
 
 
-bsh = BASH(BLData, array=1:10)
+bsh = BASH(exampleBLdata, array=1:2)
 
 @
 
 The result of bash includes quality control scores; the number of beads masked in total and the extended score.
 
-<<bashResults, echo=TRUE, eval=TRUE,fig=TRUE>>=
+<<bashResults, echo=TRUE, eval=FALSE>>=
 
 bsh$QC
 
@@ -213,15 +191,15 @@ barplot(bsh$QC[,2], main="Extended Score")
 
 The weights themselves can be stored using setWeights. These will be taken into when summarizing the bead-level data. The QC tables themselves can be appended to the {\tt sectionData} slot of \Robject{BLData}.
 
-<<savingBASH, echo=TRUE, eval=TRUE>>=
+<<savingBASH, echo=TRUE, eval=FALSE>>=
 
 for(i in 1:10){
 
-	BLData = setWeights(BLData, wts=bsh$wts[[i]], array=i)
+	BLData <- setWeights(exampleBLdata, wts=bsh$wts[[i]], array=i)
 
 }
 
-BLData = insertSectionData(BLData, what="BASHQC", data = bsh$QC)
+BLData <- insertSectionData(exampleBLdata, what="BASHQC", data = bsh$QC)
 
 @
 
@@ -232,7 +210,7 @@ Illumina have designed a number of control probes for each expression platform. 
 
 <<Controls, eval=TRUE, echo=TRUE>>=
 
-data(controlProfile)
+controlProfile <- makeControlProfile("Humanv3")
 
 head(controlProfile)
 table(controlProfile[,2])
@@ -244,20 +222,13 @@ Two particular controls on expression arrays are housekeeping and biotin control
 
 <<positiveControls, eval=TRUE, echo=TRUE,fig=TRUE>>=
 
-par(mfrow=c(2,5), mar = c(2,2,2,2))
+par(mfrow=c(1,2), mar = c(2,2,2,2))
 
-for(i in 1:10){
-	poscontPlot(BLData, array=i, controlProfile=controlProfile, ylim = c(10,16))
+for(i in 1:2){
+	poscontPlot(exampleBLdata, array=i,ylim = c(10,16))
 }
 @
 
-<<positiveNegativeControls, eval=TRUE, echo=TRUE,fig=TRUE>>=
-par(mfrow=c(2,5), mar = c(2,2,2,2))
-
-for(i in 1:10){
-	poscontPlot(BLData, array=i, controlProfile=controlProfile,positiveControlTags = c("housekeeping", "negative"),  ylim = c(10,16))
-}
-@
 
 With knowledge of which ArrayAddressIDs match control types, we can easily provide summaries of these control types on each array. In \Rfunction{quickSummary} the mean and standard deviation of all control types is taken for a specified array, using intensities of all beads that correspond to the control type. Note that these summaries may not correspond to similar quantities reported in Illumina's BeadStudio software, as the BeadStudio summaries are produced after removing outliers (see later). 
 
@@ -267,19 +238,19 @@ It is also informative to compare the expression level of various control types 
 
 <<qaSummary, echo=TRUE, eval=TRUE>>=
 
-quickSummary(BLData, array=1, reporterIDs=controlProfile[,1], reporterTags=controlProfile[,2])
+quickSummary(exampleBLdata, array=1)
 
 
-qcReport = makeQCTable(BLData, controlProfile=controlProfile)
+qcReport <- makeQCTable(exampleBLdata)
 
 head(qcReport)[,1:5]
 
-BLData = insertSectionData(BLData, what="BeadLevelQC", data=qcReport)
+BLData <- insertSectionData(exampleBLdata, what="BeadLevelQC", data=qcReport)
 
-names(BLData@sectionData)
+names(exampleBLdata)
 
-for(i in 1:10){
-print(controlProbeDetection(BLData, array = i, controlProfile=controlProfile, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
+for(i in 1:2){
+print(controlProbeDetection(exampleBLdata, array = i, negativeTag = "negative"))
 }
 
 
@@ -292,9 +263,7 @@ The generation of QA plots for all sections in the beadLevelData object is provi
 
 <<qcPipeline, echo=FALSE, eval=FALSE, cache=TRUE>>=
 
-expressionQCPipeline(BLData, qcDir="QC")
-
-expressionQCPipeline(BLData, controlProfile=controlProfile, positiveControlTags=c("housekeeping", "biotin"), hybridisationTags = c("cy3_hyb", "high_stringency_hyb"), zlim=c(10,12), horizontal=F, negativeTag = "negative", tagsToDetect=list(Housekeeping = "housekeeping", Biotin = "biotin", hybridisation = "cy3_hyb"))
+expressionQCPipeline(exampleBLdata, qcDir="QC")
 
 
 @
@@ -308,13 +277,11 @@ Users are able to define their own functions to identify outliers. Such function
 
 <<outlierPlots, echo=TRUE, eval=TRUE, fig=TRUE, width=6, height=2>>=
 
-par(mfrow=c(1,3), mar = c(2,2,2,2))
+par(mfrow=c(1,2), mar = c(2,2,2,2))
 
-outlierplot(BLData, array=1, horizontal = FALSE)
+outlierplot(exampleBLdata, array=1)
 
-outlierplot(BLData, array=2,  horizontal = FALSE)
-
-outlierplot(BLData, array=3, horizontal = FALSE)
+outlierplot(exampleBLdata, array=2)
 
 @
 
@@ -326,36 +293,22 @@ The \Rclass{illuminaChannel} class is used to define how summarization proceeds 
 
 <<createBeadSummaryData, echo=TRUE,eval=TRUE, results=hide>>=
 
-myMean = function(x) mean(x,na.rm=TRUE)
-mySd = function(x) sd(x,na.rm=TRUE)
-
-greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
-
-BSData <- summarize(BLData, list(greenChannel))
-
-
-myMedian = function(x) median(x, na.rm=TRUE)
-mySe = function(x) sd(x, na.rm=TRUE)/sqrt(length(x))
-
-
-greenChannel2 = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMedian, mySe,"G")
-
-BSData2 <- summarize(BLData, list(greenChannel2))
+BSData <- summarize(exampleBLdata)
 
 @ 
+<<createBeadSummaryData, echo=TRUE,eval=FALSE, results=hide>>=
+
+myMedian <- function(x) median(x, na.rm=TRUE)
+myMad <- function(x) mad(x, na.rm=TRUE)
+
+greenChannel2 <- new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMedian, myMad,"G")
+
+BSData2 <- summarize(exampleBLdata, list(greenChannel2))
+
+@
 
 <<showBSData, echo=TRUE, eval=TRUE, results=hide>>=
 BSData
-
-head(exprs(BSData)[,1:4])
-head(se.exprs(BSData)[,1:4])
-
-BSData2
-
-head(exprs(BSData2)[,1:4])
-head(se.exprs(BSData2)[,1:4])
-
-
 
 @
 
@@ -364,20 +317,6 @@ The \Robject{BSData} object is very similar to the \Rclass{ExpressionSet} class 
 It is possible to have multiple channels, each of which is summarized in a different manner, in the same \Robject{ExpressionSetIllumina} object. This is achieved by passing a list of illuminaChannel objects to \Rfunction{summarize}. This would be especially useful for two-channel data, where the Red and Green channels, and some combination of the two would be of interest in the analysis. In the example code below we summarize both the non background-corrected and background-corrected intensities in the same object. The \Rfunction{channel} function is used to select the data for one of these channels, which returns an of object of type \Rclass{ExpressionSetIllumina}
 
 
-<<multipleChannel,echo=TRUE,eval=TRUE, results=hide>>=
-
-greenBackgroundCorrected = new("illuminaChannel", getBackgroundCorrectionIntensities, illuminaOutlierMethod, myMean, mySd, "G.bc")
-
-BSData.multChannel = summarize(BLData, channelList = list(greenChannel, greenBackgroundCorrected))
-
-channelNames(BSData.multChannel)
-
-G = channel(BSData.multChannel, "G")
-
-G.bc = channel(BSData.multChannel, "G.bc")
-
-
-@
 
 The detection score is a standard measure for Illumina expression experiments, and can be viewed as an empirical estimate of the p-value for the null hypothesis that there is no expression. These can be calculated for summarized data provided that the identity of the negative controls on the array is known. For further analysis of the summarized object, see the separate beadsummary vignette {\tt beadsummary.pdf}.
 
@@ -385,17 +324,11 @@ The detection score is a standard measure for Illumina expression experiments, a
 <<calculateDetection, echo=TRUE, eval=TRUE>>=
 
 
-status = rep("regular", as.numeric(dim(BSData.multChannel)[1]))
-
-negIDs = controlProfile[which(controlProfile[,2] == "negative"),1]
-
-status[match(negIDs, featureNames(BSData.multChannel))] = "negative"
-
-det = calculateDetection(G, status=status)
+det = calculateDetection(BSData)
 
 head(det)
 
-Detection(G) = det
+Detection(BSData) <- det
 
 
 @

@@ -37,10 +37,8 @@ each array.
 The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can 
 also be imported using the \Rpackage{beadarray} package.
 
-The documentation for this package is split into separate user guides: one for bead-level data, 
-a second for bead-summary data, and a third which provides details and examples of using the 
-BASH (\textbf{b}ead\textbf{a}rray \textbf{S}ubversion of \textbf{H}arshlight) method for detecting 
-spatial artefacts. 
+The documentation for this package is split into separate user guides: one for bead-level data and 
+a second for bead-summary data.
 These documents may be accessed using the following commands:
 
 <<Help, eval=FALSE>>=
@@ -49,12 +47,25 @@ beadarrayUsersGuide(topic="beadlevel")
 beadarrayUsersGuide(topic="beadsummary")
 @
 
-\section*{Changes since Bioconductor 2.6}
+\section*{Changes since Bioconductor 2.6 (beadarray 1.16)}
 
-There has been a major overhaul of \Rpackage{beadarray} since Bioconductor 2.6 with the intention of creating a more flexible package. Users now have more flexibility in the way quality assessment is performed at the bead-level and are allowed to modify the raw bead-level object. Summarisation is also more flexible. See the package vignettes for details and the package news for updates.
+There has been a major overhaul of \Rpackage{beadarray} since Bioconductor 2.6 with the intention of creating a more flexible package. Users now have more flexibility in the way quality assessment is performed at the bead-level and are allowed to modify the raw bead-level object. Summarisation is also more flexible and retrieval of annotation data can be performed from within the package. See the package vignettes for details and the package news for updates.
 
 <<NEWS, eval=FALSE, echo=TRUE>>=
 news(package="beadarray")
+@
+
+\section*{Companion packages to beadarray}
+
+In order to reduce the download size of \Rpackage{beadarray}, we have moved the example data that used to be part of the package to a Bioconductor data package (\Rpackage{beadarrayExampleData}) that can be downloaded in the usual way. An expanded dataset and more detailed commentary on the processing of BeadArray data is provided by the \Rpackage{BeadArrayUseCases} package. Finally, the \Rpackage{beadarray} package is also able to interact with various Illumina annotation packages in Bioconductor if they are installed. 
+
+<<CompanionPkg, eval=FALSE>>=
+
+source("http://www.bioconductor.org/biocLite.R")
+
+biocLite(c("beadarrayExampleData", "beadarrayExampleData"))
+
+
 @
 
 
