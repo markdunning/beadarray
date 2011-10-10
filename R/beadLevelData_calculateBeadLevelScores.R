@@ -148,11 +148,11 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 	
 poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, positiveControlTags = c("housekeeping", "biotin"), colList=c("red","blue"), controlProfile = NULL,...){
 
-	data(ExpressionControlData)
+	
 
 	if(is.null(controlProfile)){
 			
-		controlInfo = ExpressionControlData[[annotation(BLData)]]
+		controlInfo = makeControlProfile(annotation(BLData))
 
 	}	
 	

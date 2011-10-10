@@ -154,8 +154,7 @@ checkPlatform <- function(BLData,verbose=FALSE){
 
 suggestAnnotation <- function(data,verbose=FALSE){
 
-	sigsPath = system.file(package="beadarray", "extdata")	
-	load(paste(sigsPath, "/platformSigs.Rda",sep=""))
+	data(platformSigs)
 
 
 	ids = getBeadData(data, array=1, what="ProbeID")
