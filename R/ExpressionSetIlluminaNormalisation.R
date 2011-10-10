@@ -107,7 +107,17 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
 
 	rsn={
 		require("lumi")
-		BSData = assayDataElementReplace(BSData, "exprs", rsn(exprs(BSData),...))	
+		##Need to check there are no NAs in the data 
+
+		noNA <- apply(exprs(BSData), 1, function(x) !any(is.na(x)))
+
+		newObj <- BSData
+
+		exprs(newObj)[noNA,] = rsn(exprs(BSData)[noNA,],...)
+
+		BSData = newObj
+		
+
 	},
 
 	neqc={
