@@ -298,12 +298,12 @@ for(cNum in 1:length(channelList)){
 			wts2 = wts2[pOrder]
 
 		
-			oList = oFUN(values2, pIDs2)
-
+			oList = oFUN(values2, pIDs2, wts2)
+      if(length(oList)>0){
 			values2 = values2[-oList]
 			pIDs2 = pIDs2[-oList]
 			wts2 = wts2[-oList]
-
+      }
 			##check if any beads masked completely
 
 			if(any(wts2 ==0)){

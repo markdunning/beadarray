@@ -5,10 +5,10 @@
 Identifier outliers on an array section
 }
 \description{
-Implementation of the illumina method for excluding outliers using a 3 MAD (median absolute deviation) cutoff for each bead type
+Implementation of the illumina method for excluding outliers using a fixed number of MADs (median absolute deviations) cutoff for each bead type
 }
 \usage{
-illuminaOutlierMethod(inten, probeList, n = 3)
+illuminaOutlierMethod(inten, probeList, wts=1, n = 3)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,7 +18,11 @@ a list of intensities
   \item{probeList}{
 the IDs corresponding to each intensity value
 }
-  \item{n}{
+  \item{wts}{
+Weights associated with beads, indicating those recommended for removal by, for example, \code{\link{BASH}}
+}
+
+\item{n}{
 number of MADs cutoff used
 }
 }
@@ -26,6 +30,7 @@ number of MADs cutoff used
 \details{
 This function is called within the summarisation routine of beadarray to exclude outliers from an array-section prior to summary. The intensities are not assumed to be on any particular scale and can result from any user-defined transformation function. 
 
+Beads with weight zero do not contribute to the outlier calling.
 }
 
 
@@ -36,6 +41,8 @@ the positions in the original vector that were determined to be outliers
 \author{
 Mark Dunning
 }
+
+\seealso{\code{\link{squeezedVarOutlierMethod}}}
 
 
 \examples{

@@ -42,25 +42,5 @@ logRatioTransform = function(BLData, array=array){
 
 
 
-illuminaOutlierMethod= function(inten, probeList,n= 3)
- {
-
-    probes = sort(unique(probeList[probeList > 0]))
-
-    nasinf = is.na(inten) | !is.finite(inten)
-
-    inten = inten[!nasinf]
-    probeList = probeList[!nasinf]
-    nbeads = length(inten)
-    start = 0
-    foo <- .C("findAllOutliers", as.double(inten), binStatus = integer(length = nbeads), 
-        as.integer(probeList), as.integer(probes), as.integer(length(probes)), 
-        as.integer(nbeads), as.integer(start), as.double(n), 
-        PACKAGE = "beadarray")
-    sel = which((probeList > 0) & (foo$binStatus == 0))
-    which(!nasinf)[sel]
-}
-
-
 greenChannel <- new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, function(x) mean(x,na.rm=TRUE), function(x) sd(x,na.rm=TRUE),  "G")
 

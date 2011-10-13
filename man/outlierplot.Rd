@@ -8,7 +8,7 @@ Function to plot where the outliers are located on a given array
 
 }
 \usage{
-outlierplot(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main = "")
+outlierplot(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, wtsname=NULL, horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main = "",...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +23,9 @@ a function defining how to transform the data prior to calculating outliers
 }
   \item{outlierFun}{
 function that will identify outliers
+}
+  \item{wtsname}{
+column name of BLData object containing weights to feed to the outlier function
 }
   \item{horizontal}{
 if TRUE the longest edge of the array section will be on the x axis
