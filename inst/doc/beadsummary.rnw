@@ -18,7 +18,7 @@
 \newcommand{\Rclass}[1]{{\textit{#1}}}
 
 %%Setting eval=FALSE until beadarrayExampleData becomes available
-\SweaveOpts{eval=FALSE, keep.source=FALSE}
+\SweaveOpts{eval=TRUE, keep.source=FALSE}
 
 
 
@@ -163,7 +163,7 @@ expressed genes. The functions lmFit and eBayes can be applied to the normalised
 In the example below, we set up a design matrix for the example experiment and fit a linear model
 to summarise the data from the UHRR and Brain replicates to give one value per condition. We then
 define contrasts comparing the Brain sample to the UHRR and calculate moderated t-statistics with
-empirical Bayes’ shrinkage of the sample variances. In this particular experiment, the Brain and UHRR
+empirical Bayes shrinkage of the sample variances. In this particular experiment, the Brain and UHRR
 samples are very different and we would expect to see many differentially expressed genes.\\
 
 Empirical array quality weights can be used to measure the relative reliability of each array.  A variance is estimated for each array by the \Rfunction{arrayWeights} function which measures how well the expression values from each array follow the linear model.
