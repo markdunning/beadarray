@@ -11,7 +11,7 @@ importFrom(reshape, melt)
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
-export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, getAnnotation, setAnnotation, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData, plotByProbeFactor)
+export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, illuminaOutlierMethod, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData, plotByProbeFactor)
 
 
 ## Data input
@@ -41,3 +41,8 @@ export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calcula
 ## Deprecated functions.  Included so arrayQualityMetrics doesn't break
 exportClasses(BeadLevelList)
 export(checkPlatform)
+export(getAnnotation, setAnnotation)
+
+##metrics methods
+
+exportMethods(metrics, p95, snr)
