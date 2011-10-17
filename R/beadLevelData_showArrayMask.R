@@ -30,7 +30,7 @@ showArrayMask <- function(BLData,array = 0, override = FALSE, wtsName = "wts", t
 
 		o <- outlierFun(transInten, BLData[[array]][,pidCol])
 
-		plotBeadLocations(BLData, array = array, BeadIDs = c(o,sel), main = an[array], SAM = SAM, pch = ".",horizontal=horizontal,col=c(rep("black", length(o)), rep("red", length(sel))))
+		plotBeadLocations(BLData, array = array, BeadIDs = c(o,sel), main = an[array], pch = ".",horizontal=horizontal,col=c(rep("black", length(o)), rep("red", length(sel))))
 
 
 
