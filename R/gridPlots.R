@@ -86,20 +86,21 @@ if(any(inten < 0  | inten == 0 | is.na(inten))){
 
 df <- data.frame(ControlType = bsv, ID = pIDs, Log2Intensity = log2(inten), Masked = sapply(wts, function(x) x == 0), Negative = sapply(bsv, function(x) x == negativeLabel), Regular = sapply(bsv, function(x) x == "regular"), Control = sapply(bsv, function(x) !(x %in% c("regular", negativeLabel))))
 
-
+df.controls <- subset(df,Control)
 
 qs <- quantile(subset(df,Negative)[,3])
 
+p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType)
 
-p1 <- ggplot(df, aes(x = factor(ID[Control]), y = Log2Intensity[Control], fill=factor(ControlType[Control]))) + geom_boxplot(data = subset(df, Control)) + facet_wrap(~ControlType)
+#p1 <- ggplot(df, aes(x = factor(ID[Control]), y = Log2Intensity[Control], fill=factor(ControlType[Control]))) + geom_boxplot(data = subset(df, Control)) + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green")
 
 if(any(df$Masked)){
 
-p1 <- p1 +geom_point(data = subset(df, Masked), color="red")
+p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_point(data = subset(df.controls, Masked), color="red") + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
+
 }
 
-
-p1 <- p1 + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green")
+else p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType,scales="free_x")
 
 
 p1
