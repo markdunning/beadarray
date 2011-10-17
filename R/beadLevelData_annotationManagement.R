@@ -47,7 +47,13 @@ makeControlProfile <- function(annoName){
 
     if(annoLoaded){
   
+
+      annoPkg <- paste("illumina", annoName, ".db",sep="")
+
+      annoVers <- packageDescription(annoPkg, field="Version")
     
+      message(paste("Annotating control probes using package ", annoPkg, " Version:", annoVers, "\n",sep=""))
+
       mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
 
       controlInfo <- unlist(as.list(eval(mapEnv)))
@@ -171,7 +177,36 @@ suggestAnnotation <- function(data,verbose=FALSE){
 
 	if(all(rks < 90)) warning("Choice of platform may not be accurate. Consider re-running checkPlatform with verbose = TRUE option\n")
 
-	names(sort(rks,decreasing=TRUE)[1])
+	fullname <- tolower(names(sort(rks,decreasing=TRUE)[1]))
+
+
+	if(length(grep("human", tolower(fullname)) > 0)){
+
+	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
+
+	    shortname <- paste("HumanV", substr(as.character(fullname), vname+1, vname+1),sep="")
+
+	}
+
+	else if(length(grep("mouse", tolower(fullname)) > 0)){
+
+	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
+
+	    shortname <- paste("MouseV", substr(as.character(fullname), vname+1, vname+1),sep="")
+
+	}
+
+
+	else if(length(grep("rat", tolower(fullname)) > 0)){
+
+	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
+
+	    shortname <- paste("RatV", substr(as.character(fullname), vname+1, vname+1),sep="")
+
+	}
+
+
+	shortname
 
 
 }
