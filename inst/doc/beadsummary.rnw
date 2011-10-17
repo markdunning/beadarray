@@ -173,7 +173,7 @@ expression.
 
 We then define a contrast comparing UHRR to Brain Reference and calculate moderated $t$-statistics with empirical Bayes' shrinkage of the sample variances.
 
-<<deanalysis, eval=TRUE,fig=TRUE,width=6, height=6>>=
+<<deanalysis, fig=TRUE,width=6, height=6>>=
 library(limma)
 
 rna <- factor(pData(exampleSummaryData)[,"SampleFac"])
