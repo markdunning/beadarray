@@ -120,7 +120,7 @@ else{
 
 ##else polygon(x=c(0,0,xmax,xmax), y=c(0, ymax, ymax,0))
 
-require("ggplot2")
+#require("ggplot2")
 
 p <- qplot(x=xs, y=ys, size=I(0.3),colour=ptsCol)
 

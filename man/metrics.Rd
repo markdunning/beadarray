@@ -1,10 +1,11 @@
 \name{metrics-methods}
 \docType{methods}
-\alias{metrics-method}
+
+\alias{metrics}
 \alias{metrics,beadLevelData-method}
-\alias{p95-method}
+\alias{p95}
 \alias{p95,beadLevelData,character-method}
-\alias{snr-method}
+\alias{snr}
 \alias{snr,beadLevelData,character-method}
 
 \title{Accessing metrics information in bead-level objects}
@@ -16,21 +17,20 @@ The \code{metrics}, \code{p95} and \code{snr} methods conveniently access metric
 }
 
 \examples{
+    if(require(beadarrayExampleData)){
 
-if(require(beadarrayExampleData)){
+        data(exampleBLdata)
 
-data(exampleBLData)
+        metrics(exampleBLdata)
 
-metrics(exampleBLData)
+        p95(exampleBLdata, "Grn")
 
-p95(exampleBLData, "Grn")
+        snr(exampleBLdata, "Grn")
 
-snr(exampleBLData, "Grn")
-
+    }
 }
 
-
-}
+\author{Mark Dunning}
 
 \keyword{methods}
 

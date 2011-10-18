@@ -46,14 +46,14 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
         }
         else {       
             data <- readBeadLevelTextFile(file.path(targets$directory[i], targets$textFile[i]), dec = dec);
-			## if the result is NULL this wasn't a read bead-level text file
-			## we may need to do some clean up of Metric, sectionData etc
-			if(is.null(data)) {
-				BLData@sectionData[["Targets"]] <- BLData@sectionData[["Targets"]][-i,];
-				if(!is.null(BLData@sectionData[["Metrics"]])) 
-					BLData@sectionData[["Metrics"]] <- BLData@sectionData[["Metrics"]][-i,];
-				next;
-			}
+                ## if the result is NULL this wasn't a read bead-level text file
+                ## we may need to do some clean up of Metric, sectionData etc
+                if(is.null(data)) {
+                    BLData@sectionData[["Targets"]] <- BLData@sectionData[["Targets"]][-i,];
+                    if(!is.null(BLData@sectionData[["Metrics"]])) 
+                        BLData@sectionData[["Metrics"]] <- BLData@sectionData[["Metrics"]][-i,];
+                    next;
+                }
         }
     
         ##record the ProbeIDs, X and Y coords
@@ -69,7 +69,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             greenImage <- readTIFF(fileName = as.character(targets$greenImage[i]), path = as.character(targets$directory[i]));
             ## there are wrapper functions for these, but using .Call doesn't require
             ## copying the data in the function call
-            bg <- .Call("illuminaBackground", greenImage, data[,3:4], 1L, PACKAGE = "beadarray")
+            bg <- .Call("medianBackground", greenImage, data[,3:4], 1L, PACKAGE = "beadarray")
             greenImage <- .Call("illuminaSharpen", greenImage, PACKAGE = "beadarray");
             fg <- .Call("illuminaForeground", greenImage, data[,3:4], 0L, PACKAGE = "beadarray");
             rm(greenImage);
@@ -95,7 +95,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
                 image <- readTIFF(fileName = as.character(targets$redImage[i]), path = as.character(targets$directory[i]));
                 ## there are wrapper functions for these, but using .Call doesn't require
                 ## copying the data in the function call
-                bg <- .Call("illuminaBackground", image, data[,6:7], 1L, PACKAGE = "beadarray")
+                bg <- .Call("medianBackground", image, data[,6:7], 1L, PACKAGE = "beadarray")
                 image <- .Call("illuminaSharpen", image, PACKAGE = "beadarray");
                 fg <- .Call("illuminaForeground", image, data[,6:7], 0L, PACKAGE = "beadarray");
                 rm(image);

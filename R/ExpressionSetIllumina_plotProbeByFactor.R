@@ -1,6 +1,6 @@
 plotByProbeFactor <- function(data, probeFactor = "PROBEQUALITY"){
 
-	require("ggplot2")
+	#require("ggplot2")
 
 	if(is.character(probeFactor)){
 

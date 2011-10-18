@@ -8,7 +8,7 @@ Function to plot where the outliers are located on a given array
 
 }
 \usage{
-outlierplot(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, wtsname=NULL, horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main = "",...)
+outlierplot(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, wtsname=NULL, horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main = "", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,6 +45,11 @@ plotting character for the outliers
   \item{main}{
 an optional title for the plot
 }
+  \item{...}{
+additional arguments
+}
+
+
 }
 \details{
 

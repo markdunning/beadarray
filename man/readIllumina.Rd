@@ -10,12 +10,12 @@
 
 \arguments{
   \item{dir}{Directory from which to read the data, the default being the current working directory. }
-  \item{useImages}{Boolean value specifying if bead intensities should be read directly from the source text files or calculated using the bead centre coordinates and image files.}
+  \item{useImages}{Boolean value specifying if bead intensities should be read directly from the source text files or calculated using the bead centre coordinates and image files.  More details on the intensity calculation used are given below.}
   \item{illuminaAnnotation}{Character string specifiying the Illumina platform on which the data were generated. This is optional and will help to automate some analyses on expression data. Currently the choices for this argument are Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1, Mousev1p1, Ratv1.}
   \item{sectionNames}{Optional vector of character strings corresponding to section names to be read in. Typically these are the 10 digit numeric ID of Illumina chip followed by an underscore and capital letter 
 }
   \item{metricsFile}{Optional name of a metrics file to be read in from the directory. Defaults to Metrics.txt.  See details below for more information.}
-  \item{forceIScan}{Only necessary for data from iScan machines.  When TRUE, this argument forces beadarray to read data from files withe the "perBeadFile.txt" extension, rather than seeking a file per swath.  Use this if you are receiving the error "iScan data detected. This must first be processed with the function processSwathData()", but don't have access to .locs and .tif files for the array.}
+  \item{forceIScan}{Only necessary for data from iScan machines.  When TRUE, this argument forces beadarray to read data from files with the "perBeadFile.txt" extension, rather than seeking a file per swath.  Use this if you are receiving the error "iScan data detected. This must first be processed with the function processSwathData()", but don't have access to .locs and .tif files for the array.}
   \item{dec}{Decimal point character.  This should be a character string containing just one single-byte character.}
   \item{\dots}{Other arguments to pass when reading bead-level text files.} 
 }
@@ -34,6 +34,8 @@ Metrics.txt Illumina\'s metrics that are produced at the time of scanning.  Iden
 
 Separate functionality exists to read and manipulate TIFF images that may be found in the same directory. See \code{\link{readTIFF}}.
 
+If \code{useImage} is set to \code{TRUE}, intensities are extracted from the TIFF images using the bead-centre coordinates provided in the text file.  Foreground values are calculated from a sharpened version of the image as described in Kuhn et al.  Background values are calculated as the median of the 5 lowest pixels in a 17x17 pixel square around the bead-centre, detailed in Smith et al.
+
 }
 
 \value{
@@ -41,5 +43,11 @@ Returns an object of class \code{\link{beadLevelData-class}}
 }
 
 \author{Mike Smith, Mark Dunning, Andy Lynch}
+
+\references{
+    Kuhn K, Baker SC, Chudin E, Lieu MH, Oeser S, Bennett H, Rigault P, Barker D, McDaniel TK, Chee MS. A novel, high-performance random array platform for quantitative gene expression profiling. Genome Research. 2004;14(11):2347-2356
+    
+    Smith ML, Dunning MJ, Tavare S, Lynch AG. Identification and correction of previously unreported spatial phenomena using raw Illumina BeadArray data. BMC Bioinformatics. 2010;11:208
+}
 
 \keyword{IO}

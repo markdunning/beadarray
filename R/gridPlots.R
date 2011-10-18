@@ -1,6 +1,6 @@
 combinedControlPlot <- function(data, array = 1, controlProfile=NULL, wtsName = NULL, negativeLabel = "negative", excludeString = "ERCC"){
 
-require("ggplot2")
+#require("ggplot2")
 
 if(is.null(controlProfile)){ 
 	annoName = annotation(data)

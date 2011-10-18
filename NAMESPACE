@@ -3,6 +3,7 @@ useDynLib(beadarray)
 import(Biobase)
 import(graphics)
 import(AnnotationDbi)
+import(ggplot2)
 
 importFrom(limma, normalizeQuantiles, neqc)
 
