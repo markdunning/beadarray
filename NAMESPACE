@@ -7,7 +7,7 @@ import(ggplot2)
 
 importFrom(limma, normalizeQuantiles, neqc)
 
-importFrom(reshape, melt)
+importFrom(reshape, melt, melt.data.frame)
 
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
