@@ -115,22 +115,7 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
     if(!horizontal)
         res <- t(res[nrow(res):1,])
 
-    ## set colours
-   # if (is.character(low)) 
-    #    low = col2rgb(low)/255
-    #if (is.character(high)) 
-     #   high = col2rgb(high)/255
-   # if (!is.null(low) && is.null(high)) 
-      #  high = c(1, 1, 1) - low
-   # if (is.null(low) && !is.null(high)) 
-       # low = c(1, 1, 1) - high
-   # if (is.null(low)) 
-      #  low = c(1, 0.84, 0)
-   # if (is.null(high)) 
-      #  high = c(0, 0, 1)
 
-#    col = rgb(seq(low[1], high[1], len = ncolors), seq(low[2], 
- #         high[2], len = ncolors), seq(low[3], high[3], len = ncolors))
 
     zr = NULL	
     zr[1] = min(zr[1], res[!is.na(res)], na.rm=TRUE)
@@ -143,26 +128,13 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
     else
         zlim=range(res, na.rm=TRUE)	
 
-     if(require(ggplot2)){ 
 
 
     ## create the plot
 #    image(res, col = col, xaxt = "n", yaxt = "n", zlim=zlim,...)
-     p <- ggplot(melt(res), aes(x = X1, y=X2, fill=value)) + geom_tile()  + scale_fill_gradient(low = low, high=high)
+     p <- ggplot(melt(res), aes(x = X1, y=X2, fill=value)) + geom_tile()  + scale_fill_gradient(low = low, high=high) + opts(axis.line=theme_blank(),axis.text.x=theme_blank(),axis.text.y=theme_blank(),axis.ticks=theme_blank(),axis.title.x=theme_blank(),axis.title.y=theme_blank(),legend.position="none",panel.background=theme_blank(),panel.border=theme_blank(),panel.grid.major=theme_blank(),panel.grid.minor=theme_blank(),plot.background=theme_blank())
 
      p
-
-    }
-
-    else{
-
-    image(res, col = col, xaxt = "n", yaxt = "n", zlim=zlim,...)
-
-   if(legend)
-        mtext(paste("z-range ",round(zr[1],1)," to ",round(zr[2],1)," (saturation ",round(zlim[1],1),", ",round(zlim[2],1),")",sep=""),side=1,cex=0.6)
-
-    }
-
 
 
 }
