@@ -2,11 +2,12 @@
 \docType{class}
 \alias{ExpressionSetIllumina-class}
 \alias{[,ExpressionSetIllumina-method}
+
+\alias{boxplot,ExpressionSetIllumina-method}
+
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{se.exprs,ExpressionSetIllumina-method}
-
 \alias{exprs<-,ExpressionSetIllumina,matrix-method}
-
 \alias{se.exprs<-,ExpressionSetIllumina,matrix-method}
 
 \alias{qcData}

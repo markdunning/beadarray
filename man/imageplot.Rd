@@ -7,7 +7,7 @@ Generates an image plot for data from a \code{beadLevelData} object.
 
 
 \usage{
-imageplot(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = NULL, high = NULL, ncolors = 100, zlim = NULL, legend = TRUE, ...)
+imageplot(BLData, array = 1, transFun = logGreenChannelTransform, squareSize = NULL, useLocs = TRUE, horizontal = TRUE, low = "lightgreen", high = "darkgreen", ncolors = 100, zlim = NULL, legend = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

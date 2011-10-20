@@ -6,14 +6,19 @@
 BASH is an automatic detector of physical defects on an array. It is designed to detect three types of defect - COMPACT, DIFFUSE and EXTENDED.
 }
 \usage{
-BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,  outmeth=illuminaOutlierMethod, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
+BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,
+    outlierFun = illuminaOutlierMethod, wtsname=NULL, compact = TRUE, 
+    diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, 
+    einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, 
+    compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, 
+    difftwotail = FALSE, useLocs = TRUE, ...)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
   \item{array}{integer specifying which section/array to plot.}
   \item{neighbours}{the user may specify the neighbours matrix, rather than have BASH calculate it. Time can be saved if using BASH and \code{\link{HULK}}, by calculating the neighbours matrix once and passing it to the two functions.}
   \item{transFun}{function to use to transform data prior to running BASH}
-  \item{outMeth}{the choice of outlier calling function to use.}
+  \item{outlierFun}{the choice of outlier calling function to use.}
   \item{wtsname}{name under which bead weights are stored in the BLData object. It is only necessary to specify this if a) weights have already been set, and b) you wish BASH to observe them.}
   \item{compact}{Logical - Perform compact analysis?}
   \item{diffuse}{Logical - Perform diffuse analysis?}

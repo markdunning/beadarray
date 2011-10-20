@@ -16,7 +16,8 @@ generateE <- function(data, probeIDs, wts=NULL, neighbours = NULL, transFun = lo
 	if(method == "median") beadTypeAverage = aggregate(x=data.frame(y=data),by=list(y=probeIDs),median,na.rm=TRUE)
 	if(method == "mean") beadTypeAverage = aggregate(x=data.frame(y=data),by=list(y=probeIDs),mean,na.rm=TRUE)
   
-  new = data2 - unlist(beadTypeAverage)[as.character(probeIDs)]
+        #new = data2 - unlist(beadTypeAverage)[as.character(probeIDs)]
+        new = data2 - beadTypeAverage[ match(probeIDs, beadTypeAverage[,1]), 2 ]
 
 #deal with negative or NA vals
 	minG <- min(new[which(!is.na(new) & is.finite(new) )])
@@ -212,7 +213,7 @@ viewBeads <- function (BLData, array, x, y, xwidth = 100, ywidth = 100, neighbou
 	data <- BLData[[an[array]]]
 	data <- cbind(as.numeric(row.names(BLData[[an[array]]])), data)
 	data$GrnY <- max(data$GrnY) - data$GrnY
-	data$G <- getArrayData(BLData, what = what, array = array, log = log, ...)
+	data$G <- getBeadData(BLData, what = what, array = array)
 	data$G <- ifelse(is.na(data$G),min(data$G[which(!is.na(data$G))]),data$G)
 	colnames(data)[1] <- "ID"
 
@@ -338,7 +339,7 @@ illuminaOutlierMethod= function(inten, probeList,wts=1,n= 3)
 ## *** BASH FUNCTIONS ***
 ## Pipeline functions
 
-BASHCompact <- function(inten,PID, neighbours = NULL, wts=1,maxiter = 10, cutoff = 8, cinvasions = 10, outmeth=illuminaOutlierMethod, ...)
+BASHCompact <- function(inten, probeIDs, neighbours = NULL, wts=1,maxiter = 10, cutoff = 8, cinvasions = 10, outlierFun=illuminaOutlierMethod, ...)
 {
 	start = maxiter
 
@@ -359,7 +360,7 @@ BASHCompact <- function(inten,PID, neighbours = NULL, wts=1,maxiter = 10, cutoff
     bcinten<-inten
     bcinten[output]<-NA
     #o <- findAllOutliersIgnore(BLData, array = array, transFun = transFun, ignore = output, ...)
-    o <- outmeth(bcinten,PID,wts,...)
+    o <- outlierFun(bcinten,probeIDs,wts,...)
 		o <- chooseClusters(o, neighbours, cutoff = cutoff)
 		#o <- closeImage(o, neighbours, invasions = cinvasions)
 		output <- sort(c(output,o))
@@ -370,7 +371,7 @@ BASHCompact <- function(inten,PID, neighbours = NULL, wts=1,maxiter = 10, cutoff
 	output
 }
 
-BASHDiffuse <- function(inten, probeIDs, wts=NULL, neighbours = NULL, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE,einvasions=20,outmeth=illuminaOutlierMethod,...)
+BASHDiffuse <- function(inten, probeIDs, wts=NULL, neighbours = NULL, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE,einvasions=20,outlierFun=illuminaOutlierMethod,...)
 {
 	##generate missing data
   if (is.null(neighbours))
@@ -383,13 +384,13 @@ BASHDiffuse <- function(inten, probeIDs, wts=NULL, neighbours = NULL, E = NULL, 
 	if (is.null(E))
 	{
 		cat("Error image, E, not specified - Generating E, using bgfilter = \"median\"...\n")
-		E <- generateE(data=inten, probeIDs=probeIDs,ets=ewts,neighbours = neighbours, method = "median", bgfilter = median, invasions = einvasions) 
+		E <- generateE(data=inten, probeIDs=probeIDs, wts = wts, neighbours = neighbours, method = "median", bgfilter = median, invasions = einvasions) 
 	}
 
   bdinten<-inten
   bdinten[compact]<-NA
 
-  o <- outmeth(bdinten,probeIDs,wts,...)
+  o <- outlierFun(bdinten,probeIDs,wts,...)
 
 	if(twotail)
 	{
@@ -443,7 +444,7 @@ BASHExtended <- function(BLData, array, transFun = logGreenChannelTransform, nei
 ## Entire pipeline analysis
 
 
-BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform, outmeth=illuminaOutlierMethod, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
+BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform, outlierFun=illuminaOutlierMethod, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
 {
   ##checks
 	bgcorr = match.arg(bgcorr, c("none", "median", "medianMAD"))
@@ -463,7 +464,7 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
   }
 
   inten<-transFun(BLData,array)
-  PID<-getBeadData(BLData,what="ProbeID",array=array)
+  probeIDs<-getBeadData(BLData,what="ProbeID",array=array)
   if(is.null(wtsname)){ewts<-1}
   if(!is.null(wtsname)){ewts<-getBeadData(BLData,what=wtsname,array=array)}
   
@@ -471,7 +472,7 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
 	if(compact)
 	{
 		cat("Compact analysis... ")
-		c <- BASHCompact(inten,PID=PID, neighbours = neighbours, wts=ewts, maxiter = maxiter, cutoff = compcutoff, cinvasions = cinvasions,outmeth=outmeth)
+		c <- BASHCompact(inten,probeIDs=probeIDs, neighbours = neighbours, wts=ewts, maxiter = maxiter, cutoff = compcutoff, cinvasions = cinvasions,outlierFun=outlierFun)
 		cat("done.",length(c),"beads identified.\n")
 	}
 	else
@@ -481,15 +482,15 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
 	if(extended)
 	{
 		cat("Extended analysis... ")
-		E <-generateE(data=inten,probeIDs=PID,wts=ewts,neighbours = NULL, method = "median", bgfilter = "none",invasions = einvasions)    
+		E <-generateE(data=inten,probeIDs=probeIDs,wts=ewts,neighbours = NULL, method = "median", bgfilter = "none",invasions = einvasions)    
 		E.med <- BGFilter(E = E, neighbours = neighbours, invasions = einvasions, method = "median")
 		E.BG <- E - E.med ##this reverses the subtraction process BGFilter performs, to get E.BG = median filtered
     
-    scores[i] <- var(E.BG)/var(E)
+    score <- var(E.BG)/var(E)
     
     #scores[i] <- BASHExtended(BLData, array = i, neighbours = neighbours, transFun = transFun,E = E, E.BG = E.BG)
 		# when calling from BASH, we know that the E and E.BG vectors exist, so the call to BASHExtended is not required.
-    cat("done. Value is",scores[i],".\n")
+    cat("done. Value is",score,".\n")
 	}
 
 
@@ -507,33 +508,37 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
 		}
 		else
 		{
-			E <- generateE(data=inten, probeIDs=PID,ets=ewts,neighbours = neighbours, method = "median", bgfilter = bgcorr, invasions = einvasions)
+			E <- generateE(data=inten, probeIDs=probeIDs, wts=ewts, neighbours = neighbours, method = "median", bgfilter = bgcorr, invasions = einvasions)
 		}
 
 		if(compdiscard)
 		{
-			d <- BASHDiffuse(inten,PID,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = c, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outmeth=outmeth)
+			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = c, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun)
 		}
 		else
 		{
-			d <- BASHDiffuse(inten,PID,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = NULL, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outmeth=outmeth)
+			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = NULL, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun)
 		}
 		cat("done.",length(d),"beads identified.\n")
 	}
-	else
-		{d = numeric(0)}
+	else {
+            d = numeric(0)
+        }
 
-		output$wts[[i]] <- as.numeric(!1:nrow(BLData[[i]]) %in% unique(c(c,d)))
-		cat("Weights found. Total no of defective beads:",length(which(!output$wts[[i]])),"\n")
+# 	output$wts[[i]] <- as.numeric(!1:nrow(BLData[[i]]) %in% unique(c(c,d)))
+# 	cat("Weights found. Total no of defective beads:",length(which(!output$wts[[i]])),"\n")
+# 
+# 	
+# 	output$ext <- scores
+# 	
+# 	##Store some QC stats	
+# 	if(extended) output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))), ExtendedScore = output$ext)
+# 	else output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))))
+# 	
+# 	output$call <- match.call()
 
-	
-	output$ext <- scores
-	
-	##Store some QC stats	
-	if(extended) output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))), ExtendedScore = output$ext)
-	else output$QC = data.frame(BeadsMasked = unlist(lapply(output$wts, function(x) sum(x==0))))
-	
-	output$call <- match.call()
+        
+        output <- as.numeric(!1:nrow(BLData[[array]]) %in% unique(c(c,d)))
 	output
 }
 
