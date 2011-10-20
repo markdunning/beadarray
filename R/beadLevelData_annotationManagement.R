@@ -225,7 +225,41 @@ suggestAnnotation <- function(data,verbose=FALSE){
 
 
 
+identifyControlBeads <- function(BLData, array=1, controlProfile = NULL){
+
+	if(is.null(controlProfile)){
+
+		annoName <- annotation(BLData)
+		
+		if(is.null(annoName)) stop("No annotation for this beadLevelData")	
+
+		controlProfile <- makeControlProfile(annoName)
+	}
+
+			
+	tmp <- BLData[[array]]
+
+	pIDs <- tmp[,1]
+
+	statusVector <- rep("regular", length(pIDs))
+
+	controlTypes <- unique(controlProfile[,2])
+
+	cIDs <- split(controlProfile[,1], controlProfile[,2])
+
+	for(i in 1:length(cIDs)){
+
+		statusVector[which(pIDs %in% cIDs[[i]])] <- names(cIDs)[i]
+	}
+
+	statusVector		
+}
+
+
+
 beadStatusVector <- function(BLData, array=1, controlProfile = NULL){
+
+	.Deprecated("identifyControlBeads", package="beadarray")
 
 	if(is.null(controlProfile)){
 

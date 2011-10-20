@@ -27,7 +27,7 @@ else wts = rep(1, length(inten))
 
 
 
-bsv <-  beadStatusVector(data, array=array, cProf)
+bsv <-  identifyControlBeads(data, array=array, cProf)
 
 
 excludeInd <- grep(excludeString, bsv)

@@ -1,5 +1,7 @@
-\name{beadStatusVector}
+\name{identifyControlBeads}
 \alias{beadStatusVector}
+\alias{identifyControlBeads}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Classify each bead according to its control status
@@ -8,7 +10,7 @@ Classify each bead according to its control status
 Using the control annotation specified for the array, the function will classify each bead as belonging to a control group, or as being a regular probe.
 }
 \usage{
-beadStatusVector(BLData, array = 1, controlProfile = NULL)
+identifyControlBeads(BLData, array = 1, controlProfile = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

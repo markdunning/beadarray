@@ -3,7 +3,7 @@ import(Biobase)
 import(graphics)
 import(AnnotationDbi)
 
-importFrom(reshape, melt)
+#importFrom(reshape, melt)
 
 #import(ggplot2)
 
@@ -13,7 +13,7 @@ importFrom(limma, normalizeQuantiles, neqc)
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
-export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData)
+export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, identifyControlBeads, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData)
 
 
 ## Data input
@@ -40,10 +40,11 @@ export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, s
 ## Summary Data
 export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calculateDetection)
 
-## Deprecated functions.  Included so arrayQualityMetrics doesn't break
+## Deprecated functions.
 exportClasses(BeadLevelList)
 export(checkPlatform)
 export(getAnnotation, setAnnotation)
+export(beadStatusVector)
 
 ##outlier methods
 
@@ -53,3 +54,7 @@ export(illuminaOutlierMethod, squeezedVarOutlierMethod, weightsOutlierMethod, no
 ##metrics methods
 
 exportMethods(metrics, p95, snr)
+
+##deprecated
+
+

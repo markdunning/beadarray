@@ -8,7 +8,6 @@ Creates a list of probes marked as being in diffuse defects.
 BASHDiffuse(inten,probeIDs,wts=NULL, neighbours = NULL, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE,einvasions=20,outmeth=illuminaOutlierMethod,...)
 }
 
-BASHDiffuse <- function(inten, probeIDs, wts=NULL, neighbours = NULL, E = NULL, n = 3, compact = NULL, sig = 0.0001, invasions = 10, cutoff = 8, cinvasions = 10, twotail = FALSE,einvasions=20,outmeth=illuminaOutlierMethod,...)
 
 
 \arguments{
