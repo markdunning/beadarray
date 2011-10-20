@@ -6,12 +6,15 @@
 BASH is an automatic detector of physical defects on an array. It is designed to detect three types of defect - COMPACT, DIFFUSE and EXTENDED.
 }
 \usage{
-BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE)
+BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,  outmeth=illuminaOutlierMethod, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
 }
 \arguments{
   \item{BLData}{\code{BeadLevelList}}
-  \item{array}{integer specifying which section/array to plot. Alternatively you can supply a vector of section/array IDs, and BASH will analyse each in turn.}
+  \item{array}{integer specifying which section/array to plot.}
+  \item{neighbours}{the user may specify the neighbours matrix, rather than have BASH calculate it. Time can be saved if using BASH and \code{\link{HULK}}, by calculating the neighbours matrix once and passing it to the two functions.}
   \item{transFun}{function to use to transform data prior to running BASH}
+  \item{outMeth}{the choice of outlier calling function to use.}
+  \item{wtsname}{name under which bead weights are stored in the BLData object. It is only necessary to specify this if a) weights have already been set, and b) you wish BASH to observe them.}
   \item{compact}{Logical - Perform compact analysis?}
   \item{diffuse}{Logical - Perform diffuse analysis?}
   \item{extended}{Logical - Perform extended analysis?}
@@ -27,6 +30,7 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
   \item{diffn}{Numerical - when finding outliers on the diffuse error image, how many MADs away from the median an intensity must be for it to be labelled an outlier.}
   \item{difftwotail}{Logical - If TRUE, then in the diffuse analysis, we consider the high outlier and low outlier images seperately.}
   \item{useLocs}{Logical - If TRUE then a .locs file corresponding to the array is sought and, if found, used to identify the neighbouring beads.  If FALSE the neighbours are infered algorithmically.  See \code{\link{generateNeighbours}} for more details.}
+  \item{...}{Logical - Perform compact analysis?}
 }
 \details{
 	The \code{BASH} pipeline function performs three types of defect analysis on an image.
@@ -45,11 +49,13 @@ BASH(BLData, array, transFun = logGreenChannelTransform, compact = TRUE, diffuse
 }
 
 \value{
-	The output is a list with three attributes:
+	The output is a list with four attributes:
 	
-	wts: A list, where the ith object in the list corresponds to the weights for array i.
+	wts: A vector of weights for the matrix.
 
 	ext: A vector of extended scores (null if the extended analysis was disabled).
+
+  QC: A summary of the extended score and the number of beads masked.
 
 	call: The function you used to call BASH.
 }
