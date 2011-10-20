@@ -12,7 +12,7 @@ addFeatureData <- function(data,toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE"
 
       ###should use a getAnnotation function when we have one
 
-      annoName <- data@annotation
+      annoName <- annotation(data)
 
     } else {
       annoName <- annotation

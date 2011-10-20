@@ -56,6 +56,15 @@ makeControlProfile <- function(annoName){
 
       mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
 
+      t <- try(eval(mapEnv),silent=TRUE)
+
+      if(class(t) == "try-error"){
+	message(paste("Could not find a REPORTERGROUPNAME mapping in annotation package ", annoPkg,". Perhaps it needs updating?", sep=""))
+
+      }
+
+      else{
+      
       controlInfo <- unlist(as.list(eval(mapEnv)))
 
       controlIDs <- names(controlInfo)[controlInfo != ""]
@@ -97,6 +106,8 @@ makeControlProfile <- function(annoName){
 
       data.frame(ArrayAddress = controlArrayAddress, Tag = reporterNames)
       
+
+      }
 
   }
 

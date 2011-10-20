@@ -42,6 +42,8 @@ setMethod("boxplot",
 	
 
 		}
+
+		else message("Could not find a phenoData column called " , sampleFactor)
 	}	
 
 	if(!is.null(probeFactor)){
@@ -50,6 +52,8 @@ setMethod("boxplot",
 		data <- data.frame(data, probeFactor = fData(x)[match(data[,"X1"], rownames(fData(x))),probeFactor])
 		addedProbeFactor <- TRUE
 		}
+    
+		else message("Could not find a featureData column called " , probeFactor)
 	}	
 
 
@@ -72,13 +76,13 @@ setMethod("boxplot",
 			p <- p + facet_wrap(~sampleFactor)
 		}
 
-		else p <- p + facet_wrap(~X1)
+		else p <- p + facet_wrap(~X2)
 
 	}
 	
 
 	##change x axis to vary with new sample factor
-	else if(addedSamplefactor){
+	else if(addedSampleFactor){
 
 		p <- ggplot(data, aes(x = factor(sampleFactor), y = value, fill=factor(sampleFactor))) + geom_boxplot(outlier.shape=NA)
 			

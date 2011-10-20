@@ -88,6 +88,10 @@ df <- data.frame(ControlType = bsv, ID = pIDs, Log2Intensity = log2(inten), Mask
 
 df.controls <- subset(df,Control)
 
+df.negative <- subset(df, Negative)
+
+d1 <- density(df.negative[,3])
+
 qs <- quantile(subset(df,Negative)[,3])
 
 p1 <- ggplot(data=subset(df, Control), aes(x = factor(ID), y = Log2Intensity, fill=factor(ControlType))) + geom_boxplot() + geom_hline(y = qs[4],color="green") + geom_hline(y = qs[3],color="green") + geom_hline(y = qs[2],color="green") + geom_hline(y = qs[1],color="green") + facet_wrap(~ControlType)
