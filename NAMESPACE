@@ -1,15 +1,19 @@
 useDynLib(beadarray)
-
 import(Biobase)
 import(graphics)
 import(AnnotationDbi)
 
+importFrom(reshape, melt)
+
+#import(ggplot2)
+
 importFrom(limma, normalizeQuantiles, neqc)
+
 
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
-export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData, plotByProbeFactor)
+export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, beadStatusVector, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData)
 
 
 ## Data input
