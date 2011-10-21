@@ -33,9 +33,11 @@ data(exampleSummaryData)
 
 table(fData(exampleSummaryData)[,"Status"])
 
-det <- calculateDetection(exampleSummaryData)
+exampleSummaryData.log2 <- channel(exampleSummaryData ,"G")
 
-Detection(exampleSummaryData) <- det
+det <- calculateDetection(exampleSummaryData.log2)
+
+Detection(exampleSummaryData.log2) <- det
 
 }
 

@@ -48,8 +48,8 @@ List where each entry is either a vector of corrected intensities or NULL, depen
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-o <- HULK(exampleBLdata, 1)
+data(exampleBLData)
+o <- HULK(exampleBLData, 1)
 
 }
 

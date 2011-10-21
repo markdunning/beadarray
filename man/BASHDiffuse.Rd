@@ -55,10 +55,10 @@ A vector consisting of the BeadIDs of beads considered diffuse defects.
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-o <- BASHDiffuse(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"))
-o <- BASHDiffuse(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"), sig = 0.00001) ##stricter significance value, perhaps more useful on a BeadChip.
-o <- BASHDiffuse(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"), cutoff = 12) ##only larger defects will be found with this setting
+data(exampleBLData)
+o <- BASHDiffuse(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"))
+o <- BASHDiffuse(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), sig = 0.00001) ##stricter significance value, perhaps more useful on a BeadChip.
+o <- BASHDiffuse(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), cutoff = 12) ##only larger defects will be found with this setting
 
 }
 

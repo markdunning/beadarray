@@ -51,11 +51,11 @@ Mark Dunning
 if(require(beadarrayExampleData)){
 
 
-data(exampleBLdata)
+data(exampleBLData)
 
-randIDs = sample(getBeadData(exampleBLdata, array=1, what="ProbeID"),10)
+randIDs = sample(getBeadData(exampleBLData, array=1, what="ProbeID"),10)
 
-plotBeadIntensities(exampleBLdata, array=1, BeadIDs = randIDs)
+plotBeadIntensities(exampleBLData, array=1, BeadIDs = randIDs)
 
 }
 

@@ -19,13 +19,13 @@ The \code{metrics}, \code{p95} and \code{snr} methods conveniently access metric
 \examples{
     if(require(beadarrayExampleData)){
 
-        data(exampleBLdata)
+        data(exampleBLData)
 
-        metrics(exampleBLdata)
+        metrics(exampleBLData)
 
-        p95(exampleBLdata, "Grn")
+        p95(exampleBLData, "Grn")
 
-        snr(exampleBLdata, "Grn")
+        snr(exampleBLData, "Grn")
 
     }
 }

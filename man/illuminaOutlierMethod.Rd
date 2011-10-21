@@ -49,9 +49,9 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-oList = illuminaOutlierMethod(logGreenChannelTransform(exampleBLdata, 1), getBeadData(exampleBLdata, array=1, what="ProbeID"))
+oList = illuminaOutlierMethod(logGreenChannelTransform(exampleBLData, 1), getBeadData(exampleBLData, array=1, what="ProbeID"))
  
 }
 

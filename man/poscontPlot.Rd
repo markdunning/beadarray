@@ -58,11 +58,11 @@ Mark Dunning
 if(require(beadarrayExampleData)){
 
 
-data(exampleBLdata)
+data(exampleBLData)
 
-poscontPlot(exampleBLdata, array=1)
+poscontPlot(exampleBLData, array=1)
 
-poscontPlot(exampleBLdata, array=2)
+poscontPlot(exampleBLData, array=2)
 
 }
 

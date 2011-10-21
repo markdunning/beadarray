@@ -49,13 +49,13 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-head(exampleBLdata[[1]])
+head(exampleBLData[[1]])
 
-log2(getBeadData(exampleBLdata, array=1,what="Grn")[1:10])
+log2(getBeadData(exampleBLData, array=1,what="Grn")[1:10])
 
-logGreenChannelTransform(exampleBLdata, array=1)[1:10]
+logGreenChannelTransform(exampleBLData, array=1)[1:10]
 
 }
 

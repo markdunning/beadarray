@@ -38,20 +38,20 @@ The \code{suggestAnnotation} function tries to determine a suitable value of the
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-annotation(exampleBLdata)
+annotation(exampleBLData)
 
-suggestAnnotation(exampleBLdata,verbose=TRUE)
+suggestAnnotation(exampleBLData,verbose=TRUE)
 
-annotation(exampleBLdata) <- "Humanv2"
+annotation(exampleBLData) <- "Humanv2"
  
 
 data(exampleSummaryData)
 
 annotation(exampleSummaryData)
 
-annotation(exampleBLdata) <- "Humanv1"
+annotation(exampleBLData) <- "Humanv1"
 
 }
 

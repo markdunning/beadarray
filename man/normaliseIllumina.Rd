@@ -88,9 +88,9 @@ character vector giving regular probes (used in neqc normalisation only)
 if(require(beadarrayExampleData)){
 
 data(exampleSummaryData)
-exampleSummaryData.norm = normaliseIllumina(exampleSummaryData, method="quantile", transform="none")
+exampleSummaryData.norm = normaliseIllumina(channel(exampleSummaryData, "G"), method="quantile", transform="none")
 
-exampleSummaryData.rsn = normaliseIllumina(exampleSummaryData, method="rsn", transform="none")
+exampleSummaryData.rsn = normaliseIllumina(channel(exampleSummaryData, "G.ul"),method="rsn", transform="none")
 
 }
 

@@ -67,8 +67,8 @@ Mark Dunning and Mike Smith
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-outlierplot(exampleBLdata, array=1, horizontal = FALSE)
+data(exampleBLData)
+outlierplot(exampleBLData, array=1, horizontal = FALSE)
 
 
 }

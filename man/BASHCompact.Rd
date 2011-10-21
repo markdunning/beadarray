@@ -45,10 +45,10 @@ A vector consisting of the BeadIDs of beads labelled as compact defects.
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-o <- BASHCompact(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"))
-o <- BASHCompact(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"), cinvasions = 10) ##increased no of closure invasions
-o <- BASHCompact(getBeadData(exampleBLdata,array=1,what="Grn"), getBeadData(exampleBLdata,array=1,what="ProbeIDs"), cutoff = 12) ##only larger defects will be found with this setting
+data(exampleBLData)
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"))
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), cinvasions = 10) ##increased no of closure invasions
+o <- BASHCompact(getBeadData(exampleBLData,array=1,what="Grn"), getBeadData(exampleBLData,array=1,what="ProbeIDs"), cutoff = 12) ##only larger defects will be found with this setting
 
 }
 

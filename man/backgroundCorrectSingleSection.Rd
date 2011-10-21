@@ -51,16 +51,16 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-  data(exampleBLdata)
+  data(exampleBLData)
 
-  head(exampleBLdata[[1]])
+  head(exampleBLData[[1]])
 
   for(i in 1:2){
-	  exampleBLdata = backgroundCorrectSingleSection(exampleBLdata, array=i)
+	  exampleBLData = backgroundCorrectSingleSection(exampleBLData, array=i)
   }
 
 
-  head(exampleBLdata[[1]])
+  head(exampleBLData[[1]])
 
   } else {
   

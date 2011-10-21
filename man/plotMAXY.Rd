@@ -40,7 +40,7 @@ if(require(beadarrayExampleData)){
 
 data(exampleSummaryData)
 
-plotMAXY(exprs(exampleSummaryData), arrays=1:3)
+plotMAXY(exprs(channel(exampleSummaryData, "G")), arrays=1:3, log=FALSE)
 
 }
 

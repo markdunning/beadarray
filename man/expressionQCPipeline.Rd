@@ -95,9 +95,9 @@ if(require(beadarrayExampleData)){
 
 \dontrun{
 
-data(exampleBLdata)
+data(exampleBLData)
 
-expressionQCPipeline(exampleBLdata, horizontal=T)
+expressionQCPipeline(exampleBLData, horizontal=T)
 
 }
 

@@ -54,9 +54,9 @@ Andy Lynch
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-oList = squeezedVarOutlierMethod(logGreenChannelTransform(exampleBLdata, 1), getBeadData(exampleBLdata, array=1, what="ProbeID"))
+oList = squeezedVarOutlierMethod(logGreenChannelTransform(exampleBLData, 1), getBeadData(exampleBLData, array=1, what="ProbeID"))
  
 }
 

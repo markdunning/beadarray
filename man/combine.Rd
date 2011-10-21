@@ -32,11 +32,11 @@ The \code{combine} function allows two objects of the same class that have been 
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-sectionNames(exampleBLdata)
+sectionNames(exampleBLData)
 
-data2 <- combine(exampleBLdata, exampleBLdata)
+data2 <- combine(exampleBLData, exampleBLData)
 
 sectionNames(data2)
 

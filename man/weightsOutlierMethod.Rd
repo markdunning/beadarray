@@ -2,10 +2,10 @@
 \alias{weightsOutlierMethod}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-returns the locations of all beads with weight=0.
+returns all beads with weight=0.
 }
 \description{
-This function identifies those beads that have been set to having a weight of 0. Primarily intended to allow deprecation of the function showArrayMask.Rd by the more flexible outlierplot.
+This function identifies those beads that have been set to having a weight of 0. Primarily intended to allow deprecation of the function \code{showArrayMask} by the more flexible outlierplot.
 }
 \usage{
 weightsOutlierMethod(inten, probeList, wts)
@@ -41,12 +41,14 @@ Andy Lynch
 
 \examples{
 
+\dontrun{
 
 if(require(beadarrayExampleData)){
-data(exampleBLdata)
-outlierplot(exampleBLdata, array=1, outlierFun = weightsOutlierMethod,horizontal = FALSE)
+data(exampleBLData)
+outlierplot(exampleBLData, array=1, outlierFun = weightsOutlierMethod,horizontal = FALSE)
 }
 
+}
 
 }
 

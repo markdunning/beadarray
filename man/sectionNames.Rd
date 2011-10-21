@@ -22,8 +22,8 @@ A character vector containing the names of the individual sections.
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-sectionNames(exampleBLdata)
+data(exampleBLData)
+sectionNames(exampleBLData)
 
 
 }

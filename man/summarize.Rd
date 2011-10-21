@@ -74,9 +74,9 @@ The user can specify a vector of ArrayAddressIDs to be summarized using the \cod
 
 if(require(beadarrayExampleData)){
 
-	data(exampleBLdata)
+	data(exampleBLData)
 
-	bsd = summarize(exampleBLdata)
+	bsd = summarize(exampleBLData)
 
 
 	myMean = function(x) mean(x,na.rm=TRUE)
@@ -84,7 +84,7 @@ if(require(beadarrayExampleData)){
 
 	greenChannel = new("illuminaChannel", logGreenChannelTransform, illuminaOutlierMethod, myMean, mySd,"G")
 
-	bsd = summarize(exampleBLdata, channelList = list(greenChannel))
+	bsd = summarize(exampleBLData, channelList = list(greenChannel))
 
 	bsd
 

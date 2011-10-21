@@ -39,9 +39,9 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-statVec = beadStatusVector(exampleBLdata)
+statVec = identifyControlBeads(exampleBLData)
 
 table(statVec)
 

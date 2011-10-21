@@ -22,9 +22,9 @@ A vector containing the number of beads on individual array sections.
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
-numBeads(exampleBLdata)
-numBeads(exampleBLdata, arrays=2)
+data(exampleBLData)
+numBeads(exampleBLData)
+numBeads(exampleBLData, arrays=2)
 
 }
 

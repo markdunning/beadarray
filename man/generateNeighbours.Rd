@@ -42,8 +42,8 @@ A matrix with 6 columns.  Each row corresponds to a bead in the passed \code{\li
 \dontrun{
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata);
-neighbours <- generateNeighbours(exampleBLdata, array = 1, useLocs = FALSE);
+data(exampleBLData);
+neighbours <- generateNeighbours(exampleBLData, array = 1, useLocs = FALSE);
 }
 
 }

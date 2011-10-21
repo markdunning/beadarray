@@ -39,10 +39,10 @@ The function can be used to calculate summarized values for particular control t
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-quickSummary(exampleBLdata, array=1)
-quickSummary(exampleBLdata, array=2)
+quickSummary(exampleBLData, array=1)
+quickSummary(exampleBLData, array=2)
 
 }
 

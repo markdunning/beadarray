@@ -55,13 +55,13 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
 ##Artificial example, there are no segments on this type of BeadArray
 
-calculateOutlierStats(exampleBLdata, array=1, nSegments=10, useLocs=FALSE)
+calculateOutlierStats(exampleBLData, array=1, nSegments=10, useLocs=FALSE)
 
-calculateOutlierStats(exampleBLdata, array=2, nSegments=10, useLocs=FALSE)
+calculateOutlierStats(exampleBLData, array=2, nSegments=10, useLocs=FALSE)
 
 
 }

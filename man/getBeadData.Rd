@@ -23,9 +23,9 @@ A vector containing the specified bead data for the particular array.
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-summary(getBeadData(exampleBLdata))
+summary(getBeadData(exampleBLData))
 
 }
 

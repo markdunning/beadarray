@@ -47,13 +47,13 @@
 if(require(beadarrayExampleData)){
 
 
-data(exampleBLdata)
+data(exampleBLData)
 
-sectionNames(exampleBLdata)
+sectionNames(exampleBLData)
 
-head(exampleBLdata[[1]])
+head(exampleBLData[[1]])
 
-getBeadData(exampleBLdata, array=1, what="Grn")[1:10]
+getBeadData(exampleBLData, array=1, what="Grn")[1:10]
 
 
 }

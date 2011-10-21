@@ -63,7 +63,7 @@ If \code{locs = TRUE} and locs file were made available to \code{readIllumina}, 
 As a result of both having identical function names this function can conflict with the  \code{\link[limma]{imageplot}} method in 'limma'.  If both packages are loaded, the function from whichever package was loaded last takes precedence.  If the 'beadarray' imageplot() function is masking that from 'limma', one can directly call the 'limma' method using the command "limma::imageplot()".  Alternatively, one can detach the 'beadarray' package using "detach(package:beadarray)".  Similar techniques can be used if 'limma' is masking the 'beadarray' method.
 }
 \value{
-A plot is produced on the current graphical device.
+A ggplot object which is printed to screen by default
 }
 \author{
 Mike Smith and Mark Dunning
@@ -74,20 +74,23 @@ Mike Smith and Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-##Be default the first array is plotted
-imageplot(exampleBLdata)
+##By default the first array is plotted, here we plot the 2nd which should give a more interesting example
+imageplot(exampleBLData, array=2)
 
-
-##horizontal parameter changes the orientation so that the longest edge goes down the screen
-
-imageplot(exampleBLdata, array=2, horizontal=FALSE)
+}
 
 
-##User can specifiy what colours to represent low and high intensity
+\dontrun{
 
-imageplot(exampleBLdata, array=2, low="lightgreen", high="darkgreen")
+ip <- imageplot(exampleBLData, array=2, low="lightgreen", high="darkgreen", horizontal=FALSE)
+
+ggsave(ip, filename="myimageplot.png")
+
+ip2 <- imageplot(exampleBLData, array=2, low="lightgreen", high="darkgreen", horizontal=TRUE)
+
+ggsave(ip2, filename="myimageplot2.png")
 
 
 }

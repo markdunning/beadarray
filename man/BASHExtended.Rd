@@ -41,8 +41,8 @@ Scalar (Extended defect score)
 if(require(beadarrayExampleData)){
 
 
- data(exampleBLdata)
- extended <- BASHExtended(exampleBLdata, 1)
+ data(exampleBLData)
+ extended <- BASHExtended(exampleBLData, 1)
 
 
 }

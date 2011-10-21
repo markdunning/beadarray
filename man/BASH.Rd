@@ -75,25 +75,25 @@ BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,
 
 if(require(beadarrayExampleData)){
 
-	data(exampleBLdata)
-	output <- BASH(exampleBLdata,array=1:2,useLocs=FALSE)
+	data(exampleBLData)
+	output <- BASH(exampleBLData,array=1:2,useLocs=FALSE)
 	boxplot(output$ext) #view spread of extended scores
 	for(i in 1:2)
 	{
-		exampleBLdata <- setWeights(exampleBLdata, output$wts[[i]], i) #apply BASH weights to exampleBLdata
+		exampleBLData <- setWeights(exampleBLData, output$wts[[i]], i) #apply BASH weights to exampleBLData
 	}
 
 	#diffuse test is stricter
-	output <- BASH(exampleBLdata, diffsig = 0.00001,array=1, useLocs=FALSE)
+	output <- BASH(exampleBLData, diffsig = 0.00001,array=1, useLocs=FALSE)
 
 	#more outliers on the error image are used in the diffuse analysis
-	output <- BASH(exampleBLdata, diffn = 2,array=1, useLocs=FALSE)
+	output <- BASH(exampleBLData, diffn = 2,array=1, useLocs=FALSE)
 
 	#only perform compact & diffuse analyses (we will only get weights)
-	output <- BASH(exampleBLdata, extended = FALSE,array=1, useLocs=FALSE)
+	output <- BASH(exampleBLData, extended = FALSE,array=1, useLocs=FALSE)
 
 	#attempt to correct for background.
-	output <- BASH(exampleBLdata, bgcorr = "median",array=1, useLocs=FALSE)
+	output <- BASH(exampleBLData, bgcorr = "median",array=1, useLocs=FALSE)
 }
 
 else{

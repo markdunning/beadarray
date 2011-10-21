@@ -34,7 +34,10 @@ medianNormalise(exprs, log=TRUE)
 if(require(beadarrayExampleData)){
 
 data(exampleSummaryData)
-exampleSummaryData.med = assayDataElementReplace(exampleSummaryData, "exprs", medianNormalise(exprs(exampleSummaryData)))
+
+exampleSummaryData.log2 <- channel(exampleSummaryData,"G")
+
+exampleSummaryData.med = assayDataElementReplace(exampleSummaryData.log2, "exprs", medianNormalise(exprs(exampleSummaryData.log2)))
 
 }
 

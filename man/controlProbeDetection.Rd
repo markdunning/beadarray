@@ -57,11 +57,11 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
 for(i in 1:2){
 
-print(controlProbeDetection(exampleBLdata, array = i, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
+print(controlProbeDetection(exampleBLData, array = i, tagsToDetect=c("housekeeping", "biotin"), negativeTag="negative"))
 
 }
 

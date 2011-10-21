@@ -42,9 +42,9 @@ showArrayMask(BLData,array = 0, override = FALSE, wtsName = "wts", transFun = lo
 
 if(require(beadarrayExampleData)){
 
-  data(exampleBLdata)
+  data(exampleBLData)
 
-  showArrayMask(exampleBLdata,2)
+  showArrayMask(exampleBLData,2)
 
 }
 

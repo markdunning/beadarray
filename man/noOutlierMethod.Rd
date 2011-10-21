@@ -43,9 +43,9 @@ Andy Lynch
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-oList = noOutlierMethod(logGreenChannelTransform(exampleBLdata, 1), getBeadData(exampleBLdata, array=1, what="ProbeID"))
+oList = noOutlierMethod(logGreenChannelTransform(exampleBLData, 1), getBeadData(exampleBLData, array=1, what="ProbeID"))
  
 }
 

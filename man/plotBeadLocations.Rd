@@ -60,11 +60,11 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
 ##Plot location of first 100 beads as they are listed in beadLevelData object
 
-plotBeadLocations(exampleBLdata, BeadIDs = 1:100, array=1, horizontal = FALSE)
+plotBeadLocations(exampleBLData, BeadIDs = 1:100, array=1, horizontal = FALSE)
 
 
 

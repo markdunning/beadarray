@@ -37,13 +37,13 @@ Mark Dunning
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
-qct = makeQCTable(exampleBLdata)
+qct = makeQCTable(exampleBLData)
 
-exampleBLdata = insertSectionData(exampleBLdata, what="ProbeQC", data = qct)
+exampleBLData = insertSectionData(exampleBLData, what="ProbeQC", data = qct)
 
-exampleBLdata@sectionData
+exampleBLData@sectionData
 
 }
 
