@@ -24,11 +24,9 @@ else{
   ##First step doing per-array plots
 
   dir.create(qcDir, showWarnings=F)
-  dir.create(paste(qcDir, "/poscont",sep=""), showWarnings=F)
-  dir.create(paste(qcDir, "/hyb",sep=""), showWarnings=F)
   dir.create(paste(qcDir, "/outliers",sep=""), showWarnings=F)
   dir.create(paste(qcDir, "/imageplot",sep=""), showWarnings=F)
-  dir.create(paste(qcDir, "controls",sep=""), showWarnings = F)
+  dir.create(paste(qcDir, "/controls",sep=""), showWarnings = F)
 
   for(i in 1:length(an)){
 
@@ -48,26 +46,18 @@ else{
 
 		  fname.pc = paste(qcDir, "/controls/", an[i], ".jpeg",sep="")
 
-		  jpeg(fname.pc, width=600, height=400)
-	  }
-
-	  
-	  else if(plotType == ".pdf"){
-		  fname.pc = paste(qcDir, "/controls/", an[i], ".pdf",sep="")	
-		  pdf(fname.pc, width=6, height=4)
 	  }
 
 	  else if(plotType == ".png"){
 		  fname.pc = paste(qcDir, "/controls/", an[i], ".png",sep="")
-		  png(fname.pc, width=600, height=400)
 	  
 	  }
 
 	  if(file.exists(fname.pc)){
 
 		  if(overWrite){
-		  p <- combinedControlPlot(BLData, array=i)
-		  ggsave(p, filename = fname.pc)
+		  p <- combinedControlPlot(BLData, array=i,controlProfile = controlProfile)
+		  ggsave(p, filename = fname.pc,width=8,height=8, dpi=100)
 		  }
 		  
 		  else cat("Positive control plot exists. Skipping to next plot\n")	
@@ -75,9 +65,9 @@ else{
 	  }
 
 	  else {
-	      p <- combinedControlPlot(BLData, array=i)
+	      p <- combinedControlPlot(BLData, array=i,controlProfile = controlProfile)
 
-	      ggsave(p, filename = fname.pc)
+	      ggsave(p, filename = fname.pc,width=8,height=8, dpi=100)
 	  }
 	  
 	  
@@ -147,7 +137,7 @@ else{
 		  if(overWrite){
 
 			  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-			  ggsave(im, file = fname.im)
+			  ggsave(im, file = fname.im,width=4,height=1)
 		  }
 
 		  else cat("Positive control plot exists. Skipping to next plot\n")	
@@ -156,7 +146,7 @@ else{
 	  
 	  else{
 		  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-		  ggsave(im, file=fname.im)
+		  ggsave(im, file=fname.im,width=4,height=1)
 
 		  
 	  }
@@ -185,7 +175,7 @@ else{
 
 	      hwrite("Positive Controls", heading=2,outfile)
 
-	      hwriteImage(c(gsub(paste(qcDir, "/", sep=""), "",fname.pc), gsub(paste(qcDir, "/", sep=""), "",fname.h)),outfile)
+	      hwriteImage(gsub(paste(qcDir, "/", sep=""), "",fname.pc), outfile)
 
 	      closePage(outfile)
 	  }

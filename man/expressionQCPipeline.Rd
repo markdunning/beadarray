@@ -1,5 +1,6 @@
 \name{expressionQCPipeline}
 \alias{expressionQCPipeline}
+\alias{combinedControlPlot}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Flexible bead-level QC pipeline
@@ -8,7 +9,7 @@ Flexible bead-level QC pipeline
 Function to produce various QC plots and HTML summary pages for bead-level data.
 }
 \usage{
-expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE, controlProfile = NULL, overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform)
+expressionQCPipeline(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE, controlProfile = NULL, overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "biotin", Hybridisation = "cy3_hyb"),zlim=c(5,7),positiveControlTags = c("housekeeping", "biotin"), hybridisationTags =  c("cy3_hyb"), negativeTag= "negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
