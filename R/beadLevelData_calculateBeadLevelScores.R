@@ -147,8 +147,6 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 	names(resList)= names(transInten)
 
 	unlist(resList)
-
-
     }
   
 }
@@ -219,46 +217,37 @@ poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, pos
 
 quickSummary = function(BLData, array=1, transFun = logGreenChannelTransform, reporterIDs = NULL, reporterTags = NULL,reporterFun = function(x) mean(x, na.rm=TRUE)){
 
-	if(is.null(reporterIDs)){
-		controlInfo = makeControlProfile(annotation(BLData))
+    if(is.null(reporterIDs)){
+        controlInfo = makeControlProfile(annotation(BLData))
 
+        if(is.null(controlInfo)){
+            message("ControlProfile could not be created\n")
+        }
 
+        else{
+            reporterIDs = controlInfo[,1]
+            reporterTags = controlInfo[,2]
+        }
+    }
 
-	}
+    if(!is.null(reporterIDs) | !is.null(reporterTags)){  
 
+        tmp = BLData[[array]]
 
+        inten = transFun(BLData, array=array)
 
-	if(is.null(controlInfo)){
-      
-	    message("ControlProfile could not be created\n")
-	}
+        if(any(is.infinite(inten))){
+            probeIDs = tmp[-which(is.infinite(inten)),1]
+            inten = inten[-which(is.infinite(inten))]
+        }
 
+        else {
+            probeIDs = tmp[,1]
+        }
 
-	else{
-	    reporterIDs = controlInfo[,1]
-	    reporterTags = controlInfo[,2]
-
-
-	  tmp = BLData[[array]]
-
-	  inten = transFun(BLData, array=array)
-
-	  if(any(is.infinite(inten))){
-		  
-		  probeIDs = tmp[-which(is.infinite(inten)),1]
-
-		  inten = inten[-which(is.infinite(inten))]
-	  }
-	  
-	  else probeIDs = tmp[,1]
-
-	  tagFac = reporterTags[match(probeIDs, reporterIDs)]
-
-	  lapply(split(inten, tagFac), reporterFun)
-
-	
-      }
-
+        tagFac = reporterTags[match(probeIDs, reporterIDs)]
+        lapply(split(inten, tagFac), reporterFun)
+    }
 }
 
 
@@ -289,6 +278,7 @@ makeQCTable = function(BLData, transFun = logGreenChannelTransform, controlProfi
 	
 	firstCol = 1 #The first column to be filled in
 
+#        reporterIDs = con
 	qcTable = matrix(nrow = length(an), ncol = length(uIDs)*length(summaryFns))
 	colnames(qcTable) = paste(rep(names(summaryFns), each = length(uIDs)), rep(sort(uIDs),length(names(summaryFns))),sep=":")
 
