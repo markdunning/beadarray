@@ -8,7 +8,7 @@ returns no outliers on an array section
 The \code{summarize} function demands that an outlier function is called. This function allows one to satisfy this requirement and still not remove any outliers.
 }
 \usage{
-noOutlierMethod(inten, probeList, wts=1)
+noOutlierMethod(inten, probeList, wts=1,n=3)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,9 @@ the IDs corresponding to each intensity value (not used)
 }
   \item{wts}{
 Weights associated with beads. Again, these are not actually used.
+}
+  \item{n}{
+another parameter that is not, in fact, used. 
 }
 }
 

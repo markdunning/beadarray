@@ -19,7 +19,7 @@ illuminaOutlierMethod= function(inten, probeList,wts=1,n=3)
     which(!nasinf)[sel]
 }
 
-weightsOutlierMethod= function(inten, probeList,wts)
+weightsOutlierMethod= function(inten, probeList,wts,n=3)
  {
     probes = sort(unique(probeList[probeList > 0]))
     which(wts==0)
@@ -27,7 +27,7 @@ weightsOutlierMethod= function(inten, probeList,wts)
 
 
 
-noOutlierMethod= function(inten, probeList,wts=1)
+noOutlierMethod= function(inten, probeList,wts=1,n=3)
 {
 integer(0)
 }

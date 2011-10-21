@@ -8,7 +8,7 @@ returns all beads with weight=0.
 This function identifies those beads that have been set to having a weight of 0. Primarily intended to allow deprecation of the function \code{showArrayMask} by the more flexible outlierplot.
 }
 \usage{
-weightsOutlierMethod(inten, probeList, wts)
+weightsOutlierMethod(inten, probeList, wts,n=3)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,10 @@ the IDs corresponding to each intensity value (not used)
   \item{wts}{
 Weights associated with beads. 
 }
+  \item{n}{
+another parameter that is not, in fact, used. 
+}
+
 }
 
 \details{
