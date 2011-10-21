@@ -9,7 +9,7 @@ Function that determines the outlier beads on an array and how they are distribu
 
 }
 \usage{
-calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3, useLocs = TRUE, nSegments = 9)
+calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3, useLocs = TRUE, nSegments = 9,...)
 }
 
 \arguments{
@@ -33,6 +33,7 @@ use locs and sdf information (if available) to determine section layout
   \item{nSegments}{
 manually set how many segments the section is divided into
 }
+  \item{...}{Additional arguments to be passed to \code{outmeth}.}
 }
 \details{
 
