@@ -1,4 +1,4 @@
-expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "phage_lambda_genome", Hybridisation = "phage_lambda_genome:high"),zlim=c(5,7),positiveControlTags = c("housekeeping", "phage_lambda_genome"), hybridisationTags =  c("phage_lambda_genome:low", "phage_lambda_genome:med","phage_lambda_genome:high"), negativeTag= "permuted_negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
+expressionQCPipeline = function(BLData, transFun = logGreenChannelTransform, qcDir = "QC", plotType = ".jpeg", horizontal = TRUE,controlProfile=NULL,overWrite=FALSE,nSegments=9,outlierFun=illuminaOutlierMethod,tagsToDetect = list(housekeeping = "housekeeping", Biotin = "biotin", Hybridisation = "cy3_hyb"),zlim=c(5,7),positiveControlTags = c("housekeeping", "biotin"), hybridisationTags =  c("cy3_hyb"), negativeTag= "negative", boxplotFun = logGreenChannelTransform, imageplotFun = logGreenChannelTransform){
 
 
 an = sectionNames(BLData)
@@ -28,6 +28,7 @@ else{
   dir.create(paste(qcDir, "/hyb",sep=""), showWarnings=F)
   dir.create(paste(qcDir, "/outliers",sep=""), showWarnings=F)
   dir.create(paste(qcDir, "/imageplot",sep=""), showWarnings=F)
+  dir.create(paste(qcDir, "controls",sep=""), showWarnings = F)
 
   for(i in 1:length(an)){
 
@@ -45,27 +46,28 @@ else{
 
 	  if(plotType == ".jpeg"){
 
-		  fname.pc = paste(qcDir, "/poscont/", an[i], ".jpeg",sep="")
+		  fname.pc = paste(qcDir, "/controls/", an[i], ".jpeg",sep="")
 
 		  jpeg(fname.pc, width=600, height=400)
 	  }
 
 	  
 	  else if(plotType == ".pdf"){
-		  fname.pc = paste(qcDir, "/poscont/", an[i], ".pdf",sep="")	
+		  fname.pc = paste(qcDir, "/controls/", an[i], ".pdf",sep="")	
 		  pdf(fname.pc, width=6, height=4)
 	  }
 
 	  else if(plotType == ".png"){
-		  fname.pc = paste(qcDir, "/poscont/", an[i], ".png",sep="")
+		  fname.pc = paste(qcDir, "/controls/", an[i], ".png",sep="")
 		  png(fname.pc, width=600, height=400)
 	  
 	  }
 
 	  if(file.exists(fname.pc)){
-		  if(overWrite){
-		  poscontPlot(BLData, array=i, controlProfile = controlProfile, positiveControlTags = positiveControlTags, ylim=c(5,16))
 
+		  if(overWrite){
+		  p <- combinedControlPlot(BLData, array=i)
+		  ggsave(p, filename = fname.pc)
 		  }
 		  
 		  else cat("Positive control plot exists. Skipping to next plot\n")	
@@ -73,54 +75,13 @@ else{
 	  }
 
 	  else {
-	  poscontPlot(BLData, array=i, controlProfile = controlProfile, positiveControlTags = positiveControlTags, ylim=c(5,16))
+	      p <- combinedControlPlot(BLData, array=i)
 
+	      ggsave(p, filename = fname.pc)
 	  }
 	  
-	  dev.off()
-		  
 	  
 
-	  ##low/medium/high controls
-	  
-	  cat("Hyb controls\n")
-	  
-	  if(plotType == ".jpeg"){
-
-		  fname.h = paste(qcDir, "/hyb/", an[i], ".jpeg",sep="")
-
-		  jpeg(fname.h, width=600, height=400)
-	  }
-
-	  
-	  else if(plotType == ".pdf"){
-		  fname.h = paste(qcDir, "/hyb/", an[i], ".pdf",sep="")	
-		  pdf(fname.h, width=6, height=4)
-	  }
-
-	  else if(plotType == ".png"){
-		  fname.h = paste(qcDir, "/hyb/", an[i], ".png",sep="")
-		  png(fname.h, width=600, height=400)
-	  
-	  }
-	  
-
-	  if(file.exists(fname.h)){
-		  if(overWrite){
-			  poscontPlot(BLData, array=i, positiveControlTags =hybridisationTags, controlProfile = controlProfile, colList = NULL, ylim=c(5,16))
-
-		  }
-
-		  else cat("Hybridisation control plot exists. Skipping to next plot\n")	
-
-	  }		
-
-	  else{
-		  poscontPlot(BLData, array=i, positiveControlTags = hybridisationTags, controlProfile = controlProfile, ylim=c(5,16), colList = NULL)
-
-	  }
-	  
-	  dev.off()
 
 	  
 
@@ -160,6 +121,8 @@ else{
 
 	  dev.off()
 
+
+
 	  cat("imageplot\n")
 	  
 	  
@@ -183,8 +146,8 @@ else{
 	  if(file.exists(fname.im)){
 		  if(overWrite){
 
-			  imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-
+			  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
+			  ggsave(im, file = fname.im)
 		  }
 
 		  else cat("Positive control plot exists. Skipping to next plot\n")	
@@ -192,13 +155,12 @@ else{
 	  }				
 	  
 	  else{
-		  imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-
+		  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
+		  ggsave(im, file=fname.im)
 
 		  
 	  }
 
-	  dev.off()
 
 
 
@@ -312,7 +274,7 @@ else{
 
 		  write.csv(beadLevelQC, file=paste(qcDir,"/probeMetrics.csv",sep=""), quote=FALSE)
 
-		  write.csv(BLData@sectionData$Metrics, file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE)	
+		  write.csv(metrics(BLData), file=paste(qcDir, "/scanMetrics.csv",sep=""), quote=FALSE)	
 
 		  write.csv(outlierTable, file=paste(qcDir, "/outlierMetrics.csv",sep=""), quote=FALSE)
 
