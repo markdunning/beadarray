@@ -1,6 +1,5 @@
 
-outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, wtsname=NULL,horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main="",...){
-
+outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3,wtsname=NULL,horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main="",...){
     locsFileName <- file.path(BLData@sectionData$Targets$directory[array], paste(BLData@sectionData$Targets$sectionName[array], "_Grn.locs", sep = ""))
 
     ##Find all outliers on the array
@@ -8,7 +7,7 @@ outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform
     wts<-1
     if(!is.null(wtsname)){wts<-getBeadData(BLData,array=array,what=wtsname)}
     
-    oList = outlierFun(transFun(BLData, array=array), probeList = getBeadData(BLData,array=array,what="ProbeID"),wts = wts,...)
+    oList = outlierFun(transFun(BLData, array=array), probeList = getBeadData(BLData,array=array,what="ProbeID"),wts = wts,n=n,...)
 
     cat(length(oList), " outliers found on the section\n")
 
@@ -52,10 +51,10 @@ outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform
 
 
 	
-calculateOutlierStats = function(BLData, array=array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, useLocs = TRUE, nSegments = 9 ){
+calculateOutlierStats = function(BLData, array=array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3, useLocs = TRUE, nSegments = 9,... ){
 
 ##Find all outliers on the array
-oList = outlierFun(transFun(BLData, array=array), probeList = BLData[[array]][,1])
+oList = outlierFun(transFun(BLData, array=array), probeList = BLData[[array]][,1],n=n,...)
 
 cat(length(oList), " outliers found on the section\n")
 

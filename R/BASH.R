@@ -6,8 +6,10 @@ generateE <- function(data, probeIDs, wts=NULL, neighbours = NULL, transFun = lo
 {
   
   data2<-data
-  if(is.null(wts)){
-  data[wts==0]<-NA
+  if(!is.null(wts)){
+    if(length(wts)==length(data)){
+      data[wts==0]<-NA
+    }
   }
   
   method <- match.arg(method, choices = c("mean", "median"))
@@ -339,7 +341,7 @@ illuminaOutlierMethod= function(inten, probeList,wts=1,n= 3)
 ## *** BASH FUNCTIONS ***
 ## Pipeline functions
 
-BASHCompact <- function(inten, probeIDs, neighbours = NULL, wts=1,maxiter = 10, cutoff = 8, cinvasions = 10, outlierFun=illuminaOutlierMethod, ...)
+BASHCompact <- function(inten, probeIDs, neighbours = NULL, wts=1,n=3, maxiter = 10, cutoff = 8, cinvasions = 10, outlierFun=illuminaOutlierMethod, ...)
 {
 	start = maxiter
 
@@ -444,7 +446,7 @@ BASHExtended <- function(BLData, array, transFun = logGreenChannelTransform, nei
 ## Entire pipeline analysis
 
 
-BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform, outlierFun=illuminaOutlierMethod, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
+BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform, outlierFun=illuminaOutlierMethod, compn=3, wtsname=NULL, compact = TRUE, diffuse = TRUE, extended = TRUE, cinvasions = 10, dinvasions = 15, einvasions = 20, bgcorr = "median", maxiter = 10, compcutoff = 8, compdiscard = TRUE, diffcutoff = 10, diffsig = 0.0001, diffn = 3, difftwotail = FALSE, useLocs = TRUE,...)
 {
   ##checks
 	bgcorr = match.arg(bgcorr, c("none", "median", "medianMAD"))
@@ -472,7 +474,7 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
 	if(compact)
 	{
 		cat("Compact analysis... ")
-		c <- BASHCompact(inten,probeIDs=probeIDs, neighbours = neighbours, wts=ewts, maxiter = maxiter, cutoff = compcutoff, cinvasions = cinvasions,outlierFun=outlierFun)
+		c <- BASHCompact(inten,probeIDs=probeIDs, neighbours = neighbours, wts=ewts, maxiter = maxiter, cutoff = compcutoff, cinvasions = cinvasions,outlierFun=outlierFun,n=compn,...)
 		cat("done.",length(c),"beads identified.\n")
 	}
 	else
@@ -513,11 +515,11 @@ BASH <- function(BLData, array, neighbours=NULL, transFun = logGreenChannelTrans
 
 		if(compdiscard)
 		{
-			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = c, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun)
+			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = c, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun,...)
 		}
 		else
 		{
-			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = NULL, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun)
+			d <- BASHDiffuse(inten,probeIDs,wts=ewts, neighbours = neighbours, E = E, n = diffn, compact = NULL, sig = diffsig, invasions = dinvasions, cutoff = diffcutoff, cinvasions = cinvasions, twotail = difftwotail,outlierFun=outlierFun,...)
 		}
 		cat("done.",length(d),"beads identified.\n")
 	}

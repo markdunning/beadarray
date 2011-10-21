@@ -51,13 +51,13 @@ A ggplot object is produced and displayed on screen
 
 	##Suppose we have found differentially expressed genes between experimental conditions and want to plot their response. This can be done by first subsetting the ExpressionSetIllumina object and then using the probeFactor and sampleFactor accordingly
       
-	if(require(illuminaHumanv3.db)){
+	#if(require(illuminaHumanv3.db)){
 	
-	   ids <- unlist(mget("ALB", revmap(illuminaHumanv3SYMBOL)))
+	   #ids <- unlist(mget("ALB", revmap(illuminaHumanv3SYMBOL)))
 
-	   boxplot(subset2, sampleFactor = "SampleFac")
-	   boxplot(subset2, sampleFactor = "SampleFac", probeFactor = "IlluminaID")
-	}
+	   #boxplot(subset2, sampleFactor = "SampleFac")
+	   #boxplot(subset2, sampleFactor = "SampleFac", probeFactor = "IlluminaID")
+	#}
 
     }
 }

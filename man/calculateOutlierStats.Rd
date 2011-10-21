@@ -9,7 +9,7 @@ Function that determines the outlier beads on an array and how they are distribu
 
 }
 \usage{
-calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, useLocs = TRUE, nSegments = 9)
+calculateOutlierStats(BLData, array = array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3, useLocs = TRUE, nSegments = 9)
 }
 
 \arguments{
@@ -25,6 +25,8 @@ how the section data is to be transformed prior to calculating outliers
   \item{outlierFun}{
 a function for calculating outliers
 }
+  \item{n}{
+an indicator of how extreme an observation must be (e.g. how many MADs from the median), to be passed to the function that will identify outliers}
   \item{useLocs}{
 use locs and sdf information (if available) to determine section layout
 }

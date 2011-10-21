@@ -1,6 +1,6 @@
 
 
-illuminaOutlierMethod= function(inten, probeList,wts=1,n= 3)
+illuminaOutlierMethod= function(inten, probeList,wts=1,n=3)
  {
 
     probes = sort(unique(probeList[probeList > 0]))
@@ -34,7 +34,7 @@ integer(0)
 
 
 
-squeezedVarOutlierMethod<-function (inten, probeList, wts=1, n = 3,predictNlim=14){
+squeezedVarOutlierMethod<-function (inten, probeList, wts=1, n=3, predictNlim=14){
 
 	# remove na values, infinite values, and non-decoded beads
 	
