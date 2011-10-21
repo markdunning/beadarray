@@ -396,14 +396,29 @@ if(!is.null(annoName)){
 
 	    status = rep("Unknown", length(probeIDs))
 
+	    annoPkg <- paste("illumina", annoName, ".db",sep="")
+
+	    annoVers <- packageDescription(annoPkg, field="Version")
+    
+	     message(paste("Annotating control probes using package ", annoPkg, " Version:", annoVers, "\n",sep=""))
 
 	    mapEnv <-  as.name(paste("illumina", annoName, "REPORTERGROUPNAME",sep=""))
 
+	    t <- try(eval(mapEnv),silent=TRUE)
+
+	    if(class(t) == "try-error"){
+	      message(paste("Could not find a REPORTERGROUPNAME mapping in annotation package ", annoPkg,". Perhaps it needs updating?", sep=""))
+
+	    }
 	    
+	    else{
+  
 	    status[which(!is.na(IlluminaIDs))] = unlist(mget(IlluminaIDs[which(!is.na(IlluminaIDs))], eval(mapEnv), ifnotfound=NA))	
   
 	    status[which(status == "")] = "regular"
 	
+	    }
+	  
 	  featureData(BSData) = new("AnnotatedDataFrame", data=data.frame(ArrayAddressID=probeIDs,IlluminaID  = IlluminaIDs, Status = status, row.names=IlluminaIDs))
 
 	  BSData@annotation = annoName

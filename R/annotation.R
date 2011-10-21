@@ -196,23 +196,29 @@ makeControlProfile <- function(annoName){
 		controlProfile <- makeControlProfile(annoName)
 	}
 
+
+	if(!is.null(controlProfile)){
 			
-	tmp <- BLData[[array]]
+	  tmp <- BLData[[array]]
 
-	pIDs <- tmp[,1]
+	  pIDs <- tmp[,1]
 
-	statusVector <- rep("regular", length(pIDs))
+	  statusVector <- rep("regular", length(pIDs))
 
-	controlTypes <- unique(controlProfile[,2])
+	  controlTypes <- unique(controlProfile[,2])
 
-	cIDs <- split(controlProfile[,1], controlProfile[,2])
+	  cIDs <- split(controlProfile[,1], controlProfile[,2])
 
-	for(i in 1:length(cIDs)){
+	  for(i in 1:length(cIDs)){
 
-		statusVector[which(pIDs %in% cIDs[[i]])] <- names(cIDs)[i]
-	}
+		  statusVector[which(pIDs %in% cIDs[[i]])] <- names(cIDs)[i]
+	  }
 
-	statusVector		
+	  statusVector
+
+	}	    
+    
+	else message("Could not identify control beads.\n")
 }
 
 
@@ -313,6 +319,106 @@ addFeatureData <- function(data,toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE"
 
   else stop("The toAdd argument must either be a character vector or a data frame\n")
   
+
+}
+
+####An internal function to demonstrate how the annotation defintions were generated.
+
+getPlatformSigs <- function(){
+
+require("lumiHumanIDMapping")
+
+human_conn <- lumiHumanIDMapping_dbconn()
+
+tabs <- dbListTables(human_conn)
+
+
+platformSigs <- NULL
+
+
+for(i in 1:length(tabs)){
+
+  x <- tabs[i]
+
+  if("Array_Address_Id" %in% dbListFields(human_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(human_conn, paste("select Array_Address_Id from", as.character(x)))))
+
+
+  }
+
+  else if ("ProbeId" %in% dbListFields(human_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(human_conn, paste("select ProbeId from", as.character(x)))))
+
+
+  }
+
+}
+
+require("lumiMouseIDMapping")
+
+mouse_conn <- lumiMouseIDMapping_dbconn()
+
+tabs <- dbListTables(mouse_conn)
+
+
+
+for(i in 1:length(tabs)){
+
+  x <- tabs[i]
+
+  if("Array_Address_Id" %in% dbListFields(mouse_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(mouse_conn, paste("select Array_Address_Id from", as.character(x)))))
+
+
+  }
+
+  else if ("ProbeId" %in% dbListFields(mouse_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(mouse_conn, paste("select ProbeId from", as.character(x)))))
+
+
+  }
+
+}
+
+require("lumiRatIDMapping")
+
+rat_conn <- lumiRatIDMapping_dbconn()
+
+tabs <- dbListTables(rat_conn)
+
+
+
+for(i in 1:length(tabs)){
+
+  x <- tabs[i]
+
+  if("Array_Address_Id" %in% dbListFields(rat_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(rat_conn, paste("select Array_Address_Id from", as.character(x)))))
+
+
+  }
+
+  else if ("ProbeId" %in% dbListFields(rat_conn, as.character(x))){
+
+
+  platformSigs[[x]] <- as.integer(unlist(dbGetQuery(rat_conn, paste("select ProbeId from", as.character(x)))))
+
+
+  }
+
+}
+
+platformSigs
 
 }
 

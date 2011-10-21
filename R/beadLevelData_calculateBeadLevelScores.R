@@ -75,8 +75,14 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 		anno = annotation(BLData)
 
 		controlProfile = makeControlProfile(anno)
-
 	}
+
+
+      if(is.null(controlProfile)){
+	  message("ControlProfile could not be created\n")
+	}
+
+      else{
 
 	##Remove any duplicated IDs
 
@@ -142,6 +148,9 @@ controlProbeDetection = function(BLData, transFun = logGreenChannelTransform, ar
 
 	unlist(resList)
 
+
+    }
+  
 }
 
 
@@ -153,44 +162,56 @@ poscontPlot = function(BLData, array=1, transFun = logGreenChannelTransform, pos
 	if(is.null(controlProfile)){
 			
 		controlInfo = makeControlProfile(annotation(BLData))
+	    
 
 	}	
 	
 	else controlInfo = controlProfile
 
-	if(is.null(colList)) colList = rainbow(length(positiveControlTags))
-	
 
 
-	posInten = NULL
 
-	pIDs = getBeadData(BLData, array=array, what="ProbeID")
+	if(is.null(controlInfo)){
 
-	transInten = transFun(BLData, array=array)
-
-	cols = NULL
-
-	for(i in 1:length(positiveControlTags)){
-
-		Ids = controlInfo[controlInfo[,2] == positiveControlTags[i],1]
-	
-		if(length(Ids) == 0){
-			warning("Could not find any IDs matching the description", positiveControlTags[i])
-		}
-
-		selBeads = which(pIDs %in% Ids)
-
-		subset = cbind(pIDs[selBeads], transInten[selBeads])
-	
-		posInten = append(posInten, split(subset[,2], subset[,1]))
-
-		cols = c(cols, rep(colList[i], length(Ids)))
+	  message("ControlProfile could not be created\n")
 
 	}
 	
-	
-	genericBeadIntensityPlot(posInten, colList = cols,...)
+	else{
 
+	  if(is.null(colList)) colList = rainbow(length(positiveControlTags))
+	  
+
+
+	  posInten = NULL
+
+	  pIDs = getBeadData(BLData, array=array, what="ProbeID")
+
+	  transInten = transFun(BLData, array=array)
+
+	  cols = NULL
+
+	  for(i in 1:length(positiveControlTags)){
+
+		  Ids = controlInfo[controlInfo[,2] == positiveControlTags[i],1]
+	  
+		  if(length(Ids) == 0){
+			  warning("Could not find any IDs matching the description", positiveControlTags[i])
+		  }
+
+		  selBeads = which(pIDs %in% Ids)
+
+		  subset = cbind(pIDs[selBeads], transInten[selBeads])
+	  
+		  posInten = append(posInten, split(subset[,2], subset[,1]))
+
+		  cols = c(cols, rep(colList[i], length(Ids)))
+
+	  }
+	  
+	  
+	  genericBeadIntensityPlot(posInten, colList = cols,...)
+      }
 
 }
 
@@ -201,28 +222,43 @@ quickSummary = function(BLData, array=1, transFun = logGreenChannelTransform, re
 	if(is.null(reporterIDs)){
 		controlInfo = makeControlProfile(annotation(BLData))
 
-		reporterIDs = controlInfo[,1]
-		reporterTags = controlInfo[,2]
+
+
 	}
 
-	tmp = BLData[[array]]
 
-	inten = transFun(BLData, array=array)
 
-	if(any(is.infinite(inten))){
-		
-		probeIDs = tmp[-which(is.infinite(inten)),1]
-
-		inten = inten[-which(is.infinite(inten))]
+	if(is.null(controlInfo)){
+      
+	    message("ControlProfile could not be created\n")
 	}
- 	
-	else probeIDs = tmp[,1]
 
-	tagFac = reporterTags[match(probeIDs, reporterIDs)]
 
-	lapply(split(inten, tagFac), reporterFun)
+	else{
+	    reporterIDs = controlInfo[,1]
+	    reporterTags = controlInfo[,2]
+
+
+	  tmp = BLData[[array]]
+
+	  inten = transFun(BLData, array=array)
+
+	  if(any(is.infinite(inten))){
+		  
+		  probeIDs = tmp[-which(is.infinite(inten)),1]
+
+		  inten = inten[-which(is.infinite(inten))]
+	  }
+	  
+	  else probeIDs = tmp[,1]
+
+	  tagFac = reporterTags[match(probeIDs, reporterIDs)]
+
+	  lapply(split(inten, tagFac), reporterFun)
 
 	
+      }
+
 }
 
 
@@ -235,9 +271,18 @@ makeQCTable = function(BLData, transFun = logGreenChannelTransform, controlProfi
 		anno = annotation(BLData)
 		
 		controlProfile = makeControlProfile(anno)
-	
+	      
+
 	}
 
+
+	if(is.null(controlProfile)){
+	  message("ControlProfile could not be generated")
+	}
+
+
+	else{
+	
 	an = sectionNames(BLData)
 	
 	uIDs = unique(controlProfile[,2])
@@ -269,6 +314,9 @@ makeQCTable = function(BLData, transFun = logGreenChannelTransform, controlProfi
 	}
 
 	qcTable
+
+
+      }
 }
 
 
