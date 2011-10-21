@@ -322,11 +322,13 @@ addFeatureData <- function(data,toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE"
 
 }
 
-####An internal function to demonstrate how the annotation defintions were generated.
 
 getPlatformSigs <- function(){
 
-require("lumiHumanIDMapping")
+####An internal function to demonstrate how the annotation defintions were generated.
+##You will need the libraries lumiHumanIDMapping, lumiMouseIDMapping and lumiRatIDMapping to run this code
+
+#require("lumiHumanIDMapping")
 
 human_conn <- lumiHumanIDMapping_dbconn()
 
@@ -358,7 +360,7 @@ for(i in 1:length(tabs)){
 
 }
 
-require("lumiMouseIDMapping")
+#require("lumiMouseIDMapping")
 
 mouse_conn <- lumiMouseIDMapping_dbconn()
 
@@ -388,7 +390,7 @@ for(i in 1:length(tabs)){
 
 }
 
-require("lumiRatIDMapping")
+#require("lumiRatIDMapping")
 
 rat_conn <- lumiRatIDMapping_dbconn()
 
