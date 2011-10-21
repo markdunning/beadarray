@@ -43,7 +43,7 @@ A matrix with one row per section and one column for each combination of control
 
 if(require(beadarrayExampleData)){
 
-data(exampleBLdata)
+data(exampleBLData)
 
 
 qct = makeQCTable(exampleBLData)
