@@ -6,7 +6,7 @@ Normalises expression intensities from an \code{ExpressionSetIllumina}
 object so that the intensities are comparable between arrays.
 }
 \usage{
-normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, status=fData(BSData)$Status,negctrl="negative",regular="Gene",...)
+normaliseIllumina(BSData, method="quantile", transform="none", T=NULL, status=fData(BSData)$Status,negctrl="negative",regular="regular",...)
 }
 
 \arguments{
@@ -72,7 +72,7 @@ character vector giving regular probes (used in neqc normalisation only)
   part of the model.
 
 
-  The neqc normalisation is described in Shi et al (2010).
+  The neqc normalisation is described in Shi et al (2010) and documented in the limma package. Note that the output from this method has control probes removed.
 	
 }
 

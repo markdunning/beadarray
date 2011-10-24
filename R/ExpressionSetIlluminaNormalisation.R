@@ -55,7 +55,7 @@ exprs
 }
 
 
-normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL, status=fData(BSData)$Status,negctrl="negative",regular="Gene",...) {
+normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL, status=fData(BSData)$Status,negctrl="negative",regular="regular",...) {
   rownms = rownames(exprs(BSData))
   colnms = colnames(exprs(BSData))
   transform = match.arg(transform, c("none", "vst", "log2"))
@@ -121,8 +121,21 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
 	},
 
 	neqc={
-		BSData = assayDataElementReplace(BSData, "exprs", neqc(exprs(BSData), status=status, negctrl=negctrl, regular = regular,...))
-	})
+		
+	      noNA <- apply(exprs(BSData), 1, function(x) !any(is.na(x)))
+
+	      ##note that neqc removes any control probes when it returns it output 
+
+	      newObj <- BSData[which(status == regular),]
+
+	      tmp <- neqc(exprs(BSData)[noNA,],status=status[noNA], negctrl=negctrl, regular = regular,...)
+
+	      exprs(newObj) <- tmp[match(featureNames(newObj), rownames(tmp)),]
+
+	      BSData = newObj
+	
+
+	  })
 	
 
   BSData

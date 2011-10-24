@@ -67,7 +67,6 @@ else{
 	  else {
 	      p <- combinedControlPlot(BLData, array=i,controlProfile = controlProfile)
 
-	      ggsave(p, filename = fname.pc,width=8,height=8, dpi=100)
 	  }
 	  
 	  
