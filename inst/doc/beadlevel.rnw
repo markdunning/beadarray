@@ -20,7 +20,7 @@
 %%Setting eval=FALSE until beadarrayExampleData becomes available
 
 
-\SweaveOpts{eval=TRUE, keep.source=FALSE}
+\SweaveOpts{eval=FALSE, keep.source=FALSE}
 
 \begin{document}
 \title{Analysis of Bead-level Data using beadarray}
