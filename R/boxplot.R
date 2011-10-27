@@ -1,25 +1,43 @@
+# setMethod("boxplot",
+#     signature(x = "beadLevelData"),
+#     function (x, transFun=logGreenChannelTransform,...) 
+#     {
+# 
+#   	arraynms = sectionNames(x)
+#   	narrays = length(arraynms)
+# 
+# 	inten <- unlist(lapply(1:narrays, function(i) transFun(x, array=i)))
+# 	section <- NULL
+# 
+# 	for(i in 1:narrays){
+# 
+# 		section <- c(section, rep(sectionNames(x)[i], numBeads(x)[i]))
+# 	}
+# 
+# 	df <- data.frame(Value = inten, Section = section)
+# 
+# 	p <- ggplot(df, aes(x = factor(Section), y = Value, fill=factor(Section))) + geom_boxplot(outlier.shape=NA)
+# 	p
+# }
+# )
+
 setMethod("boxplot",
     signature(x = "beadLevelData"),
     function (x, transFun=logGreenChannelTransform,...) 
     {
+       tmp = list()
+        arraynms = sectionNames(x)
+        narrays = length(arraynms)
 
-  	arraynms = sectionNames(x)
-  	narrays = length(arraynms)
 
-	inten <- unlist(lapply(1:narrays, function(i) transFun(x, array=i)))
-	section <- NULL
-
-	for(i in 1:narrays){
-
-		section <- c(section, rep(sectionNames(x)[i], numBeads(x)[i]))
-	}
-
-	df <- data.frame(Value = inten, Section = section)
-
-	p <- ggplot(df, aes(x = factor(Section), y = Value, fill=factor(Section))) + geom_boxplot(outlier.shape=NA)
-	p
-}
+        for(i in 1:narrays){
+            tmp[[arraynms[i]]] = transFun(x, array=i)
+        }
+        boxplot(tmp,...)   
+    }
 )
+
+
 
 
 setMethod("boxplot",
