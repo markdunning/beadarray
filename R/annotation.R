@@ -137,9 +137,10 @@ makeControlProfile <- function(annoName){
       
       controlInfo <- unlist(as.list(eval(mapEnv)))
 
-      controlIDs <- names(controlInfo)[controlInfo != ""]
-
-      reporterNames <- controlInfo[controlInfo != ""]
+      #controlIDs <- names(controlInfo)[controlInfo != ""]
+      controlIDs <- names(controlInfo)[!is.na(controlInfo)]
+      #reporterNames <- controlInfo[controlInfo != ""]
+      reporterNames <- controlInfo[!is.na(controlInfo)]
 
       controlArrayAddress <- unlist(mget(controlIDs, eval(as.name(paste("illumina", annoName, "ARRAYADDRESS",sep="")))))
 
