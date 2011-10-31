@@ -1,3 +1,41 @@
+CHANGES IN VERSION 2.4
+
+MAJOR CHANGES
+
+    o   The example data required to run examples and the vignette has been removed from the package. The experimental data package beadarrayExampleData has been created for this purpose
+
+    o   Mapping of bead-level ArrayAddress IDs to Illumina IDs is now performed by loading a companion annotation package. e.g. illuminaHumanv3.db
+
+    o   The addFeatureData function has been added to simplify the annotation of summary data objects
+
+    o   The ggplot2 library is now used to produce boxplots of summary data with the option of including columns of featureData or phenoData as factors in the plot
+
+    o   The combinedControlPlot has been added, which uses ggplot2 to consolidate the bead-level control plots into a single graphic
+
+    o   BASH and HULK can now only operate on a single array at a time and accept an outlier-calling method as a parameter
+
+
+OTHER CHANGES
+
+    o   The imageplot function now uses ggplot2
+		
+    o   Accessor functions added for metrics, P95 value and signal-to-noise ratio
+
+    o   The default background correction when running readIllumina with useImages = TRUE is now the medianBackground method
+
+    o   getAnnotation replaced with annotation accessor function 
+
+    o   setAnnotation replaced with annotation <- replacement method
+
+    o   checkPlatform replaced with suggestAnnotation function 
+
+    o   The platformSigs object was added and contains lists of ArrayAddressIDs for all know expression platforms
+
+    o   The outlier calling method, squeezedVarOutlierMethod has been added, which shrinks the observed variance for a bead-type towards the predicted variance based on all bead-types on the array-section
+
+
+
+
 CHANGES IN VERSION 2.3
 
 NEW FEATURES
