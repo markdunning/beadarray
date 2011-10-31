@@ -415,7 +415,7 @@ if(!is.null(annoName)){
   
 	    status[which(!is.na(IlluminaIDs))] = unlist(mget(IlluminaIDs[which(!is.na(IlluminaIDs))], eval(mapEnv), ifnotfound=NA))	
   
-	    status[which(status == "")] = "regular"
+	    status[which(is.na(status))] = "regular"
 	
 	    }
 	  

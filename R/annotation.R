@@ -36,7 +36,7 @@ suggestAnnotation <- function(data,verbose=FALSE){
 
 	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
 
-	    shortname <- paste("HumanV", substr(as.character(fullname), vname+1, vname+1),sep="")
+	    shortname <- paste("Humanv", substr(as.character(fullname), vname+1, vname+1),sep="")
 
 	}
 
@@ -44,7 +44,7 @@ suggestAnnotation <- function(data,verbose=FALSE){
 
 	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
 
-	    shortname <- paste("MouseV", substr(as.character(fullname), vname+1, vname+1),sep="")
+	    shortname <- paste("Mousev", substr(as.character(fullname), vname+1, vname+1),sep="")
 
 	}
 
@@ -53,7 +53,7 @@ suggestAnnotation <- function(data,verbose=FALSE){
 
 	     vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])
 
-	    shortname <- paste("RatV", substr(as.character(fullname), vname+1, vname+1),sep="")
+	    shortname <- paste("Ratv", substr(as.character(fullname), vname+1, vname+1),sep="")
 
 	}
 
