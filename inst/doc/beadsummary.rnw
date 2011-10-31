@@ -90,7 +90,7 @@ pData(exampleSummaryData)
 
 \section*{Subsetting the data}
 
-There are various way to subset an \Rclass{ExpressionSetIllumina} object...
+There are various way to subset an \Rclass{ExpressionSetIllumina} object. 
 
 
 Subset by channel
@@ -212,6 +212,7 @@ exampleSummaryData.norm <- normaliseIllumina(exampleSummaryData.log2, method="qu
 
 @
 
+An alternative approach is to combine normal-exponential background correction with quantile normalisation as suggested in the \Rpackage{limma} package. However, this requires data that have not been log-transformed.
 
 <<normalise2>>=
 
@@ -228,7 +229,7 @@ Filtering non-responding probes from further analysis can improve the power to d
 
 Four basic annotation quality categories (`Perfect', `Good', `Bad' and `No match') are defined and have been shown to correlate with expression level and measures of differential expression.
 We recommend removing probes assigned a `Bad' or `No match' quality score after normalization.
-This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization.
+This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization. You can verify the relationship between probe quality and intensity by using the boxplot function.
 
 <<filter, echo=TRUE, fig=TRUE>>=
 
@@ -263,7 +264,7 @@ samples are very different and we would expect to see many differentially expres
 Empirical array quality weights can be used to measure the relative reliability of each array.  A variance is estimated for each array by the \Rfunction{arrayWeights} function which measures how well the expression values from each array follow the linear model.
 These variances are converted to relative weights which can then be used in the linear model to
 down-weight observations from less reliable arrays which improves power to detect differential
-expression.
+expression. You should notice that some arrays have very low weight consistent with their poor QC.
 
 We then define a contrast comparing UHRR to Brain Reference and calculate moderated $t$-statistics with empirical Bayes' shrinkage of the sample variances.
 

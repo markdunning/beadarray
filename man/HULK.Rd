@@ -49,13 +49,9 @@ A vector of corrected intensities.
 
     if(require(beadarrayExampleData)){
 
-<<<<<<< .mine
-    data(exampleBLdata)
-    o <- HULK(exampleBLdata, 1)
-=======
-data(exampleBLData)
-o <- HULK(exampleBLData, 1)
->>>>>>> .r59489
+    	
+	data(exampleBLData)
+	o <- HULK(exampleBLData, 1)
 
 }
 

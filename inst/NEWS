@@ -44,7 +44,18 @@ OTHER CHANGES
     shrinks the observed variance for a bead-type towards the predicted variance
     based on all bead-types on the array-section
 
+    o   Errors in BASH that led to the einvasions and dinvasions arguments not being 
+    respected have been corrected
 
+    o   lower-level BASH functions (e.g. BASHDiffuse) will no longer calculate a 
+    Neighbours matrix if one is not supplied (ergo one must be supplied)
+
+    o   beadarray used to have problems if no outlier removal method were set in 
+    summarization (important if the outliers have already been removed by Illumina's 
+    scanner software). The function noOutlierMethod is provided to address this 
+
+    o  findAllOutliersE and findAllOutliersIgnore are to be deprecated, used 
+    internally by BASH have been removed
 
 CHANGES IN VERSION 2.3
 
