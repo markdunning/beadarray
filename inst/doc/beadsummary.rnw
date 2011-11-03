@@ -18,7 +18,7 @@
 \newcommand{\Rclass}[1]{{\textit{#1}}}
 
 %%Setting eval=FALSE until beadarrayExampleData becomes available
-\SweaveOpts{eval=FALSE, keep.source=FALSE}
+\SweaveOpts{eval=TRUE, keep.source=FALSE}
 
 
 

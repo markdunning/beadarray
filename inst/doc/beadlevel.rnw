@@ -20,7 +20,7 @@
 %%Setting eval=FALSE until beadarrayExampleData becomes available
 
 
-\SweaveOpts{eval=FALSE, keep.source=FALSE}
+\SweaveOpts{eval=TRUE, keep.source=FALSE}
 
 \begin{document}
 \title{Analysis of Bead-level Data using beadarray}
@@ -36,8 +36,8 @@ This vignette demonstrates the processing of bead-level data using beadarray. Th
 
 
 <<prelim, echo=TRUE>>=
-library(beadarray)
 library(beadarrayExampleData)
+library(beadarray)
 data(exampleBLData)
 
 @
@@ -240,7 +240,7 @@ table(getBeadData(exampleBLData, array=2, what="wts"))
 Before combining the observations for each bead-type on an array, Illumina remove any observations with outlying intensity (more than 3 median absolute deviations from the median). This step can be repeated in \Rpackage{beadarray} and can be adjusted so that other outlier removal schemes can be run. It is useful to see where these outliers are located on the array surface. Often, they will coincide with beads masked by BASH or with any spatial artefacts that may be seen. The locations of beads that have been masked by BASH can be visualised using the \Rfunction{showArrayMask} function. 
 
 
-<<masks,echo=TRUE,fig=TRUE, width=6, height=2>>=
+<<masks,echo=TRUE,fig=TRUE, width=6, height=4>>=
 
 showArrayMask(exampleBLData, array=2)
 
