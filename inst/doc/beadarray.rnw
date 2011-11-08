@@ -33,8 +33,7 @@ The main feature of the package is its ability to process raw data (text files a
 BeadScan and store this information in convenient R classes.
 Access to this \emph{bead-level data} offers users the choice between different image processing 
 and background correction methods and allows for detailed quality assessments to be carried out for 
-each array.
-The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can 
+each array. The summarised intensities (\emph{bead-summary data}) output by Illumina's BeadStudio software can 
 also be imported using the \Rpackage{beadarray} package.
 
 The documentation for this package is split into separate user guides: one for bead-level data and 
@@ -57,14 +56,13 @@ news(package="beadarray")
 
 \section*{Companion packages to beadarray}
 
-In order to reduce the download size of \Rpackage{beadarray}, we have moved the example data that used to be part of the package to a Bioconductor data package (\Rpackage{beadarrayExampleData}) that can be downloaded in the usual way. An expanded dataset and more detailed commentary on the processing of BeadArray data is provided by the \Rpackage{BeadArrayUseCases} package. Finally, the \Rpackage{beadarray} package is also able to interact with various Illumina annotation packages in Bioconductor if they are installed. 
+In order to reduce the download size of \Rpackage{beadarray}, we have moved the example dataset to a Bioconductor data package (\Rpackage{beadarrayExampleData}) that can be downloaded in the usual way. An expanded dataset and more detailed commentary on the processing of BeadArray data is provided by the \Rpackage{BeadArrayUseCases} package. Finally, the \Rpackage{beadarray} package is also able to interact with various Illumina annotation packages in Bioconductor if they are installed. 
 
 <<CompanionPkg, eval=FALSE>>=
 
 source("http://www.bioconductor.org/biocLite.R")
 
 biocLite(c("beadarrayExampleData", "beadarrayExampleData"))
-
 
 @
 
