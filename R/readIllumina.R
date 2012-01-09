@@ -2,6 +2,9 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 {
 	
     haveSampleInfo <- FALSE
+    
+    
+
     if(file.exists(sampleSheet)){
 
       expInfo <- try(readSampleSheet(sampleSheet))
@@ -49,7 +52,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
     if(!haveSampleInfo){
     ##No sample info, so try and read everything in the specified directory
 
-      message(paste("No sample sheet was specified. Trying to read all Illumina files in", ), normalizePath(rootdir))
+      message(paste("No sample sheet was specified. Trying to read all Illumina files in", normalizePath(rootdir),sep=""))
 	
       targets <- analyseDirectory(dir = rootdir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)$targets
       metrics <- analyseDirectory(dir = rootdir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)$metrics
