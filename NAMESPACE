@@ -55,6 +55,12 @@ export(illuminaOutlierMethod, squeezedVarOutlierMethod, weightsOutlierMethod, no
 
 exportMethods(metrics, p95, snr)
 
+##sample sheet
+
+export(readSampleSheet)
+exportMethods(sampleSheet, "sampleSheet<-")
+
+
 ##deprecated
 
 
