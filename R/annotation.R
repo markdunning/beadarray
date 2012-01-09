@@ -110,7 +110,7 @@ BLData
 } 
 
 
-makeControlProfile <- function(annoName){
+makeControlProfile <- function(annoName, excludeERCC = TRUE){
 
 
     annoLoaded <- require(paste("illumina", annoName, ".db",sep=""), character.only=TRUE)
@@ -175,15 +175,31 @@ makeControlProfile <- function(annoName){
 
       }
 
-      data.frame(ArrayAddress = controlArrayAddress, Tag = reporterNames)
-      
+      if(excludeERCC){
+
+	if(length(grep("ERCC", reporterNames)) > 0){
+	  
+	   controlArrayAddress <- controlArrayAddress[-grep("ERCC", reporterNames)]
+	   reporterNames <- reporterNames[-grep("ERCC", reporterNames)]
+	
+	}
 
       }
 
-  }
+      profile <- data.frame(ArrayAddress = controlArrayAddress, Tag = reporterNames)
+      
 
+
+
+      }
+
+
+      }
 
 }
+
+
+
 
 
  identifyControlBeads <- function(BLData, array=1, controlProfile = NULL){

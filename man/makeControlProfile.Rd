@@ -11,7 +11,7 @@ Function to retrieve the bead IDs for a particular annotation platform
 
 \usage{
 
-makeControlProfile(annoName)
+makeControlProfile(annoName, excludeERCC = TRUE)
 
 }
 
@@ -21,6 +21,7 @@ makeControlProfile(annoName)
 \arguments{
 
 \item{annoName}{An abberviated name for the annotation packaget. e.g. Humanv3, MouseV2}
+\item{excludeERCC}{Ignore any controls with REPORTERGROUPNAME beginning with ERCC. These are a large collection of spike controls on the Humanv4 chip and can make some control tables too big if they are included.}
 }
 
 \details{

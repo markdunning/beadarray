@@ -124,7 +124,12 @@ else{
 
 p <- qplot(x=xs, y=ys, size=I(0.3),colour=ptsCol)
 
-p
+p+opts(axis.line = theme_blank(), axis.text.x = theme_blank(), 
+            axis.text.y = theme_blank(), axis.ticks = theme_blank(), 
+            axis.title.x = theme_blank(), axis.title.y = theme_blank(), 
+            legend.position = "none", panel.background = theme_blank(), 
+            panel.border = theme_blank(), panel.grid.major = theme_blank(), 
+            panel.grid.minor = theme_blank(), plot.background = theme_blank())
 #points(xs, ys,...)
 #box()
 

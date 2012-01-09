@@ -435,8 +435,24 @@ else{
 
 assayData(BSData)=assayDataNew(exprs = eMat, se.exprs = varMat, nObservations = nObs,storage.mode="list")
 
+sampInfo <- sampleSheet(BLData)
 
-p = new("AnnotatedDataFrame", data.frame(sampleID=newNames, SampleFac = unique(sampleFac),row.names=newNames))
+
+if(!is.null(sampInfo)){
+	
+	expIDs <- paste(sampInfo$Sentrix_ID, sampInfo$Sentrix_Position,sep="_")
+
+		
+
+	sampInfo <- sampInfo[sapply(newNames, function(x) grep(strtrim(x, 12), expIDs)),]	
+
+	p = new("AnnotatedDataFrame", data.frame(sampInfo,row.names=newNames))
+
+}
+
+else p = new("AnnotatedDataFrame", data.frame(sampleID=newNames, SampleFac = unique(sampleFac),row.names=newNames))
+
+
 
 phenoData(BSData) = p
 

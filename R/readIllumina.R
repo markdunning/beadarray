@@ -43,8 +43,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 
     }
 
-    ##No directory was specified so we will use the sample sheet to define the targets info
-
+ 
     else{
       rootdir = getwd()
     }		
@@ -77,7 +76,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
  #     }
 
 
-      ##Some section names were specified. Make sure that they can be read from directories in the sample sheet
+      ##Some section names were specified. Make sure that they can be read from directories in the sample sheet. Also, there may be some directories with no Illumina data in
   #    else{
       chips <- unique(as.character(strtrim(allSections, 10)))
  
