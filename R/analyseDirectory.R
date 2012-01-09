@@ -89,15 +89,31 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
 	}
 	else {
 		if(!length( grep(txtSuff, fileList) )) {
-			stop(paste("Cannot find a files with extension either", txtSuff, "or .bab"));
+			stop(paste("Cannot find any files with extension either", txtSuff, "or .bab"));
 		}
 	}
+
+
+    allSections <-  unlist(strsplit(fileList[grep(txtSuff, fileList)], txtSuff))
 	
     
     ## if no section names were specified, try to find them all
     if(is.null(sectionNames)) {
-        sectionNames <- unlist(strsplit(fileList[grep(txtSuff, fileList)], txtSuff));
+        sectionNames <- allSections
     }
+
+   ##Check that if WG-6 data with a _1 or _2 ending are found, the section names we are looking for also have the same extension
+
+    else{
+	if(length(grep("_1", allSections)) > 0 | length(grep("_1", allSections)) > 0){
+	    if(length(grep("_1", sectionNames)) == 0 & length(grep("_2", sectionNames)) == 0 ){
+	      sectionNames <- paste(sectionNames, c("_1", "_2"),sep="")
+	  }
+	  
+	}
+
+    }
+      
     
     ## create something to store the results in
     info <- matrix(ncol = 5 + (4^twoChannel), nrow = length(sectionNames));

@@ -1,34 +1,140 @@
-readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, dec = ".", ...) 
+readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, dec = ".",sampleSheet="sampleSheet.csv", ...) 
 {
 	
+    haveSampleInfo <- FALSE
+    if(file.exists(sampleSheet)){
+
+      expInfo <- try(readSampleSheet(sampleSheet))
+  
+      if(!class(expInfo) == "try-error"){
+
+	  sSheet <- expInfo$sampleSheet
+	  haveSampleInfo <- TRUE
+	  message(paste("Sample Sheet ", normalizePath(sampleSheet), " will be used to read the data",sep=""))
+      }
+       
+    }
+
+    else message(paste("The specified sampleSheet ", normalizePath(sampleSheet), " was not found"))
+ 
+
+    if(!is.null(dir)){
+
     dir <- normalizePath(dir);
-   
-    targets <- analyseDirectory(dir = dir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)
-    metrics = targets$metrics 	
-    targets = targets$targets
-
-    ## if there's an .sdf file, read it 
-    sdf = NULL
-    sdfName = list.files(dir, pattern=".sdf")	
-    if(length(sdfName)){ 
-        sdf <- simpleXMLparse(readLines(paste(dir, sdfName[1], sep = .Platform$file.sep), warn = FALSE))	
-    }
-    nSections <- nrow(targets);
-
-    ## report how many channels there are
-    nChannels <- numberOfChannels(paste(targets$directory[1], targets$textFile[1], sep = .Platform$file.sep), sep = "\t");
     
-    BLData <- new(Class = "beadLevelData");
 
-    BLData = insertSectionData(BLData, what = "Targets", data=targets)
-    if(!is.null(metrics)) BLData = insertSectionData(BLData, what="Metrics", data = metrics)
+    rootdir = dir  
+  
+    #targets <- analyseDirectory(dir = dir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)
+    #metrics = targets$metrics 	
+    #targets = targets$targets
+
+      ## if there's an .sdf file, read it 
+      #sdf = NULL
+      #sdfName = list.files(dir, pattern=".sdf")	
+      #if(length(sdfName)){ 
+	#  sdf <- simpleXMLparse(readLines(paste(dir, sdfName[1], sep = .Platform$file.sep), warn = FALSE))	
+     # }
+     # nSections <- nrow(targets);
 
 
-    if(!is.null(sdf)){
-        BLData@experimentData$sdfFile <- paste(dir, sdfName, sep= .Platform$file.sep)
-        BLData@experimentData$platformClass <- sdf$Class[[1]];
     }
 
+    ##No directory was specified so we will use the sample sheet to define the targets info
+
+    else{
+      rootdir = getwd()
+    }		
+
+    if(!haveSampleInfo){
+    ##No sample info, so try and read everything in the specified directory
+
+      message(paste("No sample sheet was specified. Trying to read all Illumina files in", ), normalizePath(rootdir))
+	
+      targets <- analyseDirectory(dir = rootdir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)$targets
+      metrics <- analyseDirectory(dir = rootdir, sectionNames = sectionNames, forceIScan = forceIScan, metricsFile = metricsFile)$metrics
+
+	
+
+   }
+
+    else{	
+      allSections <- paste(sSheet[,"Sentrix_ID"], sSheet[,"Sentrix_Position"],sep="_")
+
+      ##No sectionNames were specified; assume all sections will be read
+      if(is.null(sectionNames)) sectionNames <- allSections
+
+#	dirs <- split(sectionNames, sSheet[,"Sentrix_ID"])
+
+#	chips <- names(dirs)
+
+#	chips <- paste(rootdir, chips,sep="/")	    
+#	names(dirs) <- chips  
+#		
+ #     }
+
+
+      ##Some section names were specified. Make sure that they can be read from directories in the sample sheet
+  #    else{
+      chips <- unique(as.character(strtrim(allSections, 10)))
+ 
+      dirs <- lapply(chips, function(x) sectionNames[which(strtrim(sectionNames, 10) == x)])
+
+      chips <- paste(rootdir, chips,sep="/")	   
+      names(dirs) <- chips
+	
+      dirs <- dirs[which(lapply(dirs, length) > 0)]
+
+   #   }
+
+ #     chips <- paste(rootdir, chips,sep="/")	    
+
+      ##This is the directory that we will take the sdf file from
+      rootdir <- chips[1]
+
+      targets <- do.call(rbind, lapply(chips, function(x) analyseDirectory(dir = x, sectionNames = as.character(dirs[[x]]), forceIScan = forceIScan, metricsFile = metricsFile)$targets))
+      metrics <- do.call(rbind, lapply(chips, function(x) analyseDirectory(dir = x, sectionNames = as.character(dirs[[x]]), forceIScan = forceIScan, metricsFile = metricsFile)$metrics))
+      }
+
+
+
+
+      ## if there's an .sdf file, read it 
+      sdf = NULL
+      sdfName = list.files(rootdir, pattern=".sdf")	
+      if(length(sdfName)){ 
+	  sdf <- simpleXMLparse(readLines(paste(rootdir, sdfName[1], sep = .Platform$file.sep), warn = FALSE))	
+      }
+
+
+      nSections <- nrow(targets);
+
+      ## report how many channels there are
+      nChannels <- numberOfChannels(paste(targets$directory[1], targets$textFile[1], sep = .Platform$file.sep), sep = "\t");
+      
+      BLData <- new(Class = "beadLevelData");
+
+      BLData = insertSectionData(BLData, what = "Targets", data=targets)
+      if(!is.null(metrics)) BLData = insertSectionData(BLData, what="Metrics", data = metrics)
+
+
+      if(!is.null(sdf)){
+	  BLData@experimentData$sdfFile <- paste(dir, sdfName, sep= .Platform$file.sep)
+	  BLData@experimentData$platformClass <- sdf$Class[[1]];
+      }
+
+
+
+      if(haveSampleInfo){
+
+      for(i in 1:length(expInfo)){
+
+	    if(names(expInfo)[i] != "sampleSheet") BLData@experimentData[[names(expInfo)[i]]] <- expInfo[[i]]
+
+      }
+      sampleSheet(BLData) <- sSheet
+
+      }
 
 
 ##    BLData@sectionData <- targets[,1:2];        
