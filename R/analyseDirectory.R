@@ -107,7 +107,7 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
     else{
 	if(length(grep("_1", allSections)) > 0 | length(grep("_1", allSections)) > 0){
 	    if(length(grep("_1", sectionNames)) == 0 & length(grep("_2", sectionNames)) == 0 ){
-	      sectionNames <- paste(sectionNames, c("_1", "_2"),sep="")
+	      sectionNames <- paste(rep(sectionNames,each=2), c("_1", "_2"),sep="")
 	  }
 	  
 	}
