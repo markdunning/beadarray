@@ -3,12 +3,17 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     ## Hardcode the expected tif and locs file names
     ## if these change we'll need to make them arguments instead
     Glocsstring1 = "-Swath1_Grn.locs";
-    Glocsstring2 = "-Swath2_Grn.locs"; 
+    Glocsstring2 = "-Swath2_Grn.locs";
+    Glocsstring3 = "-Swath3_Grn.locs";  
     Rlocsstring1 = "-Swath1_Red.locs";
     Rlocsstring2 = "-Swath2_Red.locs"; 
+    Rlocsstring3 = "-Swath3_Red.locs"; 
     GrnTiffSuffix1 = "-Swath1_Grn.tif";
     GrnTiffSuffix2 = "-Swath2_Grn.tif";
+    GrnTiffSuffix3 = "-Swath3_Grn.tif";
+    RedTiffSuffix1 = "-Swath1_Red.tif";
     RedTiffSuffix2 = "-Swath2_Red.tif";
+    RedTiffSuffix3 = "-Swath3_Red.tif";
 
     ## if directories weren't specified use the current working directory
     inputDir <- ifelse(is.null(inputDir), getwd(), inputDir);
@@ -24,13 +29,18 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     for(an in arrayNames) {
 
     cat(an, "\n");
-
+    locslist <- list(Grn = list())
     ## Read in locs files here to save reading them in in every function
     if(verbose) cat("Reading green locs1... ");
     glocs1 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring1, sep = "")))
+    locslist$Grn[[1]] <- glocs1;
     if(verbose) cat("green locs2... ")
     glocs2 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring2, sep = "")))
-    locslist <- list(glocs1 = glocs1, glocs2 = glocs2);
+    locslist$Grn[[2]] <- glocs2;
+    if(file.exists(file.path(inputDir, paste(an, Glocsstring3, sep = "")))) {
+        glocs3 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring3, sep = "")))
+        locslist$Grn[[3]] <- glocs3
+    }
 
     if(twoColour){
         if(verbose) cat("red locs1... ")
@@ -42,19 +52,18 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
         
     if(verbose) cat("Done\n")
 
-    # read in text file
-    if(twoColour){
-        t1 <- matrix(unlist(scan(file.path(inputDir, paste(an, textstring, sep = "")), sep = "\t", what = list(integer(), integer(), numeric(), numeric(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 7)
-    }    
-    else {
-        t1 <- matrix(unlist(scan(file.path(inputDir, paste(an, textstring, sep = "")), sep = "\t", what = list(integer(), integer(), numeric(), numeric()), skip = 1, quiet = TRUE)), ncol = 4)
-    }    
+    # read in text file 
+    t1 <- readBeadLevelTextFile(file.path(inputDir, paste(an, textstring, sep = "")))
 
     # Work out which observations are in which swath
     t2 <- assignToImage(t1, an, inputDir = inputDir, twocolour = twoColour, locs=locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
 
-    
-    Swaths <- genSwaths(t2, an, twocolour = twoColour, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, section_height = segmentHeight, section_width = segmentWidth, swath_overlap = swathOverlap, locs = locslist, verbose = verbose)
+    if(length(locslist$Grn) == 3) {
+        Swaths <- genThreeSwaths(t2, an, twocolour = twoColour, locs = locslist, verbose = verbose)
+    } 
+    else {
+        Swaths <- genSwaths(t2, an, twocolour = twoColour, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, section_height = segmentHeight, section_width = segmentWidth, swath_overlap = swathOverlap, locs = locslist, verbose = verbose)
+    }
 
     ## assign each bead to a swath
     writeOutFiles(Swaths, an, newTextString, fullOutput = fullOutput, twocolour = twoColour, outputDir = outputDir)
