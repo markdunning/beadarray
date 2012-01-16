@@ -42,17 +42,16 @@ assignToImage <- function(txt, sectionName, inputDir = NULL, twocolour = TRUE, l
     else {
         tmp <- BeadDataPackR:::combineFiles(txt, locsGrn = locsg)
     }
-
     if(verbose) cat("Done\n")
-    idx <- NULL
-    for(i in 1:length(locslist$Grn)) 
-        idx <- c(idx, rep(i, nrow(locslist$Grn[[i]])))
-    idx <- idx[order(order(tmp[, "LocsIdx"]))]
-    tmp[, "LocsIdx"] <- idx
-    #tmp[,"LocsIdx"] <- ifelse(tmp[,"LocsIdx"] <= nrow(locslist$glocs1), 1, 2)
-    colnames(tmp)[colnames(tmp) == "LocsIdx"] <- "SwathIdx";
+    #idx <- NULL
+    #for(i in 1:length(locslist$Grn)) 
+    #    idx <- c(idx, rep(i, nrow(locslist$Grn[[i]])))
+    #idx <- idx[order(order(tmp[, "LocsIdx"]))]
+    #tmp[, "LocsIdx"] <- idx
+    #colnames(tmp)[colnames(tmp) == "LocsIdx"] <- "SwathIdx";
 
     ## remove non-decoded beads
+    nondecoded <- tmp[which(tmp[,"Code"] == 0),]
     tmp <- tmp[-which(tmp[,"Code"] == 0),]
 
     ## if the result is smaller than the original .txt we must have some duplicates.
@@ -72,7 +71,7 @@ assignToImage <- function(txt, sectionName, inputDir = NULL, twocolour = TRUE, l
 
     }
             
-    tmp <- rbind(tmp, unassigned)
+    tmp <- rbind(tmp, nondecoded, unassigned)
     ## reorder by probeID
     tmp <- tmp[order(tmp[,"Code"]),]
     return(tmp)
@@ -98,10 +97,10 @@ duplicateSpots_2swaths <- function(inputDir, sectionName, txt, tmp, verbose) {
             g1 <- singleBeadIntensity(tiffFile1, txt[txtDups[i],3:4])
             g2 <- singleBeadIntensity(tiffFile2, txt[txtDups[i],3:4])
             ## assign the bead to the image which gives the closest intensity
-            unassigned[i,ncol(unassigned)] <- which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g1, g2), lag = 2 ) ) )
+            unassigned[i,ncol(unassigned)] <- txt[txtDups[(i - 1) + which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g1, g2), lag = 2 ) ) )], ncol(unassigned)]
             ## if the pair has been decoded, assign it to the other image
             if(all(txt[txtDups[i+1],3:4] == txt[txtDups[i],3:4])) {
-                unassigned[i+1,ncol(unassigned)] <- ifelse(unassigned[i,ncol(unassigned)] == 1, 2, 1);
+                unassigned[i+1,ncol(unassigned)] <- txt[txtDups[(i - 1) + which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g2, g1), lag = 2 ) ) )], ncol(unassigned)]
                 i = i + 1;
             }
             i = i + 1;    

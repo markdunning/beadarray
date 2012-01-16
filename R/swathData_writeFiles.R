@@ -12,15 +12,21 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
     ##          BASIC - overlapping beads are removed from Swath2 and no weights are output
     ###################################################
 
-    S1<-Swaths[[1]]
-    S2<-Swaths[[2]]
+    S1 <- Swaths[[1]]
+    S2 <- Swaths[[2]]
     if(!is.null(Swaths[[3]]))
         S3 <- Swaths[[3]]
     
-    S1<-S1[order(S1[,1],S1[,ncol(S1)]),]
-    S2<-S2[order(S2[,1],S2[,ncol(S2)]),]
+    S1 <- S1[order(S1[,1],S1[,ncol(S1)]),]
+    S2 <- S2[order(S2[,1],S2[,ncol(S2)]),]
     if(!is.null(Swaths[[3]]))
         S3 <- S3[order(S3[,1],S3[,ncol(S3)]),]
+        
+    ## remove the non-decoded beads
+    S1 <- S1[-which(S1[,1] == 0),]
+    S2 <- S2[-which(S2[,1] == 0),]
+    if(!is.null(Swaths[[3]]))
+        S3 <- S3[-which(S3[,1] == 0),]
 
     ## round coordinates so they match Illumina's format
     S1[,3:4] <- .Call("roundLocsFileValues", S1[,3:4], PACKAGE = "BeadDataPackR");
@@ -35,13 +41,19 @@ writeOutFiles<-function(Swaths, an="arrayname", textstring=".txt", fullOutput = 
     }
 
     if(fullOutput){
-        S1[S1[,ncol(S1)] > 0, ncol(S1)] <- 0.5
+        S1[S1[,ncol(S1)] == 1, ncol(S1)] <- 0.5
         S1[S1[,ncol(S1)] == 0, ncol(S1)] <- 1
         colnames(S1)[ncol(S1)] <- "Weight"
         
-        S2[S2[,ncol(S2)] > 0, ncol(S2)] <- 0.5
+        S2[S2[,ncol(S2)] == 1, ncol(S2)] <- 0.5
         S2[S2[,ncol(S2)] == 0, ncol(S2)] <- 1
         colnames(S2)[ncol(S2)] <- "Weight"
+        
+        if(!is.null(Swaths[[3]])) {
+            S3[S3[,ncol(S3)] == 1, ncol(S3)] <- 0.5
+            S3[S3[,ncol(S3)] == 0, ncol(S3)] <- 1
+            colnames(S3)[ncol(S3)] <- "Weight"
+        }
     }
     else {
         ## if we don't want full output remove the weights

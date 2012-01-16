@@ -8,7 +8,7 @@ import(AnnotationDbi)
 #import(ggplot2)
 
 importFrom(limma, normalizeQuantiles, neqc)
-
+import(BeadDataPackR)
 
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
@@ -58,7 +58,7 @@ exportMethods(metrics, p95, snr)
 ##sample sheet
 
 export(readSampleSheet)
-exportMethods(sampleSheet, "sampleSheet<-")
+#exportMethods(sampleSheet, "sampleSheet<-")
 
 
 ##deprecated

@@ -1,4 +1,4 @@
-genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", section_height = 326, section_width = 397, swath_overlap = 81, locslist, verbose = TRUE) {
+genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", section_height = 326, section_width = 397, locslist, verbose = TRUE) {
     
     ## Function to identify beads in the overlapping region between swaths
     ## For these beads intensities are calculated from both images for comparison
@@ -15,7 +15,9 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
     else {
         if(length(locslist) != 2){stop("Number of locs files does not match number of colours")}
     }
-      
+    
+    swath_overlap <- section_width - (nrow(locslist$Grn[[1]]) / (9 * section_height))
+    
     glocs1<-locslist$glocs1
     glocs2<-locslist$glocs2
     rlocs2 <- NULL
@@ -48,7 +50,7 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
         grid <- t(sapply(1:nrow(glocs1), beadarray:::locsIndicesToGrid, nrow = section_height, ncol = (section_width+swath_overlap)/2))
         if(verbose) cat("Done\n");
         
-        ## indices for beads in the overlapping region (hardcoded at the moment)
+        ## indices for beads in the overlapping region
         ## Swath1
         s1idx <- which(grid[,1] > ((section_width + swath_overlap)/2 - swath_overlap))
         ## Swath2 
@@ -126,7 +128,7 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
 }
     
     
-genThreeSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", section_height = 326, section_width = 397, swath_overlap = 81, locslist, verbose = TRUE) {
+genThreeSwaths <- function(txt, sectionName, locslist, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", GrnTiffSuffix3 = "-Swath3_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", segmentHeight = 326, verbose = TRUE) {
     
     ## Function to identify beads in the overlapping region between swaths
     ## For these beads intensities are calculated from both images for comparison
@@ -135,32 +137,96 @@ genThreeSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = 
     ##              sectionName - string containing name of section to read
     ##
     ## Output: list containing two 4-column matrices in the same format as bead-level txt files
+    
+    txt <- txt[order(txt[,"LocsIdx"]),]
+    
+    s1Width <- nrow(locsList$Grn[[1]]) / (9 * segmentHeight)
+    s2Width <- nrow(locsList$Grn[[2]]) / (9 * segmentHeight)
 
-    locsg <- matrix(ncol = 2, nrow = 0)
-    for(i in 1:length(locslist$Grn)) 
-        locsg <- rbind(locsg, locslist$Grn[[i]])
-    if(twocolour){
-        locsr <- matrix(ncol = 2, nrow = 0)
-        for(i in 1:length(locslist$Red)) 
-            locsr <- rbind(locsr, locslist$Red[[i]])
+    swath1 <- txt[which(txt[,ncol(txt)] <= (segmentHeight * s1Width * 9)),]
+    swath2 <- txt[which(txt[,ncol(txt)] > (segmentHeight * s1Width * 9) & txt[,ncol(txt)] <= ((segmentHeight * s1Width * 9) + (segmentHeight * s2Width * 9))),]
+    swath3 <- txt[which(txt[,ncol(txt)] > ((segmentHeight * s2Width * 9) + (segmentHeight * s1Width * 9))),]
+    
+    swath1res <- matrix(ncol = ncol(swath1) + 1, nrow = nrow(swath1))
+    swath2res <- matrix(ncol = ncol(swath2) + 1, nrow = nrow(swath2))
+    swath3res <- matrix(ncol = ncol(swath3) + 1, nrow = nrow(swath3))
+    swath1res[,ncol(swath1res)] <- swath2res[,ncol(swath1res)] <- swath3res[,ncol(swath1res)] <- 0
+    colnames(swath1res) <- c(colnames(swath1), "Overlap")
+    colnames(swath2res) <- c(colnames(swath1), "Overlap")
+    colnames(swath3res) <- c(colnames(swath1), "Overlap")
+    
+    grid1 <- grid3 <- t(sapply(1:(segmentHeight * s1Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s1Width))
+    grid2 <- t(sapply(1:(segmentHeight * s2Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s2Width))
+    
+    tiffG2 <- readTIFF(file.path(paste(sectionName, GrnTiffSuffix2, sep = "")))
+    tiffG3 <- readTIFF(file.path(paste(sectionName, GrnTiffSuffix3, sep = "")))
+    if(twocolour) {
+        tiffR2 <- readTIFF(file.path(paste(sectionName, RedTiffSuffix2, sep = "")))
+        tiffR3 <- readTIFF(file.path(paste(sectionName, RedTiffSuffix3, sep = "")))
     }
-
-    ## for now, assume any bead in the overlap that was decoded is in Swath1
-    swath1 <- txt[which(txt[,ncol(txt)] == 1),]
-    swath2 <- txt[which(txt[,ncol(txt)] == 2),]
-    swath3 <- txt[which(txt[,ncol(txt)] == 3),]
+    
+    for(seg in 0:8) {
+        
+        if(verbose)
+            message("Overlapping region: Segment ", seg);
+        
+        swath1seg <- swath1[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)),]
+        swath2seg <- swath2[(seg * (segmentHeight * s2Width) + 1):((seg + 1) * (segmentHeight * s2Width)),]
+        swath3seg <- swath3[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)),]
+        
+        decodedColIdx2 <- unlist(lapply(split(swath2seg[,1], grid2[,1]), FUN = function(x) { 
+                                            if(length(unique(x)) == 1)
+                                                return(TRUE)
+                                            else 
+                                                return(FALSE)
+                                        }))
+                                        
+        decodedColIdx3 <- unlist(lapply(split(swath3seg[,1], grid3[,1]), FUN = function(x) { 
+                                            if(length(unique(x)) == 1)
+                                                return(TRUE)
+                                            else 
+                                                return(FALSE)
+                                        }))
+        
+        idxToUpdate1 <- which(grid1[,1] > s1Width - max(which(decodedColIdx2)))
+        idxToUpdate2a <- which(grid2[,1] <= max(which(decodedColIdx2)))
+        swath2seg[idxToUpdate2a,1] <- swath1seg[idxToUpdate1,1]
+        #swath2seg[idxToUpdate2,2] <- apply(swath2seg[idxToUpdate2,3:4], 1, FUN = singleBeadIntensity_6x6, tiffFile = file.path(paste(sectionName, "-Swath2_Grn.tif", sep = "")))
+        swath2seg[idxToUpdate2a,2] <- round(illuminaForeground_6x6(tiffG2, swath2seg[idxToUpdate2a,3:4]) - illuminaBackground(tiffG2, swath2seg[idxToUpdate2a,3:4]))
+        if(twocolour) {
+            swath2seg[idxToUpdate2a,5] <- round(illuminaForeground_6x6(tiffR2, swath2seg[idxToUpdate2a,6:7]) - illuminaBackground(tiffR2, swath2seg[idxToUpdate2a,6:7]))
+        }
+        
+        idxToUpdate2b <- which(grid2[,1] > s2Width - max(which(decodedColIdx3)))
+        idxToUpdate3 <- which(grid3[,1] <= max(which(decodedColIdx3)))
+        swath3seg[idxToUpdate3,1] <- swath2seg[idxToUpdate2b,1]
+        #swath3seg[idxToUpdate3,2] <- apply(swath3seg[idxToUpdate3,3:4], 1, FUN = singleBeadIntensity_6x6, tiffFile = file.path(paste(sectionName, "-Swath3_Grn.tif", sep = "")))
+        swath3seg[idxToUpdate3,2] <- round(illuminaForeground_6x6(tiffG3, swath3seg[idxToUpdate3,3:4]) - illuminaBackground(tiffG3, swath3seg[idxToUpdate3,3:4]))
+        if(twocolour) {
+            swath3seg[idxToUpdate3,5] <- round(illuminaForeground_6x6(tiffR3, swath3seg[idxToUpdate3,6:7]) - illuminaBackground(tiffG3, swath3seg[idxToUpdate3,6:7]))
+        }
+        
+        swath1res[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)), 1:ncol(swath1seg)] <- swath1seg
+        swath1res[((seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)))[idxToUpdate1], ncol(swath1res)] <- 1
+        
+        swath2res[(seg * (segmentHeight * s2Width) + 1):((seg + 1) * (segmentHeight * s2Width)), 1:ncol(swath2seg)] <- swath2seg
+        swath2res[((seg * (segmentHeight * s2Width) + 1):((seg + 1) * (segmentHeight * s2Width)))[c(idxToUpdate2a, idxToUpdate2b)], ncol(swath2res)] <- 1
+        
+        swath3res[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)), 1:ncol(swath3seg)] <- swath3seg
+        swath3res[((seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)))[idxToUpdate3], ncol(swath3res)] <- 1
+    }    
     
     ## add a column with an index if it's a bead with multiple intensities
     ## for now with 3 swath data we are ignoring these beads
-    swath1 <- cbind(swath1, rep(0, nrow(swath1)));
-    colnames(swath1)[ncol(swath1)] <- "Overlap";
-    swath2 <- cbind(swath2, rep(0, nrow(swath2)));
-    colnames(swath2)[ncol(swath2)] <- "Overlap";
-    swath3 <- cbind(swath3, rep(0, nrow(swath3)));
-    colnames(swath3)[ncol(swath3)] <- "Overlap";
+    #swath1 <- cbind(swath1, rep(0, nrow(swath1)));
+    #colnames(swath1res)[ncol(swath1res)] <- "Overlap";
+    #swath2 <- cbind(swath2, rep(0, nrow(swath2)));
+    #colnames(swath2res)[ncol(swath2res)] <- "Overlap";
+    #swath3 <- cbind(swath3, rep(0, nrow(swath3)));
+    #colnames(swath3res)[ncol(swath3res)] <- "Overlap";
 
     ## return a list containing the two swaths (Removing the "Swath Index" column since that's implied)
-    return(list("Swath1" = swath1[,-(ncol(swath1)-1)], "Swath2" = swath2[,-(ncol(swath2)-1)], "Swath2" = swath3[,-(ncol(swath3)-1)]));
+    return(list("Swath1" = swath1res[,-(ncol(swath1res)-1)], "Swath2" = swath2res[,-(ncol(swath2res)-1)], "Swath2" = swath3res[,-(ncol(swath3res)-1)])); 
 }
     
     

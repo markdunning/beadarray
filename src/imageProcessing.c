@@ -156,21 +156,25 @@ SEXP medianBackground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
 
 /* foreground */
 
-double matrixMean(SEXP pixelMatrix, int imageHeight, int x, int y, int intBool) {
+double matrixMean(SEXP pixelMatrix, int imageHeight, int x, int y, int intBool, int dim) {
 
   int i, j;
   double result = 0.0;
+  
+  int half = (dim - 1) / 2;
 
-  for(i = x-1; i <= x+1; i++ ) {
-    for(j = y-1; j <= y+1; j++ ) {
+  for(i = x-half; i <= x+half; i++ ) {
+    for(j = y-half; j <= y+half; j++ ) {
         if(intBool)
             result += INTEGER(pixelMatrix)[(i * imageHeight) + j];
         else
             result += REAL(pixelMatrix)[(i * imageHeight) + j];
     }
   }
-  return(result / 9.0);
+  return(result / (dim * dim));
 }
+
+
 
 
 SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
@@ -179,6 +183,8 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
     int imageWidth, imageHeight, nbeads, i, intBool;
     double x, y, xc, yc, av[4], w[4], *fg;
     
+    int dim = 3;
+    
     /* dimensions of the image */
     imageHeight = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[0];
     imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
@@ -186,7 +192,6 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
     nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
     /* is this an integer or numeric matrix */
     intBool = INTEGER(integerBool)[0];
-
     PROTECT(foreground = allocVector(REALSXP, nbeads));
     fg = REAL(foreground);
     
@@ -204,10 +209,10 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
             xc = x - floor(x);
             yc = y - floor(y);
 
-            av[0] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y), intBool);
-            av[1] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y+1), intBool);
-            av[2] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y+1), intBool);
-            av[3] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y), intBool);
+            av[0] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y), intBool, dim);
+            av[1] = matrixMean(pixelMatrix, imageHeight, (int) floor(x), (int) floor(y+1), intBool, dim);
+            av[2] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y+1), intBool, dim);
+            av[3] = matrixMean(pixelMatrix, imageHeight, (int) floor(x+1), (int) floor(y), intBool, dim);
             
             w[0] = ((1 - xc) * (1 - yc));
             w[1] = ((1 - xc) * yc);
@@ -222,6 +227,7 @@ SEXP illuminaForeground(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
     UNPROTECT(1);
     return(foreground);
 }
+
 
 /* sharpening */
 
