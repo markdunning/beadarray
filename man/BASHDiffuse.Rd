@@ -46,7 +46,7 @@ A vector consisting of the BeadIDs of beads considered diffuse defects.
 
 \author{Jonathan Cairns}
 
-\seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}, }
+\seealso{\code{\link{BASH}}, \code{\link{generateNeighbours}}}
 
 \examples{
 
