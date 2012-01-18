@@ -19,12 +19,17 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     inputDir <- ifelse(is.null(inputDir), getwd(), inputDir);
     outputDir <- ifelse(is.null(outputDir), getwd(), outputDir);
     
-    ## try and guess the number of colurs by looking for files with "Red" in the name
-    if(is.null(twoColour))
-        twoColour <- ifelse(any(grepl("Red", list.files(path = inputDir))), TRUE, FALSE);
-
     files <- list.files(path = inputDir, pattern = textstring)
     arrayNames <- unlist(strsplit(files, textstring))
+    
+    ## try and guess the number of colurs by looking for files with "Red" in the name
+    if(is.null(twoColour))
+        if(numberOfChannels(files[1]) == 2) 
+            twoColour = TRUE
+        else if(numberOfChannels(files[1]) == 1)
+            twoColour = FALSE
+        else
+            stop("Unexpected file format")
 
     for(an in arrayNames) {
 
@@ -63,10 +68,10 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     t2 <- assignToImage(t1, an, inputDir = inputDir, twocolour = twoColour, locs=locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
 
     if(length(locslist$Grn) == 3) {
-        Swaths <- genThreeSwaths(t2, sectionName = an, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, verbose = verbose)
+        Swaths <- genThreeSwaths(t2, sectionName = an, inputDir = inputDir, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, verbose = verbose)
     } 
     else {
-        Swaths <- genTwoSwaths(t2, sectionName = an, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, segmentWidth = segmentWidth, verbose = verbose)
+        Swaths <- genTwoSwaths(t2, sectionName = an, inputDir = inputDir, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, segmentWidth = segmentWidth, verbose = verbose)
     }
     
 

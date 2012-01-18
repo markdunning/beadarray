@@ -11,12 +11,9 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
     
     if(twocolour){
         if( length(locslist$Red) != length(locslist$Grn) ) { 
-            stop("Number of locs files does not match number of colours")
+            stop("There should be an equal number of Grn and Red locs files")
         }
     }
-    #else {
-    #    if(length(locslist) != 2){stop("Number of locs files does not match number of colours")}
-    #}
     
     swath_overlap <- (2 * nrow(locslist$Grn[[1]]) / (9 * section_height)) - section_width
     
@@ -49,7 +46,7 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
         if(verbose) cat("Done\n");
         
         if(verbose) cat("Creating locs grid... ")
-        grid <- t(sapply(1:nrow(glocs1), beadarray:::locsIndicesToGrid, nrow = section_height, ncol = (section_width+swath_overlap)/2))
+        grid <- t(sapply(1:nrow(glocs1), locsIndicesToGrid, nrow = section_height, ncol = (section_width+swath_overlap)/2))
         if(verbose) cat("Done\n");
         
         ## indices for beads in the overlapping region
@@ -136,7 +133,7 @@ genSwaths <- function(txt, sectionName, twocolour = TRUE, GrnTiffSuffix2 = "-Swa
     
 
 
-genTwoSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", segmentHeight = 326, segmentWidth = 397, verbose = TRUE) {
+genTwoSwaths <- function(txt, sectionName, inputDir = ".", locsList, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", segmentHeight = 326, segmentWidth = 397, verbose = TRUE) {
     
     ## Function to identify beads in the overlapping region between swaths
     ## For these beads intensities are calculated from both images for comparison
@@ -145,6 +142,12 @@ genTwoSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSu
     ##              sectionName - string containing name of section to read
     ##
     ## Output: list containing two 4-column matrices in the same format as bead-level txt files
+            
+    if(twocolour){
+        if( length(locsList$Red) != length(locsList$Grn) ) { 
+            stop("There should be an equal number of Grn and Red locs files")
+        }
+    }
     
     txt <- txt[order(txt[,"LocsIdx"]),]
     
@@ -164,9 +167,9 @@ genTwoSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSu
     grid1 <- t(sapply(1:(segmentHeight * s1Width), locsIndicesToGrid, nrow = segmentHeight, ncol = s1Width))
     grid2 <- t(sapply(1:(segmentHeight * s2Width), locsIndicesToGrid, nrow = segmentHeight, ncol = s2Width))
     
-    tiffG2 <- readTIFF(file.path(paste(sectionName, GrnTiffSuffix2, sep = "")))
+    tiffG2 <- readTIFF(file.path(inputDir, paste(sectionName, GrnTiffSuffix2, sep = "")))
     if(twocolour) {
-        tiffR2 <- readTIFF(file.path(paste(sectionName, RedTiffSuffix2, sep = "")))
+        tiffR2 <- readTIFF(file.path(inputDir, paste(sectionName, RedTiffSuffix2, sep = "")))
     }
     
     for(seg in 0:8) {
@@ -187,11 +190,25 @@ genTwoSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSu
 
         swath2seg[idxToUpdate2, 1] <- swath1seg[idxToUpdate1, 1]
         #swath2seg[idxToUpdate2,2] <- apply(swath2seg[idxToUpdate2,3:4], 1, FUN = singleBeadIntensity_6x6, tiffFile = file.path(paste(sectionName, "-Swath2_Grn.tif", sep = "")))
-        swath2seg[idxToUpdate2,2] <- round(illuminaForeground_6x6(tiffG2, swath2seg[idxToUpdate2,3:4]) - illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4]))
-        if(twocolour) {
-            swath2seg[idxToUpdate2,5] <- round(illuminaForeground_6x6(tiffR2, swath2seg[idxToUpdate2,6:7]) - illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7]))
+        
+        ## calculate new intensities - we need to account for which resolution images were produced
+        if(ncol(tiffG2) > 1024) {
+            swath2seg[idxToUpdate2,2] <- round(illuminaForeground_6x6(tiffG2, swath2seg[idxToUpdate2,3:4]) - illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4]))
+            if(twocolour) {
+                swath2seg[idxToUpdate2,5] <- round(illuminaForeground_6x6(tiffR2, swath2seg[idxToUpdate2,6:7]) - illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7]))
+            }
         }
-              
+        else {
+            bg <- illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4])
+            fg <- illuminaForeground(illuminaSharpen(tiffG2), swath2seg[idxToUpdate2,3:4])
+            swath2seg[idxToUpdate2,2] <- round(fg - bg)
+            if(twocolour) {
+                bg <- illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7])
+                fg <- illuminaForeground(illuminaSharpen(tiffR2), swath2seg[idxToUpdate2,6:7])
+                swath2seg[idxToUpdate2,5] <- round(fg - bg)
+            }
+        }  
+        
         swath1res[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)), 1:ncol(swath1seg)] <- swath1seg
         swath1res[((seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)))[idxToUpdate1], ncol(swath1res)] <- 1
         
@@ -213,7 +230,7 @@ genTwoSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSu
 }
 
     
-genThreeSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", GrnTiffSuffix3 = "-Swath3_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", RedTiffSuffix3 = "-Swath3_Red.tif", segmentHeight = 326, verbose = TRUE) {
+genThreeSwaths <- function(txt, sectionName, inputDir = ".", locsList, twocolour = TRUE, GrnTiffSuffix2 = "-Swath2_Grn.tif", GrnTiffSuffix3 = "-Swath3_Grn.tif", RedTiffSuffix2 = "-Swath2_Red.tif", RedTiffSuffix3 = "-Swath3_Red.tif", segmentHeight = 326, verbose = TRUE) {
     
     ## Function to identify beads in the overlapping region between swaths
     ## For these beads intensities are calculated from both images for comparison
@@ -243,11 +260,11 @@ genThreeSwaths <- function(txt, sectionName, locsList, twocolour = TRUE, GrnTiff
     grid1 <- grid3 <- t(sapply(1:(segmentHeight * s1Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s1Width))
     grid2 <- t(sapply(1:(segmentHeight * s2Width), beadarray:::locsIndicesToGrid, nrow = segmentHeight, ncol = s2Width))
     
-    tiffG2 <- readTIFF(file.path(paste(sectionName, GrnTiffSuffix2, sep = "")))
-    tiffG3 <- readTIFF(file.path(paste(sectionName, GrnTiffSuffix3, sep = "")))
+    tiffG2 <- readTIFF(file.path(inputDir, paste(sectionName, GrnTiffSuffix2, sep = "")))
+    tiffG3 <- readTIFF(file.path(inputDir, paste(sectionName, GrnTiffSuffix3, sep = "")))
     if(twocolour) {
-        tiffR2 <- readTIFF(file.path(paste(sectionName, RedTiffSuffix2, sep = "")))
-        tiffR3 <- readTIFF(file.path(paste(sectionName, RedTiffSuffix3, sep = "")))
+        tiffR2 <- readTIFF(file.path(inputDir, paste(sectionName, RedTiffSuffix2, sep = "")))
+        tiffR3 <- readTIFF(file.path(inputDir, paste(sectionName, RedTiffSuffix3, sep = "")))
     }
     
     for(seg in 0:8) {
