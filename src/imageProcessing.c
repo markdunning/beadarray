@@ -262,3 +262,70 @@ SEXP illuminaSharpen(SEXP pixelMatrix) {
   return(sharpened);
 }
 
+double AVG_6x6(double x, double y, int imageHeight, SEXP pixelMatrix, int intBool) {
+    
+    int i, j, k = 0;
+    double result = 0.0;
+    int weights[64] = {0, -1, -1, -1, -1, -1, -1, 0,
+                      -1, 4,  3,  3,  3,  3,  4, -1,
+                      -1, 3,  2,  2,  2,  2,  3, -1,
+                      -1, 3,  2,  2,  2,  2,  3, -1,
+                      -1, 3,  2,  2,  2,  2,  3, -1,
+                      -1, 3,  2,  2,  2,  2,  3, -1,
+                      -1, 4,  3,  3,  3,  3,  4, -1,
+                      0, -1, -1, -1, -1, -1, -1, 0 };
+                     
+    // Adjusting pixel location
+    x = round(x + 0.5) - 0.5;
+    y = round(y + 0.5) - 0.5;
+        
+    for(i = x - 3.5; i <= x + 3.5; i++) {
+        for(j = y - 3.5; j <= y + 3.5; j++) {
+            if(intBool)
+                result += (INTEGER(pixelMatrix)[(i * imageHeight) + j] * weights[k++]);
+            else
+                result += (REAL(pixelMatrix)[(i * imageHeight) + j] * weights[k++]);
+        }
+    }
+    return( result / 72.0 );
+}
+
+SEXP illuminaForeground_6x6(SEXP pixelMatrix, SEXP coords, SEXP integerBool) {
+
+    SEXP foreground;
+    int imageWidth, imageHeight, nbeads, k;
+    double x, y, *fg;
+        
+    /* dimensions of the image */
+    imageHeight = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[0];
+    imageWidth = INTEGER(getAttrib(pixelMatrix, R_DimSymbol))[1];
+    /* number of beads we have centres for */
+    nbeads = INTEGER(getAttrib(coords, R_DimSymbol))[0];
+
+    /* is this an integer or numeric matrix */
+    PROTECT(foreground = allocVector(REALSXP, nbeads));
+    fg = REAL(foreground);
+    
+    int intBool = INTEGER(integerBool)[0];
+    
+    //#pragma omp parallel for private(k, x, y) shared(fg) num_threads(4)
+    for(k = 0; k < nbeads; k++) {
+        
+        x = REAL(coords)[k];
+        y = REAL(coords)[k + nbeads];
+        
+        /* catch cases where coordinates are outside the image dimensions */
+        if( (x < 4) || (y < 4) || (x > (imageWidth - 4)) || (y > (imageHeight - 4)) ) {
+            //Rprintf("Coordinate out of bounds\n");
+            fg[k] = R_NaReal;
+        }        
+        else {
+            fg[k] = AVG_6x6(x, y, imageHeight, pixelMatrix, intBool);
+        }
+
+    }
+
+    UNPROTECT(1);
+    return(foreground);
+}
+

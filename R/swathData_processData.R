@@ -32,22 +32,25 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     locslist <- list(Grn = list())
     ## Read in locs files here to save reading them in in every function
     if(verbose) cat("Reading green locs1... ");
-    glocs1 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring1, sep = "")))
+    glocs1 <- readLocsFile(file.path(inputDir, paste(an, Glocsstring1, sep = "")))
     locslist$Grn[[1]] <- glocs1;
     if(verbose) cat("green locs2... ")
-    glocs2 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring2, sep = "")))
+    glocs2 <- readLocsFile(file.path(inputDir, paste(an, Glocsstring2, sep = "")))
     locslist$Grn[[2]] <- glocs2;
     if(file.exists(file.path(inputDir, paste(an, Glocsstring3, sep = "")))) {
-        glocs3 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Glocsstring3, sep = "")))
+        glocs3 <- readLocsFile(file.path(inputDir, paste(an, Glocsstring3, sep = "")))
         locslist$Grn[[3]] <- glocs3
     }
 
     if(twoColour){
+        locslist$Red <- list()
         if(verbose) cat("red locs1... ")
-        rlocs1 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Rlocsstring1, sep = "")))
+        locslist$Red[[1]] <- readLocsFile(file.path(inputDir, paste(an, Rlocsstring1, sep = "")))
         if(verbose) cat("red locs2... ")
-        rlocs2 <- BeadDataPackR:::readLocsFile(file.path(inputDir, paste(an, Rlocsstring2, sep = "")))
-        locslist<-list(glocs1=glocs1, glocs2=glocs2, rlocs1=rlocs1, rlocs2=rlocs2)
+        locslist$Red[[2]] <- readLocsFile(file.path(inputDir, paste(an, Rlocsstring2, sep = "")))
+        if(file.exists(file.path(inputDir, paste(an, Rlocsstring3, sep = "")))) {
+            locslist$Red[[3]] <- readLocsFile(file.path(inputDir, paste(an, Rlocsstring3, sep = "")))
+        }
     }
         
     if(verbose) cat("Done\n")
@@ -60,10 +63,10 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     t2 <- assignToImage(t1, an, inputDir = inputDir, twocolour = twoColour, locs=locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
 
     if(length(locslist$Grn) == 3) {
-        Swaths <- genThreeSwaths(t2, sectionName = an, twocolour = twoColour, locslist = locslist, segmentHeight = segmentHeight, verbose = verbose)
+        Swaths <- genThreeSwaths(t2, sectionName = an, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, verbose = verbose)
     } 
     else {
-        Swaths <- genSwaths(t2, an, twocolour = twoColour, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, section_height = segmentHeight, section_width = segmentWidth, swath_overlap = swathOverlap, locs = locslist, verbose = verbose)
+        Swaths <- genTwoSwaths(t2, sectionName = an, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, segmentWidth = segmentWidth, verbose = verbose)
     }
     
 

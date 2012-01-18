@@ -7,7 +7,7 @@ Data from Illumina's newer iScan system come in a different format to the previo
 
 
 \usage{
-processSwathData(inputDir = NULL, outputDir = NULL, twoColour=NULL, textstring="_perBeadFile.txt", segmentHeight = 326, segmentWidth = 397, swathOverlap = 81, fullOutput = FALSE, newTextString=".txt", verbose = FALSE)
+processSwathData(inputDir = NULL, outputDir = NULL, twoColour=NULL, textstring="_perBeadFile.txt", segmentHeight = 326, segmentWidth = 397, fullOutput = FALSE, newTextString=".txt", verbose = FALSE)
 }
 
 \arguments{
@@ -17,7 +17,6 @@ processSwathData(inputDir = NULL, outputDir = NULL, twoColour=NULL, textstring="
 \item{textstring}{String specifying the suffix to identify the text file containing original bead-level data.}
 \item{segmentHeight}{Each array section is made up of several segments of beads, arranged in an hexagonal pattern.  This value specifies the number of rows in a segment, and can be found in the accompanying .sdf file.  In the future we will attempt to automate this.}
 \item{segmentWidth}{Similar to the above argument, this specifies the number of columns in an array segment.}
-\item{swathOverlap}{Specifys the number of columns that appear in both swaths.  Again this will hopefully be automated in the future.}
 \item{fullOutput}{Boolean value specifying the type of output.  More details are given below.}
 \item{newTextString}{Suffix for the two new "per swath" bead-level text file.}
 \item{verbose}{Boolean value that, if TRUE, directs the function to print progress to the screen.}

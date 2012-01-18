@@ -62,7 +62,8 @@ assignToImage <- function(txt, sectionName, inputDir = NULL, twocolour = TRUE, l
         if(verbose) cat("Matching duplicate spots... ")
 
         if(length(locslist$Grn) == 2) {
-            unassigned <- duplicateSpots_2swaths(inputDir = inputDir, sectionName = sectionName, txt = txt, tmp = tmp, verbose = verbose)
+            #unassigned <- duplicateSpots_2swaths(inputDir = inputDir, sectionName = sectionName, txt = txt, tmp = tmp, locsLength = nrow(locslist$Grn[[1]]), verbose = verbose)
+            message("Assigning duplicated spot not currently supported;\n ", nrow(txt) - nrow(tmp), " bead(s) cannot be assigned to a swath and will be ignored");
         }
         else if(length(locslist$Grn) == 3) {
             message("Assigning duplicated spot not supported with 3 swaths;\n ", nrow(txt) - nrow(tmp), " beads cannot be assigned to a swath and will be ignored");
@@ -79,7 +80,7 @@ assignToImage <- function(txt, sectionName, inputDir = NULL, twocolour = TRUE, l
 }
 
 
-duplicateSpots_2swaths <- function(inputDir, sectionName, txt, tmp, verbose) {
+duplicateSpots_2swaths <- function(inputDir, sectionName, txt, tmp, locsLength, verbose) {
     ## if the tiff files exist we can calculate intesities from both images and compare to the txt file
     tiffFile1 <- file.path(inputDir, paste(sectionName, "-Swath1_Grn.tif", sep = ""))
     tiffFile2 <- file.path(inputDir, paste(sectionName, "-Swath2_Grn.tif", sep = ""))
@@ -91,16 +92,18 @@ duplicateSpots_2swaths <- function(inputDir, sectionName, txt, tmp, verbose) {
         txtDups <- which(!paste(txt[,3], txt[,4]) %in% paste(roundedX, roundedY));
         txtDups <- txtDups[order(txt[txtDups,3], txt[txtDups,4])]
         ## create a data.frame for these unassigned beads
-        unassigned <- cbind(txt[txtDups,], vector(length = length(txtDups)))
+        unassigned <- cbind(txt[txtDups,,drop = FALSE], vector(length = length(txtDups)))
         i = 1;
         while(i <= length(txtDups)) {
             g1 <- singleBeadIntensity(tiffFile1, txt[txtDups[i],3:4])
             g2 <- singleBeadIntensity(tiffFile2, txt[txtDups[i],3:4])
             ## assign the bead to the image which gives the closest intensity
-            unassigned[i,ncol(unassigned)] <- txt[txtDups[(i - 1) + which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g1, g2), lag = 2 ) ) )], ncol(unassigned)]
+            ## we set the "LocsIdx" column to be the largest idx for the appropriate swath
+            ## remember this is not really the index of the bead!!!!
+            unassigned[i,ncol(unassigned)] <- locsLength * which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g1, g2), lag = 2 ) ) )
             ## if the pair has been decoded, assign it to the other image
-            if(all(txt[txtDups[i+1],3:4] == txt[txtDups[i],3:4])) {
-                unassigned[i+1,ncol(unassigned)] <- txt[txtDups[(i - 1) + which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g2, g1), lag = 2 ) ) )], ncol(unassigned)]
+            if(i < length(txtDups) & all(txt[txtDups[i+1],3:4] == txt[txtDups[i],3:4])) {
+                unassigned[i+1,ncol(unassigned)] <- locsLength * which.min( abs( diff( c(txt[txtDups[i],2], txt[txtDups[i],2], g1, g2), lag = 2 ) ) )
                 i = i + 1;
             }
             i = i + 1;    
