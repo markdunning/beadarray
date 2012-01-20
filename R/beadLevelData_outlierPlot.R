@@ -1,7 +1,6 @@
 
-outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3,wtsname=NULL,horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main="",...){
-    locsFileName <- file.path(BLData@sectionData$Targets$directory[array], paste(BLData@sectionData$Targets$sectionName[array], "_Grn.locs", sep = ""))
-
+outlierplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, outlierFun = illuminaOutlierMethod, n=3,wtsname=NULL,horizontal = TRUE, nSegments = NULL, lowOutlierCol = "blue", highOutlierCol = "pink", outlierPch = ".", main="",...){
+    
     ##Find all outliers on the array
         
     wts<-1
@@ -38,7 +37,7 @@ outlierplot <- function(BLData, array=array, transFun = logGreenChannelTransform
         ys = getBeadData(BLData, what="GrnY", array=array)
         ys = ys - min(ys)
                 
-        segEnds = seq(from=0, to = max(ys), by = max(ys)/(nSegments + 1))
+        segEnds = seq(from=0, to = max(ys), by = max(ys)/(nSegments))
 
         if(horizontal) 
             abline(v=segEnds, lty=2, col="red")
