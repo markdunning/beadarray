@@ -188,26 +188,44 @@ genTwoSwaths <- function(txt, sectionName, inputDir = ".", locsList, twocolour =
         idxToUpdate1 <- idxToUpdate1[-tmpIdx];
         idxToUpdate2 <- idxToUpdate2[-tmpIdx];
 
-        swath2seg[idxToUpdate2, 1] <- swath1seg[idxToUpdate1, 1]
-        #swath2seg[idxToUpdate2,2] <- apply(swath2seg[idxToUpdate2,3:4], 1, FUN = singleBeadIntensity_6x6, tiffFile = file.path(paste(sectionName, "-Swath2_Grn.tif", sep = "")))
+#        swath2seg[idxToUpdate2, 1] <- swath1seg[idxToUpdate1, 1]
         
         ## calculate new intensities - we need to account for which resolution images were produced
-        if(ncol(tiffG2) > 1024) {
-            swath2seg[idxToUpdate2,2] <- round(illuminaForeground_6x6(tiffG2, swath2seg[idxToUpdate2,3:4]) - illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4]))
+        if(ncol(tiffG2) > 1024) { ## High Res (iScan)
+            intenG <- round(illuminaForeground_6x6(tiffG2, swath2seg[idxToUpdate2,3:4]) - illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4]))
             if(twocolour) {
-                swath2seg[idxToUpdate2,5] <- round(illuminaForeground_6x6(tiffR2, swath2seg[idxToUpdate2,6:7]) - illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7]))
+                intenR <- round(illuminaForeground_6x6(tiffR2, swath2seg[idxToUpdate2,6:7]) - illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7]))
             }
         }
-        else {
+        else {  ## low res (BeadScan)
             bg <- illuminaBackground(tiffG2, swath2seg[idxToUpdate2,3:4])
             fg <- illuminaForeground(illuminaSharpen(tiffG2), swath2seg[idxToUpdate2,3:4])
-            swath2seg[idxToUpdate2,2] <- round(fg - bg)
+            intenG <- round(fg - bg)
             if(twocolour) {
                 bg <- illuminaBackground(tiffR2, swath2seg[idxToUpdate2,6:7])
                 fg <- illuminaForeground(illuminaSharpen(tiffR2), swath2seg[idxToUpdate2,6:7])
-                swath2seg[idxToUpdate2,5] <- round(fg - bg)
+                intenR <- round(fg - bg)
             }
-        }  
+        }
+        
+        ## we can get beads with NA intensity, so lets remove those
+        if(twocolour) 
+            naIdx <- which(is.na(intenG) | is.na(intenR))
+        else   
+            naIdx <- which(is.na(intenG))            
+        if(length(naIdx)) {
+                idxToUpdate1 <- idxToUpdate1[-naIdx] 
+                idxToUpdate2 <- idxToUpdate2[-naIdx] 
+                intenG <- intenG[-naIdx]
+                ## beads in swath2 that can't get an intensity should be given ID 0
+                swath2seg[naIdx,1] <- 0
+                if(twocolour) 
+                    intenR <- intenR[-naIdx]
+        }
+        swath2seg[idxToUpdate2,2] <- intenG
+        if(twocolour)
+            swath2seg[idxToUpdate2,5] <- intenR
+        swath2seg[idxToUpdate2, 1] <- swath1seg[idxToUpdate1, 1]
         
         swath1res[(seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)), 1:ncol(swath1seg)] <- swath1seg
         swath1res[((seg * (segmentHeight * s1Width) + 1):((seg + 1) * (segmentHeight * s1Width)))[idxToUpdate1], ncol(swath1res)] <- 1

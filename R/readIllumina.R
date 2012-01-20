@@ -177,9 +177,15 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
             greenImage <- readTIFF(fileName = as.character(targets$greenImage[i]), path = as.character(targets$directory[i]));
             ## there are wrapper functions for these, but using .Call doesn't require
             ## copying the data in the function call
-            bg <- .Call("medianBackground", greenImage, data[,3:4], 1L, PACKAGE = "beadarray")
-            greenImage <- .Call("illuminaSharpen", greenImage, PACKAGE = "beadarray");
-            fg <- .Call("illuminaForeground", greenImage, data[,3:4], 0L, PACKAGE = "beadarray");
+            bg <- .Call("medianBackground", greenImage, data[,3:4], 1L, PACKAGE = "beadarray")           
+            ## we use the size of the tiff to infere which foreground intensity algorthm to use
+            if(ncol(greenImage) <= 1024) {
+                greenImage <- .Call("illuminaSharpen", greenImage, PACKAGE = "beadarray");
+                fg <- .Call("illuminaForeground", greenImage, data[,3:4], 0L, PACKAGE = "beadarray");
+            }
+            else {
+                fg <- .Call("illuminaForeground_6x6", greenImage, data[,3:4], 1L, PACKAGE = "beadarray");
+            }
             rm(greenImage);
             
             BLData <- insertBeadData(BLData, array = i, what = "Grn", data = fg - bg)
@@ -204,8 +210,13 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
                 ## there are wrapper functions for these, but using .Call doesn't require
                 ## copying the data in the function call
                 bg <- .Call("medianBackground", image, data[,6:7], 1L, PACKAGE = "beadarray")
-                image <- .Call("illuminaSharpen", image, PACKAGE = "beadarray");
-                fg <- .Call("illuminaForeground", image, data[,6:7], 0L, PACKAGE = "beadarray");
+                if(ncol(image) <= 1024) {
+                    image <- .Call("illuminaSharpen", image, PACKAGE = "beadarray");
+                    fg <- .Call("illuminaForeground", image, data[,6:7], 0L, PACKAGE = "beadarray");
+                }
+                else {
+                    fg <- .Call("illuminaForeground_6x6", image, data[,6:7], 1L, PACKAGE = "beadarray");
+                }
                 rm(image);
                 
                 BLData <- insertBeadData(BLData, array = i, what = "Red", data = fg - bg)
