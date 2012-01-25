@@ -24,9 +24,9 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
     
     ## try and guess the number of colurs by looking for files with "Red" in the name
     if(is.null(twoColour))
-        if(numberOfChannels(files[1]) == 2) 
+        if(numberOfChannels(file.path(inputDir, files[1])) == 2) 
             twoColour = TRUE
-        else if(numberOfChannels(files[1]) == 1)
+        else if(numberOfChannels(file.path(inputDir, files[1])) == 1)
             twoColour = FALSE
         else
             stop("Unexpected file format")
