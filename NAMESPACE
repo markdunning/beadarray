@@ -10,6 +10,9 @@ import(AnnotationDbi)
 importFrom(limma, normalizeQuantiles, neqc)
 import(BeadDataPackR)
 
+importFrom(stats4, plot, summary)
+importFrom(BiocGenerics, boxplot)
+
 exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
 exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
 
