@@ -244,9 +244,7 @@ for(cNum in 1:length(channelList)){
 
 				chName = channelList[[ch]]@name	
 				transFun = channelList[[ch]]@transFun[[1]]
-				oFUN = channelList[[ch]]@outlierFun[[1]]
-				exprFun = channelList[[ch]]@exprFun[[1]]
-				varFun = channelList[[ch]]@varFun[[1]]	
+
 							
 				cat("Summarizing ", chName, " channel\n")
 					
@@ -268,6 +266,9 @@ for(cNum in 1:length(channelList)){
 
 		
 		for(ch in 1:length(channelList)){
+			oFUN = channelList[[ch]]@outlierFun[[1]]
+			exprFun = channelList[[ch]]@exprFun[[1]]
+			varFun = channelList[[ch]]@varFun[[1]]	
 			
 			values2 = values[[ch]]
 			
