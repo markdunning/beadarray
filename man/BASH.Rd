@@ -52,6 +52,9 @@ BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,
 	It should be noted that to avoid repeated computation of distance, a "neighbours" matrix is used in the analysis. This matrix describes which beads are close to other beads. If a large number of beads are missing (for example, if beads with ProbeID = 0 were discarded) then this algorithm may be affected.
 
 	For more detailed descriptions of the algorithms, read the help files of the respective functions listed in "see also".
+
+	BASH is currently quite a slow, memory-intensive function. It will only run on a single array at a time, and for analysis of multiple arrays, we recommend parallelising the command. An example is shown using the base parallel package.
+      
 }
 
 \value{
@@ -77,12 +80,18 @@ BASH(BLData, array, neighbours=NULL, transFun = logGreenChannelTransform,
 if(require(beadarrayExampleData)){
 
 	data(exampleBLData)
-	output <- BASH(exampleBLData,array=1:2,useLocs=FALSE)
-	boxplot(output$ext) #view spread of extended scores
-	for(i in 1:2)
-	{
-		exampleBLData <- setWeights(exampleBLData, output$wts[[i]], i) #apply BASH weights to exampleBLData
+	output <- BASH(exampleBLData,array=1,useLocs=FALSE)
+        exampleBLData <- setWeights(exampleBLData, output$wts, array=1) #apply BASH weights to exampleBLData
+	
+	###BASH only accepts one array at a time, but it can be made to run in a parallel fashion
+	library(parallel)
+
+	output <- mclapply(c(1,2), function(x) BASH(exampleBLData, array=x, useLocs=FALSE))
+
+	for(i in 1:2){
+	  exampleBLData <- setWeights(exampleBLData, output[[i]]$wts, array=i) 
 	}
+      
 
 	#diffuse test is stricter
 	output <- BASH(exampleBLData, diffsig = 0.00001,array=1, useLocs=FALSE)
