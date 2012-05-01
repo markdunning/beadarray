@@ -65,7 +65,7 @@ processSwathData <- function(inputDir = NULL, outputDir = NULL, twoColour = NULL
 
 
     # Work out which observations are in which swath
-    t2 <- assignToImage(t1, an, inputDir = inputDir, twocolour = twoColour, locs=locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
+    t2 <- assignToImage(t1, an, inputDir = inputDir, twocolour = twoColour, locslist = locslist, GrnTiffSuffix1 = GrnTiffSuffix1, GrnTiffSuffix2 = GrnTiffSuffix2, verbose = verbose)
 
     if(length(locslist$Grn) == 3) {
         Swaths <- genThreeSwaths(t2, sectionName = an, inputDir = inputDir, twocolour = twoColour, locsList = locslist, GrnTiffSuffix2 = GrnTiffSuffix2, RedTiffSuffix2 = RedTiffSuffix2, segmentHeight = segmentHeight, verbose = verbose)

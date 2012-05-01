@@ -15,8 +15,8 @@ processSwathData(inputDir = NULL, outputDir = NULL, twoColour=NULL, textstring="
 \item{outputDir}{Similar to the above, specifying the directory where the output should be written.  If left \code{NULL} this defaults to the current working directory.}
 \item{twoColour}{Boolean value specifying whether the data is one or two channel.  If left NULL the function will attempt to determing the number of channels be examing the files present in the directory.}
 \item{textstring}{String specifying the suffix to identify the text file containing original bead-level data.}
-\item{segmentHeight}{Each array section is made up of several segments of beads, arranged in an hexagonal pattern.  This value specifies the number of rows in a segment, and can be found in the accompanying .sdf file.  In the future we will attempt to automate this.}
-\item{segmentWidth}{Similar to the above argument, this specifies the number of columns in an array segment.}
+\item{segmentHeight}{Each array section is made up of several segments of beads, arranged in an hexagonal pattern.  This value specifies the number of rows in a segment, and can be found in the accompanying .sdf file (<SizeGridX>).  In the future we will attempt to automate this.}
+\item{segmentWidth}{Similar to the above argument, this specifies the number of columns in an array segment (<SizeGridY>).}
 \item{fullOutput}{Boolean value specifying the type of output.  More details are given below.}
 \item{newTextString}{Suffix for the two new "per swath" bead-level text file.}
 \item{verbose}{Boolean value that, if TRUE, directs the function to print progress to the screen.}
