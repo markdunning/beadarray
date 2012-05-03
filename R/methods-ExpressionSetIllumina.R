@@ -28,7 +28,7 @@ setMethod("initialize", "ExpressionSetIllumina",
 setMethod("[", "ExpressionSetIllumina", function(x, i, j, ..., drop = FALSE) {
           x<-callNextMethod() # x, i, j, ..., drop=drop)
 
-	if(!is.null(x@QC) && !missing(j)) x@QC<-x@QC
+	if(!is.null(x@QC) && !missing(j)) x@QC<-x@QC[j,]
 	
           x
 })

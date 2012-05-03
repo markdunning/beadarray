@@ -9,8 +9,11 @@ setMethod("channel",
 	selArray = which(object@channelData[[1]] == name)	
 		
 	BSData = new("ExpressionSetIllumina")
-	assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],Detection = Detection(object)[,selArray],storage.mode="list")
-	
+      
+	if(!is.null(Detection(object))){
+	  assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],Detection = Detection(object)[,selArray],storage.mode="list")
+	}
+	else assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],storage.mode="list")
 	#assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],storage.mode="list")
 
 	##Create new channel information
