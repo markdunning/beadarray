@@ -189,9 +189,9 @@ The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using 
 
 <<ggplot-layout>>=
 require("gridExtra")
-bp1 <- boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor = "IlluminaID") + opts(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
+bp1 <- boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor = "IlluminaID") + labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
 
-bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") + opts(title = "Control Probe Comparison")
+bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") + labs(title = "Control Probe Comparison")
 
 print(bp1, vp = viewport(width = 0.5, height = 1, x = 0.25, y = 0.5))
 print(bp2, vp = viewport(width = 0.5, height = 1, x = 0.75, y = 0.5))

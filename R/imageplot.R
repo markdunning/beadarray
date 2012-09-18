@@ -132,7 +132,7 @@ imageplot <- function(BLData, array = 1, transFun = logGreenChannelTransform, sq
 
     ## create the plot
 #    image(res, col = col, xaxt = "n", yaxt = "n", zlim=zlim,...)
-     p <- ggplot(melt(res), aes(x = Var1, y=Var2, fill=value)) + geom_tile()  + scale_fill_gradient(low = low, high=high) + opts(axis.line=theme_blank(),axis.text.x=theme_blank(),axis.text.y=theme_blank(),axis.ticks=theme_blank(),axis.title.x=theme_blank(),axis.title.y=theme_blank(),legend.position="none",panel.background=theme_blank(),panel.border=theme_blank(),panel.grid.major=theme_blank(),panel.grid.minor=theme_blank(),plot.background=theme_blank())
+     p <- ggplot(melt(res), aes(x = Var1, y=Var2, fill=value)) + geom_tile()  + scale_fill_gradient(low = low, high=high) + theme(axis.line=element_blank(),axis.text.x=element_blank(),axis.text.y=element_blank(),axis.ticks=element_blank(),axis.title.x=element_blank(),axis.title.y=element_blank(),legend.position="none",panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),panel.grid.minor=element_blank(),plot.background=element_blank())
 
      p
 
