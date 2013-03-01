@@ -1,4 +1,4 @@
-readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, dec = ".",sampleSheet="sampleSheet.csv", ...) 
+readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation = NULL, sectionNames = NULL, metricsFile = "Metrics.txt", forceIScan = FALSE, dec = ".", sampleSheet="sampleSheet.csv", ...) 
 {
 	
     haveSampleInfo <- FALSE
@@ -13,12 +13,12 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation=NULL, s
 
 	  sSheet <- expInfo$sampleSheet
 	  haveSampleInfo <- TRUE
-	  message(paste("Sample Sheet ", normalizePath(sampleSheet), " will be used to read the data",sep=""))
+	  message(paste("Sample Sheet ", normalizePath(sampleSheet, mustWork = FALSE), " will be used to read the data",sep=""))
       }
        
     }
 
-    else message(paste("The specified sampleSheet ", normalizePath(sampleSheet), " was not found"))
+    else message(paste("The specified sampleSheet ", normalizePath(sampleSheet, mustWork = FALSE), " was not found"))
  
 
     if(!is.null(dir)){

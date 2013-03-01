@@ -2,20 +2,32 @@
 
 checkPlatform <- function(BLData,verbose=FALSE){
 
-	.Deprecated("suggestAnnotation", package="beadarray")
+    .Deprecated("suggestAnnotation", package="beadarray")
 
-	suggestAnnotation(data = BLData, verbose=verbose)
-
+    suggestAnnotation(data = BLData, verbose=verbose)
 
 }
 
 
-suggestAnnotation <- function(data,verbose=FALSE){
+suggestAnnotation <- function(data, verbose = FALSE){
 
 	data(platformSigs)
-
-
-	ids = getBeadData(data, array=1, what="ProbeID")
+        
+        if(class(data) == "ExpressionSetIllumina") {
+            existingAnnotation <- annotation(data)
+            if(length(existingAnnotation)) {
+                stop("Annotation already set as \"", existingAnnotation, "\"")
+            }
+            else {
+                ids = featureNames(data)
+            }
+        }
+        else if (class(BSData) == "beadLevelData") {
+            ids = getBeadData(data, array=1, what="ProbeID")
+        }
+        else {
+            stop("Argument 'data' is of an unrecognised class")
+        }
 
 	rks = sapply(platformSigs,function(x) (sum(ids %in% x)/length(ids))*100)
 

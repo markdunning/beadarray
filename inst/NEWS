@@ -25,7 +25,7 @@ MAJOR CHANGES
 OTHER CHANGES
 
     o   The imageplot function now uses ggplot2
-		
+	
     o   Accessor functions added for metrics, P95 value and signal-to-noise ratio
 
     o   The default background correction when running readIllumina with 
