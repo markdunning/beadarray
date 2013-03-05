@@ -22,7 +22,7 @@ suggestAnnotation <- function(data, verbose = FALSE){
                 ids = featureNames(data)
             }
         }
-        else if (class(BSData) == "beadLevelData") {
+        else if (class(data) == "beadLevelData") {
             ids = getBeadData(data, array=1, what="ProbeID")
         }
         else {
