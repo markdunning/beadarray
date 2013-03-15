@@ -111,6 +111,13 @@ analyseDirectory <- function(dir = NULL, twoChannel = NULL, sectionNames = NULL,
 	  }
 	  
 	}
+	
+	if(length(grep("-Swath1", allSections)) > 0 | length(grep("-Swath2", allSections)) > 0){
+	    if(length(grep("-Swath1", sectionNames)) == 0 & length(grep("-Swath2", sectionNames)) == 0 ){
+	      sectionNames <- paste(rep(sectionNames,each=2), c("-Swath1", "-Swath2"),sep="")
+	  }
+	  
+	}
 
     }
       
