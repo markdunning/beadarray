@@ -7,20 +7,16 @@ readSampleSheet <- function(sheet = "sampleSheet.csv"){
 
   experimentData <- NULL
 
-  if(grep("\\[Header\\]", data[[1]]) != 1 ){
-
-
-    warning("Expected to see \\[Header\\] in the first line of the sample sheet")
+  if(!grepl("\\[Header\\]", data[[1]])){
+      warning("Expected to see \\[Header\\] in the first line of the sample sheet")
   }
   
-   if(length(sampleStart) == 0){
-
-    stop("Expected to see \\[Data\\] somewhere in the sample sheet")
+  if(length(sampleStart) == 0) {
+      stop("Expected to see \\[Data\\] somewhere in the sample sheet")
   }
-
-  
-   else experimentData[["sampleSheet"]] <- read.csv(sheet, skip = sampleStart)
-
+  else {
+      experimentData[["sampleSheet"]] <- read.csv(sheet, skip = sampleStart)
+  }
 
   for(i in 2:(sampleStart-1)){
     
@@ -29,9 +25,6 @@ readSampleSheet <- function(sheet = "sampleSheet.csv"){
    
   }
 
-
-
   experimentData
-
 
 }
