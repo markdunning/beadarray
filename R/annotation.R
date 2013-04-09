@@ -104,20 +104,20 @@ setReplaceMethod("annotation",
 
 getAnnotation <- function(BLData){
 
-.Deprecated("annotation", package="beadarray")
+    .Deprecated("annotation", package="beadarray")
 
-annotation(BLData)
+    annotation(BLData)
 
 }
 
 
 setAnnotation <- function(BLData, annoName){
 
-.Deprecated("anotation<-", package="beadarray")
+    .Deprecated("annotation<-", package="beadarray")
 
-BLData@experimentData$annotation = annoName
+    BLData@experimentData$annotation = annoName
 
-BLData
+    BLData
 
 } 
 
