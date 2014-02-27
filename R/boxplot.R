@@ -80,7 +80,7 @@ setMethod("boxplot",
 	
 	if(!(addedSampleFactor) & !(addedProbeFactor)){
 	
-	p <- ggplot(data, aes(x = factor(Var2), y = value, fill=factor(Var2))) + geom_boxplot(outlier.shape=NA)
+	p <- ggplot(data, aes(x = factor(Var2), y = value)) + geom_boxplot(outlier.shape=NA,fill="steelblue") 
 
 	}
 
@@ -88,7 +88,7 @@ setMethod("boxplot",
 
 	else if(addedProbeFactor){
 		
-		p <- ggplot(data, aes(x = factor(probeFactor), y = value, fill=factor(probeFactor))) + geom_boxplot(outlier.shape=NA)
+		p <- ggplot(data, aes(x = factor(probeFactor), y = value, fill=factor(probeFactor))) + geom_boxplot(outlier.shape=NA) +  scale_fill_discrete(name=probeFactor)
 
 		if(addedSampleFactor){
 
@@ -103,13 +103,13 @@ setMethod("boxplot",
 	##change x axis to vary with new sample factor
 	else if(addedSampleFactor){
 
-		p <- ggplot(data, aes(x = factor(sampleFactor), y = value, fill=factor(sampleFactor))) + geom_boxplot(outlier.shape=NA)
+		p <- ggplot(data, aes(x = factor(sampleFactor), y = value, fill=factor(sampleFactor))) + geom_boxplot(outlier.shape=NA) + scale_fill_discrete(name=sampleFactor)
 			
 		
 
 	}
 	
-	p
+	p + theme(axis.title.x = element_blank(),axis.text.x  = element_text(angle=90),axis.title.y=element_text(angle=0)) + ylab(what)
 
 }
 )
