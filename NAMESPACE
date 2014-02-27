@@ -65,7 +65,4 @@ exportMethods(metrics, p95, snr)
 export(readSampleSheet)
 #exportMethods(sampleSheet, "sampleSheet<-")
 
-
-##deprecated
-
-
+export(makeGEOSubmissionFiles, createGEOMeta,createGEOMatrix)
