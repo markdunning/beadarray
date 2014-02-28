@@ -186,7 +186,7 @@ maplots <- function(data, sampleFactor = NULL,do.log=T){
   #    scale_alpha_continuous(limits=c(0,0.2),breaks=seq(0,0.2,by=0.025))+
    #   geom_point(colour="steelblue",alpha=0.02)+ theme_bw()+geom_smooth(col="red",method="loess")+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none")
     
-    plts[[1]] <- ggplot(df, aes(x = value.1,y=value)) + stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none") + ggtitle("Comparisons with Average array intensities")+ scale_fill_gradient2(low="grey",mid="steelblue",high="darkblue")
+    plts[[1]] <- ggplot(df, aes(x = value.1,y=value)) + stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none") + ggtitle("Comparisons with Average array intensities") + geom_smooth(method="gam", col="red")
     
   }
   
@@ -223,7 +223,7 @@ maplots <- function(data, sampleFactor = NULL,do.log=T){
         #stat_density2d(aes(alpha=..level..), geom="polygon") +
         #scale_alpha_continuous(limits=c(0,0.2),breaks=seq(0,0.2,by=0.025))+
         #geom_point(colour="steelblue",alpha=0.02)+ theme_bw()+geom_smooth(col="red",method="loess")+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2,ncol=length(esets[[i]])-1) + theme(legend.position="none")
-      plts[[i]] <- ggplot(df, aes(x = value.1,y=value)) + stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2) + theme(legend.position="none") + ggtitle(names(esets)[[i]])+ scale_fill_gradient2(low="grey",mid="steelblue",high="darkblue")
+      plts[[i]] <- ggplot(df, aes(x = value.1,y=value)) +stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2) + theme(legend.position="none") + ggtitle(names(esets)[[i]])+ scale_fill_gradient2(low="grey",mid="steelblue",high="darkblue")+ geom_smooth(method="gam", col="red")
       
       
       
