@@ -175,7 +175,19 @@ setGeneric("qcData", function(object) standardGeneric("qcData"))
 
 setMethod("qcData", signature(object="ExpressionSetIllumina"), function(object) object@QC@data)
 
+setGeneric("SampleGroup", function(object) standardGeneric("SampleGroup"))
 
+setMethod("SampleGroup", signature(object = "ExpressionSetIllumina"), function(object) object@SampleGroup)
+setGeneric("SampleGroup<-", function(object, value) standardGeneric("SampleGroup<-"))
+
+setReplaceMethod("SampleGroup",
+                 signature=signature(
+                   object="ExpressionSetIllumina",
+                   value="character"),
+                 function(object, value) {
+                   object@SampleGroup <- value
+                   object
+                 })
 
 #setGeneric("exprs<-", function(object, value) standardGeneric("exprs<-"))
 

@@ -166,7 +166,8 @@ the \Rfunction{illuminaHumanv3()} function, or equivalent from other packages.
 
 annotation(exampleSummaryData)
 
-exampleSummaryData.log2 <- addFeatureData(exampleSummaryData.log2, toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE", "PROBESEQUENCE", "GENOMICLOCATION"))
+exampleSummaryData.log2 <- addFeatureData(exampleSummaryData.log2, 
+toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE", "PROBESEQUENCE", "GENOMICLOCATION"))
 
 head(fData(exampleSummaryData.log2))
 
@@ -180,7 +181,8 @@ If we suspect that a particular gene may be differentially expressed between con
 <<boxplot6, fig=TRUE, echo=TRUE,width=8, height=4>>=
 ids <- which(fData(exampleSummaryData.log2)[,"SYMBOL"] == "ALB")
 
-boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor = "IlluminaID")
+boxplot(exampleSummaryData.log2[ids,], 
+  sampleFactor = "SampleFac", probeFactor = "IlluminaID")
 @
 
 \subsection{A note about ggplot2}
@@ -188,7 +190,8 @@ The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using 
 
 <<ggplot-layout>>=
 require("gridExtra")
-bp1 <- boxplot(exampleSummaryData.log2[ids,], sampleFactor = "SampleFac", probeFactor = "IlluminaID") + labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
+bp1 <- boxplot(exampleSummaryData.log2[ids,], 
+sampleFactor = "SampleFac", probeFactor = "IlluminaID") + labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
 
 bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") + labs(title = "Control Probe Comparison")
 
@@ -226,7 +229,8 @@ function. Below we quantile normalise the log$_2$ transformed data.
 
 <<normalise1>>=
 
-exampleSummaryData.norm <- normaliseIllumina(exampleSummaryData.log2, method="quantile", transform="none")
+exampleSummaryData.norm <- normaliseIllumina(exampleSummaryData.log2, 
+method="quantile", transform="none")
 
 @
 
@@ -234,7 +238,8 @@ An alternative approach is to combine normal-exponential background correction w
 
 <<normalise2>>=
 
-exampleSummaryData.norm2 <- normaliseIllumina(channel(exampleSummaryData, "G.ul"), method="neqc", transform="none")
+exampleSummaryData.norm2 <- normaliseIllumina(channel(exampleSummaryData, "G.ul"), 
+  method="neqc", transform="none")
 
 @
 
@@ -263,7 +268,8 @@ exampleSummaryData.filt <- exampleSummaryData.norm[!rem,]
 
 dim(exampleSummaryData.filt)
 
-boxplot(exampleSummaryData.norm, probeFactor = "PROBEQUALITY", sampleFactor="SampleFac") + opts(axis.text.x=theme_text(angle=45, hjust=1)) +  xlab("Probe Quality") + ylab("Log2 Intensity")
+boxplot(exampleSummaryData.norm, 
+probeFactor = "PROBEQUALITY", sampleFactor="SampleFac") + theme(axis.text.x=element_text(angle=45, hjust=1)) +  xlab("Probe Quality") + ylab("Log2 Intensity")
 
 @
 

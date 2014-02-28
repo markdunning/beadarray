@@ -23,6 +23,10 @@ setClass("ExpressionSetIllumina",
          contains="eSet"
 )
 
+setClass("limmaResults",
+         representation(DesignMatrix = "matrix", ArrayWeights = "vector", ContrastMatrix = "matrix", annotation="character"),
+         contains="eSet"
+)
 
 setClass("beadRegistrationData",
           representation(

@@ -50,30 +50,6 @@ limmaDE <- function(summaryData,SampleGroup=NULL,DesignMatrix=NULL,makeWts=TRUE,
 }
 
 
-
-
-
-
-
-ExpressionSetIlluminaFromGEO <- function(gse){
-  
-  summaryData <- new("ExpressionSetIllumina")
-  exprs(summaryData) <- exprs(gse)
-  phenoData(summaryData) <- phenoData(gse)
-  summaryData@channelData[[1]] <- rep("G", length(sampleNames(gse)))
-  featureData(summaryData) <- featureData(gse)[,1:3]
-  
-  annotation(summaryData) <- switch(annotation(gse), 
-                                    GPL6947="Humanv3", 
-                                    GPL10558="Humanv4", 
-                                    GPL6887="Mousev2", 
-                                    GPL6102="Humanv2")
-  summaryData <- addFeatureData(summaryData)
-  
-  summaryData
-}
-
-
 setAs("ExpressionSet","ExpressionSetIllumina",
       function(from)
       {
@@ -126,12 +102,6 @@ setAs("ExpressionSetIllumina", "GRanges",
         
         mcols(rng) <- data.frame(fData(from)[rn,], exprs(from)[rn,])
 
-      
-        if(!is.null(which)){
-          
-          rng <- rng[rng %over% which]
-        }      
-      
         sort(rng)
         
     }
@@ -145,8 +115,6 @@ setAs("ExpressionSetIllumina", "GRanges",
 setAs("limmaResults", "GRanges",
       function(from)
       {
-        
-        
         annoName <- annotation(from)
         
         annoLoaded <- require(paste("illumina", annoName, ".db",sep=""), character.only=TRUE)
@@ -174,8 +142,9 @@ setAs("limmaResults", "GRanges",
           rng <- GRanges(locMat[,1], IRanges(as.numeric(locMat[,2]), as.numeric(locMat[,3]),names=rn),strand=locMat[,4])
           #mcols(rng) <- df[match(names(rng), rownames(df)),]
           
-          mcols(rng) <- data.frame(fData(from)[rn,], exprs(from)[rn,])
-   
+          mcols(rng)$LogFC <- LogFC(from)[rn]
+          mcols(rng)$LogOdds <- LogOdds(from)[rn]
+          mcols(rng)$PValue <- PValue(from)[rn]
           sort(rng)
           
         }
