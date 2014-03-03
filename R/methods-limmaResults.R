@@ -54,9 +54,9 @@ setAs("limmaResults", "GRanges",
           rng <- GRanges(locMat[,1], IRanges(as.numeric(locMat[,2]), as.numeric(locMat[,3]),names=rn),strand=locMat[,4])
           #mcols(rng) <- df[match(names(rng), rownames(df)),]
           
-          mcols(rng)$LogFC <- LogFC(from)[rn]
-          mcols(rng)$LogOdds <- LogOdds(from)[rn]
-          mcols(rng)$PValue <- PValue(from)[rn]
+          mcols(rng)$LogFC <- LogFC(from[rn])
+          mcols(rng)$LogOdds <- LogOdds(from[rn])
+          mcols(rng)$PValue <- PValue(from[rn])
           sort(rng)
           
         }
@@ -158,17 +158,17 @@ setMethod("show", signature(object="limmaResults"), function(object) {
   cat(selectSome(round(ArrayWeights(object),digits=3)))
   cat("\nTop Table\n")
   
-  for(i in 1:ncol(limmaResults)){
+  for(i in 1:ncol(object)){
     cat(paste("Top 10 probes for contrast", sampleNames(object)[i], "\n"))
     topN <- order(LogOdds(object)[,i],decreasing=T)[1:10]
     sub <- object[topN,]
     df <- data.frame(fData(sub), LogFC=LogFC(sub)[,i], LogOdds=LogOdds(sub)[,i], pvalue = PValue(sub)[,i])
     print(head(df,4))
     cat("\n\n")
-    Direction <- rep(0, nrow(limmaResults))
-    sig <- which(p.adjust(PValue(limmaResults)[,i]) <0.05)
+    Direction <- rep(0, nrow(object))
+    sig <- which(p.adjust(PValue(object)[,i]) <0.05)
     if(length(sig)>0){
-      Direction[sig] <- sapply(LogFC(limmaResults)[sig,i], function(x) ifelse(x>0,1,-1))
+      Direction[sig] <- sapply(LogFC(object)[sig,i], function(x) ifelse(x>0,1,-1))
     cat("Significant probes with adjusted p-value < 0.05\n")
     }
   

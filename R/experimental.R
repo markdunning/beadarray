@@ -45,6 +45,7 @@ limmaDE <- function(summaryData,SampleGroup=NULL,DesignMatrix=NULL,makeWts=TRUE,
   DesignMatrix(deResults) <- design
   ContrastMatrix(deResults) <- cMat
   ArrayWeights(deResults) <- wts
+  annotation(deResults) <- annotation(summaryData)
   deResults
   
 }

@@ -337,6 +337,37 @@ topTable(contr.fit)
 
 @
 
+\subsection{Automating the DE analysis}
+A convenience function has been created to automate the differential expression analysis and repeat the above steps. The requirements to the function are a normalised object and a SampleGroup. By default, a design matrix and contrast matrix are derived from the SampleGroup by considering all pairwise contrasts. The matrices used, along with the array weights are saved in the output and can be retrieved later.
+
+<<>>=
+limmaRes <- limmaDE(exampleSummaryData.filt, SampleGroup=rna)
+limmaRes
+
+DesignMatrix(limmaRes)
+ContrastMatrix(limmaRes)
+ArrayWeights(limmaRes)
+plot(limmaRes)
+@
+
+
+
+\section{Output as GRanges}
+
+To assist with meta-analysis, and integration with other genomic data-types, it is possible to export the normalised values as a \Rclass{GRanges} object. Therefore it is easy to perform overlaps, counts etc with other data using the \Biocpkg{GenomicRanges} and \Biocpkg{GenomicFeatures} packages. In order for the ranges to be constructed, the genomic locations of each probe have to be obtained from the appropriate annotation package (\Rpackage{illuminaHumanv3.db} in this example). Provided that this package has been installed, the mapping should occur automatically.
+
+<<>>=
+gr <- as(exampleSummaryData.filt, "GRanges")
+@
+
+The limma analysis results can also be exported as a GRanges object for downstream analysis. The element metadata of the output object is set to the statistics from the limma analysis.
+
+<<>>=
+lgr <- as(limmaRes, "GRanges")
+lgr
+@
+
+
 \section{Creating a GEO submission file}
 
 <<eval=FALSE>>=
