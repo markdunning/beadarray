@@ -1,23 +1,23 @@
-%\VignetteIndexEntry{R classes and methods for Illumina bead-based data}
-%\VignetteDepends{}
-%\VignetteKeywords{beadarray expression analysis}
+%\VignetteIndexEntry{Analysis of bead-summary data}
 %\VignettePackage{beadarray}
-\documentclass{article}
-\usepackage{hyperref}
+%\VignetteEngine{knitr::knitr}
 
-\textwidth=6.2in
-\textheight=8.5in
-%\parskip=.3cm
-\oddsidemargin=.1in
-\evensidemargin=.1in
-\headheight=-.3in
+% To compile this document
+% library('knitr'); rm(list=ls()); knit('beadsummary.Rnw')
 
-\newcommand{\Rfunction}[1]{{\texttt{#1}}}
-\newcommand{\Robject}[1]{{\texttt{#1}}}
-\newcommand{\Rpackage}[1]{{\textsf{#1}}}
-\newcommand{\Rmethod}[1]{{\texttt{#1}}}
-\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
-\newcommand{\Rclass}[1]{{\textit{#1}}}
+\documentclass[12pt]{article}
+\newcommand{\usecase}{\textit{\textbf{Use Case: }}}
+
+<<knitr, echo=FALSE, results="hide">>=
+library("knitr")
+opts_chunk$set(tidy=FALSE,dev="png",fig.show="as.is",
+               fig.width=10,fig.height=6,
+               message=FALSE,eval=T,warning=FALSE)
+@ 
+
+<<style, eval=TRUE, echo=F, results="asis">>=
+BiocStyle::latex()
+@
 
 \begin{document}
 \title{\Rpackage{beadarray}: R classes and methods for Illumina bead-based data}
@@ -58,7 +58,7 @@ news(package="beadarray")
 
 In order to reduce the download size of \Rpackage{beadarray}, we have moved the example dataset to a Bioconductor data package (\Rpackage{beadarrayExampleData}) that can be downloaded in the usual way. An expanded dataset and more detailed commentary on the processing of BeadArray data is provided by the \Rpackage{BeadArrayUseCases} package. Finally, the \Rpackage{beadarray} package is also able to interact with various Illumina annotation packages in Bioconductor if they are installed. 
 
-<<CompanionPkg, eval=FALSE>>=
+<<CompanionPkg,eval=FALSE>>=
 
 source("http://www.bioconductor.org/biocLite.R")
 
@@ -115,7 +115,7 @@ When posting to the list, please include the commands you used along with the
 version of \Rpackage{beadarray} and {\tt R} you are working with.
 Version information can be obtained by running the following command:
 
-<<Mailing list, eval=FALSE>>=
+<<Mailing list>>=
 sessionInfo()
 @
 

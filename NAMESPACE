@@ -2,21 +2,22 @@ useDynLib(beadarray)
 import(Biobase)
 import(graphics)
 import(AnnotationDbi)
-
+import(GenomicRanges)
+import(IRanges)
 importFrom(reshape2, melt)
 
 #import(ggplot2)
 
 importFrom(BiocGenerics, annotation, "annotation<-")
 
-importFrom(limma, normalizeQuantiles, neqc)
+importFrom(limma, normalizeQuantiles, neqc, lmFit, arrayWeights,makeContrasts,contrasts.fit, eBayes)
 import(BeadDataPackR)
 
 importFrom(stats4, plot, summary)
 importFrom(BiocGenerics, boxplot, combine)
 
-exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData)
-exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine)
+exportClasses(beadLevelData, ExpressionSetIllumina, illuminaChannel, beadRegistrationData,limmaResults)
+exportMethods(show, "[[", dim, sectionNames, numBeads, boxplot, exprs, se.exprs,nObservations,Detection, annotation, "annotation<-","se.exprs<-","exprs<-", "nObservations<-", "Detection<-", qcData, combine, DesignMatrix, ContrastMatrix, ArrayWeights, LogFC, LogOdds, PValue,"ArrayWeights<-", "LogFC<-", "LogOdds<-", "PValue<-" ,"DesignMatrix<-", "ContrastMatrix<-")
 
 export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTargetsFile,  quickSummary, summarize, identifyControlBeads, insertSectionData, backgroundCorrectSingleSection, beadarrayUsersGuide, suggestAnnotation, addFeatureData)
 
@@ -43,14 +44,14 @@ export(plotBeadIntensities, genericBeadIntensityPlot, poscontPlot, outlierplot, 
 export(BASH, HULK, generateNeighbours, BASHCompact, BASHDiffuse, BASHExtended, setWeights,showArrayMask)
 
 ## Summary Data
-export(readBeadSummaryData, plotMAXY, normaliseIllumina, medianNormalise,calculateDetection)
+export(readBeadSummaryData,  normaliseIllumina, medianNormalise,calculateDetection)
 
 ## Deprecated functions.
 exportClasses(BeadLevelList)
 export(checkPlatform)
 export(getAnnotation, setAnnotation)
 export(beadStatusVector)
-
+export(plotMAXY)
 ##outlier methods
 
 export(illuminaOutlierMethod, squeezedVarOutlierMethod, weightsOutlierMethod, noOutlierMethod)
@@ -66,3 +67,7 @@ export(readSampleSheet)
 #exportMethods(sampleSheet, "sampleSheet<-")
 
 export(makeGEOSubmissionFiles, createGEOMeta,createGEOMatrix)
+
+export(maplots)
+
+export(limmaDE)

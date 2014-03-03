@@ -3,6 +3,7 @@
 \alias{show,beadLevelData-method}
 \alias{show,ExpressionSetIllumina-method}
 \alias{show,beadRegistrationData-method}
+\alias{show,limmaResults-method}
 \title{Display object summary}
 \description{
 	Prints a summary of an objects contents.

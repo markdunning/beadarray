@@ -35,7 +35,7 @@ This vignette demonstrates the analysis of bead summary data using beadarray. Th
 
 To make the most use of the code in this vignette, you will need to install the \Rpackage{beadarrayExampleData} and \Rpackage{illuminaHumanv3.db} packages from {\tt Bioconductor}. 
 
-<<installExampleData, echo=TRUE,eval=FALSE>>=
+<<installExampleData,eval=FALSE>>=
 source("http://www.bioconductor.org/biocLite.R")
 biocLite(c("beadarrayExampleData", "illuminaHumanv3.db"))
 
@@ -43,7 +43,7 @@ biocLite(c("beadarrayExampleData", "illuminaHumanv3.db"))
 
 The code used to produce these example data is given in the vignette of \Rpackage{beadarrayExampleData}, which follow similar steps to those described in the {\tt beadlevel.pdf} vignette of \Rpackage{beadarray}. The following commands give a basic description of the data.
 
-<<prelim, echo=TRUE>>=
+<<prelim>>=
 library("beadarray")
 
 require(beadarrayExampleData)
@@ -62,7 +62,7 @@ is an extension of the \Rclass{ExpressionSet} class developed by the Bioconducto
 
 
 
-<<objectPeek, echo=TRUE>>=
+<<objectPeek>>=
 
 exprs(exampleSummaryData)[1:5,1:5]
 se.exprs(exampleSummaryData)[1:5,1:5]
@@ -129,7 +129,7 @@ exampleSummaryData[randIDs,]
 Boxplots of intensity levels and the number of beads are useful for quality assessment purposes. \Rpackage{beadarray} includes a modified version of the \Rfunction{boxplot} function that can take any valid \Rclass{ExpressionSetIllumina} object and plot the expression matrix by default. For these examples we plot just a subset of the original \Robject{exampleSummaryData} object using random row IDs.
 
 
-<<boxplot1, fig=TRUE, echo=TRUE,width=8, height=4>>=
+<<boxplot1>>=
 
 boxplot(exampleSummaryData.log2[randIDs,])
 
@@ -137,7 +137,7 @@ boxplot(exampleSummaryData.log2[randIDs,])
 
 The function can also plot other \Robject{assayData} items, such as the number of observations.
 
-<<boxplot2, fig=TRUE, echo=TRUE,width=8, height=4>>=
+<<boxplot2>>=
 
 boxplot(exampleSummaryData.log2[randIDs,], what="nObservations")
 
@@ -145,7 +145,7 @@ boxplot(exampleSummaryData.log2[randIDs,], what="nObservations")
 
 The default boxplot plots a separate box for each array, but often it is beneficial for compare expression levels between different sample groups. If this information is stored in the \Rclass{phenoData} slot it can be incorporated into the plot. The following compares the overall expression level between UHRR and Brain samples. 
 
-<<boxplot4, fig=TRUE, echo=TRUE,width=8, height=4>>=
+<<boxplot4>>=
 
 boxplot(exampleSummaryData.log2[randIDs,], sampleFactor="SampleFac")
 
@@ -153,7 +153,7 @@ boxplot(exampleSummaryData.log2[randIDs,], sampleFactor="SampleFac")
 
 In a similar manner, we may wish to visualize the differences between sample groups for particular probe groups. As a simple example, we look at the difference between negative controls and regular probes for each array. You should notice that the negative controls as consistently lower (as expected) with the exception of array {\tt 4616443081\_B}.
 
-<<boxplot5, fig=TRUE, echo=TRUE,width=8, height=4>>=
+<<boxplot5>>=
 
 boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status")
 
@@ -178,7 +178,7 @@ illuminaHumanv3()
 
 If we suspect that a particular gene may be differentially expressed between conditions, we can subset the \Rclass{ExpressionSetIllumina} object to just include probes that target the gene, and plot the response of these probes against the sample groups. Furthermore, the different probes can be distinguished using the \Rcode{probeFactor} parameter.
 
-<<boxplot6, fig=TRUE, echo=TRUE,width=8, height=4>>=
+<<boxplot6>>=
 ids <- which(fData(exampleSummaryData.log2)[,"SYMBOL"] == "ALB")
 
 boxplot(exampleSummaryData.log2[ids,], 
@@ -186,14 +186,16 @@ boxplot(exampleSummaryData.log2[ids,],
 @
 
 \subsection{A note about ggplot2}
-The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using the \Rpackage{ggplot2} package rather than the {\tt R} base graphics system. Therefore, the standard way of manipulating graphics using {\tt par} and {\tt mfrow} etc will not work with the output of \Rfunction{boxplot}. However, the \Rpackage{ggplot2} package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the \Rpackage{ggplot2} package, which is beyond the scope of this vignette. In the below code, we assign the results of \Rfunction{boxplot} to objects that we combine using viewports (a concept from the {\tt grid} graphics system). The code also demonstrates how aspects of the plot can be altered programatically. 
+The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using the \Rpackage{ggplot2} package rather than the {\tt R} base graphics system. Therefore, the standard way of manipulating graphics using {\tt par} and {\tt mfrow} etc will not work with the output of \Rfunction{boxplot}. However, the \Rpackage{ggplot2} package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the \Rpackage{ggplot2} package, which is beyond the scope of this vignette. In the below code, we assign the results of \Rfunction{boxplot} to objects that we combine using the \Rpackage{gridExtra} package. The code also demonstrates how aspects of the plot can be altered programatically. 
 
 <<ggplot-layout>>=
 require("gridExtra")
 bp1 <- boxplot(exampleSummaryData.log2[ids,], 
-sampleFactor = "SampleFac", probeFactor = "IlluminaID") + labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
+sampleFactor = "SampleFac", probeFactor = "IlluminaID") 
+bp1 <- bp1+ labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
 
-bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") + labs(title = "Control Probe Comparison")
+bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") 
+bp2 <- bp2 + labs(title = "Control Probe Comparison")
 
 grid.arrange(bp1,bp2)
 
@@ -203,10 +205,14 @@ grid.arrange(bp1,bp2)
 
 \section{Other exploratory analysis}
 
-Replicate samples can also be compared using the \Rfunction{plotMAXY}. 
+Replicate samples can also be compared using the \Rfunction{maplots} function. 
 
-<<MAs, fig=TRUE, echo=TRUE,width=8, height=6>>=
-plotMAXY(exprs(exampleSummaryData), arrays=1:3,pch=16,log=FALSE)
+<<MAs>>=
+
+mas <- maplots(exampleSummaryData[,1:12],do.log=FALSE)
+
+mas[[1]]
+
 @
 
 
@@ -252,7 +258,7 @@ Filtering non-responding probes from further analysis can improve the power to d
 We recommend removing probes assigned a `Bad' or `No match' quality score after normalization.
 This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization. You can verify the relationship between probe quality and intensity by using the boxplot function.
 
-<<filter, echo=TRUE, fig=TRUE>>=
+<<filter>>=
 
 library(illuminaHumanv3.db)
 
@@ -310,7 +316,7 @@ topTable(contr.fit, coef=1)
 
 The \Rfunction{topTable} function displays the results of the empirical Bayes analysis alongside the annotation assigned by Illumina to each probe in the linear model fit. Often this will not provide sufficient information to infer biological meaning from the results. Within Bioconductor, annotation packages are available for each of the major Illumina expression array platforms that map the probe sequences designed by Illumina to functional information useful for downstream analysis. As before, the \Rpackage{illuminaHumanv3.db} package can be used for the arrays in this example dataset. 
 
-<<annotation, echo=TRUE>>=
+<<annotation>>=
 
 ids2 <- featureNames(exampleSummaryData.filt)
 

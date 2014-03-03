@@ -1,30 +1,24 @@
-% 
-%\VignetteIndexEntry{beadarray image processing} 
-%\VignetteKeywords{beadarray image processing} 
-%\VignettePackage{beadarray} 
-\documentclass{article}
+%\VignetteIndexEntry{Analysis of bead-summary data}
+%\VignettePackage{beadarray}
+%\VignetteEngine{knitr::knitr}
 
+% To compile this document
+% library('knitr'); rm(list=ls()); knit('beadsummary.Rnw')
 
+\documentclass[12pt]{article}
+\newcommand{\usecase}{\textit{\textbf{Use Case: }}}
 
-\textwidth=6.2in
-\textheight=8.5in
-%\parskip=.3cm 
-\oddsidemargin=.1in
-\evensidemargin=.1in
-\headheight=-.3in
+<<knitr, echo=FALSE, results="hide">>=
+library("knitr")
+opts_chunk$set(tidy=FALSE,dev="png",fig.show="as.is",
+               fig.width=10,fig.height=6,
+               message=FALSE,eval=T,warning=FALSE)
+@ 
 
-\newcommand{\Rfunction}[1]{{\texttt{#1}}}
-\newcommand{\Robject}[1]{{\texttt{#1}}}
-\newcommand{\Rpackage}[1]{{\textsf{#1}}}
-\newcommand{\Rmethod}[1]{{\texttt{#1}}}
-\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
-\newcommand{\Rclass}[1]{{\textit{#1}}}
+<<style, eval=TRUE, echo=F, results="asis">>=
+BiocStyle::latex()
+@
 
-
-
-\newcommand{\classdef}[1]{
-  {\em #1}
-}
 \begin{document}
 \title{Image Analysis with \Rpackage{beadarray}}
 \author{Mike Smith}
@@ -62,7 +56,7 @@ data <- readBeadLevelTextFile();
  \item Subtract background for foreground to give final intensity
 \end{itemize}
 
-\noindent If the function \Rfunction{readIllumina()} is called with \Rfunarg{useImages = TRUE} then intensities are extracted using code that gives a very close emulation of that used by Illumina.  If one wished to perform this calcuation themselves (outside of \Rfunction{readIllumina()}), it can be done using the following code.
+\noindent If the function \Rfunction{readIllumina()} is called with \Rcode{useImages = TRUE} then intensities are extracted using code that gives a very close emulation of that used by Illumina.  If one wished to perform this calcuation themselves (outside of \Rfunction{readIllumina()}), it can be done using the following code.
 
 <<standardProcessing, eval=FALSE>>=
 bg <- illuminaBackground(tiff, data[,3:4]);
@@ -133,7 +127,5 @@ sessionInfo()
 
 %\noindent [2] Smith ML, Dunning MJ, Tavar\'{e} S and Lynch AG, ``Identification and correction of previously unreported spatial phenomena using raw Illumina BeadArray data'', \textit{BMC Bioinformatics}, 2010, 11:208
 
-\bibliographystyle{unsrt}
-\bibliography{beadarray}
 
 \end{document}

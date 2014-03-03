@@ -33,16 +33,10 @@ This graphical tool shows differences that exist between two arrays and can be u
 In the lower-left section of the plot we see XY plots of the intensities for all pairwise comparisons between the arrays and in the upper right we have pairwise MA plots. Going down the first column we observe XY plots of array 1 against array 2 and array 1 against array 3 etc. Similarly, in the upper-right corner we can observe pairwise MA plots.
 }
 \author{Mark Dunning}
-
+\seealso{\code{\link{maplots}}}
 \examples{
+##This function is to be replaced. Please see maplots
 
-if(require(beadarrayExampleData)){
-
-data(exampleSummaryData)
-
-plotMAXY(exprs(channel(exampleSummaryData, "G")), arrays=1:3, log=FALSE)
-
-}
 
 }
 \keyword{hplot}

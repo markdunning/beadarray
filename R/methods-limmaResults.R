@@ -24,6 +24,58 @@ setMethod("initialize", "limmaResults",
           })
 
 
+setAs("limmaResults", "GRanges",
+      function(from)
+      {
+        annoName <- annotation(from)
+        
+        annoLoaded <- require(paste("illumina", annoName, ".db",sep=""), character.only=TRUE)
+        
+        if(annoLoaded){
+          
+          
+          mapEnv <-  as.name(paste("illumina", annoName, "GENOMICLOCATION",sep=""))
+          fn <- featureNames(from)
+          fn <- fn[which(fn %in% mappedkeys(eval(mapEnv)))]
+          
+          locs <- mget(fn,eval(mapEnv),ifnotfound=NA)
+          
+          locs <- lapply(locs, function(x) gsub(" ", ",", x,fixed=T))
+          
+          asLocMatrix <- function(str){
+            x<- do.call("rbind",sapply(strsplit(as.character(str), ",",fixed=T)[[1]], function(x) as.vector(strsplit(x, ":",fixed=T))))
+          }
+          
+          locMat <- lapply(locs, asLocMatrix)
+          
+          rn <- rep(names(locs), unlist(lapply(locMat, nrow)))
+          
+          locMat <- do.call("rbind", locMat)
+          rng <- GRanges(locMat[,1], IRanges(as.numeric(locMat[,2]), as.numeric(locMat[,3]),names=rn),strand=locMat[,4])
+          #mcols(rng) <- df[match(names(rng), rownames(df)),]
+          
+          mcols(rng)$LogFC <- LogFC(from)[rn]
+          mcols(rng)$LogOdds <- LogOdds(from)[rn]
+          mcols(rng)$PValue <- PValue(from)[rn]
+          sort(rng)
+          
+        }
+        
+      }
+      
+)
+
+
+setMethod("dim", "limmaResults", function(x) {
+  
+  nFeatures = nrow(fData(x))
+  nSamps = length(sampleNames(x))
+  
+  c("Features"=nFeatures, "Contrasts"=nSamps)
+} )
+
+
+
 setGeneric("LogFC", function(object) standardGeneric("LogFC"))
 
 setMethod("LogFC", signature(object="limmaResults"), function(object) assayDataElement(object, "LogFC"))
@@ -106,14 +158,31 @@ setMethod("show", signature(object="limmaResults"), function(object) {
   cat(selectSome(round(ArrayWeights(object),digits=3)))
   cat("\nTop Table\n")
   
-  topN <- order(LogOdds(object),decreasing=T)[1:10]
-  sub <- object[topN,]
-  df <- data.frame(fData(sub), LogFC=LogFC(sub), LogOdds=LogOdds(sub), pvalue = PValue(sub))
-  print(df)
+  for(i in 1:ncol(limmaResults)){
+    cat(paste("Top 10 probes for contrast", sampleNames(object)[i], "\n"))
+    topN <- order(LogOdds(object)[,i],decreasing=T)[1:10]
+    sub <- object[topN,]
+    df <- data.frame(fData(sub), LogFC=LogFC(sub)[,i], LogOdds=LogOdds(sub)[,i], pvalue = PValue(sub)[,i])
+    print(head(df,4))
+    cat("\n\n")
+  }
   
 })
 
-
+setMethod("plot",
+          signature(x = "limmaResults"),
+          function (x) 
+          {
+          
+            df <-  data.frame(LogFC = LogFC(x), LogOdds = LogOdds(x))
+            
+            colnames(data)[1] <- "LogFC"
+            colnames(data)[2] <- "LogOdds"
+            
+            ggplot(data, aes(x = LogFC, y = LogOdds)) + geom_point(color="steelblue",alpha=0.3)
+            
+          })
+          
 
 
 
