@@ -165,6 +165,16 @@ setMethod("show", signature(object="limmaResults"), function(object) {
     df <- data.frame(fData(sub), LogFC=LogFC(sub)[,i], LogOdds=LogOdds(sub)[,i], pvalue = PValue(sub)[,i])
     print(head(df,4))
     cat("\n\n")
+    Direction <- rep(0, nrow(limmaResults))
+    sig <- which(p.adjust(PValue(limmaResults)[,i]) <0.05)
+    if(length(sig)>0){
+      Direction[sig] <- sapply(LogFC(limmaResults)[sig,i], function(x) ifelse(x>0,1,-1))
+    cat("Significant probes with adjusted p-value < 0.05\n")
+    }
+  
+    print(table(Direction))                    
+    
+    cat("\n\n")
   }
   
 })
@@ -173,13 +183,14 @@ setMethod("plot",
           signature(x = "limmaResults"),
           function (x) 
           {
-          
-            df <-  data.frame(LogFC = LogFC(x), LogOdds = LogOdds(x))
+            df <- NULL
+            for(i in 1:ncol(x)){
+              df[[i]] <-  data.frame(LogFC = LogFC(x)[,i], LogOdds = LogOdds(x)[,i],Contrast=sampleNames(x)[i])
+              
+            }
+            df<-do.call("rbind",df)
             
-            colnames(data)[1] <- "LogFC"
-            colnames(data)[2] <- "LogOdds"
-            
-            ggplot(data, aes(x = LogFC, y = LogOdds)) + geom_point(color="steelblue",alpha=0.3)
+            ggplot(df, aes(x = LogFC, y = LogOdds)) + geom_point(color="steelblue",alpha=0.3) + facet_wrap(~Contrast)
             
           })
           
