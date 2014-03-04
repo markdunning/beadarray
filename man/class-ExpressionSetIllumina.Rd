@@ -2,7 +2,7 @@
 \docType{class}
 \alias{ExpressionSetIllumina-class}
 \alias{[,ExpressionSetIllumina-method}
-
+\alias{[,ExpressionSetIllumina,ANY-method}
 
 \alias{exprs,ExpressionSetIllumina-method}
 \alias{se.exprs,ExpressionSetIllumina-method}

@@ -51,14 +51,20 @@ setAs("limmaResults", "GRanges",
           rn <- rep(names(locs), unlist(lapply(locMat, nrow)))
           
           locMat <- do.call("rbind", locMat)
+          
+          grL <- new("GRangesList")
+          for(i in 1:ncol(from)){
           rng <- GRanges(locMat[,1], IRanges(as.numeric(locMat[,2]), as.numeric(locMat[,3]),names=rn),strand=locMat[,4])
           #mcols(rng) <- df[match(names(rng), rownames(df)),]
           
-          mcols(rng)$LogFC <- LogFC(from[rn])
-          mcols(rng)$LogOdds <- LogOdds(from[rn])
-          mcols(rng)$PValue <- PValue(from[rn])
-          sort(rng)
-          
+          mcols(rng)$LogFC <- as.numeric(as.vector(LogFC(from[rn,i])))
+          mcols(rng)$LogOdds <- as.numeric(as.vector(LogOdds(from[rn,i])))
+          mcols(rng)$PValue <- as.numeric(as.vector(PValue(from[rn,i])))
+        
+          grL[[i]] <- sort(rng)
+          }
+          names(grL) <- sampleNames(from)
+          grL
         }
         
       }
