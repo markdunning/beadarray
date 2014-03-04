@@ -24,7 +24,7 @@ setClass("ExpressionSetIllumina",
 )
 
 setClass("limmaResults",
-         representation(DesignMatrix = "matrix", ArrayWeights = "vector", ContrastMatrix = "matrix", annotation="character"),
+         representation(DesignMatrix = "matrix", ArrayWeights = "vector", ContrastMatrix = "matrix", annotation="character",SampleGroup="character"),
          contains="eSet"
 )
 

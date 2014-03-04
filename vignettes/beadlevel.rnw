@@ -29,7 +29,7 @@ BiocStyle::latex()
 
 The BeadArray technology involves randomly arranged arrays of beads, with beads having the same probe sequence attached colloquially known as a bead-type. BeadArrays are combined in parallel on either a rectangular chip (BeadChip) or a matrix of 8 by 12 hexagonal arrays (Sentrix Array Matrix or SAM). The BeadChip is further divided into strips on the surface known as sections, with each section giving rise to a different image when scanned by BeadScan. These images, and associated text files, comprise the raw data for a beadarray analysis. However, for BeadChips, the number of sections assigned to each biological sample may vary from 1 on HumanHT12 chips, 2 on HumanWG6 chips or sometimes ten or more for SNP chips with large numbers of SNPs being investigated. 
 
-This vignette demonstrates the processing of bead-level data using beadarray using data from the \Rpackage{beadarrayExampleData} package. A more comprehensive commentary on the analysis of Illumina BeadArray package is given in the vignette of \Rpackage{BeadArrayUseCases}, including other analysis tools that are not part of \Rpackage{beadarray}. 
+This vignette demonstrates the processing of bead-level data using beadarray using data from the \Biocexptpkg{beadarrayExampleData} package. A more comprehensive commentary on the analysis of Illumina BeadArray package is given in the vignette of \Biocexptpkg{BeadArrayUseCases}, including other analysis tools that are not part of \Biocpkg{beadarray}. 
 
 
 <<prelim, echo=TRUE>>=
@@ -49,10 +49,10 @@ Dunning MJ, Smith ML, Ritchie ME, Tavar\'e S, \textbf{beadarray: R classes and
 
 \section{Asking for help on beadarray}
 
-Wherever possible, questions about \Rpackage{beadarray} should be sent to the Bioconductor mailing 
+Wherever possible, questions about \Biocpkg{beadarray} should be sent to the Bioconductor mailing 
 list\footnote{\texttt{http://www.bioconductor.org}}. This way, all problems and solutions will be
 kept in a searchable archive. When posting to this mailing list, please first consult the 
-\emph{posting guide}. In particular, state the version of \Rpackage{beadarray} and {\tt R} that you 
+\emph{posting guide}. In particular, state the version of \Biocpkg{beadarray} and {\tt R} that you 
 are using\footnote{This can be done by pasting the output of running the function \texttt{sessionInfo()}.}, 
 and try to provide a reproducible example of your problem. This will help us to diagnose the problem. 
 
@@ -71,7 +71,7 @@ The raw images and text files required to perform a bead-level analysis are prod
 Usually, it will be necessary for you to modify BeadScan's default settings to obtain bead-level data, see 
 \texttt{http://www.compbio.group.cam.ac.uk/Resources/illumina}. 
 
-The command to read bead-level data from the current working directory is as follows. However, raw data are not included with \Rpackage{beadarrayExampleData} or \Rpackage{beadarray}. See the \Rpackage{BeadArrayUseCases} package for some example data to try out this function.
+The command to read bead-level data from the current working directory is as follows. However, raw data are not included with \Biocexptpkg{beadarrayExampleData} or \Biocpkg{beadarray}. See the \Biocexptpkg{BeadArrayUseCases} package for some example data to try out this function.
 
 
 <<readIllumina, echo=TRUE, eval=FALSE>>=
@@ -88,7 +88,7 @@ Data from Illumina's newer iScan system come in a different format to the previo
 
 
 \subsection{Array annotation}
-The text files produced by the scanning software give a very limited annotation for each bead that was scanned. All beads are associate with position on the array and a numeric code ({\tt ArrayAddress} that refers to the {\it decoding} oligonucleotide sequence attached to the bead\footnote{These decoding sequences are required due to the random nature of each array. However, the sequences themselves have never been disclosed}. A collection of beads with the same ArrayAddress are known as a bead-type and have the same 50-base sequence attached. However, the sequence and the region of the genome that it targets cannot be inferred from bead-level data alone. The mapping between ArrayAddress and hybridization sequence is provided on Illumina's FTP site in a series of flat-files and we have built Bioconductor packages that can be accessed from within \Rpackage{beadarray}. In order that the correct mappings are performed, users must specify an annotation name for their data, which requires knowing the organism being investigated and annotation revision number (e.g. Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1. The \Rfunction{suggestAnnotation} function may be used if you are unsure of which string to use. This checks the overlap between the bead IDs found in the data with a collection of IDs extracted from Illumina's annotation files. For the example data stored with the \Robject{beadarrayExampleData}, the suggested annotation is {\tt Humanv3}. Provided that the \Rpackage{illuminaHumanv3.db} package is present, \Rpackage{beadarray} will be able to annotate the \Robject{beadarrayExampleData} object.
+The text files produced by the scanning software give a very limited annotation for each bead that was scanned. All beads are associate with position on the array and a numeric code ({\tt ArrayAddress} that refers to the {\it decoding} oligonucleotide sequence attached to the bead\footnote{These decoding sequences are required due to the random nature of each array. However, the sequences themselves have never been disclosed}. A collection of beads with the same ArrayAddress are known as a bead-type and have the same 50-base sequence attached. However, the sequence and the region of the genome that it targets cannot be inferred from bead-level data alone. The mapping between ArrayAddress and hybridization sequence is provided on Illumina's FTP site in a series of flat-files and we have built Bioconductor packages that can be accessed from within \Rpackage{beadarray}. In order that the correct mappings are performed, users must specify an annotation name for their data, which requires knowing the organism being investigated and annotation revision number (e.g. Humanv4, Humanv3, Humanv2, Humanv1, Mousev2, Mousev1p1, Mousev1 or Ratv1). The \Rfunction{suggestAnnotation} function may be used if you are unsure of which string to use. This checks the overlap between the bead IDs found in the data with a collection of IDs extracted from Illumina's annotation files. For the example data stored with the \Robject{beadarrayExampleData}, the suggested annotation is {\tt Humanv3}. Provided that the \Biocannopkg{illuminaHumanv3.db} package is present, \Biocpkg{beadarray} will be able to annotate the \Robject{beadarrayExampleData} object.
 
 <<annotation>>=
 
@@ -163,13 +163,13 @@ logRedChannelTransform
 @
 
 \section{Boxplots and imageplots}
-Two standard quality assessment plots supported by \Rpackage{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artifacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualization is not possible when using the summarized BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinizing the original tiffs, as multiple arrays can be visualized on the one page. By default, the array surface is plotted with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a $\log_2$ transformation on the green channel. 
+Two standard quality assessment plots supported by \Biocpkg{beadarray} are the imageplot and boxplot. Boxplots can be used to compare foreground and background intensities between arrays. Image plots can be used to identify spatial artifacts on the array surface that can occur from mis-handling or scanning problems. With the raw bead-level data, we can plot false images of each array. This kind of visualization is not possible when using the summarized BeadStudio output, as the summary values are averaged over spatial positions. Image plots in R are also more convenient than scrutinizing the original tiffs, as multiple arrays can be visualized on the one page. By default, the array surface is plotted with the longest edge going horizontally. Both the \Rfunction{boxplot} and \Rfunction{imageplot} functions take a transformation function as an argument, with the default to do a $\log_2$ transformation on the green channel. 
 
 
 
-The imageplot can be configured in many ways (see manual page for more details). Sections from a BeadChip often have one edge that is much longer than the other, and it is important to recognise this when producing the plots. By default, \Rpackage{beadarray} makes imageplots with the longest edge on the x-axis (suitable for widescreen monitors). However, with {\tt horizontal = FALSE}, the imageplot will be displayed in the same orientation as the original TIFF image from the directory. With the \Rcode{squareSize} we can control how many pixels from the original image make up the pixels in the resulting imageplot. The following code produces imageplots for all array-sections in the example dataset. Note that we also change the colour scheme to represent low and high intensities by light and dark green respectively.
+The imageplot can be configured in many ways (see manual page for more details). Sections from a BeadChip often have one edge that is much longer than the other, and it is important to recognise this when producing the plots. By default, \Biocpkg{beadarray} makes imageplots with the longest edge on the x-axis (suitable for widescreen monitors). However, with {\tt horizontal = FALSE}, the imageplot will be displayed in the same orientation as the original TIFF image from the directory. With the \Rcode{squareSize} we can control how many pixels from the original image make up the pixels in the resulting imageplot. The following code produces imageplots for all array-sections in the example dataset. Note that we also change the colour scheme to represent low and high intensities by light and dark green respectively.
 
-If {\tt .locs} information is available to \Rpackage{beadarray}, it will be able to determine the optimal \Rcode{squareSize} parameter. If not (as with our example dataset), the user may have to experiment with different values for \Rcode{squareSize}. 
+If {\tt .locs} information is available to \Biocpkg{beadarray}, it will be able to determine the optimal \Rcode{squareSize} parameter. If not (as with our example dataset), the user may have to experiment with different values for \Rcode{squareSize}. 
 
 <<Imageplot1>>=
 
@@ -200,7 +200,7 @@ performed manipulations to the error image, we can then find outliers on this im
 determining which beads are more than 3 Median Absolute Devations, or MADs, from the median.
 
 Finally, since Illumina arrays are randomly arranged and use a hexagonal grid rather than rectangular,
-BASH has it's own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Rpackage{beadarray} the time taken for this step will be improved considerably.
+BASH has it's own method for creating networks of beads on the array. However, if {\tt .locs} files are available to \Biocpkg{beadarray} the time taken for this step will be improved considerably.
 
 The following command can be used to run BASH with the default settings
 
@@ -237,7 +237,7 @@ table(getBeadData(exampleBLData, array=2, what="wts"))
 
 
 
-Before combining the observations for each bead-type on an array, Illumina remove any observations with outlying intensity (more than 3 median absolute deviations from the median). This step can be repeated in \Rpackage{beadarray} and can be adjusted so that other outlier removal schemes can be run. It is useful to see where these outliers are located on the array surface. Often, they will coincide with beads masked by BASH or with any spatial artefacts that may be seen. The locations of beads that have been masked by BASH can be visualised using the \Rfunction{showArrayMask} function. 
+Before combining the observations for each bead-type on an array, Illumina remove any observations with outlying intensity (more than 3 median absolute deviations from the median). This step can be repeated in \Biocpkg{beadarray} and can be adjusted so that other outlier removal schemes can be run. It is useful to see where these outliers are located on the array surface. Often, they will coincide with beads masked by BASH or with any spatial artefacts that may be seen. The locations of beads that have been masked by BASH can be visualised using the \Rfunction{showArrayMask} function. 
 
 
 <<masks>>=
@@ -249,7 +249,7 @@ showArrayMask(exampleBLData, array=2)
 
 \section{Using control information}
 
-Illumina have designed a number of control probes for each expression platform. Two particular controls on expression arrays are housekeeping and biotin controls. With the \Rfunction{poscontPlot} function, we can plot the intensities of any ArrayAddressIDs that are annotated as belonging to the Housekeeping or Biotin group in the \Robject{ExpressionControlData} object. The mapping of controls to ArrayAddressID is possible by having the \Rpackage{illuminaHumanv3.db} package installed and setting the annotation of the object accordingly.
+Illumina have designed a number of control probes for each expression platform. Two particular controls on expression arrays are housekeeping and biotin controls. With the \Rfunction{poscontPlot} function, we can plot the intensities of any ArrayAddressIDs that are annotated as belonging to the Housekeeping or Biotin group in the \Robject{ExpressionControlData} object. The mapping of controls to ArrayAddressID is possible by having the \Biocannopkg{illuminaHumanv3.db} package installed and setting the annotation of the object accordingly.
 
 
 
@@ -293,7 +293,8 @@ The code below creates a different summarized object; one which reports median a
 myMedian <- function(x) median(x, na.rm=TRUE)
 myMad <- function(x) mad(x, na.rm=TRUE)
 
-greenChannel2 <- new("illuminaChannel", greenChannelTransform, illuminaOutlierMethod, myMedian, myMad,"G")
+greenChannel2 <- new("illuminaChannel", greenChannelTransform, illuminaOutlierMethod, 
+myMedian, myMad,"G")
 
 BSData2 <- summarize(exampleBLData, list(greenChannel2))
 

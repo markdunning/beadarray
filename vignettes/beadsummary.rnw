@@ -33,7 +33,7 @@ The BeadArray technology involves randomly arranged arrays of beads, with beads 
 
 This vignette demonstrates the analysis of bead summary data using beadarray. The recommended approach to obtain these data is to start with bead-level data and follow the steps illustrated in the vignette {\tt beadlevel.pdf} distributed with \Biocpkg{beadarray}. If bead-level data are not available, the output of Illumina's BeadStudio or GenomeStudio can be read by \Biocpkg{beadarray}. Example code to do this is provided at the end of this vignette. However, the same object types are produced from either of these routes and the same functionality is available.
 
-To make the most use of the code in this vignette, you will need to install the \Rpackage{beadarrayExampleData} and \Rpackage{illuminaHumanv3.db} packages from {\tt Bioconductor}. 
+To make the most use of the code in this vignette, you will need to install the \Biocexptpkg{beadarrayExampleData} and \Biocannopkg{illuminaHumanv3.db} packages from {\tt Bioconductor}. 
 
 <<installExampleData,eval=FALSE>>=
 source("http://www.bioconductor.org/biocLite.R")
@@ -41,7 +41,7 @@ biocLite(c("beadarrayExampleData", "illuminaHumanv3.db"))
 
 @
 
-The code used to produce these example data is given in the vignette of \Rpackage{beadarrayExampleData}, which follow similar steps to those described in the {\tt beadlevel.pdf} vignette of \Rpackage{beadarray}. The following commands give a basic description of the data.
+The code used to produce these example data is given in the vignette of \Biocexptpkg{beadarrayExampleData}, which follow similar steps to those described in the {\tt beadlevel.pdf} vignette of \Biocpkg{beadarray}. The following commands give a basic description of the data.
 
 <<prelim>>=
 library("beadarray")
@@ -58,7 +58,7 @@ exampleSummaryData
 
 
 Summarized data are stored in an object of type \Rclass{ExpressionSetIllumina} which
-is an extension of the \Rclass{ExpressionSet} class developed by the Bioconductor team as a container for data from high-throughput assays. Objects of this type use a series of slots to store the data.  For consistency with the definition of other \Rclass{ExpressionSet} objects, we refer to the expression values as the \Robject{exprs} matrix (this stores the probe-specific average intensities) which can be accessed using \Rfunction{exprs} and subset in the usual manner. The \Robject{se.exprs} matrix, which stores the probe-specific variability can be accessed using \Rfunction{se.exprs}. You may notice that the expression values have already been transformed to the log$_2$ scale, which is an option in the \Rfunction{summarize} function in \Rpackage{beadarray}. Data exported from BeadStudio or GenomeStudio will usually be un-transformed and on the scale $0$ to $2^{16}$.
+is an extension of the \Rclass{ExpressionSet} class developed by the Bioconductor team as a container for data from high-throughput assays. Objects of this type use a series of slots to store the data.  For consistency with the definition of other \Rclass{ExpressionSet} objects, we refer to the expression values as the \Rfunction{exprs} matrix (this stores the probe-specific average intensities) which can be accessed using \Rfunction{exprs} and subset in the usual manner. The \Robject{se.exprs} matrix, which stores the probe-specific variability can be accessed using \Rfunction{se.exprs}. You may notice that the expression values have already been transformed to the log$_2$ scale, which is an option in the \Rfunction{summarize} function in \Biocpkg{beadarray}. Data exported from BeadStudio or GenomeStudio will usually be un-transformed and on the scale $0$ to $2^{16}$.
 
 
 
@@ -85,7 +85,7 @@ pData(exampleSummaryData)
 
 \section{Subsetting the data}
 
-There are various way to subset an \Rclass{ExpressionSetIllumina} object, each of which returns an \Rclass{ExpressionSetIllumina} with the same slots, but different dimensions. When bead-level data are summarized by \Rpackage{beadarray} there is an option to apply different transformation options, and save the results as different channels in the resultant object. For instance, if summarizing two-colour data one might be interested in summarizing the red and green channels, or some combination of the two, separately. Both log$_2$ and un-logged data are stored in the \Robject{exampleSummaryData} object and can be accessed by using the \Rfunction{channel} function. Both the rows and columns in the resultant \Robject{ExpressionSetIllumina} object are kept in the same order.
+There are various way to subset an \Rclass{ExpressionSetIllumina} object, each of which returns an \Rclass{ExpressionSetIllumina} with the same slots, but different dimensions. When bead-level data are summarized by \Biocpkg{beadarray} there is an option to apply different transformation options, and save the results as different channels in the resultant object. For instance, if summarizing two-colour data one might be interested in summarizing the red and green channels, or some combination of the two, separately. Both log$_2$ and un-logged data are stored in the \Robject{exampleSummaryData} object and can be accessed by using the \Rfunction{channel} function. Both the rows and columns in the resultant \Robject{ExpressionSetIllumina} object are kept in the same order.
 
 <<subsetting1>>=
 
@@ -126,7 +126,7 @@ exampleSummaryData[randIDs,]
 \section{Exploratory analysis using boxplots}
 
 
-Boxplots of intensity levels and the number of beads are useful for quality assessment purposes. \Rpackage{beadarray} includes a modified version of the \Rfunction{boxplot} function that can take any valid \Rclass{ExpressionSetIllumina} object and plot the expression matrix by default. For these examples we plot just a subset of the original \Robject{exampleSummaryData} object using random row IDs.
+Boxplots of intensity levels and the number of beads are useful for quality assessment purposes. \Biocpkg{beadarray} includes a modified version of the \Rfunction{boxplot} function that can take any valid \Rclass{ExpressionSetIllumina} object and plot the expression matrix by default. For these examples we plot just a subset of the original \Robject{exampleSummaryData} object using random row IDs.
 
 
 <<boxplot1>>=
@@ -147,7 +147,7 @@ The default boxplot plots a separate box for each array, but often it is benefic
 
 <<boxplot4>>=
 
-boxplot(exampleSummaryData.log2[randIDs,], sampleFactor="SampleFac")
+boxplot(exampleSummaryData.log2[randIDs,], SampleGroup="SampleFac")
 
 @
 
@@ -159,7 +159,7 @@ boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status")
 
 @
 
-Extra feature annotation is available from annotation packages in Bioconductor, and \Rpackage{beadarray} includes functionality to extract these data from the annotation packages. The {\tt annotation} of the object must be set in order that the correct annotation package can be loaded. For example, the \Robject{exampleSummaryData} object was generated from {\tt Humanv3} data so the \Rpackage{illuminaHumanv3.db} package must be present. The \Rfunction{addFeatureData} function annotates all features of an \Robject{ExpressionSetIllumina} object using particular mappings from the \Rpackage{illuminaHumanv3.db} package. To see which mappings are available you can use
+Extra feature annotation is available from annotation packages in Bioconductor, and \Biocpkg{beadarray} includes functionality to extract these data from the annotation packages. The {\tt annotation} of the object must be set in order that the correct annotation package can be loaded. For example, the \Robject{exampleSummaryData} object was generated from {\tt Humanv3} data so the \Biocannopkg{illuminaHumanv3.db} package must be present. The \Rfunction{addFeatureData} function annotates all features of an \Robject{ExpressionSetIllumina} object using particular mappings from the \Biocannopkg{illuminaHumanv3.db} package. To see which mappings are available you can use
 the \Rfunction{illuminaHumanv3()} function, or equivalent from other packages.
 
 <<addFdata>>=
@@ -182,16 +182,16 @@ If we suspect that a particular gene may be differentially expressed between con
 ids <- which(fData(exampleSummaryData.log2)[,"SYMBOL"] == "ALB")
 
 boxplot(exampleSummaryData.log2[ids,], 
-  sampleFactor = "SampleFac", probeFactor = "IlluminaID")
+  SampleGroup = "SampleFac", probeFactor = "IlluminaID")
 @
 
 \subsection{A note about ggplot2}
-The \Rfunction{boxplot} function in \Rpackage{beadarray} creates graphics using the \Rpackage{ggplot2} package rather than the {\tt R} base graphics system. Therefore, the standard way of manipulating graphics using {\tt par} and {\tt mfrow} etc will not work with the output of \Rfunction{boxplot}. However, the \Rpackage{ggplot2} package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the \Rpackage{ggplot2} package, which is beyond the scope of this vignette. In the below code, we assign the results of \Rfunction{boxplot} to objects that we combine using the \Rpackage{gridExtra} package. The code also demonstrates how aspects of the plot can be altered programatically. 
+The \Rfunction{boxplot} function in \Biocpkg{beadarray} creates graphics using the \Rpackage{ggplot2} package rather than the {\tt R} base graphics system. Therefore, the standard way of manipulating graphics using {\tt par} and {\tt mfrow} etc will not work with the output of \Rfunction{boxplot}. However, the \Rpackage{ggplot2} package has equivalent functionality and is a more powerful and flexible system. There are numerous tutorials on how to use the \Rpackage{ggplot2} package, which is beyond the scope of this vignette. In the below code, we assign the results of \Rfunction{boxplot} to objects that we combine using the \Rpackage{gridExtra} package. The code also demonstrates how aspects of the plot can be altered programatically. 
 
-<<ggplot-layout>>=
+<<ggplot-layout,fig.height=8,fig.width=8>>=
 require("gridExtra")
 bp1 <- boxplot(exampleSummaryData.log2[ids,], 
-sampleFactor = "SampleFac", probeFactor = "IlluminaID") 
+SampleGroup = "SampleFac", probeFactor = "IlluminaID") 
 bp1 <- bp1+ labs(title = "ALB expression level comparison") + xlab("Illumina Probe") + ylab("Log2 Intensity")
 
 bp2 <- boxplot(exampleSummaryData.log2[randIDs,], probeFactor = "Status") 
@@ -202,6 +202,12 @@ grid.arrange(bp1,bp2)
 
 @
 
+We can also extract the data that was used to construct the plot.
+
+<<>>=
+bp1$data
+@
+
 
 \section{Other exploratory analysis}
 
@@ -209,28 +215,42 @@ Replicate samples can also be compared using the \Rfunction{maplots} function.
 
 <<MAs>>=
 
-mas <- maplots(exampleSummaryData[,1:12],do.log=FALSE)
+mas <- maplots(exampleSummaryData.log2,do.log=FALSE)
 
-mas[[1]]
+mas
 
 @
 
 
-In the top right corner we see the MA plots for all pairwise comparisons involving the 3 arrays. On
+In each panel we see the MA plots for all arrays in the experiment compared to a 'reference' array composed of the average intensities of all probes. On
 an MA plot, for each probe we plot the average of the log2 -intensities from the two arrays on the x-axis
-and the difference in intensities (log -ratios) on the y-axis. For replicate arrays we would expect all
-probes to be unchanged between the two samples and hence most points on the plot should lie along
-the line y=0. In the lower left corner of the MAXY plot we see the XY plot and for replicate arrays we
-would expect to see most points along the diagonal y = x. From this MAXY plot it is obvious that the
-second array is systematically different to the other replicates and may benefit from normalisation.
-Both XY and MA plots are available separately for a particular comparison of arrays using plotXY
-and plotMA.\\
+and the difference in intensities (log -ratios) on the y-axis. We would expect most probes to be and hence most points on the plot should lie along the line y=0. \\
+
+As with \Rfunction{boxplot}, the object returned is a \Rpackage{ggplot2} object that can be modified by the end-user.
+
+<<>>=
+##Added lines on the y axis
+mas + geom_hline(yintercept=c(-1.5,1.5),col="red",lty=2)
+##Added a smoothed line to each plot
+mas+ geom_smooth(col="red")
+##Changing the color scale
+mas + scale_fill_gradient2(low="yellow",mid="orange",high="red")
+@
+
+
+
+We can also specify a sample grouping, which will make all pairwise comparisons
+<<>>=
+mas <- maplots(exampleSummaryData.log2,do.log=FALSE,SampleGroup="SampleFac")
+mas[[1]]
+@
+
 
 \section{Normalisation}
 
 To correct for differences in expression level across a chip and between chips we need to normalise
-the signal to make the arrays comparable. The normalisation methods available in the \Rpackage{affy} package, or
-variance-stabilising transformation from the \Rpackage{lumi} package may be applied using the \Rfunction{normaliseIllumina}
+the signal to make the arrays comparable. The normalisation methods available in the \Biocpkg{affy} package, or
+variance-stabilising transformation from the \Biocpkg{lumi} package may be applied using the \Rfunction{normaliseIllumina}
 function. Below we quantile normalise the log$_2$ transformed data.
 
 <<normalise1>>=
@@ -240,7 +260,7 @@ method="quantile", transform="none")
 
 @
 
-An alternative approach is to combine normal-exponential background correction with quantile normalisation as suggested in the \Rpackage{limma} package. However, this requires data that have not been log-transformed. Note that the control probes are removed from the output object
+An alternative approach is to combine normal-exponential background correction with quantile normalisation as suggested in the \Biocpkg{limma} package. However, this requires data that have not been log-transformed. Note that the control probes are removed from the output object
 
 <<normalise2>>=
 
@@ -275,7 +295,7 @@ exampleSummaryData.filt <- exampleSummaryData.norm[!rem,]
 dim(exampleSummaryData.filt)
 
 boxplot(exampleSummaryData.norm, 
-probeFactor = "PROBEQUALITY", sampleFactor="SampleFac") + theme(axis.text.x=element_text(angle=45, hjust=1)) +  xlab("Probe Quality") + ylab("Log2 Intensity")
+probeFactor = "PROBEQUALITY", SampleGroup="SampleFac") 
 
 @
 
@@ -312,36 +332,11 @@ topTable(contr.fit, coef=1)
 
 @
 
-\section{Annotation of results}
-
-The \Rfunction{topTable} function displays the results of the empirical Bayes analysis alongside the annotation assigned by Illumina to each probe in the linear model fit. Often this will not provide sufficient information to infer biological meaning from the results. Within Bioconductor, annotation packages are available for each of the major Illumina expression array platforms that map the probe sequences designed by Illumina to functional information useful for downstream analysis. As before, the \Rpackage{illuminaHumanv3.db} package can be used for the arrays in this example dataset. 
-
-<<annotation>>=
-
-ids2 <- featureNames(exampleSummaryData.filt)
-
-chr <- mget(ids2, illuminaHumanv3CHR, ifnotfound = NA)
-cytoband<- mget(ids2, illuminaHumanv3MAP, ifnotfound = NA)
-refseq <- mget(ids2, illuminaHumanv3REFSEQ, ifnotfound = NA)
-entrezid <- mget(ids2, illuminaHumanv3ENTREZID, ifnotfound = NA)
-symbol <- mget(ids2, illuminaHumanv3SYMBOL, ifnotfound = NA)
-genename <- mget(ids2, illuminaHumanv3GENENAME, ifnotfound = NA)
-
-anno <- data.frame(Ill_ID = ids2, Chr = as.character(chr),
-           Cytoband = as.character(cytoband), RefSeq = as.character(refseq),
-           EntrezID = as.numeric(entrezid), Symbol = as.character(symbol),
-           Name = as.character(genename))
-
-contr.fit$genes <- anno
-topTable(contr.fit)
-
-@
-
 \subsection{Automating the DE analysis}
 A convenience function has been created to automate the differential expression analysis and repeat the above steps. The requirements to the function are a normalised object and a SampleGroup. By default, a design matrix and contrast matrix are derived from the SampleGroup by considering all pairwise contrasts. The matrices used, along with the array weights are saved in the output and can be retrieved later.
 
 <<>>=
-limmaRes <- limmaDE(exampleSummaryData.filt, SampleGroup=rna)
+limmaRes <- limmaDE(exampleSummaryData.filt, SampleGroup="SampleFac")
 limmaRes
 
 DesignMatrix(limmaRes)
@@ -354,21 +349,53 @@ plot(limmaRes)
 
 \section{Output as GRanges}
 
-To assist with meta-analysis, and integration with other genomic data-types, it is possible to export the normalised values as a \Rclass{GRanges} object. Therefore it is easy to perform overlaps, counts etc with other data using the \Biocpkg{GenomicRanges} and \Biocpkg{GenomicFeatures} packages. In order for the ranges to be constructed, the genomic locations of each probe have to be obtained from the appropriate annotation package (\Rpackage{illuminaHumanv3.db} in this example). Provided that this package has been installed, the mapping should occur automatically.
+To assist with meta-analysis, and integration with other genomic data-types, it is possible to export the normalised values as a \Rclass{GRanges} object. Therefore it is easy to perform overlaps, counts etc with other data using the \Biocpkg{GenomicRanges} and \Biocpkg{GenomicFeatures} packages. In order for the ranges to be constructed, the genomic locations of each probe have to be obtained from the appropriate annotation package (\Biocannopkg{illuminaHumanv3.db} in this example). Provided that this package has been installed, the mapping should occur automatically. The expression values are stored in the \Rclass{GRanges} object along with the \Rcode{featureData}.
 
 <<>>=
-gr <- as(exampleSummaryData.filt, "GRanges")
+gr <- as(exampleSummaryData.filt[,1:5], "GRanges")
+gr
 @
 
-The limma analysis results can also be exported as a GRanges object for downstream analysis. The element metadata of the output object is set to the statistics from the limma analysis.
+The limma analysis results can also be exported as a GRanges object for downstream analysis. The elementMetadata of the output object is set to the statistics from the limma analysis.
 
-<<>>=
+<<toGRangeslgr>>=
 lgr <- as(limmaRes, "GRanges")
 lgr
 @
 
+The data can be manipulated according to the DE stats
+
+<<>>=
+lgr <- lgr[[1]]
+lgr[order(lgr$LogOdds,decreasing=T)]
+
+lgr[p.adjust(lgr$PValue)<0.05]
+
+@
+
+We can do overlaps with other \Rclass{GRanges} objects
+
+<<>>=
+library(GenomicRanges)
+  HBE1 <- GRanges("chr11", IRanges(5289580,5291373),strand="-")
+
+  lgr[lgr %over% HBE1]
+
+@
+
+<<>>=
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+tx <- TxDb.Hsapiens.UCSC.hg19.knownGene
+trans <- transcriptsBy(tx)
+
+
+@
+
 
 \section{Creating a GEO submission file}
+
+Most journals are now requiring that data are deposited in a public repository prior to publication of a manuscript. Formatting the microarray and associated metadata can be time-consuming, so we have provided a function to create a template for a GEO submission. GEO require particular meta data to be recorded regarding the experimental protocols. The output of the \Rfunction{makeGEOSubmissionFiles} includes a spreadsheet with the relevant fields that can be filled in manually. The normalised and raw data are written to tab-delimited files. By default, the annotation package associated with the data is consulted to determine which probes are exported. Any probes that are present in the data, but not in the annotation package are excluded from the submission file.
+
 
 <<eval=FALSE>>=
 rawdata <- channel(exampleSummaryData, "G")
@@ -377,6 +404,8 @@ normdata <- normaliseIllumina(rawdata)
 makeGEOSubmissionFiles(normdata,rawdata)
                        
 @
+
+Alternatively, GEO's official probe annotation files can be used to decide which probe to include in the submission. You will first have to download the appropriate file from the GEO website.
 
 <<eval=FALSE>>=
 download.file(

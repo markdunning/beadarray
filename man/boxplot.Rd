@@ -43,21 +43,21 @@ A ggplot object is produced and displayed on screen
 	pData(subset)
 
 
-	boxplot(subset, sampleFactor = "SampleFac")
+	boxplot(subset, SampleGroup = "SampleFac")
 
 	##Both sample and probe factors can be combined into the same plot
 
-	boxplot(subset, sampleFactor = "SampleFac", probeFactor = "Status")
+	boxplot(subset, SampleGroup = "SampleFac", probeFactor = "Status")
 
-	##Suppose we have found differentially expressed genes between experimental conditions and want to plot their response. This can be done by first subsetting the ExpressionSetIllumina object and then using the probeFactor and sampleFactor accordingly
+	##Suppose we have found differentially expressed genes between experimental conditions and want to plot their response. This can be done by first subsetting the ExpressionSetIllumina object and then using the probeFactor and SampleGroup accordingly
       
 	if(require(illuminaHumanv3.db)){
 	
 	   ids <- unlist(mget("ALB", revmap(illuminaHumanv3SYMBOL)))
 	   subset2 <- subset[ids,]
 
-	   boxplot(subset2, sampleFactor = "SampleFac")
-	   boxplot(subset2, sampleFactor = "SampleFac", probeFactor = "IlluminaID")
+	   boxplot(subset2, SampleGroup = "SampleFac")
+	   boxplot(subset2, SampleGroup = "SampleFac", probeFactor = "IlluminaID")
 	}
 
     }

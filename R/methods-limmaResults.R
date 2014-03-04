@@ -143,6 +143,12 @@ setGeneric("ContrastMatrix", function(object) standardGeneric("ContrastMatrix"))
 setMethod("ContrastMatrix", signature(object = "limmaResults"), function(object) object@ContrastMatrix)
 setGeneric("ContrastMatrix<-", function(object, value) standardGeneric("ContrastMatrix<-"))
 
+setGeneric("SampleGroup", function(object) standardGeneric("SampleGroup"))
+
+setMethod("SampleGroup", signature(object = "limmaResults"), function(object) object@SampleGroup)
+
+
+
 setReplaceMethod("ContrastMatrix",
                  signature=signature(
                    object="limmaResults",

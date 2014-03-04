@@ -43,26 +43,26 @@ setMethod("boxplot",
 
 setMethod("boxplot",
     signature(x = "ExpressionSetIllumina"),
-    function (x, what="exprs",probeFactor = NULL, sampleFactor=NULL, facet = NULL,plot=FALSE,...) 
+    function (x, what="exprs",probeFactor = NULL, SampleGroup=NULL, facet = NULL,plot=FALSE,...) 
     {
 	
-	addedSampleFactor <- addedProbeFactor <- FALSE
+	addedSampleGroup <- addedProbeFactor <- FALSE
 	
 
 	data <- melt(assayDataElement(x, what))
 
-	if(!is.null(sampleFactor)){
+	if(!is.null(SampleGroup)){
 
-		if(sampleFactor %in% colnames(pData(x))){
+		if(SampleGroup %in% colnames(pData(x))){
 		
-		data <- data.frame(data, sampleFactor = pData(x)[match(data[,"Var2"], rownames(pData(x))),sampleFactor])
+		data <- data.frame(data, SampleGroup = pData(x)[match(data[,"Var2"], rownames(pData(x))),SampleGroup])
 		addedSampleFactor <- TRUE
 
 	
 
 		}
 
-		else message("Could not find a phenoData column called " , sampleFactor)
+		else message("Could not find a phenoData column called " , SampleGroup)
 	}	
 
 	if(!is.null(probeFactor)){
@@ -78,7 +78,7 @@ setMethod("boxplot",
 
 	##Traditional boxplot of all probes on every array vs array.	
 	
-	if(!(addedSampleFactor) & !(addedProbeFactor)){
+	if(!(addedSampleGroup) & !(addedProbeFactor)){
 	
 	p <- ggplot(data, aes(x = factor(Var2), y = value)) + geom_boxplot(outlier.shape=NA,fill="steelblue") 
 
@@ -90,9 +90,9 @@ setMethod("boxplot",
 		
 		p <- ggplot(data, aes(x = factor(probeFactor), y = value, fill=factor(probeFactor))) + geom_boxplot(outlier.shape=NA) +  scale_fill_discrete(name=probeFactor)
 
-		if(addedSampleFactor){
+		if(addedSampleGroup){
 
-			p <- p + facet_wrap(~sampleFactor)
+			p <- p + facet_wrap(~SampleGroup)
 		}
 
 		else p <- p + facet_wrap(~Var2)
@@ -101,9 +101,9 @@ setMethod("boxplot",
 	
 
 	##change x axis to vary with new sample factor
-	else if(addedSampleFactor){
+	else if(addedSampleGroup){
 
-		p <- ggplot(data, aes(x = factor(sampleFactor), y = value, fill=factor(sampleFactor))) + geom_boxplot(outlier.shape=NA) + scale_fill_discrete(name=sampleFactor)
+		p <- ggplot(data, aes(x = factor(SampleGroup), y = value, fill=factor(SampleGroup))) + geom_boxplot(outlier.shape=NA) + scale_fill_discrete(name=SampleGroup)
 			
 		
 

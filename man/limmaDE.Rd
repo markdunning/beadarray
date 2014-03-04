@@ -8,7 +8,7 @@ Differential expression using limma
 Function to perform a standard limma analysis using a single command.
 }
 \usage{
-limmaDE(summaryData, SampleGroup = NULL, DesignMatrix = NULL, makeWts = TRUE, ...)
+limmaDE(summaryData, SampleGroup, DesignMatrix = NULL, makeWts = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,7 @@ limmaDE(summaryData, SampleGroup = NULL, DesignMatrix = NULL, makeWts = TRUE, ..
 ExpressionSetIllumina object
 }
   \item{SampleGroup}{
-vector to describe the sample groups to be compared
+Name of column in phenoData that will be used to construct sample groups for analysis
 }
   \item{DesignMatrix}{
 Optional design matrix
@@ -47,7 +47,7 @@ if(require(beadarrayExampleData)){
   data(exampleSummaryData)
   rawdata <- channel(exampleSummaryData, "G")
   normdata <- normaliseIllumina(rawdata)
-  limmaResults <- limmaDE(normdata, SampleGroup = pData(normdata)$SampleFac)
+  limmaResults <- limmaDE(normdata, SampleGroup = "SampleFac")
   limmaResults
 }
 

@@ -1,13 +1,13 @@
 
 
 
-maplots <- function(data, sampleFactor = NULL,do.log=T){
+maplots <- function(data, SampleGroup = NULL,do.log=T){
   
   e<- exprs(data)
   
   if(do.log) e <- log2(exprs(data))
     
-  if(is.null(sampleFactor)){
+  if(is.null(SampleGroup)){
     
     message("No sample factor specified. Comparing to reference array")
     
@@ -39,13 +39,21 @@ maplots <- function(data, sampleFactor = NULL,do.log=T){
   #    scale_alpha_continuous(limits=c(0,0.2),breaks=seq(0,0.2,by=0.025))+
    #   geom_point(colour="steelblue",alpha=0.02)+ theme_bw()+geom_smooth(col="red",method="loess")+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none")
     
-    plts[[1]] <- ggplot(df, aes(x = value.1,y=value)) + stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none") + ggtitle("Comparisons with Average array intensities")
+    plts <- ggplot(df, aes(x = value.1,y=value)) + stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(~Var2) + theme(legend.position="none") + ggtitle("Comparisons with Average array intensities")
     
   }
   
   else{
     
-    esets <- split(sampleNames(data), pData(data)[,sampleFactor])
+    if(is.null(SampleGroup)) stop("You must define a SampleGroup for the differential expression\n")
+    
+    if (SampleGroup %in% colnames(pData(data)))  esets <- split(sampleNames(data), pData(data)[,SampleGroup])
+    else {
+      print(paste(colnames(pData(data)),collapse=" "))
+      stop("The SampleGroup argument must be a column name in the phenoData slot. See above for list of valid strings")
+    }
+    
+
     
     
     plts <- alist()
@@ -76,13 +84,13 @@ maplots <- function(data, sampleFactor = NULL,do.log=T){
         #stat_density2d(aes(alpha=..level..), geom="polygon") +
         #scale_alpha_continuous(limits=c(0,0.2),breaks=seq(0,0.2,by=0.025))+
         #geom_point(colour="steelblue",alpha=0.02)+ theme_bw()+geom_smooth(col="red",method="loess")+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2,ncol=length(esets[[i]])-1) + theme(legend.position="none")
-      plts[[i]] <- ggplot(df, aes(x = value.1,y=value)) +stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2) + theme(legend.position="none") + ggtitle(names(esets)[[i]])+ scale_fill_gradient2(low="grey",mid="steelblue",high="darkblue")
+      plts[[i]] <- ggplot(df, aes(x = value.1,y=value)) +stat_binhex(na.rm=T) + theme_bw()+xlab("A") + ylab("M") + facet_wrap(RefArray~Var2) + theme(legend.position="none") + ggtitle(names(esets)[[i]])
       
-      
+
       
     }
-    
     names(plts) <- names(esets)
+
   }
   
   plts
