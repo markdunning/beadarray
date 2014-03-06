@@ -49,7 +49,7 @@ limmaDE <- function(summaryData,SampleGroup,DesignMatrix=NULL,makeWts=TRUE,...){
   ContrastMatrix(deResults) <- cMat
   ArrayWeights(deResults) <- wts
   annotation(deResults) <- annotation(summaryData)
-  deResults@SampleGroup <- SampleGroup
+  deResults@SampleGroup <- as.character(SampleGroup)
   deResults
   
 }
