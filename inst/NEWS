@@ -1,4 +1,4 @@
-CHANGES FOR BioC 2.14
+CHANGES FOR BioC 2.14 - April 2014
 
 MAJOR CHANGES
 
@@ -7,15 +7,16 @@ MAJOR CHANGES
     o   An ExpressionSetIllumina object can be converted into a GRanges object, with the ranges derived 
         from the probe positions
 
-    o   The plotMAXY function has been deprecated and replace by maplots, which uses ggplot2
+    o   The plotMAXY function has been deprecated and replaced by defining the an instance of the generic plotMA for ExpressionSetIllumina
 
     o   Files suitable for submission to GEO can be created using makeGEOSubmission
 
     o   A new class for storing limma results; limmaResults
 
-    o   Differential expression analysis can be performed by supplying a SampleGroup vector. All              
-        pairwise comparisons are done
+    o   limmaDE: Differential expression analysis can be performed by supplying a SampleGroup vector. All              
+        pairwise comparisons are done.
 
+    o   A limmaResults object can be converted into a GRanges
 
 
 CHANGES IN VERSION 2.4

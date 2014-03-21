@@ -29,7 +29,7 @@ Other arguments that lmFit can accept
 }
 }
 \details{
-All pairwise contrasts will be made
+The function automates the steps used in a typical limma analysis. Firstly, the \link[limma]{lmFit} is used to fit a linear model from the specified column in \code{phenoData}. Array weights can be calculated (\link[limma]{arrayWeights}) and used in the fit. A contrast matrix of all possible contrasts is created (\link[limma]{makeContrasts}) and fitted (\link[limma]{makeContrasts}). The empirical Bayes shrinkage of variances is then applied (\link[limma]{eBayes}). The design matrix, contrast matrix and array weights can all be extracted for the resulting object.
 }
 \value{
 a limmaResults object
@@ -49,6 +49,7 @@ if(require(beadarrayExampleData)){
   normdata <- normaliseIllumina(rawdata)
   limmaResults <- limmaDE(normdata, SampleGroup = "SampleFac")
   limmaResults
+  DesignMatrix(limmaResults)
 }
 
 }

@@ -8,7 +8,7 @@ importFrom(reshape2, melt)
 
 #import(ggplot2)
 
-importFrom(BiocGenerics, annotation, "annotation<-")
+importFrom(BiocGenerics, annotation, "annotation<-",plotMA)
 
 importFrom(limma, normalizeQuantiles, neqc, lmFit, arrayWeights,makeContrasts,contrasts.fit, eBayes)
 import(BeadDataPackR)
@@ -68,6 +68,5 @@ export(readSampleSheet)
 
 export(makeGEOSubmissionFiles, createGEOMeta,createGEOMatrix)
 
-export(maplots)
 
 export(limmaDE)

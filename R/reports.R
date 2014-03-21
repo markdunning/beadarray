@@ -23,7 +23,7 @@
 #data(genesymbol)
 #geneList <- genesymbol[genes]
 
-makeReport <- function(geneList, summaryData, limmaRes, gr, tx,genome="hg19"){
+makeReport <- function(geneList, summaryData, limmaRes, tx,genome="hg19"){
   require(Nozzle.R1)
   require(ggbio)
 

@@ -1,11 +1,11 @@
 
 
 
-maplots <- function(data, SampleGroup = NULL,do.log=T){
+maplots <- function(object, SampleGroup = NULL,do.log=T){
   
-  e<- exprs(data)
+  e<- exprs(object)
   
-  if(do.log) e <- log2(exprs(data))
+  if(do.log) e <- log2(exprs(object))
     
   if(is.null(SampleGroup)){
     
@@ -47,9 +47,9 @@ maplots <- function(data, SampleGroup = NULL,do.log=T){
     
     if(is.null(SampleGroup)) stop("You must define a SampleGroup for the differential expression\n")
     
-    if (SampleGroup %in% colnames(pData(data)))  esets <- split(sampleNames(data), pData(data)[,SampleGroup])
+    if (SampleGroup %in% colnames(pData(object)))  esets <- split(sampleNames(object), pData(object)[,SampleGroup])
     else {
-      print(paste(colnames(pData(data)),collapse=" "))
+      print(paste(colnames(pData(object)),collapse=" "))
       stop("The SampleGroup argument must be a column name in the phenoData slot. See above for list of valid strings")
     }
     
@@ -96,7 +96,7 @@ maplots <- function(data, SampleGroup = NULL,do.log=T){
   plts
 }
 
-
+setMethod("plotMA", signature(object="ExpressionSetIllumina"),maplots)
 
 ##DEPRECATED.....
 

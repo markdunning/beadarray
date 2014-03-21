@@ -211,11 +211,11 @@ bp1$data
 
 \section{Other exploratory analysis}
 
-Replicate samples can also be compared using the \Rfunction{maplots} function. 
+Replicate samples can also be compared using the \Rfunction{plotMA} function. 
 
 <<MAs>>=
 
-mas <- maplots(exampleSummaryData.log2,do.log=FALSE)
+mas <- plotMA(exampleSummaryData.log2,do.log=FALSE)
 
 mas
 
@@ -241,7 +241,7 @@ mas + scale_fill_gradient2(low="yellow",mid="orange",high="red")
 
 We can also specify a sample grouping, which will make all pairwise comparisons
 <<>>=
-mas <- maplots(exampleSummaryData.log2,do.log=FALSE,SampleGroup="SampleFac")
+mas <- plotMA(exampleSummaryData.log2,do.log=FALSE,SampleGroup="SampleFac")
 mas[[1]]
 @
 
@@ -316,8 +316,7 @@ expression. You should notice that some arrays have very low weight consistent w
 
 We then define a contrast comparing UHRR to Brain Reference and calculate moderated $t$-statistics with empirical Bayes' shrinkage of the sample variances.
 
-<<deanalysis>>=
-library(limma)
+<<deanalysis,eval=FALSE>>=
 
 rna <- factor(pData(exampleSummaryData)[,"SampleFac"])
 
@@ -416,6 +415,58 @@ destfile="GPL6947.annot.gz"
 makeGEOSubmissionFiles(normdata,rawdata,softTemplate="GPL6947.annot.gz")
                        
 @
+
+\section{Analysing data from GEO}
+
+beadarray now contains functionality that can assist in the analysis of data available in the GEO (Gene Expression Omnibus) repository. We can download such data using \Biocpkg{GEOquery}:
+
+
+<<eval=FALSE>>=
+library(GEOquery)
+url <- "ftp://ftp.ncbi.nih.gov/pub/geo/DATA/SeriesMatrix/GSE33126/"
+filenm <- "GSE33126_series_matrix.txt.gz"
+if(!file.exists("GSE33126_series_matrix.txt.gz")) download.file(paste(url, filenm, sep=""), destfile=filenm)
+gse <- getGEO(filename=filenm)
+head(exprs(gse))
+
+@
+
+Now we convert this to an \Rclass{ExpressionSetIllumina}; \Biocpkg{beadarray}'s native class for dealing with summarised data. The \Rclass{annotation} slot stored in the \Rclass{ExpressionSet} is converted from a GEO identifier (e.g. GPL10558) to one recognised by \Biocpkg{beadarray} (e.g. Humanv4). If no conversion is possible, the resulting object will have \Rcode{NULL} for the annotation slot. If successful, you should notice that the object is automatically annotated against the latest available annotation package.
+
+<<eval=FALSE>>=
+summaryData <- as(gse, "ExpressionSetIllumina")
+summaryData
+head(fData(summaryData))
+@
+
+
+As we have annotated using the latest packages, we have imported the probe quality scores. We can calculate Detection scores by using the 'No match' probes as a reference; useful as data in repositories rarely export these data
+
+<<eval=FALSE>>=
+fData(summaryData)$Status <- 
+  ifelse(fData(summaryData)$PROBEQUALITY=="No match","negative","regular" )
+
+Detection(summaryData) <- calculateDetection(summaryData, 
+                              status=fData(summaryData)$Status)
+
+@
+
+The 'neqc' normalisation method from limma can also be used now. 
+<<eval=FALSE>>=
+summaryData.norm <- normaliseIllumina(summaryData,method="neqc", 
+    status=fData(summaryData)$Status)
+boxplot(summaryData.norm)
+@
+
+We can do differential expression if we know the column in the \Robject{phenoData} that contains sample group information
+
+
+<<eval=FALSE>>=
+
+limmaResults <- limmaDE(summaryData.norm, "source_name_ch1")
+limmaResults
+@
+
 
 
 
