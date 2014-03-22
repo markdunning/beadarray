@@ -6,11 +6,12 @@ Add probe data
 }
 \description{
 
-Adds extra probe-specific data to an ExpressionSetIllumina object. 
+Adds extra probe-specific data to an \code{ExpressionSetIllumina} object using an installed annotation package
 
 }
 \usage{
-addFeatureData(data, toAdd = c("SYMBOL", "PROBEQUALITY", "CODINGZONE", "PROBESEQUENCE"), annotation = NULL)
+addFeatureData(data, toAdd = c("SYMBOL", "PROBEQUALITY", 
+"CODINGZONE", "PROBESEQUENCE"), annotation = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,9 +27,9 @@ Optional character identifying the annotation of the ExpressionSetIllumina objec
 }
 \details{
 
-The function will identify which package should be used by concatenating illumina with the value of the annotation slot of the object, or the annotation argument passed in. If this package is not installed on the users computer, then the function will fail.
+The function will identify which package should be used by concatenating the character string \emph{illumina} with the value of the annotation slot of the object, or the annotation argument passed in. If this package is not installed on the users computer, then the function will fail.
 
-Assuming the package has been correctly loaded, the character vector toAdd is converted to the names of environments within the package. These environments are then queried with the featureNames of the input object. The result of each query is converted to a data frame and merged with the original feature data of the object.
+Assuming the package has been correctly loaded, the character vector \code{toAdd} is converted to the names of environments within the package. These environments are then queried with the \code{featureNames} of the input object. The result of each query is converted to a data frame and merged with the original feature data of the object.
 
 Alternatively, rather than querying from an annotation pacakge, a pre-prepared data frame can be used.
 
@@ -45,7 +46,7 @@ if(require(beadarrayExampleData)){
 data(exampleSummaryData)
 
 exampleSummaryData <- addFeatureData(exampleSummaryData)
-
+head(fData(exampleSummaryData))
 }
 
 }

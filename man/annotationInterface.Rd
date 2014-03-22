@@ -1,4 +1,4 @@
-\name{getAnnotation}
+\name{Annotation}
 \alias{annotation,beadLevelData-method}
 \alias{annotation,ExpressionSetIllumina-method}
 \alias{annotation<-,beadLevelData,character-method}
@@ -13,6 +13,7 @@ Storage of annotation information
 
 \usage{
     suggestAnnotation(data,verbose=FALSE)
+    annotation(data)
 }
 
 \arguments{

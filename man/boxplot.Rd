@@ -15,7 +15,7 @@ Extra factors can be added to the plots provided they are present in either the 
 }
 
 \value{
-A ggplot object is produced and displayed on screen
+A \code{ggplot} object is produced and displayed on screen
 }
 
 \examples{
