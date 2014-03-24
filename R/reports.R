@@ -66,7 +66,7 @@ makeReport <- function(geneList, summaryData, limmaRes, tx,genome="hg19"){
       t <- tracks(p.ideo,p1,p2)
     } else t <- tracks(p1,p2)
       
-      ggsave(t, file=outfile)
+      ggsave(t, filename=outfile)
     
     
   
@@ -88,7 +88,7 @@ makeReport <- function(geneList, summaryData, limmaRes, tx,genome="hg19"){
     } 
     
     outfile <- paste0("reports/",names(geneList)[i], "-boxplot.png")
-    ggsave(gg, file=outfile)
+    ggsave(gg, filename=outfile)
     
     k <- newFigure(basename(outfile),
                    type = IMAGE.TYPE.RASTER, exportId = NULL,

@@ -34,9 +34,7 @@ The function automates the steps used in a typical limma analysis. Firstly, the 
 \value{
 a limmaResults object
 }
-\references{
 
-}
 \author{
 Mark Dunning
 }

@@ -1,11 +1,8 @@
 ###A deprecated function. See suggestAnnotation (below)
 
 checkPlatform <- function(BLData,verbose=FALSE){
-
     .Deprecated("suggestAnnotation", package="beadarray")
-
     suggestAnnotation(data = BLData, verbose=verbose)
-
 }
 
 
@@ -75,6 +72,36 @@ suggestAnnotation <- function(data, verbose = FALSE){
 
 }
 
+## slightly modified version of suggestAnnotation that
+## takes a vector of probe IDs with no class checking
+suggestAnnotation_Vector <- function(ids){
+    
+    data(platformSigs)
+    
+    rks = sapply(platformSigs,function(x) (sum(ids %in% x)/length(ids))*100)
+    
+    if(all(rks < 90)) {
+        warning("Choice of platform may not be accurate. Consider re-running checkPlatform with verbose = TRUE option\n")
+        return(NULL)
+    }
+    
+    fullname <- tolower(names(sort(rks,decreasing=TRUE)[1]))
+       
+    if(length(grep("human", tolower(fullname)) > 0)){       
+        vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])       
+        shortname <- paste("Humanv", substr(as.character(fullname), vname+1, vname+1),sep="")        
+    }  
+    else if(length(grep("mouse", tolower(fullname)) > 0)){       
+        vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])        
+        shortname <- paste("Mousev", substr(as.character(fullname), vname+1, vname+1),sep="")        
+    }
+    else if(length(grep("rat", tolower(fullname)) > 0)){       
+        vname <-  grep("v", strsplit(as.character(fullname), "")[[1]])    
+        shortname <- paste("Ratv", substr(as.character(fullname), vname+1, vname+1),sep="")       
+    }
+    return(shortname)
+}
+
 
 
 
@@ -132,7 +159,7 @@ makeControlProfile <- function(annoName, excludeERCC = TRUE){
 
       annoPkg <- paste("illumina", annoName, ".db",sep="")
 
-      annoVers <- packageDescription(annoPkg, field="Version")
+      annoVers <- packageDescription(annoPkg, fields="Version")
     
       message(paste("Annotating control probes using package ", annoPkg, " Version:", annoVers, "\n",sep=""))
 

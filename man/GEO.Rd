@@ -47,8 +47,7 @@ Processed Matrix - GEO seems to want normalised intensities and detection scores
 Raw Matrix - As above, but non-normalised intensities are used
 
 }
-\value{
-}
+
 \references{
 http://www.ncbi.nlm.nih.gov/geo/info/geo_illu.html
 }

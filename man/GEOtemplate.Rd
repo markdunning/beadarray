@@ -8,10 +8,7 @@ GEO required fields
 Template containing latest required fields for GEO submission
 }
 \usage{data(metaTemplate)}
-\format{
-}
-\details{
-}
+
 \examples{
 data(metaTemplate)
 }

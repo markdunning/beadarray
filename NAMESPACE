@@ -11,7 +11,9 @@ importFrom(reshape2, melt)
 importFrom(BiocGenerics, annotation, "annotation<-",plotMA)
 
 importFrom(limma, normalizeQuantiles, neqc, lmFit, arrayWeights,makeContrasts,contrasts.fit, eBayes)
+
 import(BeadDataPackR)
+import(illuminaio)
 
 importFrom(stats4, plot, summary)
 importFrom(BiocGenerics, boxplot, combine)
@@ -23,7 +25,7 @@ export(insertBeadData, removeBeadData, getBeadData, plotChipLayout, createTarget
 
 
 ## Data input
-export(readIllumina, readLocsFile, convertBeadLevelList)
+export(readIllumina, readLocsFile, convertBeadLevelList, readIdatFiles)
 
 ## Dealing with Swath data
 export(processSwathData)

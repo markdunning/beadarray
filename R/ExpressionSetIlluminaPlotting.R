@@ -107,7 +107,7 @@ plotMAXY <- function(exprs, arrays, log = TRUE, genesToLabel=NULL,labels=colname
   mat <- matrix(c(0,1,0,0.04, 0,1,0.96,1, 0,0.04,0.04,0.96,
                   0.96,1,0.04,0.96, 0.04,0.96,0.04,0.96), byrow = T, ncol= 4)
   
-  close.screen(all=TRUE)
+  close.screen(all.screens = TRUE)
   
   split.screen(mat)
   

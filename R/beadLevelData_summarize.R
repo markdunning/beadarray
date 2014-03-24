@@ -83,10 +83,6 @@ if(useSampleFac){
 		}
 	}
 
-
-
-
-
 }
 
 else{
@@ -399,7 +395,7 @@ if(!is.null(annoName)){
 
 	    annoPkg <- paste("illumina", annoName, ".db",sep="")
 
-	    annoVers <- packageDescription(annoPkg, field="Version")
+	    annoVers <- packageDescription(annoPkg, fields="Version")
     
 	     message(paste("Annotating control probes using package ", annoPkg, " Version:", annoVers, "\n",sep=""))
 

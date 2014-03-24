@@ -136,7 +136,7 @@ else{
 		  if(overWrite){
 
 			  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-			  ggsave(im, file = fname.im,width=4,height=1)
+			  ggsave(im, filename = fname.im,width=4,height=1)
 		  }
 
 		  else cat("Positive control plot exists. Skipping to next plot\n")	
@@ -145,7 +145,7 @@ else{
 	  
 	  else{
 		  im <- imageplot(BLData, array=i, useLocs=TRUE,zlim=zlim, horizontal = horizontal, transFun = imageplotFun)	
-		  ggsave(im, file=fname.im,width=4,height=1)
+		  ggsave(im, filename = fname.im,width=4,height=1)
 
 		  
 	  }
