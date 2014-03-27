@@ -25,7 +25,7 @@ BiocStyle::latex()
 \author{Mark Dunning}
 \begin{document}
 \maketitle
-
+\tableofcontents
 \section{Introduction}
 %%\Rpackage{beadarray} is a package for the pre-processing and analysis of Illumina BeadArray. The main advantage is being able to read raw data created by Illumina's scanning software. Data created in this manner are in the same format regardless of the assay (i.e expression, genotyping, methylation) being performed. Thus, beadarray is able to handle all these types of data. Many functions within beadarray have been written to cope with this flexibility. 
 
@@ -382,13 +382,26 @@ library(GenomicRanges)
 
 @
 
+\subsection{Visualisation options}
+
+Having converted the DE results into a common format such as \Rclass{GRanges} allows access to common routines, such as those provided by \Biocpkg{ggbio}. For example, it is often useful to know where exactly the illumina probes are located with respect to the gene.
+
 <<>>=
+library(ggbio)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 tx <- TxDb.Hsapiens.UCSC.hg19.knownGene
-trans <- transcriptsBy(tx)
-
-
+p1 <- autoplot(tx, which=HBE1)
+p2 <-   autoplot(lgr[lgr %over% HBE1])
+tracks(p1,p2)
+id <- plotIdeogram(genome="hg19", subchr="chr11")
+tracks(id,p1,p2)
 @
+
+Genome-wide plots are also available
+<<>>=
+plotGrandLinear(lgr, aes(y = LogFC))
+@
+
 
 
 \section{Creating a GEO submission file}
@@ -404,7 +417,7 @@ makeGEOSubmissionFiles(normdata,rawdata)
                        
 @
 
-Alternatively, GEO's official probe annotation files can be used to decide which probe to include in the submission. You will first have to download the appropriate file from the GEO website.
+Alternatively, GEO's official probe annotation files can be used to decide which probes to include in the submission. You will first have to download the appropriate file from the GEO website.
 
 <<eval=FALSE>>=
 download.file(
