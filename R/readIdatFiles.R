@@ -16,7 +16,8 @@ readIdatFiles <- function(idatFiles = NULL) {
     }
     
     ## get the array section names
-    sectionNames <- strtrim(basename(idatFiles)[grep("Grn", basename(idatFiles))], 12)
+    sectionNames <- basename(idatFiles)[grep("Grn", basename(idatFiles))]
+    sectionNames <- substr(sectionNames, 1, regexpr("_Grn", sectionNames)-1)
     
     BSData <- new("ExpressionSetIllumina")
     
@@ -106,7 +107,7 @@ setFeatureData <- function(BSData, probeIDs) {
             ## if we have some ArrayAddressIDs that don't map to an IlluminaID we'll remove the bead-type
             for(index in names(assayData(BSData))) {
                 if(length(assayData(BSData)[[ index ]]) > 0) {
-                    assayData(BSData)[[ index ]] <- assayData(BSData)[[ index ]][-which(is.na(IlluminaIDs)), ]
+                    assayData(BSData)[[ index ]] <- assayData(BSData)[[ index ]][-which(is.na(IlluminaIDs)), ,drop=FALSE ]
                 }
             }
             probeIDs <- probeIDs[ -which(is.na(IlluminaIDs)) ]

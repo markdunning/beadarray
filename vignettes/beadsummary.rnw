@@ -555,6 +555,17 @@ place of BEAD STDERR - be sure to check that the columns argument is appropriate
 Equivalent arguments (qc.sep, qc.skip and qc.columns) are used to read the data from qcFile. See
 the help page (?readBeadSummaryData) for a complete description of each argument to the function.
 
+\subsection{Readings IDAT files}
+
+<<readIDAT, eval=FALSE>>=
+downloadDir <- tempdir()
+getGEOSuppFiles("GSE27073", baseDir = downloadDir)
+idatFiles <- list.files(path = "~/Data/GEO_idat/", pattern = ".idat", full.names=TRUE)
+gunzip(idatFiles)
+idatFiles <- list.files(path = "~/Data/GEO_idat/", pattern = ".idat", full.names=TRUE)
+BSData <- readIdatFiles(idatFiles[1])
+@
+
 
 \section{Citing beadarray} 
 
