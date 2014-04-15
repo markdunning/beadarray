@@ -24,6 +24,7 @@ BiocStyle::latex()
 \title{Analysis of Bead-summary Data using beadarray}
 \author{Mark Dunning}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 \tableofcontents
 \section{Introduction}
@@ -555,16 +556,24 @@ place of BEAD STDERR - be sure to check that the columns argument is appropriate
 Equivalent arguments (qc.sep, qc.skip and qc.columns) are used to read the data from qcFile. See
 the help page (?readBeadSummaryData) for a complete description of each argument to the function.
 
-\subsection{Readings IDAT files}
+\subsection{Reading IDAT files}
+
+We can also read BeadArray data in the format produced directly by the scanner, the IDAT file.  The example below uses the \Biocpkg{GEOquery} to obtain the four IDAT files stored as supplementary information for GEO series GSE27073.  In this case the stored files have been compressed using gzip and need to be decompressed before \Biocpkg{beadarray} can read them.  If you are using IDAT files as they come of the scanner this step will not be necessary.
 
 <<readIDAT, eval=FALSE>>=
+
+library(beadarray)
+library(GEOquery)
+
 downloadDir <- tempdir()
-getGEOSuppFiles("GSE27073", baseDir = downloadDir)
-idatFiles <- list.files(path = "~/Data/GEO_idat/", pattern = ".idat", full.names=TRUE)
-gunzip(idatFiles)
-idatFiles <- list.files(path = "~/Data/GEO_idat/", pattern = ".idat", full.names=TRUE)
-BSData <- readIdatFiles(idatFiles[1])
+getGEOSuppFiles("GSE27073", makeDirectory = FALSE, baseDir = downloadDir)
+idatFiles <- list.files(path = downloadDir, pattern = ".idat.gz", full.names=TRUE)
+sapply(idatFiles, gunzip)
+idatFiles <- list.files(path = downloadDir, pattern = ".idat", full.names=TRUE)
+BSData <- readIdatFiles(idatFiles)
 @
+
+The output from \Rfunction{readIdatFiles()} is an object of class \Rclass{ExpressionSetIllumina}, as described earlier.
 
 
 \section{Citing beadarray} 
