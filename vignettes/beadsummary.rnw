@@ -24,7 +24,7 @@ BiocStyle::latex()
 \title{Analysis of Bead-summary Data using beadarray}
 \author{Mark Dunning}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 \maketitle
 \tableofcontents
 \section{Introduction}
@@ -561,10 +561,8 @@ the help page (?readBeadSummaryData) for a complete description of each argument
 We can also read BeadArray data in the format produced directly by the scanner, the IDAT file.  The example below uses the \Biocpkg{GEOquery} to obtain the four IDAT files stored as supplementary information for GEO series GSE27073.  In this case the stored files have been compressed using gzip and need to be decompressed before \Biocpkg{beadarray} can read them.  If you are using IDAT files as they come of the scanner this step will not be necessary.
 
 <<readIDAT, eval=FALSE>>=
-
 library(beadarray)
 library(GEOquery)
-
 downloadDir <- tempdir()
 getGEOSuppFiles("GSE27073", makeDirectory = FALSE, baseDir = downloadDir)
 idatFiles <- list.files(path = downloadDir, pattern = ".idat.gz", full.names=TRUE)
