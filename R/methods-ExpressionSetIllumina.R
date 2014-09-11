@@ -343,7 +343,7 @@ setMethod("combine", signature(x="ExpressionSetIllumina",y="ExpressionSetIllumin
 
   experimentData(x) <- combine(experimentData(x),experimentData(y))
 
-
+  protocolData(x) <- combine(protocolData(x), protocolData(y))
 
     
   ## annotation -- constant
