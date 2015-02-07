@@ -24,7 +24,14 @@ BiocStyle::latex()
 \title{Analysis of Bead-summary Data using beadarray}
 \author{Mark Dunning}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
 %\SweaveOpts{concordance=TRUE}
 \maketitle
 \tableofcontents
@@ -497,7 +504,7 @@ WG-6 version 2 BeadChip.  These arrays were hybridized with the control RNA samp
 The non-normalized data for regular and control probes was output by BeadStudio/GenomeStudio.
 
 
-The example BeadStudio output used in this section is available as a zip file that can be downloaded from {\\tt http://compbio.works/data/BeadStudioExample/AsuragenMAQC_BeadStudioOutput.zip}.
+The example BeadStudio output used in this section is available as a zip file that can be downloaded from {\\tt http://compbio.works/data/BeadStudioExample/AsuragenMAQC\_BeadStudioOutput.zip}.
 
 You will need to download and unzip the contents of this file to the current  {\tt R} working directory.
 Inside this zip file you will find several files including summarized, non-normalized data
