@@ -78,9 +78,20 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation = NULL,
 
       ##Some section names were specified. Make sure that they can be read from directories in the sample sheet. Also, there may be some directories with no Illumina data in
   #    else{
-      chips <- unique(as.character(strtrim(allSections, 10)))
- 
-      dirs <- lapply(chips, function(x) sectionNames[which(strtrim(sectionNames, 10) == x)])
+
+      if(all(nchar(allSections))>10){    
+
+      chips <- unique(as.character(substr(allSections,1,nchar(allSections)-2)))
+      
+      dirs <- lapply(chips, function(x) sectionNames[which(substr(sectionNames,1,nchar(sectionNames)-2) == x)])
+      
+      }
+      else {
+        chips <- unique(as.character(strtrim(allSections, 10)))
+        
+        dirs <- lapply(chips, function(x) sectionNames[which(strtrim(sectionNames, 10) == x)])
+        
+      }
 
       chips <- paste(rootdir, chips,sep="/")	   
       names(dirs) <- chips
