@@ -285,7 +285,7 @@ exampleSummaryData.norm2 <- normaliseIllumina(channel(exampleSummaryData, "G.ul"
 
 Filtering non-responding probes from further analysis can improve the power to detect differential expression. One way of achieving this is to remove probes whose probe sequence has undesirable properties. Four basic annotation quality categories (`Perfect', `Good', `Bad' and `No match') are defined and have been shown to correlate with expression level and measures of differential expression.
 We recommend removing probes assigned a `Bad' or `No match' quality score after normalization.
-This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization. You can verify the relationship between probe quality and intensity by using the boxplot function.
+This approach is similar to the common practice of removing lowly-expressed probes, but with the additional benefit of discarding probes with a high expression level caused by non-specific hybridization. 
 
 <<filter>>=
 
@@ -302,9 +302,6 @@ rem <- qual == "No match" | qual == "Bad" | is.na(qual)
 exampleSummaryData.filt <- exampleSummaryData.norm[!rem,]
 
 dim(exampleSummaryData.filt)
-
-boxplot(exampleSummaryData.norm, 
-probeFactor = "PROBEQUALITY", SampleGroup="SampleFac") 
 
 @
 
