@@ -9,25 +9,24 @@ setMethod("channel",
 	selArray = which(object@channelData[[1]] == name)	
 		
 	BSData = new("ExpressionSetIllumina")
-      
+  
+	eMat <-exprs(object)[,selArray]
+	seMat <- se.exprs(object)[,selArray]
+	nobsMat <-  nObservations(object)[,selArray]
+	if(!is.null(Detection(object))) detMat <- Detection(object)[,selArray]
+	
+	newNames <- gsub(paste(name, ":",sep=""), "", colnames(eMat))
+	colnames(eMat) <- colnames(seMat) <- colnames(nobsMat) <- newNames
+	
+	if(!is.null(Detection(object))) colnames(detMat) <- newNames
+	
 	if(!is.null(Detection(object))){
-	  assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],Detection = Detection(object)[,selArray],storage.mode="list")
-	}
-	else assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],nObservations=nObservations(object)[,selArray],storage.mode="list")
+	  assayData(BSData)=assayDataNew(exprs = eMat, se.exprs = seMat,nObservations=nobsMat,Detection = detMat,storage.mode="list")
+	}	else assayData(BSData)=assayDataNew(exprs = eMat, se.exprs = seMat,nObservations=nobsMat,storage.mode="list")
 	#assayData(BSData)=assayDataNew(exprs = exprs(object)[,selArray], se.exprs = se.exprs(object)[,selArray],storage.mode="list")
 
 	##Create new channel information
 
-        ##Remove channel name from all assayData matrices 
-
-	for(el in assayDataElementNames(BSData)){
-
-		colnames(assayDataElement(BSData, el)) = gsub(paste(name, ":",sep=""), "", colnames(assayDataElement(BSData, el)))
-
-	}
-	
-
-	
 	cData = NULL
 
 	cData[[1]] = object@channelData[[1]][which(object@channelData[[1]] == name)]
