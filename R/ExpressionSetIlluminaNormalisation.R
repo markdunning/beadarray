@@ -122,15 +122,17 @@ normaliseIllumina = function(BSData, method="quantile", transform="none", T=NULL
 
 	neqc={
 		
-	      noNA <- apply(exprs(BSData), 1, function(x) !any(is.na(x)))
+	      #noNA <- apply(exprs(BSData), 1, function(x) !any(is.na(x)))
 
 	      ##note that neqc removes any control probes when it returns it output 
 
 	      newObj <- BSData[which(status == regular),]
 
-	      tmp <- neqc(exprs(BSData)[noNA,],status=status[noNA], negctrl=negctrl, regular = regular,...)
-
-	      exprs(newObj) <- tmp[match(featureNames(newObj), rownames(tmp)),]
+#	      tmp <- neqc(exprs(BSData)[noNA,],status=status[noNA], negctrl=negctrl, regular = regular,...)
+	      tmp <- neqc(exprs(BSData),status=status, negctrl=negctrl, regular = regular,...)
+	      
+#	      exprs(newObj) <- tmp[match(featureNames(newObj), rownames(tmp)),]
+        exprs(newObj) <- tmp
 
 	      BSData = newObj
 	
