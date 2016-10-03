@@ -40,16 +40,6 @@ data2 <- combine(exampleBLData, exampleBLData)
 
 sectionNames(data2)
 
-data(exampleSummaryData)
-
-d1 <- exampleSummaryData[,c(1:4)]
-d2 <- exampleSummaryData[,c(5:8)]
-
-d3 <- combine(d1, d2)
-
-d3
-
-
 }
 
 }
