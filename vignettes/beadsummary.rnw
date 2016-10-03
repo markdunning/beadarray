@@ -404,7 +404,7 @@ tracks(id,p1,p2)
 @
 
 Genome-wide plots are also available
-<<>>=
+<<eval=FALSE>>=
 plotGrandLinear(lgr, aes(y = LogFC))
 @
 
