@@ -130,7 +130,12 @@ setAs("ExpressionSet","ExpressionSetIllumina",
         to
       })
 
-
+## we turn off the validty check here compared to the version in Biobase aimed
+## at the standard ExpressionSet class.
+## This may be a bad idea, but it solves the problem reported here:
+## https://support.bioconductor.org/p/90046
+setReplaceMethod("exprs", signature(object="ExpressionSetIllumina",value="matrix"),
+                 function(object, value) assayDataElementReplace(object, "exprs", value, validate = FALSE))
 
 setAs("ExpressionSetIllumina", "GRanges",
       function(from)
