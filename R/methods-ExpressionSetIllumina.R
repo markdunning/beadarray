@@ -112,10 +112,12 @@ setAs("ExpressionSet","ExpressionSetIllumina",
       {
         
         to <- new("ExpressionSetIllumina")
-        exprs(to) <- exprs(from)
+        to@assayData = assayDataNew(exprs=exprs(from),storage.mode="list")
+        to@channelData <- list()
+        to@channelData[[1]] <- rep("G", length(sampleNames(from)))
+        
         phenoData(to) <- phenoData(from)  
         featureData(to) <- featureData(from)
-        to@channelData[[1]] <- rep("G", length(sampleNames(to)))
         newanno <- switch(annotation(from), 
                                  GPL6947="Humanv3", 
                                  GPL10558="Humanv4", 

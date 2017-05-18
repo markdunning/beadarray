@@ -55,9 +55,9 @@ if(useSampleFac){
 
 			##newNames = paste(unique(strtrim(arraynms, 10)), sList, sep="_")
 			if(any(dupList))
-                            newNames = strtrim(arraynms[-dupList],12)
+                            newNames = strtrim(arraynms[-dupList],14)
                         else
-                            newNames = strtrim(arraynms,12)
+                            newNames = strtrim(arraynms,14)
 		
 		}
 	}
@@ -77,9 +77,9 @@ if(useSampleFac){
 			dupList = which(duplicated(sampleFac))
 
                         if(any(dupList))
-                            newNames = strtrim(arraynms[-dupList],12)
+                            newNames = strtrim(arraynms[-dupList],14)
                         else
-                            newNames = strtrim(arraynms,12)
+                            newNames = strtrim(arraynms,14)
 		}
 	}
 
@@ -441,7 +441,7 @@ if(!is.null(sampInfo)){
 
 		
 
-	sampInfo <- sampInfo[sapply(newNames, function(x) grep(strtrim(x, 12), expIDs)),]	
+	sampInfo <- sampInfo[sapply(newNames, function(x) grep(strtrim(x, 14), expIDs)),]	
 
 	p = new("AnnotatedDataFrame", data.frame(sampInfo,row.names=newNames))
 

@@ -3,11 +3,11 @@ readSampleSheet <- function(sheet = "sampleSheet.csv"){
 
   data <- readLines(sheet)
 
-  sampleStart <- grep("\\[Data\\]", data)
+  sampleStart <- grep("\\[Data\\]", data,ignore.case = TRUE)
 
   experimentData <- NULL
 
-  if(!grepl("\\[Header\\]", data[[1]])){
+  if(!grepl("\\[Header\\]", data[[1]],ignore.case = TRUE)){
       warning("Expected to see \\[Header\\] in the first line of the sample sheet")
   }
   

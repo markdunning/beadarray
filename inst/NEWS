@@ -1,3 +1,7 @@
+VERSION 2.26.1 - MAY 2017
+
+    o   Allow for 12 digit chip names now used by Illumina. Thanks to Simon Kalteis for the bug report and fix
+
 CHANGES FOR BioC 2.14 - April 2014
 
 MAJOR CHANGES
