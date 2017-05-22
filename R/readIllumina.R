@@ -79,7 +79,7 @@ readIllumina <- function(dir= ".", useImages = FALSE, illuminaAnnotation = NULL,
       ##Some section names were specified. Make sure that they can be read from directories in the sample sheet. Also, there may be some directories with no Illumina data in
   #    else{
 
-      if(all(nchar(allSections))>10){    
+      if(all(nchar(allSections)>10)){    
 
       chips <- unique(as.character(substr(allSections,1,nchar(allSections)-2)))
       
