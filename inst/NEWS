@@ -1,0 +1,278 @@
+CHANGES FOR BioC 2.14 - April 2014
+
+MAJOR CHANGES
+
+    o   An ExpressionSet object can be converted into an ExpressionSetIllumina
+
+    o   An ExpressionSetIllumina object can be converted into a GRanges object, with the ranges derived 
+        from the probe positions
+
+    o   The plotMAXY function has been deprecated and replaced by defining the an instance of the generic plotMA for ExpressionSetIllumina
+
+    o   Files suitable for submission to GEO can be created using makeGEOSubmission
+
+    o   A new class for storing limma results; limmaResults
+
+    o   limmaDE: Differential expression analysis can be performed by supplying a SampleGroup vector. All              
+        pairwise comparisons are done.
+
+    o   A limmaResults object can be converted into a GRanges
+
+
+CHANGES IN VERSION 2.4
+
+MAJOR CHANGES
+
+    o   The example data required to run examples and the vignette has been
+    removed from the package. The experimental data package beadarrayExampleData
+    has been created for this purpose
+
+    o   Mapping of bead-level ArrayAddress IDs to Illumina IDs is now performed by
+    loading a companion annotation package. e.g. illuminaHumanv3.db
+
+    o   The addFeatureData function has been added to simplify the annotation of
+    summary data objects
+
+    o   The ggplot2 library is now used to produce boxplots of summary data with
+    the option of including columns of featureData or phenoData as factors in the plot
+
+    o   The combinedControlPlot has been added, which uses ggplot2 to consolidate
+    the bead-level control plots into a single graphic
+
+    o   BASH and HULK can now only operate on a single array at a time and accept
+    an outlier-calling method as a parameter
+
+
+OTHER CHANGES
+
+    o   The imageplot function now uses ggplot2
+	
+    o   Accessor functions added for metrics, P95 value and signal-to-noise ratio
+
+    o   The default background correction when running readIllumina with 
+    useImages = TRUE is now the medianBackground method
+
+    o   getAnnotation replaced with annotation accessor function 
+
+    o   setAnnotation replaced with annotation <- replacement method
+
+    o   checkPlatform replaced with suggestAnnotation function 
+
+    o   The platformSigs object was added and contains lists of ArrayAddressIDs
+    for all know expression platforms
+
+    o   The outlier calling method, squeezedVarOutlierMethod has been added, which
+    shrinks the observed variance for a bead-type towards the predicted variance
+    based on all bead-types on the array-section
+
+    o   Errors in BASH that led to the einvasions and dinvasions arguments not being 
+    respected have been corrected
+
+    o   lower-level BASH functions (e.g. BASHDiffuse) will no longer calculate a 
+    Neighbours matrix if one is not supplied (ergo one must be supplied)
+
+    o   beadarray used to have problems if no outlier removal method were set in 
+    summarization (important if the outliers have already been removed by Illumina's 
+    scanner software). The function noOutlierMethod is provided to address this 
+
+    o  findAllOutliersE and findAllOutliersIgnore are to be deprecated, used 
+    internally by BASH have been removed
+
+CHANGES IN VERSION 2.3
+
+NEW FEATURES
+	
+	o	checkRegistration() has been completely re-written to provide a far more
+	meaningful result in a new class, beadRegistrationData
+
+	o	beadRegistrationData objects can be passed to boxplot.
+
+	o	The summarize function now has a default channel parameter and useSampleFac = FALSE
+
+
+BUG FIXES in 2.3.6
+
+	o	Fixed problem when providing arrays argument to checkRegistration()
+
+	o	Fixed problem in readIllumina when useImages = TRUE
+
+	o	Patched error with analyseDirectory() (thanks to Juerg Straubhaar for this)
+
+BUG FIXES in 2.3.6
+
+	o	Fixed problem when providing arrays argument to checkRegistration()
+
+	o	Fixed problem in readIllumina when useImages = TRUE
+
+	o	Patched error with analyseDirectory() (thanks to Juerg Straubhaar for this)
+
+BUG FIXES in 2.3.5
+
+	o	Added support to readIllumina() for files that use something other than
+	a period as the decimal point character.
+
+BUG FIXES in 2.3.4
+
+	o	Fixed issues when using a combination of iScan data and a locs file 
+	to generate neighbours, manifesting as problems with imageplot and BASH.
+
+BUG FIXES in 2.3.3
+
+	o	Stopped the presence of any other .txt files in a directory resulting 
+	in undesirable behaviour of readIllumina()
+
+BUG FIXES in 2.3.2
+
+	o	readBeadLevelTextFile will now take (and use) a seperator argument.
+
+	o	locs information correctly taken from a bab file if required.  This effects
+	functions such as generateNeighbours(), BASH(), HULK(), imageplot()
+
+BUG FIXES in 2.3.1
+
+    o   Image processing functions can now be passed matrices containing either
+    integer or numeric values.
+
+    o   Passed forceIScan argument to functions called by readIllumina()
+
+
+CHANGES IN VERSION 2.1
+
+NEW FEATURES
+
+    o   combine methods added for beadLevelData and ExpressionSetIllumina
+
+BUG FIXES in 2.1.16
+
+	o	Fixed problem in BASH that could cause a segfault.
+
+BUG FIXES in 2.1.12
+
+    o   Modified show method for beadLevelData class, so it doesn't fail when 
+    the user has added their own section data.
+
+BUG FIXES in 2.1.5
+
+	o	Metrics read automatically when section names are specified in readIllumina()
+
+	o	Correct section names are retained when summarizing multiple chips.
+
+BUG FIXES in 2.1.4
+
+    o   Fixed problem with imageplot when a small value for the squareSize argument 
+    resulted in a crash (thanks to Ying Wu for supply the patch) 
+
+BUG FIXES in 2.1.3
+
+    o   Corrected method names in .Call access to image processing functions
+
+	o   HULK() returns values on the scale specified by the user
+
+	o   HULK() accepts transformation argument
+
+BUG FIXES in 2.1.2
+
+    o   BSData now displays correctly when created from BeadStudio output
+
+    o   setWeights behaves properly when given single array argument
+
+    o   showArrayMask re-instated in package
+
+    o   HULK manual page gives correct definition of funtion output
+
+BUG FIXES in 2.1.1
+
+    o   readBeadSummaryData error when qcFile is missing (FIXED)
+
+    o   readIllumina, imageplot, boxplot accept '...' arguments
+
+
+CHANGES IN VERSION 2.0
+
+NEW FEATURES
+
+    o   new beadLevelData class to represent bead-level data (replaces beadLevelList class)
+
+    o   beadLevelData includes a sectionData slot for managing per-section data
+
+    o 	readIllumina will store file paths of sdf and locs files
+
+    o 	arrayNames is replaced by sectionNames
+
+    o 	getBeadData replaces the functionality of getArrayData
+
+    o 	insertBeadData may be used to modify the per-bead data in the beadLevelData object
+
+    o 	insertSectionData may be used to modify the per-section data in the
+    beadLevelData object
+
+    o 	functions such as logGreenChannelTransform are used to transform the 
+    data in the bead-level object, rather than using the what argument
+
+    o 	the 'what' argument in various plotting functions is replaced by a 
+    transformation function (e.g. logGreenChannelTransform)
+
+    o 	the backgroundCorrectSingleSection is used instead of backgroundCorrect
+
+    o 	the boxplotBeads function is removed and the generic boxplot is used for beadLevelData
+
+    o 	imageplot and outlier plot functions include a horizontal to change
+    orientation of the plot to match the orientation of the original TIFF image
+
+    o 	the squareSize parameter is now used to control the resolution of imageplots
+
+    o 	the imageplot function will attempt to read sdf information to determine
+    the optimal values of squareSize
+
+    o 	the checkRegistration function checks for possible errors in the 
+    registration of the original image. NB requires locs information to be available.
+
+    o 	the BASH function now returns a QC list item containing the number of masked
+    beads and extended score for each array
+
+    o 	BASH function will accept a transformation function argument instead of 'what'
+
+    o 	control probe annotation for Humanv4 arrays is added to ExpressionControlData
+
+    o 	a 'controlProfile' data frame can be used to make control plots of data
+    which are not defined in ExpressionControlData
+
+    o 	the quickSummary and makeQCTable functions are added to summarize various
+    control types on specified arrays
+
+    o 	the controlProbeDetection function returns the percentage of beads belong
+    to defined set of control types that are expressed above background
+
+    o 	the calculateOutlierStats function returns the percentage of outliers
+    that occur in each segment of a particular array 
+
+    o 	the expressionQCPipeline function replaces calculateBeadLevelScores
+
+    o 	the summarize function is used instead of createBeadSummaryData. It 
+    requires the specification of an illuminaChannel object which defines the 
+    transformation to be applied, outlier function, functions for averaging and a name
+
+    o   the numeric ArrayAddressIDs used in the bead-level data may be re-mapped
+    to Illumina IDs (ILMN_...) if the annotation slot of the beadLevelData is 
+    present. Probes that cannot be mapped may be removed.
+
+    o 	the sampleFac and useSampleFac arguments to summarize are to be used in 
+    circumstances when we wish to combine data from multiple sections. i.e. for 
+    infinium data when the SNPs interrogated are spread over multiple sections. 
+    The sampleFac argument may be left blank when the sdf file is available.
+
+    o 	different summarization schemes are supported in the summarize function, 
+    in which case an ExpressionSetIllumina that incorporates the concept of 
+    channels will be created. 
+
+    o 	the readBeadSummaryData functions will read extra annotation columns from
+    BeadStudio output
+
+    o 	the NoBeads slot in ExpressionSetIllumina has been re-named to nObservations
+
+    o 	control probes are no longer stored in the QC slot of the ExpressionSetIllumina 
+    object, but are in the main exprs matrix along with the gene probes
+
+    o 	support for neqc (limma) and rsn (lumi) in normaliseIllumina
+
+
