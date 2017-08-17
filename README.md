@@ -17,12 +17,16 @@ Mark Dunning <Mark.Dunning at cruk.cam.ac.uk>
 
 ## Installation
 
-> ## try http:// if https:// URLs are not supported
+``` 
+## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
 biocLite("beadarray")
+```
 
 ## Documentation
 
 To view documentation for the version of this package installed in your system, start R and enter: 
 
-> browseVignettes("beadarray")
+```
+browseVignettes("beadarray")
+```
