@@ -1,3 +1,8 @@
+2017 UPDATES
+
+    o   beadarray can now cope with the 12-digit chip names now used by Illumina
+    o   source code is now available on github: https://github.com/markdunning/beadarray
+
 CHANGES FOR BioC 2.14 - April 2014
 
 MAJOR CHANGES
